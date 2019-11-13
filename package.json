@@ -1,0 +1,25 @@
+{
+  "name": "svelte-app",
+  "version": "1.0.0",
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.6.0",
+    "serve": "^11.0.0",
+    "style-loader": "^0.23.1",
+    "svelte": "^3.0.0",
+    "svelte-loader": "2.13.3",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.1"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack",
+    "dev": "webpack-dev-server --content-base public"
+  },
+  "dependencies": {
+    "mermaid": "^8.4.2",
+    "monaco-editor": "0.18.1",
+    "svelte-routing": "^1.4.0"
+  }
+}
