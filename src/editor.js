@@ -162,6 +162,5 @@ const edit = monaco.editor.create(document.getElementById('editor'), {
   language: 'mermaid'
 });
 edit.onDidChangeModelContent(function (e) {
-      console.log(edit.getValue());
       codeStore.set(edit.getValue());
   });

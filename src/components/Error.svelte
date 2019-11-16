@@ -1,5 +1,5 @@
 <script>
-import { errorStore } from './error-store.js';
+import { errorStore } from '../error-store.js';
 import { onMount } from 'svelte';
 
 onMount(async () => {
@@ -11,6 +11,9 @@ onMount(async () => {
 	export let error = {};
 	export let token = '';
 	export let expected = '';
+
+	export let params = {}
+
 
 const unsubscribeError = errorStore.subscribe( _error => {
 		if(typeof _error === 'undefined') {

@@ -1,6 +1,6 @@
 <script>
-import { codeStore } from './code-store.js';
-import { errorStore } from './error-store.js';
+import { codeStore } from '../code-store.js';
+import { errorStore } from '../error-store.js';
 import { onMount } from 'svelte';
 import mermaid from 'mermaid';
 
@@ -16,14 +16,19 @@ let insertSvg = function(svgCode, bindFunctions){
 
 	export let code = '';
 	export let classes = '';
-	const unsubscribe = codeStore.subscribe( _code => {
-		code = _code;
-		if(container) {
-			container.innerHTML = _code
-			delete container.dataset.processed
-			mermaid.init(undefined, container)
-			if(code) mermaid.render('graph-div', code, insertSvg);
+	const unsubscribe = codeStore.subscribe( state => {
+		try {
+			if(container && state) {
+				code = state.code;
+				container.innerHTML = code;
+				delete container.dataset.processed
+				mermaid.init(undefined, container)
+				if(code) mermaid.render('graph-div', code, insertSvg);
+			}
+		} catch(e) {
+			console.log('view fail', e);
 		}
+
 	});
 	const unsubscribeError = errorStore.subscribe( _error => {
 		if(typeof _error === 'undefined') {

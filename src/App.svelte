@@ -1,18 +1,30 @@
 <script>
+ 	import Router from 'svelte-spa-router'
+  // Used for SSR. A falsy value is ignored by the Router.
+  export let url = "";
 	export let name;
-	import Editor from './Editor.svelte'
-	import View from './View.svelte'
+	import Edit from './routes/Edit.svelte'
+	import View from './routes/View.svelte'
+
+	const routes = {
+    // Exact path
+    '/': Edit,
+
+    // Using named parameters, with last being optional
+    '/edit/:data': Edit,
+
+    // Wildcard parameter
+    '/view/:data': View,
+
+    // Catch-all
+    // This is optional, but if present it must be the last
+    '*': Edit,
+}
 </script>
 
 <style>
-	#app {
-		display: flex;
-		height: 100%;
-	}
 
 </style>
-
-<div id="app">
-	<Editor />
-	<View />
-</div>
+<body>
+    <Router {routes}/>
+</body>

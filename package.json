@@ -18,8 +18,10 @@
     "dev": "webpack-dev-server --content-base public"
   },
   "dependencies": {
+    "js-base64": "^2.5.1",
     "mermaid": "^8.4.2",
     "monaco-editor": "0.18.1",
-    "svelte-routing": "^1.4.0"
+    "svelte-routing": "^1.4.0",
+    "svelte-spa-router": "^1.3.0"
   }
 }
