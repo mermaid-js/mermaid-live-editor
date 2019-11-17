@@ -11,8 +11,10 @@ export const fromUrl = data => {
     let stateStr = Base64.decode(data)
     state = JSON.parse(stateStr);
 
+    console.log('state from url', state)
+
     if (state.code === undefined) { // not valid json
-      state = { code: str, mermaid: { theme: themeFromUrl } }
+//      state = { code: '', mermaid: { theme: themeFromUrl } }
 		}
 		code = state.code;
   } catch (e) {

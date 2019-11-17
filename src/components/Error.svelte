@@ -13,27 +13,29 @@ onMount(async () => {
 	export let expected = '';
 
 	export let params = {}
+	export let errorText = '';
 
 
-const unsubscribeError = errorStore.subscribe( _error => {
-		if(typeof _error === 'undefined') {
-			classes = 'invisible';
-			error = {};
-			token='';
-			expected='';
-		} else {
-			classes = 'visible';
-			error = _error;
-			console.log('error: ',  _error);
-			token = error.hash.token;
-			expected = error.hash.expected.join(' ');;
-		}
-	});
+// const unsubscribeError = errorStore.subscribe( _error => {
+// 		if(typeof _error === 'undefined') {
+// 			classes = 'invisible';
+// 			error = {};
+// 			token='';
+// 			expected='';
+// 		} else {
+// 			classes = 'visible';
+// 			error = _error;
+// 			console.log('error: ',  _error);
+// 			token = error.hash.token;
+// 			expected = error.hash.expected.join(' ');;
+// 		}
+// 	});
 </script>
 
 <style>
 	#error {
-		border: 1px solid darkred;
+		background: darkred;
+		color:  white;
 		flex: 1;
 		padding: 10px;
 		/* position: absolute; */
@@ -47,8 +49,5 @@ const unsubscribeError = errorStore.subscribe( _error => {
 	}
 </style>
 
-<div id="error" class="{classes}">
-	<div>Expected: {expected}</div>
-	<br/>
-	<div>Got: {token}</div>
+<div id="error" class="{classes}">{errorText}
 </div>

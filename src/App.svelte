@@ -25,6 +25,4 @@
 <style>
 
 </style>
-<body>
-    <Router {routes}/>
-</body>
+<Router {routes}/>

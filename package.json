@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "js-base64": "^2.5.1",
+    "json-lint": "^0.1.0",
+    "jsonlint": "^1.6.3",
     "mermaid": "^8.4.2",
     "monaco-editor": "0.18.1",
     "svelte-routing": "^1.4.0",
