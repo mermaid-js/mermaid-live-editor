@@ -38,7 +38,7 @@ let insertSvg = function(svgCode, bindFunctions){
 			codeClasses = '';
 		} else {
 			codeClasses = 'error';
-			console.log('error: ', typeof _error);
+			console.log('code error: ', _error);
 		}
 	});
 	const unsubscribeConfigError = configStore.subscribe( _error => {
@@ -46,7 +46,7 @@ let insertSvg = function(svgCode, bindFunctions){
 			configClasses = '';
 		} else {
 			configClasses = 'error';
-			console.log('error: ', typeof _error);
+			console.log('conf error: ', _error);
 		}
 	});
 </script>

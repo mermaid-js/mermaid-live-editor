@@ -19,6 +19,7 @@ export let error = false;
 
 let decorations = [];
 const decArr = [];
+let editorElem = null;
 const handleCodeUpdate = code => {
 	try {
 		mermaid.parse(code);
@@ -45,14 +46,19 @@ const handleCodeUpdate = code => {
 };
 
 const unsubscribe = codeStore.subscribe( state => {
+	if(editorElem === null) {
+		console.log('Starting stuff', document.getElementById('editor'));
+		editorElem = document.getElementById('editor');
+	}
 	if(!code && state) {
 		code = state.code;
 	}
 	if(state) {
 		conf = state.mermaid;
 	}
-	if(!edit && code) {
-		edit = monaco.editor.create(document.getElementById('editor'), {
+	if(!edit && code && (editorElem !== null)) {
+		console.log('creatinf editor');
+		edit = monaco.editor.create(editorElem, {
 			value: [
 				code,
 			].join('\n'),
@@ -81,6 +87,7 @@ initEditor(monaco);
 
 onMount(async () => {
 	console.log('Mounting editor');
+	// editorElem = document.querySelector('#editor')
 	self.MonacoEnvironment = {
 		getWorkerUrl: function (moduleId, label) {
 			return './editor.worker.bundle.js';

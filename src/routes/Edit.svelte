@@ -4,6 +4,7 @@ import Editor from '../components/Editor.svelte';
 import Config from '../components/Config.svelte';
 import View from '../components/View.svelte';
 import Card from '../components/Card.svelte';
+import Links from '../components/Links.svelte';
 import { fromUrl } from '../code-store.js';
 
 onMount(async () => {
@@ -53,7 +54,7 @@ onMount(async () => {
 		</div>
 		<div id="col2">
 			<Card title="Preview"><View /></Card>
-			<Card title="Actions">bla boac</Card>
+			<Card title="Actions"><Links /></Card>
 		</div>
 	</div>
 </div>

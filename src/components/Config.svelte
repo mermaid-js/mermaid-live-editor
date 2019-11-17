@@ -18,6 +18,7 @@ export let code = '';
 export let error = false;
 
 let edit;
+let editorElem = null;
 
 let decorations = [];
 const decArr = [];
@@ -42,14 +43,18 @@ const handleConfUpdate =  conf => {
 };
 
 const unsubscribe = codeStore.subscribe( state => {
+	if(editorElem === null) {
+		console.log('Starting stuff', document.getElementById('editor-conf'));
+		editorElem = document.getElementById('editor-conf');
+	}
 	if(!conf && state) {
 		conf = JSON.stringify(state.mermaid, null, 2);
 	}
 	if(state) {
 		code = state.code;
 	}
-	if(!edit && conf) {
-		edit = monaco.editor.create(document.getElementById('editor-conf'), {
+	if(!edit && conf && (editorElem!==null)) {
+		edit = monaco.editor.create(editorElem, {
 			value: [
 				conf,
 			].join('\n'),
