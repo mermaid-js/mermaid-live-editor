@@ -62,5 +62,5 @@ let insertSvg = function(svgCode, bindFunctions){
 </style>
 
 <div id="view" class="{codeClasses} {configClasses}">
-	<div bind:this={container}></div>
+	<div id="container" bind:this={container}></div>
 </div>

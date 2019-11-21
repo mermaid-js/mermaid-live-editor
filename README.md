@@ -1,64 +1,37 @@
-# svelte app
+# mermaid-live-editor
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template-webpack.
+Edit, preview and share mermaid charts/diagrams.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
 
-```bash
-npx degit sveltejs/template-webpack svelte-app
-cd svelte-app
+## Features
+
+- edit and preview flowcharts, sequence diagrams, gantt diagrams in real time.
+- save the result as a svg
+- get a link to a viewer of the diagram so that you can share it with others.
+- get a link to edit the diagram so that someone else can tweak it and send a new link back
+
+
+## Setup
+
+Setup is simple.
+
+```
+yarn install
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
 
+## Development
 
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
-npm install
+```
+yarn dev
+open http://localhost:1234
 ```
 
-...then start webpack:
+This app is created with Svelte + svelte-spa-router.
 
-```bash
-npm run dev
+
+## Release
+
 ```
-
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and the page should reload with your changes.
-
-
-## Deploying to the web
-
-### With [now](https://zeit.co/now)
-
-Install `now` if you haven't already:
-
-```bash
-npm install -g now
-```
-
-Then, from within your project folder:
-
-```bash
-now
-```
-
-As an alternative, use the [Now desktop client](https://zeit.co/download) and simply drag the unzipped project folder to the taskbar icon.
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public
+yarn release
 ```
