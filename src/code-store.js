@@ -18,15 +18,13 @@ export const fromUrl = data => {
 		}
 		code = state.code;
   } catch (e) {
-    console.error('Init error', e);
+    // console.error('Init error', e);
 		code = `graph TD
-  A[Client] --> B[Load Balancer2]
-  B --> C[Server01]
-  B --> D[Server02]
-  D --> F[Server03]
-  D --> I[Server02]
-  D --> H[Server05]
-  D --> G[Server04]
+  A[Christmas] -->|Get money| B(Go shopping)
+  B --> C{Let me think}
+  C -->|One| D[Laptop]
+  C -->|Two| E[iPhone]
+  C -->|Three| F[fa:fa-car Car]
 		`;
 		state = { code, mermaid: { theme: 'default' } };
   }

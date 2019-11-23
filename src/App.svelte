@@ -23,6 +23,5 @@
 </script>
 
 <style>
-
 </style>
 <Router {routes}/>
