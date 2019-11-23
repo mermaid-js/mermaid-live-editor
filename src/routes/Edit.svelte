@@ -4,8 +4,12 @@ import Editor from '../components/Editor.svelte';
 import Config from '../components/Config.svelte';
 import View from '../components/View.svelte';
 import Card from '../components/Card.svelte';
+import Tag from '../components/Tag.svelte';
 import Links from '../components/Links.svelte';
 import { fromUrl } from '../code-store.js';
+import pkg from '@mermaid-js/mermaid/package.json'
+
+export let mermaidVersion = pkg.version
 
 onMount(async () => {
 	ga('send', 'pageview');
@@ -44,6 +48,13 @@ onMount(async () => {
 		margin-top: 0;
 	}
 
+	#power {
+		width: 100%;
+    display: flex;
+    justify-content: flex-end;
+		align-items: center;
+	}
+
 </style>
 <div>
 	<h1 id="app-title">Mermaid Live Editor</h1>
@@ -55,6 +66,9 @@ onMount(async () => {
 		<div id="col2">
 			<Card title="Preview"><View /></Card>
 			<Card title="Actions"><Links /></Card>
+			<div id="power">
+				Powered by mermaid <Tag color='green'>{mermaidVersion}</Tag>
+			</div>
 		</div>
 	</div>
 </div>
