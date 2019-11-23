@@ -20,13 +20,13 @@ export const fromUrl = data => {
   } catch (e) {
     console.error('Init error', e);
 		code = `graph TD
-			A[Client] --> B[Load Balancer2]
-			B --> C[Server01]
-			B --> D[Server02]
-			D --> F[Server03]
-			D --> I[Server02]
-			D --> H[Server05]
-			D --> G[Server04]
+  A[Client] --> B[Load Balancer2]
+  B --> C[Server01]
+  B --> D[Server02]
+  D --> F[Server03]
+  D --> I[Server02]
+  D --> H[Server05]
+  D --> G[Server04]
 		`;
 		state = { code, mermaid: { theme: 'default' } };
   }
