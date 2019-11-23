@@ -53,7 +53,7 @@ export const onDownloadSVG = event => {
 let url = '/view';
 let iUrl;
 const unsubscribe = codeStore.subscribe( state => {
-	url = '/#/view/' + Base64.encode(JSON.stringify(state));
+	url = '/mermaid-live-editor/#/view/' + Base64.encode(JSON.stringify(state));
 	iUrl = `https://mermaid.ink/img/${Base64.encode(JSON.stringify(state))}`;
 });
 </script>
