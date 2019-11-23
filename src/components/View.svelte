@@ -46,7 +46,7 @@ const saveStatistcs = graphType => {
 	timeout = setTimeout(
 		function() {
 			console.log('ga:', 'send', 'event', 'render', graphType, graphType);
-			ga('send', 'event', 'render', graphType, graphType);
+			ga('send', 'event', graphType, 'render', 'render');
 		},
 		5000);
 };
