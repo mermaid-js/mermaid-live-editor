@@ -3,7 +3,54 @@ import { codeStore } from '../code-store.js';
 import { errorStore } from '../error-store.js';
 import { configStore } from '../config-store.js';
 import { onMount } from 'svelte';
-import mermaid from 'mermaid';
+import mermaid from '@mermaid-js/mermaid';
+
+const detectType = text => {
+  text = text.replace(/^\s*%%.*\n/g, '\n');
+  console.debug('Detecting diagram type based on the text ' + text);
+  if (text.match(/^\s*sequenceDiagram/)) {
+    return 'sequence';
+  }
+
+  if (text.match(/^\s*gantt/)) {
+    return 'gantt';
+  }
+
+  if (text.match(/^\s*classDiagram/)) {
+    return 'class';
+  }
+
+  if (text.match(/^\s*stateDiagram/)) {
+    return 'state';
+  }
+
+  if (text.match(/^\s*gitGraph/)) {
+    return 'git';
+  }
+
+  if (text.match(/^\s*info/)) {
+    return 'info';
+  }
+  if (text.match(/^\s*pie/)) {
+    return 'pie';
+  }
+
+  return 'flowchart';
+};
+
+// manual debounce
+let timeout;
+const saveStatistcs = graphType => {
+	clearTimeout(timeout);
+	// Only save statistcs after a 5 sec delay
+	timeout = setTimeout(
+		function() {
+			console.log('ga:', 'send', 'event', 'render', graphType, graphType);
+			ga('send', 'event', 'render', graphType, graphType);
+		},
+		5000);
+};
+
 
 let element;
 let container;
@@ -23,6 +70,7 @@ let insertSvg = function(svgCode, bindFunctions){
 			if(container && state) {
 				code = state.code;
 				container.innerHTML = code;
+				saveStatistcs(detectType(code));
 				delete container.dataset.processed
 				mermaid.initialize(state.mermaid)
 				mermaid.init(undefined, container)

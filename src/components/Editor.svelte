@@ -4,7 +4,7 @@ import { errorStore } from '../error-store.js';
 import { onMount } from 'svelte';
 import {push, pop, replace} from 'svelte-spa-router'
 import { Base64 } from 'js-base64'
-import mermaid from 'mermaid';
+import mermaid from '@mermaid-js/mermaid';
 import Error from './Error.svelte';
 import { initEditor } from './editor-utils';
 import 'monaco-editor/esm/vs/editor/browser/controller/coreCommands.js';
