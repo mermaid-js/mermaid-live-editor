@@ -63,6 +63,36 @@ onMount(async () => {
 		<div id="col1">
 			<Card title="Code" noPadding="true"><Editor data={params.data}/></Card>
 			<Card title="Mermaid Configuration" ><Config /></Card>
+			<Card title='Links'>
+				<ul className='marketing-links'>
+					<li>
+						<a href='https://mermaid-js.github.io/mermaid' target='_blank'>
+							Mermaid Documentation
+						</a>
+					</li>
+					<li>
+						<a href='https://github.com/mermaid-js/mermaid' target='_blank'>
+							Mermaid on GitHub
+						</a>
+					</li>
+					<li>
+						<a
+							href='https://github.com/mermaid-js/mermaid-live-editor'
+							target='_blank'
+						>
+							Live Editor on GitHub
+						</a>
+					</li>
+					<li>
+						<a
+							href='https://github.com/mermaid-js/mermaid.cli'
+							target='_blank'
+						>
+							Mermaid CLI
+						</a>
+					</li>
+				</ul>
+			</Card>
 		</div>
 		<div id="col2">
 			<Card title="Preview"><View /></Card>

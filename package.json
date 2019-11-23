@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack-dev-server --content-base public"
+    "dev": "webpack-dev-server --content-base docs"
   },
   "dependencies": {
     "js-base64": "^2.5.1",
