@@ -1,5 +1,5 @@
 <script>
-import { errorStore } from '../error-store.js';
+import { codeErrorStore } from '../code-error-store.js';
 import {link} from 'svelte-spa-router';
 import { Base64 } from 'js-base64'
 import { onMount } from 'svelte';

@@ -8,7 +8,7 @@ import Links from '../components/Links.svelte';
 import { fromUrl } from '../code-store.js';
 
 onMount(async () => {
-	console.log('Data = ', params.data)
+	ga('send', 'pageview');
 	fromUrl(params.data);
 });
 

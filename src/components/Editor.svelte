@@ -1,6 +1,6 @@
 <script>
 import { codeStore, updateCodeStore } from '../code-store.js';
-import { errorStore } from '../error-store.js';
+import { codeErrorStore } from '../code-error-store.js';
 import { onMount } from 'svelte';
 import {push, pop, replace} from 'svelte-spa-router'
 import { Base64 } from 'js-base64'
@@ -29,11 +29,11 @@ const handleCodeUpdate = code => {
 			edit.deltaDecorations(decor, []);
 		});
 
-		errorStore.set(undefined);
+		codeErrorStore.set(undefined);
 		const model = edit.getModel();
 	} catch(e) {
 		if(e) {
-			errorStore.set(e);
+			codeErrorStore.set(e);
 			console.log('Error in parsed', e.hash);
 			const str = JSON.stringify({ code: code, mermaid: conf });
 			push('/edit/' + Base64.encode(str))
@@ -75,7 +75,7 @@ const unsubscribe = codeStore.subscribe( state => {
 	}
 });
 
-const unsubscribeError = errorStore.subscribe( _error => {
+const unsubscribeError = codeErrorStore.subscribe( _error => {
 	if(_error) {
 		error = true;
 	} else {

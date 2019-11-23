@@ -6,6 +6,7 @@ import { fromUrl } from '../code-store.js';
 
 onMount(async () => {
 	fromUrl(params.data);
+	ga('send', 'pageview');
 });
 
 	export let code = '';

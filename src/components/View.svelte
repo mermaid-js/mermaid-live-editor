@@ -1,7 +1,7 @@
 <script>
 import { codeStore } from '../code-store.js';
-import { errorStore } from '../error-store.js';
-import { configStore } from '../config-store.js';
+import { codeErrorStore } from '../code-error-store.js';
+import { configErrorStore } from '../config-error-store.js';
 import { onMount } from 'svelte';
 import mermaid from '@mermaid-js/mermaid';
 
@@ -81,7 +81,7 @@ let insertSvg = function(svgCode, bindFunctions){
 		}
 
 	});
-	const unsubscribeError = errorStore.subscribe( _error => {
+	const unsubscribeError = codeErrorStore.subscribe( _error => {
 		if(typeof _error === 'undefined') {
 			codeClasses = '';
 		} else {
@@ -89,7 +89,7 @@ let insertSvg = function(svgCode, bindFunctions){
 			console.log('code error: ', _error);
 		}
 	});
-	const unsubscribeConfigError = configStore.subscribe( _error => {
+	const unsubscribeConfigError = configErrorStore.subscribe( _error => {
 		if(typeof _error === 'undefined') {
 			configClasses = '';
 		} else {

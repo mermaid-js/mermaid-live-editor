@@ -1,6 +1,6 @@
 <script>
 import { codeStore, updateCodeStore } from '../code-store.js';
-import { configStore } from '../config-store.js';
+import { configErrorStore } from '../config-error-store.js';
 import { onMount } from 'svelte';
 import {push, pop, replace} from 'svelte-spa-router'
 import { Base64 } from 'js-base64'
@@ -30,13 +30,13 @@ const handleConfUpdate =  conf => {
 		let newState = { code, mermaid: JSON.parse(conf) };
 		oldConf = newState.mermaid;
 		updateCodeStore(newState);
-		configStore.set(undefined);
+		configErrorStore.set(undefined);
 		const model = edit.getModel();
 		// model.setValue(conf);
 		// model.dispose();
 	} catch(e) {
 		console.log('Error in parsed', e);
-		configStore.set(e);
+		configErrorStore.set(e);
 		const str = JSON.stringify({ code, mermaid: oldConf });
 		push('/edit/' + Base64.encode(str))
 	}
@@ -73,7 +73,7 @@ const unsubscribe = codeStore.subscribe( state => {
 
 initEditor(monaco);
 
-const unsubscribeError = configStore.subscribe( _error => {
+const unsubscribeError = configErrorStore.subscribe( _error => {
 	// console.log('Error ideintified' + _error.toString());
 	if(_error) {
 		error = _error.toString();
