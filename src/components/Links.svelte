@@ -58,30 +58,15 @@ const unsubscribe = codeStore.subscribe( state => {
 });
 </script>
 
-<style>
-	#error {
-		background: darkred;
-		color:  white;
-		flex: 1;
-		padding: 10px;
-		/* position: absolute; */
-
-	}
-	.invisible {
-		display: none;
-	}
-	.visible {
-		display: block;
-	}
-</style>
+<style></style>
 
 <div id="links" >
 	<a href="{url}" use:link>Link to view</a>
-	<a href="#" download='' on:click={onDownloadSVG}>
+	<a href="{url}" download='' on:click={onDownloadSVG}>
 		Download SVG
 	</a>
 	<a href={iUrl}>Link to Image</a>
-	<a href="#" download='' on:click={onDownloadPNG}>
+	<a href="{url}" download='' on:click={onDownloadPNG}>
 		Download PNG
 	</a>
 </div>
