@@ -7,7 +7,8 @@ import Card from '../components/Card.svelte';
 import Tag from '../components/Tag.svelte';
 import Links from '../components/Links.svelte';
 import { fromUrl } from '../code-store.js';
-import pkg from '@mermaid-js/mermaid/package.json'
+// import pkg from '@mermaid-js/mermaid/package.json'
+import pkg from 'mermaid/package.json'
 
 export let mermaidVersion = pkg.version
 
