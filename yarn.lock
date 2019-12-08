@@ -8,15 +8,15 @@
   integrity sha512-GcIY79elgB+azP74j8vqkiXz8xLFfIzbQJdlwOPisgbKT00tviJQuEghOXSMVxJ00HoYJbGswr4kcllUc4xCcg==
 
 "@mermaid-js/mermaid@*":
-  version "8.4.3-preview.797"
-  resolved "https://npm.pkg.github.com/download/@mermaid-js/mermaid/8.4.3-preview.797/f5a0a8719adfd7e034b54c1adc7095bb359887c5761a4d1ccf105a7534a8e79a#"
-  integrity sha512-8SOhm+ZR+tzjjD0cKybe5GqY40w+Uv0gmu9poyiWJtxvBnaL+Ws19eunpa+p+zeblq5DH4lqI3UWa/aanz8tiQ==
+  version "8.4.4-preview.812"
+  resolved "https://npm.pkg.github.com/download/@mermaid-js/mermaid/8.4.4-preview.812/bc79202b9d42248a7e935ec8411b565fe95c0ccf922d72de13631ab315ecdb6d#"
+  integrity sha512-vLeyIDuK7bm5N+Y9krCP1yQl9FnimAGTYL7jGJzAS43k2iQsYTmnDUZ/TI8zMDwLbN8De+ALaN2ZdSI8cbah0Q==
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     crypto-random-string "^3.0.1"
     d3 "^5.7.0"
     dagre "^0.8.4"
-    dagre-d3-unofficial "0.6.4"
+    dagre-d3 "^0.6.4"
     graphlib "^2.1.7"
     he "^1.2.0"
     lodash "^4.17.11"
@@ -1289,7 +1289,7 @@ d3-zoom@1:
     d3-selection "1"
     d3-transition "1"
 
-d3@^5.12, d3@^5.7.0:
+d3@^5.14, d3@^5.7.0:
   version "5.14.2"
   resolved "https://registry.yarnpkg.com/d3/-/d3-5.14.2.tgz#a3fb3af016d362aaf4dacbe618ae949c1744b8c4"
   integrity sha512-Ccipa9XrYW5N0QkP6u0Qb8kU6WekIXBiDenmZm1zLvuq/9pBBhRCJLCICEOsH5Og4B0Xw02bhqGkK5VN/oPH0w==
@@ -1326,14 +1326,14 @@ d3@^5.12, d3@^5.7.0:
     d3-voronoi "1"
     d3-zoom "1"
 
-dagre-d3-unofficial@0.6.4:
+dagre-d3@^0.6.4:
   version "0.6.4"
-  resolved "https://registry.yarnpkg.com/dagre-d3-unofficial/-/dagre-d3-unofficial-0.6.4.tgz#c3d0c3993e53942b9ab977a98ac980b6e7c620eb"
-  integrity sha512-xihvMCALDS/X646WyqBSMN1kl7f0K1Urd42EKYgmyISwML1Bep1MCMm+2Q3TIJe6y8TwHKmW6oYXnP5I0J/LIg==
+  resolved "https://registry.yarnpkg.com/dagre-d3/-/dagre-d3-0.6.4.tgz#0728d5ce7f177ca2337df141ceb60fbe6eeb7b29"
+  integrity sha512-e/6jXeCP7/ptlAM48clmX4xTZc5Ek6T6kagS7Oz2HrYSdqcLZFLqpAfh7ldbZRFfxCZVyh61NEPR08UQRVxJzQ==
   dependencies:
-    d3 "^5.12"
-    dagre "^0.8.4"
-    graphlib "^2.1.7"
+    d3 "^5.14"
+    dagre "^0.8.5"
+    graphlib "^2.1.8"
     lodash "^4.17.15"
 
 dagre@^0.8.4:
@@ -1343,6 +1343,14 @@ dagre@^0.8.4:
   dependencies:
     graphlib "^2.1.7"
     lodash "^4.17.4"
+
+dagre@^0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/dagre/-/dagre-0.8.5.tgz#ba30b0055dac12b6c1fcc247817442777d06afee"
+  integrity sha512-/aTqmnRta7x7MCCpExk7HQL2O4owCT2h8NT//9I1OQ9vt29Pa0BzSAkR5lwFUcQ7491yVi/3CXU9jQ5o0Mn2Sw==
+  dependencies:
+    graphlib "^2.1.8"
+    lodash "^4.17.15"
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -2062,6 +2070,13 @@ graphlib@^2.1.7:
   integrity sha512-TyI9jIy2J4j0qgPmOOrHTCtpPqJGN/aurBwc6ZT+bRii+di1I+Wv3obRhVrmBEXet+qkMaEX67dXrwsd3QQM6w==
   dependencies:
     lodash "^4.17.5"
+
+graphlib@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/graphlib/-/graphlib-2.1.8.tgz#5761d414737870084c92ec7b5dbcb0592c9d35da"
+  integrity sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==
+  dependencies:
+    lodash "^4.17.15"
 
 handle-thing@^2.0.0:
   version "2.0.0"
