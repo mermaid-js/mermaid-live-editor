@@ -13,7 +13,6 @@ import 'monaco-editor/esm/vs/editor/browser/controller/coreCommands.js';
 import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
-export let data;
 export let conf = '';
 export let code = '';
 export let error = false;
@@ -93,9 +92,6 @@ onMount(async () => {
 	}
 });
 
-	export let name;
-	export let params = {};
-	export let errorText = ''
 </script>
 
 <style>

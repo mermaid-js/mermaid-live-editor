@@ -1,8 +1,6 @@
 <script>
  	import Router from 'svelte-spa-router'
   // Used for SSR. A falsy value is ignored by the Router.
-  export let url = "";
-	export let name;
 	import Edit from './routes/Edit.svelte'
 	import View from './routes/View.svelte'
 

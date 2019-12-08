@@ -12,7 +12,6 @@ import 'monaco-editor/esm/vs/editor/browser/controller/coreCommands.js';
 import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
-export let data;
 export let code = '';
 export let conf = { theme: 'default' };
 let edit;
@@ -96,8 +95,8 @@ onMount(async () => {
 	}
 });
 
-	export let name;
-	export let params = {};
+	// export let name;
+	// export let params = {};
 </script>
 
 <style>

@@ -8,7 +8,7 @@ import Tag from '../components/Tag.svelte';
 import Links from '../components/Links.svelte';
 import { fromUrl } from '../code-store.js';
 // import pkg from '@mermaid-js/mermaid/package.json'
-import pkg from 'mermaid/package.json'
+import pkg from '@mermaid/package.json'
 
 export let mermaidVersion = pkg.version
 
@@ -18,12 +18,12 @@ onMount(async () => {
 	fromUrl(params.data);
 });
 
-	export let code = '';
-	export let classes = '';
+	// export let code = '';
+	// export let classes = '';
 
-	export let error = {};
-	export let token = '';
-	export let expected = '';
+	// export let error = {};
+	// export let token = '';
+	// export let expected = '';
 	export let params = {};
 
 </script>

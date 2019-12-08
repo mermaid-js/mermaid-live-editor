@@ -9,12 +9,12 @@ onMount(async () => {
 	ga('send', 'pageview');
 });
 
-	export let code = '';
-	export let classes = '';
+	// export let code = '';
+	// export let classes = '';
 
-	export let error = {};
-	export let token = '';
-	export let expected = '';
+	// export let error = {};
+	// export let token = '';
+	// export let expected = '';
 	export let params = {};
 </script>
 

@@ -11,7 +11,8 @@ module.exports = {
 	resolve: {
 		alias: {
 			svelte: path.resolve('node_modules', 'svelte'),
-			"@mermaid": 'mermaid'
+			// "@mermaid": 'mermaid'
+			"@mermaid": '@mermaid-js/mermaid'
 		},
 		extensions: ['.mjs', '.js', '.svelte'],
 		mainFields: ['svelte', 'browser', 'module', 'main']

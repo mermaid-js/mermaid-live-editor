@@ -5,14 +5,14 @@ import { onMount } from 'svelte';
 onMount(async () => {
 });
 
-	export let code = '';
+	// export let code = '';
 	export let classes = '';
 
-	export let error = {};
-	export let token = '';
-	export let expected = '';
+	// export let error = {};
+	// export let token = '';
+	// export let expected = '';
 
-	export let params = {}
+	// export let params = {}
 	export let errorText = '';
 
 

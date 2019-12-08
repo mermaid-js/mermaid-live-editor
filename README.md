@@ -18,6 +18,18 @@ Setup is simple.
 ```
 yarn install
 ```
+or in develop branch to use the beta version of mermaid use
+```
+yarn install --update-checksums
+```
+
+This together with a .npmrc file:
+```
+registry=https://registry.npmjs.com/
+@mermaid-js:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken="XXXXXXXXX"
+
+```
 
 
 ## Development

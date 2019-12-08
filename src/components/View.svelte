@@ -70,7 +70,15 @@ let insertSvg = function(svgCode, bindFunctions){
 		try {
 			if(container && state) {
 				code = state.code;
-				container.innerHTML = code;
+
+      // mermaid.parse(code)
+      // Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
+      let _code = code
+      _code = _code.replace(/</g, '&lt;')
+      _code = _code.replace(/>/g, '&gt;')
+
+
+				container.innerHTML = _code;
 				saveStatistcs(detectType(code));
 				delete container.dataset.processed
 				mermaid.initialize(state.mermaid)

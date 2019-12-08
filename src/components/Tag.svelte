@@ -1,5 +1,4 @@
 <script>
-	export let title = '';
 	export let noPadding = false;
 	let contentClass = 'padding';
 	if (noPadding) {
