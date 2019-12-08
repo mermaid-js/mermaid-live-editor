@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 // import mermaid from '@mermaid-js/mermaid';
-import mermaid from 'mermaid';
+import mermaid from '@mermaid';
 import { Base64 } from 'js-base64'
 import {push, pop, replace} from 'svelte-spa-router'
 

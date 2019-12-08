@@ -4,7 +4,7 @@ import { codeErrorStore } from '../code-error-store.js';
 import { configErrorStore } from '../config-error-store.js';
 import { onMount } from 'svelte';
 // import mermaid from '@mermaid-js/mermaid';
-import mermaid from 'mermaid';
+import mermaid from '@mermaid';
 
 const detectType = text => {
   text = text.replace(/^\s*%%.*\n/g, '\n');
