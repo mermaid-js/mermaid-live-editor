@@ -113,6 +113,9 @@ let insertSvg = function(svgCode, bindFunctions){
 		border: 1px solor darkred;
 		flex: 1;
 	}
+	#container {
+		overflow-x: auto;
+	}
 	.error {
 		opacity: 0.5;
 	}
