@@ -36,7 +36,7 @@ const handleCodeUpdate = code => {
 			codeErrorStore.set(e);
 			console.log('Error in parsed', e.hash);
 			const str = JSON.stringify({ code: code, mermaid: conf });
-			push('/edit/' + Base64.encode(str))
+			push('/edit/' + Base64.encodeURI(str))
 			const l = e.hash.line;
 			decArr.push(edit.deltaDecorations([], [
 				{ range: new monaco.Range(e.hash.loc.first_line,e.hash.loc.last_line,e.hash.loc.first_column,e.hash.loc.last_column), options: { inlineClassName: 'myInlineDecoration' }}]
