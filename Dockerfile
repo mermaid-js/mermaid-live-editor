@@ -14,5 +14,5 @@ WORKDIR /home
 RUN yarn install
 RUN yarn build
 
-FROM httpd:2.4.41-alpine as mermaid-live-editor-runner
-COPY --from=mermaid-live-editor-builder /home/docs /usr/local/apache2/htdocs
+FROM nginx:alpine as mermaid-live-editor-runner
+COPY --from=mermaid-live-editor-builder --chown=nginx:nginx /home/docs /usr/share/nginx/html
