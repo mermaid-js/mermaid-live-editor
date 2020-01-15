@@ -35,5 +35,5 @@ export const fromUrl = data => {
 };
 export const updateCodeStore = newState => {
   codeStore.set(newState);
-  push('/edit/' + Base64.encode(JSON.stringify(newState)))
+  push('/edit/' + Base64.encodeURI(JSON.stringify(newState)))
 };

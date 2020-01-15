@@ -1,6 +1,6 @@
 {
   "name": "mermaid-live-editor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.2.0",
@@ -19,7 +19,7 @@
     "dev": "webpack-dev-server --content-base docs"
   },
   "dependencies": {
-    "mermaid": "8.4.4",
+    "mermaid": "8.4.5",
     "js-base64": "^2.5.1",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
