@@ -23,7 +23,7 @@ let editorElem = null;
 const handleCodeUpdate = code => {
 	try {
 		mermaid.parse(code);
-		let newState = { code, mermaid: conf };
+		let newState = { code, mermaid: conf, updateEditor: false };
 		updateCodeStore(newState);
 		decArr.forEach(decor => {
 			edit.deltaDecorations(decor, []);
@@ -47,7 +47,6 @@ const handleCodeUpdate = code => {
 
 const unsubscribe = codeStore.subscribe( state => {
 	if(editorElem === null) {
-		console.log('Starting stuff', document.getElementById('editor'));
 		editorElem = document.getElementById('editor');
 	}
 	if(!code && state) {
@@ -57,7 +56,6 @@ const unsubscribe = codeStore.subscribe( state => {
 		conf = state.mermaid;
 	}
 	if(!edit && code && (editorElem !== null)) {
-		console.log('creatinf editor');
 		edit = monaco.editor.create(editorElem, {
 			value: [
 				code,
@@ -73,6 +71,10 @@ const unsubscribe = codeStore.subscribe( state => {
 		});
 		handleCodeUpdate(code);
 	}
+	if(state && state.updateEditor && edit && code && (editorElem !== null)) {
+		 edit.setValue(state.code);
+		 handleCodeUpdate(state.code);
+	}
 });
 
 const unsubscribeError = codeErrorStore.subscribe( _error => {
@@ -86,7 +88,6 @@ const unsubscribeError = codeErrorStore.subscribe( _error => {
 initEditor(monaco);
 
 onMount(async () => {
-	console.log('Mounting editor');
 	// editorElem = document.querySelector('#editor')
 	self.MonacoEnvironment = {
 		getWorkerUrl: function (moduleId, label) {
