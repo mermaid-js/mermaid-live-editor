@@ -2398,9 +2398,10 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
-mermaid@8.4.6:
-  version "8.4.6"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.4.6.tgz#b51c15e0c8861e410c7b7a7d24d0bb9955735e78"
+mermaid@8.4.7:
+  version "8.4.7"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.4.7.tgz#1af8f6bece99f022a514471c42b80cabf7706501"
+  integrity sha512-mj4mefncBd8y921auvsXMN5MbVqzkrXyCUPz1AbVdQ+W6XKO27Oyqnor4ZO2hlqlosJc+Dl273V+SJBmX5PTNw==
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     crypto-random-string "^3.0.1"
