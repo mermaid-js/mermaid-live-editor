@@ -38,7 +38,7 @@ const handleConfUpdate =  conf => {
 		console.log('Error in parsed', e);
 		configErrorStore.set(e);
 		const str = JSON.stringify({ code, mermaid: oldConf });
-		push('/edit/' + Base64.encodeURI(str))
+		replace('/edit/' + Base64.encodeURI(str))
 	}
 };
 
