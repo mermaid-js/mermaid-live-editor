@@ -45,11 +45,14 @@ onMount(async () => {
 	function loadPieChart(){
 		loadSampleDiagram('PieChart');
 	}
-	
+	function loadERDiagram(){
+		loadSampleDiagram('ERDiagram');
+	}
+
     function loadSampleDiagram(diagramType){
 		let code =''
 		switch(diagramType){
-			case 'FlowChart' : 
+			case 'FlowChart' :
 			code = `graph TD
 	A[Christmas] -->|Get money| B(Go shopping)
 	B --> C{Let me think}
@@ -59,7 +62,7 @@ onMount(async () => {
 					`;
 			break;
 
-			case 'SequenceDiagram' : 
+			case 'SequenceDiagram' :
 			code = `sequenceDiagram
 	Alice->>+John: Hello John, how are you?
 	Alice->>+John: John, can you hear me?
@@ -68,7 +71,7 @@ onMount(async () => {
 					`;
 			break;
 
-			case 'ClassDiagram' : 
+			case 'ClassDiagram' :
 			code = `classDiagram
 	Animal <|-- Duck
 	Animal <|-- Fish
@@ -93,7 +96,7 @@ onMount(async () => {
 					`;
 			break;
 
-			case 'StateDiagram' : 
+			case 'StateDiagram' :
 			code = `stateDiagram
 	[*] --> Still
 	Still --> [*]
@@ -105,7 +108,7 @@ onMount(async () => {
 					`;
 			break;
 
-			case 'GanttChart' : 
+			case 'GanttChart' :
 			code = `gantt
 	title A Gantt Diagram
 	dateFormat  YYYY-MM-DD
@@ -125,12 +128,24 @@ onMount(async () => {
 	"Rats" : 15
 					`;
 			break;
+		case 'ERDiagram' :
+			code = `erDiagram
+        CUSTOMER }|..|{ DELIVERY-ADDRESS : has
+        CUSTOMER ||--o{ ORDER : places
+        CUSTOMER ||--o{ INVOICE : "liable for"
+        DELIVERY-ADDRESS ||--o{ ORDER : receives
+        INVOICE ||--|{ ORDER : covers
+        ORDER ||--|{ ORDER-ITEM : includes
+        PRODUCT-CATEGORY ||--|{ PRODUCT : contains
+        PRODUCT ||--o{ ORDER-ITEM : "ordered in"
+					`;
+			break;
 		}
-			
+
 		let newState = { code, mermaid: { theme: 'default' }, updateEditor:true };
 		updateCodeStore(newState);
 
-	}	
+	}
 
 </script>
 
@@ -166,7 +181,7 @@ onMount(async () => {
 	#sampleLoader {
 		padding-bottom: 10px;
 		padding-left:10px;
-		
+
 	}
 	.botton-container{
 		margin-top:5px;
@@ -186,6 +201,7 @@ onMount(async () => {
 				<button on:click={loadStateDiagram}>State Diagram</button>
 				<button on:click={loadGanttChart}>Gantt Chart</button>
 				<button on:click={loadPieChart}>Pie Chart </button>
+				<button on:click={loadERDiagram}>ER Diagram </button>
 			</div>
 			</div>
 				<Editor data={params.data}/>

@@ -6,6 +6,23 @@
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
 
+"@mermaid-js/mermaid@*":
+  version "8.5.0-preview.903"
+  resolved "https://npm.pkg.github.com/download/@mermaid-js/mermaid/8.5.0-preview.903/ae91face87add62113e8772dda5b3dd5c501639404a88df6dc0ef09335946453#9225e5a03647b3cf7369e0fb12645efb0d12eb89"
+  integrity sha512-6jg/e0p1tbGkW385haPYVSTaZ0+viRWo08QOmEfvRUns5GF2QtWBZNa0u6GqJrVLuwSnmg/HlNSUe5eJCw6j6w==
+  dependencies:
+    "@braintree/sanitize-url" "^3.1.0"
+    crypto-random-string "^3.0.1"
+    d3 "^5.7.0"
+    dagre "^0.8.4"
+    dagre-d3 "^0.6.4"
+    graphlib "^2.1.7"
+    he "^1.2.0"
+    lodash "^4.17.11"
+    minify "^4.1.1"
+    moment-mini "^2.22.1"
+    scope-css "^1.2.1"
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
