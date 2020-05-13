@@ -55,12 +55,17 @@ export const onCopyMarkdown = event => {
 }
 
 let url = '/mermaid-live-editor/#/view';
+let b64Code;
 let iUrl;
+let svgUrl;
 let mdCode;
-const unsubscribe = codeStore.subscribe( state => {
-url = '/mermaid-live-editor/#/view/' + Base64.encodeURI(JSON.stringify(state));
-iUrl = `https://mermaid.ink/img/${Base64.encodeURI(JSON.stringify(state))}`;
- mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#/edit/${Base64.encodeURI(JSON.stringify(state))})`;
+
+const unsubscribe = codeStore.subscribe(state => {
+  b64Code = Base64.encodeURI(JSON.stringify(state));
+  url = `/mermaid-live-editor/#/view/${b64Code}`;
+  iUrl = `https://mermaid.ink/img/${b64Code}`;
+  svgUrl = `https://mermaid.ink/svg/${b64Code}`;
+  mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#/edit/${b64Code})`;
 });
 </script>
 
@@ -86,6 +91,7 @@ label[for="markdown"] {
 		Download SVG
 	</a>
 	<a href={iUrl}>Link to Image</a>
+	<a href={svgUrl}>Link to SVG</a>
 	<a href="{url}" download='' on:click={onDownloadPNG}>
 		Download PNG
 	</a>
