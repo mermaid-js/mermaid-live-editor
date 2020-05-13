@@ -1,3 +1,7 @@
+# Contributors are welome
+
+If you want to speed up the progress for mermaid-cli, join the slack channel and contact knsv.
+
 # mermaid-live-editor
 
 Edit, preview and share mermaid charts/diagrams.
