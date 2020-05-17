@@ -4,7 +4,7 @@ export const initEditor = monaco => {
   // Register a tokens provider for the language
   monaco.languages.setMonarchTokensProvider('mermaid', {
     typeKeywords: [
-      'graph', 'stateDiagram', 'sequenceDiagram', 'classDiagram', 'pie'
+      'graph', 'stateDiagram', 'sequenceDiagram', 'classDiagram', 'pie', 'flowchart', 'gantt'
     ],
     keywords: [
     'patricipant','as'

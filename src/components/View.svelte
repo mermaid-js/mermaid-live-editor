@@ -28,6 +28,9 @@ const detectType = text => {
   if (text.match(/^\s*gitGraph/)) {
     return 'git';
   }
+  if (text.match(/^\s*flowchart/)) {
+    return 'flowchart';
+  }
 
   if (text.match(/^\s*info/)) {
     return 'info';
