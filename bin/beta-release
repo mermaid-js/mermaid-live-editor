@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Clone mermaid-js/docs parallel with the mermaid live editor
+
+# git clone git@github.com:mermaid-js/docs.git
+# git clone https://github.com/mermaid-js/docs.git
+
+yarn release
+pushd .
+cp -r docs/* ../docs/mermaid-live-editor-beta
+cd ../docs
+git commit * -m "Beta updated with latest changes"
+git push
+popd
