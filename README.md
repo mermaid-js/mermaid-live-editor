@@ -1,3 +1,9 @@
+![Join our Slack!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack)
+
+# Contributors are welome
+
+If you want to speed up the progress for mermaid-cli, join the slack channel and contact knsv.
+
 # mermaid-live-editor
 
 Edit, preview and share mermaid charts/diagrams.
