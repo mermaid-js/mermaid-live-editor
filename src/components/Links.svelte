@@ -16,13 +16,22 @@ export const onDownloadPNG = event => {
 	const box = svg.getBoundingClientRect();
 	canvas.width = box.width;
 	canvas.height = box.height;
+	if(imagemodeselected === "width") {
+		const ratio = box.height/box.width;
+		canvas.width = userimagewidth;
+		canvas.height = userimagewidth * ratio;
+	} else if(imagemodeselected === "height") {
+		const ratio = box.width/box.height;
+		canvas.width = userimageheight * ratio;
+		canvas.height = userimageheight;
+	}
 	const context = canvas.getContext('2d');
 	context.fillStyle = "white";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
 	var image = new Image();
 	image.onload = function () {
-		context.drawImage(image, 0, 0);
+		context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
 		var a = document.createElement('a')
 		a.download = `mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.png`;
@@ -59,6 +68,9 @@ let b64Code;
 let iUrl;
 let svgUrl;
 let mdCode;
+let imagemodeselected = "auto";
+let userimagewidth = 1920;
+let userimageheight = 1080;
 
 const unsubscribe = codeStore.subscribe(state => {
   b64Code = Base64.encodeURI(JSON.stringify(state));
@@ -99,4 +111,15 @@ label[for="markdown"] {
 <p>
   <label for="markdown">Copy Markdown</label>
   <input id="markdown" type="text" value="{mdCode}" on:click={onCopyMarkdown} />
+</p>
+<p>
+  <label>PNG size:</label>
+  <input type="radio" value="auto" id="autosize" bind:group={imagemodeselected}>
+  <label for="autosize">auto</label>
+  <input type="radio" value="width" id="width-active" bind:group={imagemodeselected}>
+  <label for="width">width</label>
+  <input id="width" type="number" min="3" max="10000" bind:value={userimagewidth} disabled={imagemodeselected !== "width"}>
+  <input type="radio" value="height" id="height-active" bind:group={imagemodeselected}>
+  <label for="height">height</label>
+  <input id="height" type="number" min="3" max="10000" bind:value={userimageheight} disabled={imagemodeselected !== "height"}><br>
 </p>
