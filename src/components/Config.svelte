@@ -22,6 +22,7 @@ let editorElem = null;
 
 let decorations = [];
 const decArr = [];
+
 let oldConf =  { theme: 'default' };
 const handleConfUpdate =  conf => {
 	try {

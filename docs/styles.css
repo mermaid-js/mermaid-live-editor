@@ -14,6 +14,15 @@ body {
 	margin: 0;
 }
 
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #3f3f3f;
+		color: #c8c8c8;
+	}
+	a, label {
+		color: #d8d8d8;
+	}
+}
 .mermaid {
   /* font-family: 'trebuchet ms', verdana, arial; */
 }
