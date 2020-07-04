@@ -83,6 +83,11 @@ label[for="markdown"] {
   color: blue;
   text-decoration: underline;
 }
+@media (prefers-color-scheme: dark) {
+	label[for="markdown"] {
+ 		color: #d8d8d8;
+	}
+ }
 </style>
 
 <div id="links" >

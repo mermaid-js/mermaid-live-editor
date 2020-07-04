@@ -8,6 +8,7 @@ export const codeStore = writable(undefined);
 export const fromUrl = data => {
   let code;
   let state;
+  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
   try {
     let stateStr = Base64.decode(data)
     state = JSON.parse(stateStr);
@@ -27,7 +28,7 @@ export const fromUrl = data => {
   C -->|Two| E[iPhone]
   C -->|Three| F[fa:fa-car Car]
 		`;
-		state = { code, mermaid: { theme: 'default' } };
+		state = { code, mermaid: { theme: isDarkMode?'dark':'default' } };
   }
 
   codeStore.set(state);
