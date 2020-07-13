@@ -15,6 +15,7 @@
     "webpack-dev-server": "^3.3.1"
   },
   "scripts": {
+    "release": "cross-env NODE_ENV=production webpack -p",
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "webpack-dev-server --content-base docs"
   },
