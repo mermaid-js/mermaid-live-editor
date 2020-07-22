@@ -13,7 +13,7 @@ import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
 export let code = '';
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches && false
 export let conf = { theme: isDarkMode?'dark':'default' };
 let edit;
 export let error = false;

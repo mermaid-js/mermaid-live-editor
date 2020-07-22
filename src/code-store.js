@@ -8,7 +8,7 @@ export const codeStore = writable(undefined);
 export const fromUrl = data => {
   let code;
   let state;
-  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches && false
   try {
     let stateStr = Base64.decode(data)
     state = JSON.parse(stateStr);
