@@ -2406,10 +2406,10 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
-mermaid@8.6.3:
-  version "8.6.3"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.6.3.tgz#2d516a3b04d6927db5b509b440a1dbf4418be390"
-  integrity sha512-oedt5nwCB+5jqPhyd45ml9bYd8WlldcMGT1KgpyKYL58gcnMKjxbHDa/g2fQXSPKopK+O3u7CmgXxXwMyW+4aA==
+mermaid@8.6.4:
+  version "8.6.4"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.6.4.tgz#100e32a3e7ef59c659ad41f986ab1738da470bd6"
+  integrity sha512-Qewo/SNV6w16i3VishQ2U+yz3KprHwXMr17b/T0980eAEk5kl4ksMgMID3h68EqsT9GLQe/P6j2G8qwJHD929A==
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     crypto-random-string "^3.0.1"
