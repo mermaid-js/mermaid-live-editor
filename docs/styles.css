@@ -37,3 +37,7 @@ body {
 i {
   font-size: 10px !important;
 }
+
+.mermaidTooltip {
+  position: absolute;
+}
