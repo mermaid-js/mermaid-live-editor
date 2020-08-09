@@ -229,7 +229,7 @@ onMount(async () => {
 					</li>
 					<li>
 						<a
-							href='https://github.com/mermaid-js/mermaid.cli'
+							href='https://github.com/mermaid-js/mermaid-cli'
 							target='_blank'
 						>
 							Mermaid CLI
