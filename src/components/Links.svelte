@@ -112,6 +112,7 @@ label[for="markdown"] {
 	<a href="{url}" download='' on:click={onDownloadPNG}>
 		Download PNG
 	</a>
+	(markdown is base64 encoded for these urls)
 </div>
 <p>
   <label for="markdown">Copy Markdown</label>
