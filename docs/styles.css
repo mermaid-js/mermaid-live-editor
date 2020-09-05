@@ -14,7 +14,7 @@ body {
 	margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
 	body {
 		background-color: #3f3f3f;
 		color: #c8c8c8;
@@ -22,7 +22,7 @@ body {
 	a, label {
 		color: #d8d8d8;
 	}
-}
+} */
 .mermaid {
   /* font-family: 'trebuchet ms', verdana, arial; */
 }
@@ -36,4 +36,8 @@ body {
 
 i {
   font-size: 10px !important;
+}
+
+.mermaidTooltip {
+  position: absolute;
 }

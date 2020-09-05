@@ -63,7 +63,7 @@ onMount(async () => {
 });
 
 let insertSvg = function(svgCode, bindFunctions){
-	// element.innerHTML = svgCode;
+	element.innerHTML = svgCode;
 };
 
 	export let code = '';
