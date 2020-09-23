@@ -5,6 +5,10 @@
 		height: 100%;
 	}
 
+	#dgraph-div {
+		display: none;
+	}
+
 	body {
 		color: #333;
 		margin: 0;
@@ -29,6 +33,8 @@
 	label {
 		display: block;
 	}
+
+
 
 	input, button, select, textarea {
 		font-family: inherit;
