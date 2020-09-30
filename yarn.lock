@@ -97,24 +97,6 @@
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
 
-"@mermaid-js/mermaid@8.8.0-preview.1082":
-  version "8.8.0-preview.1082"
-  resolved "https://npm.pkg.github.com/download/@mermaid-js/mermaid/8.8.0-preview.1082/81c3f9156538c82b77ac4ffcffd27f5657101c213c8dc89a98ed3ff73576e03b#529831bc350e4f4563e59491cd6f94b80592facc"
-  integrity sha512-QsHL24+1i64fNYNTdPiEAwQ+rKkG4LPme70yhDH3sjcNLIZTlV4QurKkziwdhNZwlkPojX1tdqxuzsUfgD+Bow==
-  dependencies:
-    "@braintree/sanitize-url" "^3.1.0"
-    babel-eslint "^10.1.0"
-    d3 "^5.7.0"
-    dagre "^0.8.4"
-    dagre-d3 "^0.6.4"
-    entity-decode "^2.0.2"
-    graphlib "^2.1.7"
-    he "^1.2.0"
-    khroma "^1.1.0"
-    minify "^4.1.1"
-    moment-mini "^2.22.1"
-    stylis "^3.5.2"
-
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -2549,6 +2531,24 @@ memory-fs@^0.5.0:
 merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
+
+mermaid@8.8.1:
+  version "8.8.1"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.8.1.tgz#5a168c60bcffd89b7379abd20743310f4c825b18"
+  integrity sha512-4EZifTi2o65/BFPc9Qe37wRQ37ruPUEWuOVz6Am0GNApaDgrZmA9pvJGRb2TeuFh0C9VKNlMagaS9SMiwgT5Ig==
+  dependencies:
+    "@braintree/sanitize-url" "^3.1.0"
+    babel-eslint "^10.1.0"
+    d3 "^5.7.0"
+    dagre "^0.8.4"
+    dagre-d3 "^0.6.4"
+    entity-decode "^2.0.2"
+    graphlib "^2.1.7"
+    he "^1.2.0"
+    khroma "^1.1.0"
+    minify "^4.1.1"
+    moment-mini "^2.22.1"
+    stylis "^3.5.2"
 
 methods@~1.1.2:
   version "1.1.2"
