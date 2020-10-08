@@ -2533,10 +2533,10 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
-mermaid@8.8.1:
-  version "8.8.1"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.8.1.tgz#5a168c60bcffd89b7379abd20743310f4c825b18"
-  integrity sha512-4EZifTi2o65/BFPc9Qe37wRQ37ruPUEWuOVz6Am0GNApaDgrZmA9pvJGRb2TeuFh0C9VKNlMagaS9SMiwgT5Ig==
+mermaid@8.8.2:
+  version "8.8.2"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-8.8.2.tgz#c68b842ffe0d53e5ed11fb1b7887d8a392b72421"
+  integrity sha512-Ib9jl5TMwgMKv2+vdfKZ/SIUxKYc4GMauKeV2+3BD/bU47kGbc5zv5taCY5iZR+V4hdweHKE7YOl11VGcWBy/w==
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     babel-eslint "^10.1.0"
