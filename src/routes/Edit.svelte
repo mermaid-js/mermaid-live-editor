@@ -88,7 +88,7 @@
             `;
                 break;
             case "StateDiagram":
-                code = `stateDiagram
+                code = `stateDiagram-v2
     [*] --> Still
     Still --> [*]
     Still --> Moving
