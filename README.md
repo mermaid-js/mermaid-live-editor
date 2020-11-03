@@ -19,22 +19,24 @@ Edit, preview and share mermaid charts/diagrams.
 
 ## Setup
 
-Setup is simple.
+This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started):
 
 ```
 yarn install
 ```
+
 or in develop branch to use the beta version of mermaid use
+
 ```
 yarn install --update-checksums
 ```
 
 This together with a .npmrc file:
+
 ```
 registry=https://registry.npmjs.com/
 @mermaid-js:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken="XXXXXXXXX"
-
 ```
 
 
