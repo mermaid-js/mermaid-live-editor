@@ -97,10 +97,10 @@
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
 
-"@mermaid-js/mermaid@8.8.2-preview.1106":
-  version "8.8.2-preview.1106"
-  resolved "https://npm.pkg.github.com/download/@mermaid-js/mermaid/8.8.2-preview.1106/2d3f831a92b18df743deac6003154b25e4c884b49d80e7db29cb12239f8d3e3c#b0c803de10469dab4eba010a30f2f69150955989"
-  integrity sha512-rjNzGoy4OxG+TJBE0q5h/Wr3ADqTjiSsYh7om2pJl5pBqAyjcP8P8fd8T4IzfIJlT4fEhLFmMmtnB8eb969tqA==
+"@mermaid-js/mermaid@8.8.3-preview.1158":
+  version "8.8.3-preview.1158"
+  resolved "https://npm.pkg.github.com/download/@mermaid-js/mermaid/8.8.3-preview.1158/cad8e703569a362718b061ee1eef37f2a4d81f209010b3fb7f8a352b27050651#1c74a695b506a77f6f32bad6935c7af42c219725"
+  integrity sha512-TvIHNP/XIMGejVre94gss/wFH99JeRQebcxXFLC0o9RemfMHnDfq6U4nom9NOs6JRq48plPfMzgxvWJb988H+g==
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     babel-eslint "^10.1.0"
