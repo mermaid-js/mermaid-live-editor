@@ -17,6 +17,10 @@ Edit, preview and share mermaid charts/diagrams.
 - Get a link to edit the diagram so that someone else can tweak it and send a new link back
 
 
+## Live demo
+
+You can try out a live version [here](https://mermaid-js.github.io/mermaid-live-editor/).
+
 ## Setup
 
 This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started):
