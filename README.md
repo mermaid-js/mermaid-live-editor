@@ -2,7 +2,7 @@
 
 # Contributors are welcome
 
-If you want to speed up the progress for mermaid-cli, join the slack channel and contact knsv.
+If you want to speed up the progress for mermaid-live-editor, join the slack channel and contact knsv.
 
 # mermaid-live-editor
 
