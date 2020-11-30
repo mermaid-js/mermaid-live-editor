@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { updateCodeStore } from "../code-store.js";
+    import { codeStore, updateCodeStore } from '../code-store.js';
     import Editor from "../components/Editor.svelte";
     import Config from "../components/Config.svelte";
     import View from "../components/View.svelte";
@@ -136,6 +136,59 @@
         };
         updateCodeStore(newState);
     }
+
+    function loadHistory(history) {
+        let historyList = document.getElementById('historyList');
+        if (!historyList) return;
+        historyList.innerHTML = '';
+        history.forEach(element => {
+            let button = document.createElement('button');
+            button.className = 'button-style';
+            button.innerHTML = element.time;
+            button.onclick = function () {
+                updateCodeStore({
+                    code: element.code,
+                    mermaid: { theme: "default" },
+                    updateEditor: true,
+                });
+            };
+            historyList.appendChild(button);
+        });
+    }
+    
+    const key = '_mermaid_history_';
+    let hisList = JSON.parse(localStorage.getItem(key) || '[]');
+    let hisCode = hisList.length > 0 ? hisList[hisList.length - 1] : null;
+    if (hisList.length > 0) {
+        loadHistory(hisList);
+    }
+    if (hisCode) {
+        updateCodeStore({
+            code: hisCode.code,
+            mermaid: { theme: "default" },
+            updateEditor: true,
+        });
+    }
+
+    let code = null;
+    codeStore.subscribe( state => {
+        code = state && state.code || code;
+    });
+    
+    setInterval(() => {
+        if (code != hisCode) {
+            //save history
+            hisList[hisList.length] = {
+                time: new Date().toISOString(),
+                code: hisCode = code
+            };
+            if (hisList.length > 10) {
+                hisList = hisList.slice(hisList.length - 10);
+            }
+            localStorage.setItem(key, JSON.stringify(hisList));
+            loadHistory(hisList);
+        }
+    }, 0.1 * 60 * 1000);
 </script>
 
 <style>
@@ -185,10 +238,18 @@
         align-items: center;
         height: 4rem;
     }
-    #sampleLoader {
+    #sampleLoader, #historyLoader {
         padding-bottom: 10px;
         padding-left: 10px;
         border-bottom: 1px solid lightgray;
+    }
+    #historyLoader {
+        padding-top: 16px;
+    }
+    #historyLoaderSubTitle {
+        display: inline-block;
+        color: #33a2c4;
+        font-size: small;
     }
     .button-container {
         margin-top: 5px;
@@ -253,6 +314,14 @@
                         <button class="button-style" on:click={loadERDiagram}>
                             ER Diagram
                         </button>
+                    </div>
+                </div>
+                <div id="historyLoader">
+                    <span id="historyLoaderTitle">History Diagram Options</span>
+                    <span id="historyLoaderSubTitle">Automatically save once every minute, up to 10 records.</span>
+                    <br />
+                    <div id="historyList" class="button-container">
+                        No records.
                     </div>
                 </div>
                 <Editor data={params.data} />
