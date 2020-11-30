@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { codeStore, updateCodeStore } from '../code-store.js';
+    import { codeStore, updateCodeStore } from "../code-store.js";
     import Editor from "../components/Editor.svelte";
     import Config from "../components/Config.svelte";
     import View from "../components/View.svelte";
@@ -14,7 +14,43 @@
     onMount(async () => {
         ga("send", "pageview");
         ga("send", "event", "version", mermaidVersion, mermaidVersion);
-        fromUrl(params.data);
+
+        const key = "_mermaid_history_";
+        let hisList = JSON.parse(localStorage.getItem(key) || "[]");
+        let hisCode = hisList.length > 0 ? hisList[hisList.length - 1] : null;
+        if (hisList.length > 0) {
+            loadHistory(hisList);
+        }
+
+        if (params.data) {
+            fromUrl(params.data);
+        } else if (hisCode) {
+            updateCodeStore({
+                code: hisCode.code,
+                mermaid: { theme: "default" },
+                updateEditor: true,
+            });
+        }
+
+        let code = null;
+        codeStore.subscribe( state => {
+            code = state && state.code || code;
+        });
+        
+        setInterval(() => {
+            if (code != hisCode) {
+                //save history
+                hisList[hisList.length] = {
+                    time: new Date().toISOString(),
+                    code: hisCode = code
+                };
+                if (hisList.length > 10) {
+                    hisList = hisList.slice(hisList.length - 10);
+                }
+                localStorage.setItem(key, JSON.stringify(hisList));
+                loadHistory(hisList);
+            }
+        }, 1 * 60 * 1000);
     });
     // export let code = '';
     // export let classes = '';
@@ -138,12 +174,12 @@
     }
 
     function loadHistory(history) {
-        let historyList = document.getElementById('historyList');
+        let historyList = document.getElementById("historyList");
         if (!historyList) return;
-        historyList.innerHTML = '';
+        historyList.innerHTML = "";
         history.forEach(element => {
-            let button = document.createElement('button');
-            button.className = 'button-style';
+            let button = document.createElement("button");
+            button.className = "button-style";
             button.innerHTML = element.time;
             button.onclick = function () {
                 updateCodeStore({
@@ -155,40 +191,6 @@
             historyList.appendChild(button);
         });
     }
-    
-    const key = '_mermaid_history_';
-    let hisList = JSON.parse(localStorage.getItem(key) || '[]');
-    let hisCode = hisList.length > 0 ? hisList[hisList.length - 1] : null;
-    if (hisList.length > 0) {
-        loadHistory(hisList);
-    }
-    if (hisCode) {
-        updateCodeStore({
-            code: hisCode.code,
-            mermaid: { theme: "default" },
-            updateEditor: true,
-        });
-    }
-
-    let code = null;
-    codeStore.subscribe( state => {
-        code = state && state.code || code;
-    });
-    
-    setInterval(() => {
-        if (code != hisCode) {
-            //save history
-            hisList[hisList.length] = {
-                time: new Date().toISOString(),
-                code: hisCode = code
-            };
-            if (hisList.length > 10) {
-                hisList = hisList.slice(hisList.length - 10);
-            }
-            localStorage.setItem(key, JSON.stringify(hisList));
-            loadHistory(hisList);
-        }
-    }, 0.1 * 60 * 1000);
 </script>
 
 <style>
