@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { updateCodeStore } from "../code-store.js";
+    import { codeStore, updateCodeStore } from "../code-store.js";
     import Editor from "../components/Editor.svelte";
     import Config from "../components/Config.svelte";
     import View from "../components/View.svelte";
@@ -11,10 +11,44 @@
     // import pkg from '@mermaid-js/mermaid/package.json'
     import pkg from "@mermaid/package.json";
     export let mermaidVersion = pkg.version;
+    let historyList = [];
     onMount(async () => {
         ga("send", "pageview");
         ga("send", "event", "version", mermaidVersion, mermaidVersion);
-        fromUrl(params.data);
+
+        const historyListKey = "_mermaid_history_";
+        historyList = JSON.parse(localStorage.getItem(historyListKey) || "[]");
+        let hisCode = historyList.length > 0 ? historyList[historyList.length - 1] : null;
+
+        if (params.data) {
+            fromUrl(params.data);
+        } else if (hisCode) {
+            updateCodeStore({
+                code: hisCode.code,
+                mermaid: { theme: "default" },
+                updateEditor: true,
+            });
+        }
+
+        let code = null;
+        codeStore.subscribe( state => {
+            code = state && state.code || code;
+        });
+        
+        setInterval(() => {
+            if (code != hisCode) {
+                //save history
+                historyList.push({
+                    time: new Date().toISOString(),
+                    code: hisCode = code
+                });
+                if (historyList.length > 10) {
+                    historyList.shift();
+                }
+                historyList = historyList; //triggered update
+                localStorage.setItem(historyListKey, JSON.stringify(historyList));
+            }
+        }, 1 * 60 * 1000);
     });
     // export let code = '';
     // export let classes = '';
@@ -129,12 +163,16 @@
             `;
                 break;
         }
-        let newState = {
-            code,
+        toUpdateCodeStore(code);
+    }
+
+    function toUpdateCodeStore(code) {
+        if (!code)  return;
+        updateCodeStore({
+            code: code,
             mermaid: { theme: "default" },
             updateEditor: true,
-        };
-        updateCodeStore(newState);
+        });
     }
 </script>
 
@@ -185,10 +223,18 @@
         align-items: center;
         height: 4rem;
     }
-    #sampleLoader {
+    #sampleLoader, #historyLoader {
         padding-bottom: 10px;
         padding-left: 10px;
         border-bottom: 1px solid lightgray;
+    }
+    #historyLoader {
+        padding-top: 16px;
+    }
+    #historyLoaderSubTitle {
+        display: inline-block;
+        color: #33a2c4;
+        font-size: small;
     }
     .button-container {
         margin-top: 5px;
@@ -253,6 +299,22 @@
                         <button class="button-style" on:click={loadERDiagram}>
                             ER Diagram
                         </button>
+                    </div>
+                </div>
+                <div id="historyLoader">
+                    <span id="historyLoaderTitle">History Diagram Options</span>
+                    <span id="historyLoaderSubTitle">Automatically save once every minute, up to 10 records.</span>
+                    <br />
+                    <div id="historyList" class="button-container">
+                        {#if historyList.length > 0}
+                            {#each historyList as item, i}
+                                <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
+                                    {item.time}
+                                </button>
+                            {/each}
+                        {:else}
+                            No records.
+                        {/if}
                     </div>
                 </div>
                 <Editor data={params.data} />
