@@ -16,11 +16,8 @@
         ga("send", "event", "version", mermaidVersion, mermaidVersion);
 
         const key = "_mermaid_history_";
-        let hisList = JSON.parse(localStorage.getItem(key) || "[]");
-        let hisCode = hisList.length > 0 ? hisList[hisList.length - 1] : null;
-        if (hisList.length > 0) {
-            loadHistory(hisList);
-        }
+        Array.prototype.push.apply(historyList, JSON.parse(localStorage.getItem(key) || "[]"));
+        let hisCode = historyList.length > 0 ? historyList[historyList.length - 1] : null;
 
         if (params.data) {
             fromUrl(params.data);
@@ -40,15 +37,15 @@
         setInterval(() => {
             if (code != hisCode) {
                 //save history
-                hisList[hisList.length] = {
+                historyList.push({
                     time: new Date().toISOString(),
                     code: hisCode = code
-                };
-                if (hisList.length > 10) {
-                    hisList = hisList.slice(hisList.length - 10);
+                });
+                if (historyList.length > 10) {
+                    historyList.shift();
                 }
-                localStorage.setItem(key, JSON.stringify(hisList));
-                loadHistory(hisList);
+                historyList = historyList; //triggered update
+                localStorage.setItem(key, JSON.stringify(historyList));
             }
         }, 1 * 60 * 1000);
     });
@@ -58,6 +55,7 @@
     // export let token = '';
     // export let expected = '';
     export let params = {};
+    export let historyList = [];
     function loadFlowChart() {
         loadSampleDiagram("FlowChart");
     }
@@ -165,30 +163,15 @@
             `;
                 break;
         }
-        let newState = {
-            code,
-            mermaid: { theme: "default" },
-            updateEditor: true,
-        };
-        updateCodeStore(newState);
+        toUpdateCodeStore(code);
     }
 
-    function loadHistory(history) {
-        let historyList = document.getElementById("historyList");
-        if (!historyList) return;
-        historyList.innerHTML = "";
-        history.forEach(element => {
-            let button = document.createElement("button");
-            button.className = "button-style";
-            button.innerHTML = element.time;
-            button.onclick = function () {
-                updateCodeStore({
-                    code: element.code,
-                    mermaid: { theme: "default" },
-                    updateEditor: true,
-                });
-            };
-            historyList.appendChild(button);
+    function toUpdateCodeStore(code) {
+        if (!code)  return;
+        updateCodeStore({
+            code: code,
+            mermaid: { theme: "default" },
+            updateEditor: true,
         });
     }
 </script>
@@ -323,7 +306,15 @@
                     <span id="historyLoaderSubTitle">Automatically save once every minute, up to 10 records.</span>
                     <br />
                     <div id="historyList" class="button-container">
-                        No records.
+                        {#if historyList.length > 0}
+                            {#each historyList as item, i}
+                                <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
+                                    {item.time}
+                                </button>
+                            {/each}
+                        {:else}
+                            No records.
+                        {/if}
                     </div>
                 </div>
                 <Editor data={params.data} />
