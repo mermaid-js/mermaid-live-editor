@@ -96,7 +96,6 @@ onMount(async () => {
 </script>
 
 <style>
-	#editor-container {}
 	#editor-conf {
 		width: 100%;
 		height: 200px;

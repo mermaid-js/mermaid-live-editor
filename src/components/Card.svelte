@@ -21,7 +21,7 @@
         color: #eaebef;
     }
     #content {
-        padding-top: 16px;
+        padding-top: 8px;
     }
     .padding {
         padding: 8px;

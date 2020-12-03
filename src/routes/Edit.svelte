@@ -25,7 +25,7 @@
         } else if (hisCode) {
             updateCodeStore({
                 code: hisCode.code,
-                mermaid: { theme: "default" },
+                mermaid: { },
                 updateEditor: true,
             });
         }
@@ -34,7 +34,7 @@
         codeStore.subscribe( state => {
             code = state && state.code || code;
         });
-        
+
         setInterval(() => {
             if (code != hisCode) {
                 //save history
@@ -213,8 +213,7 @@
     }
     #title-container {
         width: fit-content;
-        margin: 0 auto 16px;
-        padding-bottom: 16px;
+        margin: 0 auto 8px;
     }
     #power {
         width: 100%;
@@ -223,21 +222,19 @@
         align-items: center;
         height: 4rem;
     }
-    #sampleLoader, #historyLoader {
-        padding-bottom: 10px;
+    #sampleLoader {
         padding-left: 10px;
         border-bottom: 1px solid lightgray;
-    }
-    #historyLoader {
-        padding-top: 16px;
     }
     #historyLoaderSubTitle {
         display: inline-block;
         color: #33a2c4;
         font-size: small;
+        font-style: italic;
     }
     .button-container {
-        margin-top: 5px;
+        display: flex;
+        align-items: center;
     }
     .button-style {
         background-color: #a2d9e2;
@@ -265,58 +262,41 @@
     <div id="title-container">
         <h1 id="app-title">Mermaid Live Editor</h1>
     </div>
+    <div id="sampleLoader">
+        <div class="button-container">
+        <span id="sampleLoaderTitle"><strong>Diagram presets:</strong></span>
+            <button class="button-style" on:click={loadFlowChart}>
+                Flow Chart
+            </button>
+            <button
+                class="button-style"
+                on:click={loadSequenceDiagram}>
+                Sequence Diagram
+            </button>
+            <button
+                class="button-style"
+                on:click={loadClassDiagram}>
+                Class Diagram
+            </button>
+            <button
+                class="button-style"
+                on:click={loadStateDiagram}>
+                State Diagram
+            </button>
+            <button class="button-style" on:click={loadGanttChart}>
+                Gantt Chart
+            </button>
+            <button class="button-style" on:click={loadPieChart}>
+                Pie Chart
+            </button>
+            <button class="button-style" on:click={loadERDiagram}>
+                ER Diagram
+            </button>
+        </div>
+    </div>
     <div id="editor-root">
         <div id="col1">
             <Card title="Code" noPadding="true">
-                <div id="sampleLoader">
-                    <span id="sampleLoaderTitle">Sample Diagram Options</span>
-                    <br />
-                    <div class="button-container">
-                        <button class="button-style" on:click={loadFlowChart}>
-                            Flow Chart
-                        </button>
-                        <button
-                            class="button-style"
-                            on:click={loadSequenceDiagram}>
-                            Sequence Diagram
-                        </button>
-                        <button
-                            class="button-style"
-                            on:click={loadClassDiagram}>
-                            Class Diagram
-                        </button>
-                        <button
-                            class="button-style"
-                            on:click={loadStateDiagram}>
-                            State Diagram
-                        </button>
-                        <button class="button-style" on:click={loadGanttChart}>
-                            Gantt Chart
-                        </button>
-                        <button class="button-style" on:click={loadPieChart}>
-                            Pie Chart
-                        </button>
-                        <button class="button-style" on:click={loadERDiagram}>
-                            ER Diagram
-                        </button>
-                    </div>
-                </div>
-                <div id="historyLoader">
-                    <span id="historyLoaderTitle">History Diagram Options</span>
-                    <span id="historyLoaderSubTitle">Automatically save once every minute, up to 10 records.</span>
-                    <br />
-                    <div id="historyList" class="button-container">
-                        {#if historyList.length > 0}
-                            {#each historyList as item, i}
-                                <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
-                                    {item.time}
-                                </button>
-                            {/each}
-                        {:else}
-                            No records.
-                        {/if}
-                    </div>
-                </div>
                 <Editor data={params.data} />
             </Card>
             <Card title="Mermaid Configuration">
@@ -330,11 +310,21 @@
             </Card>
             <div id="link-root">
                 <div id="link-col1">
-                    <Card title="Actions">
-                        <Links />
+                    <Card title="Editing history">
+                        <span id="historyLoaderSubTitle">Automatically saves once every minute, up to 10 records.</span>
+                        <br />
+                        <div id="historyList" class="button-container">
+                            {#if historyList.length > 0}
+                                {#each historyList as item, i}
+                                    <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
+                                        -{historyList.length - i} min
+                                    </button>
+                                {/each}
+                            {:else}
+                                No records.
+                            {/if}
+                        </div>
                     </Card>
-                </div>
-                <div id="link-col2">
                     <Card title="Links">
                         <div class="button-container">
                             <button class="button-style">
@@ -370,6 +360,11 @@
                                 </a>
                             </button>
                         </div>
+                    </Card>
+                </div>
+                <div id="link-col2">
+                    <Card title="Actions">
+                        <Links />
                     </Card>
                 </div>
             </div>
