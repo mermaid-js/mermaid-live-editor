@@ -15,8 +15,8 @@
         ga("send", "pageview");
         ga("send", "event", "version", mermaidVersion, mermaidVersion);
 
-        const key = "_mermaid_history_";
-        Array.prototype.push.apply(historyList, JSON.parse(localStorage.getItem(key) || "[]"));
+        const key = "historyList_key";
+        historyList = JSON.parse(localStorage.getItem(key) || "[]");
         let hisCode = historyList.length > 0 ? historyList[historyList.length - 1] : null;
 
         if (params.data) {
@@ -55,7 +55,7 @@
     // export let token = '';
     // export let expected = '';
     export let params = {};
-    export let historyList = [];
+    let historyList = [];
     function loadFlowChart() {
         loadSampleDiagram("FlowChart");
     }
