@@ -11,12 +11,13 @@
     // import pkg from '@mermaid-js/mermaid/package.json'
     import pkg from "@mermaid/package.json";
     export let mermaidVersion = pkg.version;
+    let historyList = [];
     onMount(async () => {
         ga("send", "pageview");
         ga("send", "event", "version", mermaidVersion, mermaidVersion);
 
-        const key = "historyList_key";
-        historyList = JSON.parse(localStorage.getItem(key) || "[]");
+        const historyListKey = "_mermaid_history_";
+        historyList = JSON.parse(localStorage.getItem(historyListKey) || "[]");
         let hisCode = historyList.length > 0 ? historyList[historyList.length - 1] : null;
 
         if (params.data) {
@@ -45,7 +46,7 @@
                     historyList.shift();
                 }
                 historyList = historyList; //triggered update
-                localStorage.setItem(key, JSON.stringify(historyList));
+                localStorage.setItem(historyListKey, JSON.stringify(historyList));
             }
         }, 1 * 60 * 1000);
     });
@@ -55,7 +56,6 @@
     // export let token = '';
     // export let expected = '';
     export let params = {};
-    let historyList = [];
     function loadFlowChart() {
         loadSampleDiagram("FlowChart");
     }
