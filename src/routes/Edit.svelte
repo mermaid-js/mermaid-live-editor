@@ -39,12 +39,12 @@
         setInterval(() => {
             if (code != hisCode) {
                 //save history
-                historyList.push({
+                historyList.unshift({
                     time: new Date().toISOString(),
                     code: hisCode = code
                 });
                 if (historyList.length > 10) {
-                    historyList.shift();
+                    historyList.pop();
                 }
                 localStorage.setItem(historyListKey, JSON.stringify(historyList));
             }
@@ -175,6 +175,10 @@
             mermaid: { theme: "default" },
             updateEditor: true,
         });
+    }
+
+    function relativeTime(t){
+      return `${moment(t).fromNow()} (${new Date(t).toLocaleString()})`;
     }
 </script>
 
@@ -311,7 +315,7 @@
                         {#if historyList.length > 0}
                             {#each historyList as item, i}
                                 <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
-                                    {moment(item.time).fromNow()}
+                                    {relativeTime(item.time)}
                                 </button>
                             {/each}
                         {:else}
