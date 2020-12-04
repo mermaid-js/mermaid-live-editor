@@ -224,9 +224,8 @@
         height: 4rem;
     }
     #sampleLoader, #historyLoader {
-        padding-bottom: 10px;
-        padding-left: 10px;
-        border-bottom: 1px solid lightgray;
+      padding: 0.5rem;
+      border-top: 1px solid lightgray;
     }
     #historyLoader {
         padding-top: 16px;
@@ -268,6 +267,7 @@
     <div id="editor-root">
         <div id="col1">
             <Card title="Code" noPadding="true">
+              <Editor data={params.data} />
                 <div id="sampleLoader">
                     <span id="sampleLoaderTitle">Sample Diagram Options</span>
                     <br />
@@ -317,7 +317,6 @@
                         {/if}
                     </div>
                 </div>
-                <Editor data={params.data} />
             </Card>
             <Card title="Mermaid Configuration">
                 <Config />
