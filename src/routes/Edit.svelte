@@ -10,7 +10,7 @@
     import { fromUrl } from "../code-store.js";
     // import pkg from '@mermaid-js/mermaid/package.json'
     import pkg from "@mermaid/package.json";
-import moment from "moment";
+    import moment from "moment";
     export let mermaidVersion = pkg.version;
     let historyList = [];
     onMount(async () => {
