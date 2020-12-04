@@ -10,6 +10,7 @@
     import { fromUrl } from "../code-store.js";
     // import pkg from '@mermaid-js/mermaid/package.json'
     import pkg from "@mermaid/package.json";
+import moment from "moment";
     export let mermaidVersion = pkg.version;
     let historyList = [];
     onMount(async () => {
@@ -45,11 +46,12 @@
                 if (historyList.length > 10) {
                     historyList.shift();
                 }
-                historyList = historyList; //triggered update
                 localStorage.setItem(historyListKey, JSON.stringify(historyList));
             }
+            historyList = historyList; //triggered update
         }, 1 * 60 * 1000);
     });
+
     // export let code = '';
     // export let classes = '';
     // export let error = {};
@@ -309,7 +311,7 @@
                         {#if historyList.length > 0}
                             {#each historyList as item, i}
                                 <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
-                                    {item.time}
+                                    {moment(item.time).fromNow()}
                                 </button>
                             {/each}
                         {:else}
