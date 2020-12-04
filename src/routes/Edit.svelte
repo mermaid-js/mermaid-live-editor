@@ -302,7 +302,7 @@
                     </div>
                 </div>
                 <div id="historyLoader">
-                    <span id="historyLoaderTitle">History Diagram Options</span>
+                    <span id="historyLoaderTitle">Diagram History</span>
                     <span id="historyLoaderSubTitle">Automatically save once every minute, up to 10 records.</span>
                     <br />
                     <div id="historyList" class="button-container">
