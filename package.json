@@ -20,7 +20,7 @@
     "dev": "webpack-dev-server --content-base docs"
   },
   "dependencies": {
-    "@mermaid-js/mermaid": "8.8.3-preview.1158",
+    "@mermaid-js/mermaid": "8.8.4-preview.1158",
     "js-base64": "^2.5.1",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
