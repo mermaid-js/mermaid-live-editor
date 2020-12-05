@@ -15,7 +15,7 @@ onMount(async () => {
 	// export let error = {};
 	// export let token = '';
 	// export let expected = '';
-	export let params = {};
+	// export let params = {};
 </script>
 
 <style>
