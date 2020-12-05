@@ -1,5 +1,5 @@
 <script>
-import { codeStore, updateCodeStore } from '../code-store.js';
+import { codeStore, updateCodeStore, updateConfig, updateCode } from '../code-store.js';
 import { configErrorStore } from '../config-error-store.js';
 import { onMount } from 'svelte';
 import {push, pop, replace} from 'svelte-spa-router'
@@ -23,18 +23,18 @@ let editorElem = null;
 let decorations = [];
 const decArr = [];
 
-let oldConf =  { theme: 'default' };
+let oldConf =  { };
 const handleConfUpdate =  conf => {
 	try {
+		console.log(conf);
 		JSON.parse(conf);
-		console.log(code);
-		let newState = { code, mermaid: JSON.parse(conf) };
-		oldConf = newState.mermaid;
-		updateCodeStore(newState);
+		// let newState = { code, mermaid: JSON.parse(conf) };
+		// oldConf = newState.mermaid;
+		updateConfig(JSON.parse(conf));
 		configErrorStore.set(undefined);
-		const model = edit.getModel();
-		// model.setValue(conf);
-		// model.dispose();
+		// const model = edit.getModel();
+		// // model.setValue(conf);
+		// // model.dispose();
 	} catch(e) {
 		console.log('Error in parsed', e);
 		configErrorStore.set(e);

@@ -63,7 +63,7 @@ onMount(async () => {
 });
 
 let insertSvg = function(svgCode, bindFunctions){
-	element.innerHTML = svgCode;
+	// element.innerHTML = svgCode;
 };
 
 	export let code = '';
@@ -84,7 +84,7 @@ let insertSvg = function(svgCode, bindFunctions){
 				container.innerHTML = _code;
 				saveStatistcs(detectType(code));
 				delete container.dataset.processed
-				mermaid.initialize(state.mermaid)
+				mermaid.initialize(Object.assign({}, state.mermaid))
 				mermaid.init(undefined, container)
 				if(code) mermaid.render('graph-div', code, insertSvg);
 			}

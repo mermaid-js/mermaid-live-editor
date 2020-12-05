@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { codeStore, updateCodeStore } from "../code-store.js";
+    import { codeStore, updateCode, updateCodeStore } from "../code-store.js";
     import Editor from "../components/Editor.svelte";
     import Config from "../components/Config.svelte";
     import View from "../components/View.svelte";
@@ -168,11 +168,7 @@
 
     function toUpdateCodeStore(code) {
         if (!code)  return;
-        updateCodeStore({
-            code: code,
-            mermaid: { theme: "default" },
-            updateEditor: true,
-        });
+        updateCode(code, true);
     }
 </script>
 
