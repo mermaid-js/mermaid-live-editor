@@ -8,29 +8,31 @@
 
     onMount(async () => {});
 
-export const onDownloadPNG = event => {
-	var canvas = document.createElement('canvas');
-	const container = document.getElementById('container');
-	const svg = document.querySelector('#container svg');
-	const box = svg.getBoundingClientRect();
-	canvas.width = box.width;
-	canvas.height = box.height;
-	if(imagemodeselected === "width") {
-		const ratio = box.height/box.width;
-		canvas.width = userimagewidth;
-		canvas.height = userimagewidth * ratio;
-	} else if(imagemodeselected === "height") {
-		const ratio = box.width/box.height;
-		canvas.width = userimageheight * ratio;
-		canvas.height = userimageheight;
-	}
-	const context = canvas.getContext('2d');
-	context.fillStyle = "white";
-	context.fillRect(0, 0, canvas.width, canvas.height);
+    const fixBrTag = (svg) => svg.replaceAll('<br>', '<br/>');
 
-	var image = new Image();
-	image.onload = function () {
-		context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    export const onDownloadPNG = event => {
+        var canvas = document.createElement('canvas');
+        const container = document.getElementById('container');
+        const svg = document.querySelector('#container svg');
+        const box = svg.getBoundingClientRect();
+        canvas.width = box.width;
+        canvas.height = box.height;
+        if(imagemodeselected === "width") {
+            const ratio = box.height/box.width;
+            canvas.width = userimagewidth;
+            canvas.height = userimagewidth * ratio;
+        } else if(imagemodeselected === "height") {
+            const ratio = box.width/box.height;
+            canvas.width = userimageheight * ratio;
+            canvas.height = userimageheight;
+        }
+        const context = canvas.getContext('2d');
+        context.fillStyle = "white";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        var image = new Image();
+        image.onload = function () {
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
             var a = document.createElement("a");
             a.download = `mermaid-diagram-${moment().format(
@@ -42,9 +44,9 @@ export const onDownloadPNG = event => {
             a.click();
         };
 
-        console.warn("SVG", container.innerHTML);
+        console.warn("SVG", fixBrTag(container.innerHTML));
         image.src = `data:image/svg+xml;base64,${Base64.encode(
-            container.innerHTML
+            fixBrTag(container.innerHTML)
         )}`;
         event.stopPropagation();
         event.preventDefault();
@@ -56,7 +58,7 @@ export const onDownloadPNG = event => {
         console.log("event", event.target);
         const container = document.getElementById("container");
         event.target.href = `data:image/svg+xml;base64,${Base64.encode(
-            container.innerHTML
+            fixBrTag(container.innerHTML)
         )}`;
         event.target.download = `mermaid-diagram-${moment().format(
             "YYYYMMDDHHmmss"
@@ -68,14 +70,14 @@ export const onDownloadPNG = event => {
         document.execCommand("Copy");
     };
 
-let url = '/mermaid-live-editor/#/view';
-let b64Code;
-let iUrl;
-let svgUrl;
-let mdCode;
-let imagemodeselected = "auto";
-let userimagewidth = 1920;
-let userimageheight = 1080;
+    let url = '/mermaid-live-editor/#/view';
+    let b64Code;
+    let iUrl;
+    let svgUrl;
+    let mdCode;
+    let imagemodeselected = "auto";
+    let userimagewidth = 1920;
+    let userimageheight = 1080;
 
     const unsubscribe = codeStore.subscribe((state) => {
         b64Code = Base64.encodeURI(JSON.stringify(state));
