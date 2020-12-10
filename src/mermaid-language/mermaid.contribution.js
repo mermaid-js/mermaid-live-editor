@@ -5,8 +5,10 @@
 'use strict';
 import { registerLanguage } from 'monaco-editor/dev/vs/basic-languages/_.contribution.js';
 registerLanguage({
-    id: 'mermaid',
-    extensions: ['.mmd'],
-    aliases: ['mermaid', 'MERMAID'],
-    loader: function () { return import('./mermaid.js'); }
+  id: 'mermaid',
+  extensions: ['.mmd'],
+  aliases: ['mermaid', 'MERMAID'],
+  loader: function () {
+    return import('./mermaid.js');
+  },
 });
