@@ -47,6 +47,7 @@ const handleCodeUpdate = code => {
 };
 
 const unsubscribe = codeStore.subscribe( state => {
+	console.log('Code change');
 	if(editorElem === null) {
 		editorElem = document.getElementById('editor');
 	}

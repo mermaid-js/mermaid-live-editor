@@ -2,10 +2,10 @@
 import { onMount } from 'svelte';
 import Editor from '../components/Editor.svelte';
 import View from '../components/View.svelte';
-import { fromUrl } from '../code-store.js';
+// import { fromUrl } from '../code-store.js';
 
 onMount(async () => {
-	fromUrl(params.data);
+	// fromUrl(params.data);
 	ga('send', 'pageview');
 });
 
@@ -15,7 +15,7 @@ onMount(async () => {
 	// export let error = {};
 	// export let token = '';
 	// export let expected = '';
-	export let params = {};
+	// export let params = {};
 </script>
 
 <style>

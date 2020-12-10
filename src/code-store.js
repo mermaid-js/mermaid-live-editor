@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 // import mermaid from '@mermaid-js/mermaid';
 import mermaid from '@mermaid';
 import { Base64 } from 'js-base64'
@@ -11,9 +11,9 @@ export const fromUrl = data => {
   const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches && false
   try {
     let stateStr = Base64.decode(data)
+    console.log('state from url', stateStr)
     state = JSON.parse(stateStr);
 
-    console.log('state from url', state)
 
     if (state.code === undefined) { // not valid json
 //      state = { code: '', mermaid: { theme: themeFromUrl } }
@@ -38,3 +38,18 @@ export const updateCodeStore = newState => {
   codeStore.set(newState);
   replace('/edit/' + Base64.encodeURI(JSON.stringify(newState)))
 };
+export const updateCode = (code, updateEditor) => {
+  const state = get(codeStore);
+  state.code = code;
+  state.updateEditor = updateEditor;
+  codeStore.set(state);
+};
+export const updateConfig = config => {
+  const state = get(codeStore);
+  state.mermaid = config;
+  codeStore.set(state);
+};
+
+const unsubscribe = codeStore.subscribe( state => {
+  replace('/edit/' + Base64.encodeURI(JSON.stringify(state)))
+});
