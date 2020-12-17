@@ -10,6 +10,7 @@
     import { fromUrl } from "../code-store.js";
     // import pkg from '@mermaid-js/mermaid/package.json'
     import pkg from "@mermaid/package.json";
+    import moment from "moment";
     export let mermaidVersion = pkg.version;
     let historyList = [];
     onMount(async () => {
@@ -38,18 +39,19 @@
         setInterval(() => {
             if (code != hisCode) {
                 //save history
-                historyList.push({
+                historyList.unshift({
                     time: new Date().toISOString(),
                     code: hisCode = code
                 });
                 if (historyList.length > 10) {
-                    historyList.shift();
+                    historyList.pop();
                 }
-                historyList = historyList; //triggered update
                 localStorage.setItem(historyListKey, JSON.stringify(historyList));
             }
+            historyList = historyList; //triggered update
         }, 1 * 60 * 1000);
     });
+
     // export let code = '';
     // export let classes = '';
     // export let error = {};
@@ -170,6 +172,10 @@
         if (!code)  return;
         updateCode(code, true);
     }
+
+    function relativeTime(t){
+      return `${moment(t).fromNow()} (${new Date(t).toLocaleString()})`;
+    }
 </script>
 
 <style>
@@ -231,6 +237,8 @@
     .button-container {
         display: flex;
         align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
     .button-style {
         background-color: #a2d9e2;
@@ -313,7 +321,7 @@
                             {#if historyList.length > 0}
                                 {#each historyList as item, i}
                                     <button class="button-style" on:click="{e => toUpdateCodeStore(item.code)}">
-                                        -{historyList.length - i} min
+                                        {relativeTime(item.time)}
                                     </button>
                                 {/each}
                             {:else}
