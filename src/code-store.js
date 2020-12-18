@@ -4,7 +4,7 @@ import mermaid from '@mermaid';
 import { Base64 } from 'js-base64';
 import { push, pop, replace } from 'svelte-spa-router';
 
-export const codeStore = writable(undefined);
+export const codeStore = writable({});
 export const fromUrl = (data) => {
   let code;
   let state;
