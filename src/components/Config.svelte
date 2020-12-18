@@ -12,8 +12,8 @@
   // import mermaid from '@mermaid-js/mermaid';
   import mermaid from '@mermaid';
   import Error from './Error.svelte';
-  import { initEditor } from './editor-utils';
-
+  import { getResizeHandler, initEditor } from './editor-utils';
+  import { watchResize } from 'svelte-watch-resize';
   import 'monaco-editor/esm/vs/editor/browser/controller/coreCommands.js';
   import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
   import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
@@ -27,6 +27,7 @@
 
   let decorations = [];
   const decArr = [];
+  let resizeHandler = () => {};
 
   let oldConf = {};
   const handleConfUpdate = (conf) => {
@@ -65,7 +66,7 @@
         theme: 'myCoolTheme',
         language: 'JSON',
       });
-
+      resizeHandler = getResizeHandler(edit);
       let decorations = [];
       edit.onDidChangeModelContent(function (e) {
         const conf = edit.getValue();
@@ -106,7 +107,7 @@
 </style>
 
 <div id="editor-container">
-  <div id="editor-conf" />
+  <div id="editor-conf" use:watchResize={resizeHandler} />
   {#if error}
     <Error errorText={error} />
   {/if}
