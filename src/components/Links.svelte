@@ -11,7 +11,7 @@
     const fixBrTag = (svg) => svg.replaceAll('<br>', '<br/>');
 
     export const onDownloadPNG = event => {
-        var canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas');
         const container = document.getElementById('container');
         const svg = document.querySelector('#container svg');
         const box = svg.getBoundingClientRect();
@@ -30,7 +30,7 @@
         context.fillStyle = "white";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        var image = new Image();
+        const image = new Image();
         image.onload = function () {
             context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
