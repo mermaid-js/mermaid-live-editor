@@ -1,11 +1,3 @@
-<script>
-  export let noPadding = false;
-  let contentClass = 'padding';
-  if (noPadding) {
-    contentClass = '';
-  }
-</script>
-
 <style>
   #tag {
     height: auto;
@@ -18,7 +10,6 @@
     border-radius: 4px;
     cursor: default;
     font-size: smaller;
-    /* padding: 8px; */
     color: #52c41a;
     background: #f6ffed;
     border-color: #b7eb8f;

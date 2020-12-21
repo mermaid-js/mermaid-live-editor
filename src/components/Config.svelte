@@ -1,21 +1,12 @@
 <script>
-  import {
-    codeStore,
-    updateCodeStore,
-    updateConfig,
-    updateCode,
-  } from '../code-store.js';
+  import { codeStore, updateConfig } from '../code-store.js';
   import { configErrorStore } from '../config-error-store.js';
   import { onMount } from 'svelte';
-  import { push, pop, replace } from 'svelte-spa-router';
+  import { replace } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';
-  // import mermaid from '@mermaid-js/mermaid';
-  import mermaid from '@mermaid';
   import Error from './Error.svelte';
   import { getResizeHandler, initEditor } from './editor-utils';
   import { watchResize } from 'svelte-watch-resize';
-  import 'monaco-editor/esm/vs/editor/browser/controller/coreCommands.js';
-  import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
   import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
   export let conf = '';
@@ -25,22 +16,15 @@
   let edit;
   let editorElem = null;
 
-  let decorations = [];
-  const decArr = [];
   let resizeHandler = () => {};
 
   let oldConf = {};
   const handleConfUpdate = (conf) => {
     try {
       console.log(conf);
-      JSON.parse(conf);
-      // let newState = { code, mermaid: JSON.parse(conf) };
-      // oldConf = newState.mermaid;
       updateConfig(JSON.parse(conf));
       configErrorStore.set(undefined);
-      // const model = edit.getModel();
-      // // model.setValue(conf);
-      // // model.dispose();
+      const model = edit.getModel();
     } catch (e) {
       console.log('Error in parsed', e);
       configErrorStore.set(e);
@@ -55,7 +39,7 @@
       editorElem = document.getElementById('editor-conf');
     }
     if (!conf && state) {
-      conf = JSON.stringify(state.mermaid, null, 2);
+      conf = JSON.stringify(state.mermaid, null, 2) || '{}';
     }
     if (state) {
       code = state.code;
@@ -67,7 +51,6 @@
         language: 'JSON',
       });
       resizeHandler = getResizeHandler(edit);
-      let decorations = [];
       edit.onDidChangeModelContent(function (e) {
         const conf = edit.getValue();
         handleConfUpdate(conf);
@@ -79,7 +62,6 @@
   initEditor(monaco);
 
   const unsubscribeError = configErrorStore.subscribe((_error) => {
-    // console.log('Error ideintified' + _error.toString());
     if (_error) {
       error = _error.toString();
     } else {
