@@ -11,7 +11,7 @@
   };
 
   const exportImage = (event, exporter) => {
-    var canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas');
     const svg = document.querySelector('#container svg');
     const box = svg.getBoundingClientRect();
     canvas.width = box.width;
@@ -29,10 +29,10 @@
     context.fillStyle = 'white';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    var image = new Image();
+    const image = new Image();
     image.onload = exporter(canvas, context, image);
 
-    console.warn('SVG', getBase64SVG());
+    console.log('SVG', getBase64SVG());
     image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
     event.stopPropagation();
     event.preventDefault();
@@ -42,7 +42,7 @@
     return () => {
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-      var a = document.createElement('a');
+      const a = document.createElement('a');
       a.download = `mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.png`;
       a.href = canvas
         .toDataURL('image/png')
