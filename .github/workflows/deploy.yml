@@ -2,32 +2,26 @@ name: Beta Deploy
 on:
   push:
     branches:
-      - master
-      # - citest
+      - release
+      - citest
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout docs repo
-        uses: actions/checkout@v2
-        with:
-          repository: mermaid-js/docs
-          path: docs
-          
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          path: main
 
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
 
       - run: |
-          cd main
           npm i -g yarn
           yarn install
+          yarn release
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
-          ./bin/beta-release
+          git commit -am "Release"
+          git push
+          
