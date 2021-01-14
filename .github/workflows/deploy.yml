@@ -22,6 +22,7 @@ jobs:
           yarn release
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
-          git commit -am "Release"
+          git add ./docs/*
+          git commit -m "Release"
           git push
           
