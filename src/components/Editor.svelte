@@ -2,7 +2,7 @@
   import { codeStore, updateCodeStore } from '../code-store.js';
   import { codeErrorStore } from '../code-error-store.js';
   import { onMount } from 'svelte';
-  import { push, pop, replace } from 'svelte-spa-router';
+  import { replace } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';
   // import mermaid from '@mermaid-js/mermaid';
   import mermaid from '@mermaid';
@@ -62,48 +62,6 @@
     }
   };
 
-  const unsubscribe = codeStore.subscribe((state) => {
-    console.log('Code change');
-    if (editorElem === null) {
-      editorElem = document.getElementById('editor');
-    }
-    if (!code && state) {
-      code = state.code;
-    }
-    if (state) {
-      conf = state.mermaid;
-    }
-    if (!edit && code && editorElem !== null) {
-      edit = monaco.editor.create(editorElem, {
-        value: [code].join('\n'),
-        theme: 'myCoolTheme',
-        language: 'mermaid',
-      });
-      resizeHandler = getResizeHandler(edit);
-
-      let decorations = [];
-      edit.onDidChangeModelContent(function (e) {
-        const code = edit.getValue();
-        handleCodeUpdate(code);
-      });
-      handleCodeUpdate(code);
-    }
-    if (state && state.updateEditor && edit && code && editorElem !== null) {
-      edit.setValue(state.code);
-      handleCodeUpdate(state.code);
-    }
-  });
-
-  const unsubscribeError = codeErrorStore.subscribe((_error) => {
-    if (_error) {
-      error = true;
-    } else {
-      error = false;
-    }
-  });
-
-  initEditor(monaco);
-
   onMount(async () => {
     // editorElem = document.querySelector('#editor')
     self.MonacoEnvironment = {
@@ -111,15 +69,52 @@
         return './editor.worker.bundle.js';
       },
     };
-  });
 
-  // export let name;
-  // export let params = {};
+    const unsubscribe = codeStore.subscribe((state) => {
+      console.log('Code change');
+      if (editorElem === null) {
+        editorElem = document.getElementById('editor');
+      }
+      if (!code && state) {
+        code = state.code;
+      }
+      if (state) {
+        conf = state.mermaid;
+      }
+      if (!edit && code && editorElem !== null) {
+        edit = monaco.editor.create(editorElem, {
+          value: [code].join('\n'),
+          theme: 'myCoolTheme',
+          language: 'mermaid',
+        });
+        resizeHandler = getResizeHandler(edit);
+
+        let decorations = [];
+        edit.onDidChangeModelContent(function (e) {
+          const code = edit.getValue();
+          handleCodeUpdate(code);
+        });
+        handleCodeUpdate(code);
+      }
+      if (state && state.updateEditor && edit && code && editorElem !== null) {
+        edit.setValue(state.code);
+        handleCodeUpdate(state.code);
+      }
+    });
+
+    const unsubscribeError = codeErrorStore.subscribe((_error) => {
+      if (_error) {
+        error = true;
+      } else {
+        error = false;
+      }
+    });
+
+    initEditor(monaco);
+  });
 </script>
 
 <style>
-  #editor-container {
-  }
   #editor {
     width: 100%;
     height: 400px;
