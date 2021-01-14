@@ -53,49 +53,52 @@
   };
 
   let container;
+  onMount(async () => {
+    element = document.querySelector('graph-div');
+    const unsubscribe = codeStore.subscribe((state) => {
+      try {
+        if (container && state) {
+          code = state.code;
+
+          // Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
+          let _code = code;
+          _code = _code.replace(/</g, '&lt;');
+          _code = _code.replace(/>/g, '&gt;');
+
+          container.innerHTML = _code;
+          saveStatistcs(detectType(code));
+          delete container.dataset.processed;
+          mermaid.initialize(Object.assign({}, state.mermaid));
+          mermaid.init(undefined, container);
+          if (code) mermaid.render('graph-div', code, insertSvg);
+        }
+      } catch (e) {
+        console.log('view fail', e);
+      }
+    });
+    const unsubscribeError = codeErrorStore.subscribe((_error) => {
+      if (typeof _error === 'undefined') {
+        codeClasses = '';
+      } else {
+        codeClasses = 'error';
+        console.log('code error: ', _error);
+      }
+    });
+    const unsubscribeConfigError = configErrorStore.subscribe((_error) => {
+      if (typeof _error === 'undefined') {
+        configClasses = '';
+      } else {
+        configClasses = 'error';
+        console.log('conf error: ', _error);
+      }
+    });
+  });
 
   let insertSvg = function (svgCode, bindFunctions) {};
 
   export let code = '';
   export let configClasses = '';
   export let codeClasses = '';
-  const unsubscribe = codeStore.subscribe((state) => {
-    try {
-      if (container && state) {
-        code = state.code;
-
-        // Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
-        let _code = code;
-        _code = _code.replace(/</g, '&lt;');
-        _code = _code.replace(/>/g, '&gt;');
-
-        container.innerHTML = _code;
-        saveStatistcs(detectType(code));
-        delete container.dataset.processed;
-        mermaid.initialize(Object.assign({}, state.mermaid));
-        mermaid.init(undefined, container);
-        if (code) mermaid.render('graph-div', code, insertSvg);
-      }
-    } catch (e) {
-      console.log('view fail', e);
-    }
-  });
-  const unsubscribeError = codeErrorStore.subscribe((_error) => {
-    if (typeof _error === 'undefined') {
-      codeClasses = '';
-    } else {
-      codeClasses = 'error';
-      console.log('code error: ', _error);
-    }
-  });
-  const unsubscribeConfigError = configErrorStore.subscribe((_error) => {
-    if (typeof _error === 'undefined') {
-      configClasses = '';
-    } else {
-      configClasses = 'error';
-      console.log('conf error: ', _error);
-    }
-  });
 </script>
 
 <style>
