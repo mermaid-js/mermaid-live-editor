@@ -1,5 +1,4 @@
 <script>
-  import { link } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';
   import moment from 'moment';
   import { codeStore } from '../code-store.js';
@@ -91,7 +90,7 @@
     document.execCommand('Copy');
   };
 
-  let url = '/mermaid-live-editor/#/view';
+  let url;
   let b64Code;
   let iUrl;
   let svgUrl;
@@ -102,7 +101,7 @@
 
   const unsubscribe = codeStore.subscribe((state) => {
     b64Code = Base64.encodeURI(JSON.stringify(state));
-    url = `/mermaid-live-editor/#/view/${b64Code}`;
+    url = `${window.location.pathname.split("#")[0]}#/view/${b64Code}`;
     iUrl = `https://mermaid.ink/img/${b64Code}`;
     svgUrl = `https://mermaid.ink/svg/${b64Code}`;
     mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#/edit/${b64Code})`;
@@ -171,7 +170,7 @@
     </a>
   </button>
   <button class="button-style">
-    <a class="link-style" href={url} use:link>Link to view</a>
+    <a class="link-style" href={url}>Link to view</a>
   </button>
   <button class="button-style">
     <a class="link-style" href={url} download="" on:click={onDownloadSVG}>
