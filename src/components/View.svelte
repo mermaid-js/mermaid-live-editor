@@ -2,7 +2,6 @@
   import { codeStore } from '../code-store.js';
   import { codeErrorStore, configErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
-  // import mermaid from '@mermaid-js/mermaid';
   import mermaid from '@mermaid';
 
   const detectType = (text) => {
@@ -52,7 +51,6 @@
     }, 5000);
   };
 
-  let element;
   let container;
 
   export let code = '';
@@ -97,9 +95,7 @@
     });
   });
 
-  let insertSvg = function (svgCode, bindFunctions) {
-    // element.innerHTML = svgCode;
-  };
+  let insertSvg = function (svgCode, bindFunctions) {};
 
 </script>
 
