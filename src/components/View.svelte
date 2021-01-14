@@ -62,7 +62,6 @@
         if (container && state) {
           code = state.code;
 
-          // mermaid.parse(code)
           // Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
           let _code = code;
           _code = _code.replace(/</g, '&lt;');
