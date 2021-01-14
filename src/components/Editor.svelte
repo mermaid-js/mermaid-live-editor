@@ -60,53 +60,54 @@
     }
   };
 
-  const unsubscribe = codeStore.subscribe((state) => {
-    console.log('Code change');
-    if (editorElem === null) {
-      editorElem = document.getElementById('editor');
-    }
-    if (!code && state) {
-      code = state.code;
-    }
-    if (state) {
-      conf = state.mermaid;
-    }
-    if (!edit && code && editorElem !== null) {
-      edit = monaco.editor.create(editorElem, {
-        value: [code].join('\n'),
-        theme: 'myCoolTheme',
-        language: 'mermaid',
-      });
-      resizeHandler = getResizeHandler(edit);
-
-      edit.onDidChangeModelContent(function (e) {
-        const code = edit.getValue();
-        handleCodeUpdate(code);
-      });
-      handleCodeUpdate(code);
-    }
-    if (state && state.updateEditor && edit && code && editorElem !== null) {
-      edit.setValue(state.code);
-      handleCodeUpdate(state.code);
-    }
-  });
-
-  const unsubscribeError = codeErrorStore.subscribe((_error) => {
-    if (_error) {
-      error = true;
-    } else {
-      error = false;
-    }
-  });
-
-  initEditor(monaco);
-
   onMount(async () => {
     self.MonacoEnvironment = {
       getWorkerUrl: function (moduleId, label) {
         return './editor.worker.bundle.js';
       },
     };
+
+    const unsubscribe = codeStore.subscribe((state) => {
+      console.log('Code change');
+      if (editorElem === null) {
+        editorElem = document.getElementById('editor');
+      }
+      if (!code && state) {
+        code = state.code;
+      }
+      if (state) {
+        conf = state.mermaid;
+      }
+      if (!edit && code && editorElem !== null) {
+        edit = monaco.editor.create(editorElem, {
+          value: [code].join('\n'),
+          theme: 'myCoolTheme',
+          language: 'mermaid',
+        });
+        resizeHandler = getResizeHandler(edit);
+
+        let decorations = [];
+        edit.onDidChangeModelContent(function (e) {
+          const code = edit.getValue();
+          handleCodeUpdate(code);
+        });
+        handleCodeUpdate(code);
+      }
+      if (state && state.updateEditor && edit && code && editorElem !== null) {
+        edit.setValue(state.code);
+        handleCodeUpdate(state.code);
+      }
+    });
+
+    const unsubscribeError = codeErrorStore.subscribe((_error) => {
+      if (_error) {
+        error = true;
+      } else {
+        error = false;
+      }
+    });
+
+    initEditor(monaco);
   });
 </script>
 
