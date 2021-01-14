@@ -1,6 +1,6 @@
 <script>
   import { codeStore, updateCodeStore } from '../code-store.js';
-  import { codeErrorStore } from '../code-error-store.js';
+  import { codeErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
   import { replace } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';

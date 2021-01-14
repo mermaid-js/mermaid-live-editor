@@ -1,5 +1,5 @@
 <script>
-  import { codeErrorStore } from '../code-error-store.js';
+  import { codeErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
 
   onMount(async () => {});

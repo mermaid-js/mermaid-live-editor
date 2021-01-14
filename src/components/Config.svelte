@@ -5,7 +5,7 @@
     updateConfig,
     updateCode,
   } from '../code-store.js';
-  import { configErrorStore } from '../config-error-store.js';
+  import { configErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
   import { push, pop, replace } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';
