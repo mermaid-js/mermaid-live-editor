@@ -3,7 +3,6 @@
   import { codeErrorStore } from '../code-error-store.js';
   import { configErrorStore } from '../config-error-store.js';
   import { onMount } from 'svelte';
-  // import mermaid from '@mermaid-js/mermaid';
   import mermaid from '@mermaid';
 
   const detectType = (text) => {
@@ -53,7 +52,6 @@
     }, 5000);
   };
 
-  let element;
   let container;
   onMount(async () => {
     element = document.querySelector('graph-div');
@@ -96,9 +94,7 @@
     });
   });
 
-  let insertSvg = function (svgCode, bindFunctions) {
-    // element.innerHTML = svgCode;
-  };
+  let insertSvg = function (svgCode, bindFunctions) {};
 
   export let code = '';
   export let configClasses = '';
