@@ -1,27 +1,26 @@
-name: Beta Deploy
+name: Deploy Live Editor
 on:
   push:
     branches:
       - release
-      - citest
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
 
-      - run: |
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build & Deploy
+        run: |
           npm i -g yarn
           yarn install
           yarn release
-          git config --global user.name github-actions
-          git config --global user.email github-actions@github.com
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add ./docs/*
           git commit -m "Release"
           git push

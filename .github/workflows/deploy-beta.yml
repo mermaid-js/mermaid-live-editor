@@ -1,34 +1,28 @@
-name: Beta Deploy
+name: Deploy Live Editor Beta
 on:
   push:
     branches:
-      - none
-      # - citest
+      - master
+      - citest
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-      - name: Checkout docs repo
-        uses: actions/checkout@v2
-        with:
-          repository: mermaid-js/docs
-          path: docs
-          
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          path: main
-
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
 
-      - run: |
-          cd main
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build & Deploy
+        run: |
           npm i -g yarn
           yarn install
           yarn release-beta
           git config user.name github-actions
           git config user.email github-actions@github.com
+          git add ./docs/*
+          git commit -m "Release Beta"
+          git push
           
