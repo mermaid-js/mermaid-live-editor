@@ -1,18 +1,17 @@
 <script>
-  import { codeErrorStore } from '../code-error-store.js';
   import { link } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';
-  import { onMount } from 'svelte';
   import moment from 'moment';
   import { codeStore } from '../code-store.js';
 
-  onMount(async () => {});
-
-  const fixBrTag = (svg) => svg.replaceAll('<br>', '<br/>');
-
-  export const onDownloadPNG = (event) => {
-    const canvas = document.createElement('canvas');
+  const getBase64SVG = () => {
     const container = document.getElementById('container');
+    const svg = container.innerHTML.replaceAll('<br>', '<br/>');
+    return Base64.encode(svg);
+  };
+
+  const exportImage = (event, exporter) => {
+    const canvas = document.createElement('canvas');
     const svg = document.querySelector('#container svg');
     const box = svg.getBoundingClientRect();
     canvas.width = box.width;
@@ -31,39 +30,63 @@
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     const image = new Image();
-    image.onload = function () {
+    image.onload = exporter(canvas, context, image);
+
+    console.log('SVG', getBase64SVG());
+    image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const downloadImage = (canvas, context, image) => {
+    return () => {
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-      var a = document.createElement('a');
+      const a = document.createElement('a');
       a.download = `mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.png`;
       a.href = canvas
         .toDataURL('image/png')
         .replace('image/png', 'image/octet-stream');
       a.click();
     };
-
-    console.warn('SVG', fixBrTag(container.innerHTML));
-    image.src = `data:image/svg+xml;base64,${Base64.encode(
-      fixBrTag(container.innerHTML)
-    )}`;
-    event.stopPropagation();
-    event.preventDefault();
-    event.target.download = `mermaid-diagram-${moment().format(
-      'YYYYMMDDHHmmss'
-    )}.png`;
   };
-  export const onDownloadSVG = (event) => {
+
+  const clipboardCopy = (canvas, context, image) => {
+    return () => {
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob((blob) => {
+        try {
+          navigator.clipboard.write([
+            new ClipboardItem({
+              [blob.type]: blob,
+            }),
+          ]);
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    };
+  };
+
+  const onCopyClipboard = (event) => {
+    exportImage(event, clipboardCopy);
+  };
+
+  const onDownloadPNG = (event) => {
+    exportImage(event, downloadImage);
+  };
+
+  const onDownloadSVG = (event) => {
     console.log('event', event.target);
-    const container = document.getElementById('container');
-    event.target.href = `data:image/svg+xml;base64,${Base64.encode(
-      fixBrTag(container.innerHTML)
-    )}`;
+    event.target.href = `data:image/svg+xml;base64,${getBase64SVG()}`;
     event.target.download = `mermaid-diagram-${moment().format(
       'YYYYMMDDHHmmss'
     )}.svg`;
     console.log('event', event);
   };
-  export const onCopyMarkdown = (event) => {
+
+  const onCopyMarkdown = (event) => {
     event.target.select();
     document.execCommand('Copy');
   };
@@ -138,6 +161,16 @@
 
 <div id="links">
   <button class="button-style">
+    <a class="link-style" href={url} download="" on:click={onCopyClipboard}>
+      Copy Image
+    </a>
+  </button>
+  <button class="button-style">
+    <a class="link-style" href={url} download="" on:click={onDownloadPNG}>
+      Download PNG
+    </a>
+  </button>
+  <button class="button-style">
     <a class="link-style" href={url} use:link>Link to view</a>
   </button>
   <button class="button-style">
@@ -150,11 +183,6 @@
   </button>
   <button class="button-style">
     <a class="link-style" href={svgUrl}>Link to SVG</a>
-  </button>
-  <button class="button-style">
-    <a class="link-style" href={url} download="" on:click={onDownloadPNG}>
-      Download PNG
-    </a>
   </button>
   (markdown is base64 encoded for these urls)
 </div>
