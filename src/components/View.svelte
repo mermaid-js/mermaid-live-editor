@@ -58,7 +58,6 @@
   export let codeClasses = '';
 
   onMount(async () => {
-    element = document.querySelector('graph-div');
     const unsubscribe = codeStore.subscribe((state) => {
       try {
         if (container && state) {

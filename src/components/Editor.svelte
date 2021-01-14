@@ -17,7 +17,6 @@
     window.matchMedia('(prefers-color-scheme: dark)').matches && false;
   export let conf = { theme: isDarkMode ? 'dark' : 'default' };
   let edit;
-  export let error = false;
 
   const decArr = [];
   let editorElem = null;
@@ -35,7 +34,7 @@
       const model = edit.getModel();
     } catch (e) {
       if (e) {
-        codeErrorStore.set(e);
+        codeErrorStore.set("Syntax Error");
         console.log('Error in parsed', e.hash);
         const str = JSON.stringify({ code: code, mermaid: conf });
         replace('/edit/' + Base64.encodeURI(str));
@@ -99,14 +98,6 @@
       }
     });
 
-    const unsubscribeError = codeErrorStore.subscribe((_error) => {
-      if (_error) {
-        error = true;
-      } else {
-        error = false;
-      }
-    });
-
     initEditor(monaco);
   });
 </script>
@@ -122,7 +113,5 @@
 
 <div id="editor-container">
   <div id="editor" use:watchResize={resizeHandler} />
-  {#if error}
-    <Error errorText="Syntax Error" />
-  {/if}
+  <Error errorStore={codeErrorStore} />
 </div>

@@ -1,6 +1,14 @@
 <script>
   export let classes = '';
-  export let errorText = '';
+  export let errorStore;
+  let error;
+  errorStore.subscribe((_error) => {
+    if (_error) {
+      error = _error.toString();
+    } else {
+      error = false;
+    }
+  });
 </script>
 
 <style>
@@ -18,4 +26,6 @@
   }
 </style>
 
-<div id="error" class={classes}>{errorText}</div>
+{#if error}
+  <div id="error" class={classes}>{error}</div>
+{/if}

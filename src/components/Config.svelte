@@ -1,6 +1,6 @@
 <script>
   import { codeStore, updateConfig } from '../code-store.js';
-  import { configErrorStore } from '../config-error-store.js';
+  import { configErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
   import { replace } from 'svelte-spa-router';
   import { Base64 } from 'js-base64';
@@ -11,7 +11,6 @@
 
   export let conf = '';
   export let code = '';
-  export let error = false;
 
   let edit;
   let editorElem = null;
@@ -61,14 +60,6 @@
 
   initEditor(monaco);
 
-  const unsubscribeError = configErrorStore.subscribe((_error) => {
-    if (_error) {
-      error = _error.toString();
-    } else {
-      error = false;
-    }
-  });
-
   onMount(async () => {
     console.log('Mounting config');
     self.MonacoEnvironment = {
@@ -90,7 +81,5 @@
 
 <div id="editor-container">
   <div id="editor-conf" use:watchResize={resizeHandler} />
-  {#if error}
-    <Error errorText={error} />
-  {/if}
+  <Error errorStore={configErrorStore} />
 </div>
