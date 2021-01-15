@@ -41,3 +41,8 @@ i {
 .mermaidTooltip {
   position: absolute;
 }
+
+@font-face{
+	font-family: "codicon";
+	src: url("../fonts/codicon.ttf") format("truetype");
+}

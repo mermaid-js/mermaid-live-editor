@@ -8,9 +8,7 @@
   import mermaid from '@mermaid';
   import Error from './Error.svelte';
   import { getResizeHandler, initEditor } from './editor-utils';
-  import 'monaco-editor/esm/vs/editor/browser/controller/coreCommands.js';
-  import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
-  import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
+  import * as monaco from 'monaco-editor';
   import { watchResize } from 'svelte-watch-resize';
 
   export let code = '';
@@ -63,13 +61,6 @@
   };
 
   onMount(async () => {
-    // editorElem = document.querySelector('#editor')
-    self.MonacoEnvironment = {
-      getWorkerUrl: function (moduleId, label) {
-        return './editor.worker.bundle.js';
-      },
-    };
-
     const unsubscribe = codeStore.subscribe((state) => {
       console.log('Code change');
       if (editorElem === null) {
