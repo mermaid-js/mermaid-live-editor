@@ -44,5 +44,5 @@ i {
 
 @font-face{
 	font-family: "codicon";
-	src: url("../fonts/codicon.ttf") format("truetype");
+	src: url("codicon.ttf") format("truetype");
 }
