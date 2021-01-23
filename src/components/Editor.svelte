@@ -1,9 +1,7 @@
 <script>
-  import { codeStore, updateCodeStore } from '../code-store.js';
+  import { codeStore, updateCode } from '../code-store.js';
   import { codeErrorStore } from '../code-error-store.js';
   import { onMount } from 'svelte';
-  import { replace } from 'svelte-spa-router';
-  import { Base64 } from 'js-base64';
   // import mermaid from '@mermaid-js/mermaid';
   import mermaid from '@mermaid';
   import Error from './Error.svelte';
@@ -11,34 +9,32 @@
   import * as monaco from 'monaco-editor';
   import { watchResize } from 'svelte-watch-resize';
 
+
   export let code = '';
   const isDarkMode =
     window.matchMedia('(prefers-color-scheme: dark)').matches && false;
-  export let conf = { theme: isDarkMode ? 'dark' : 'default' };
   let edit;
   export let error = false;
 
-  let decorations = [];
+
   const decArr = [];
   let editorElem = null;
   let resizeHandler = () => {};
-  const handleCodeUpdate = (code) => {
+  const handleCodeUpdate = (updatedCode, updateEditor) => {
     try {
-      mermaid.parse(code);
-      let newState = { code, mermaid: conf, updateEditor: false };
-      updateCodeStore(newState);
+      mermaid.parse(updatedCode);
+      if(updateEditor){
+        edit.setValue(updatedCode);
+      }
       decArr.forEach((decor) => {
         edit.deltaDecorations(decor, []);
       });
-
+      updateCode(updatedCode, false)
       codeErrorStore.set(undefined);
-      const model = edit.getModel();
     } catch (e) {
       if (e) {
         codeErrorStore.set(e);
         console.log('Error in parsed', e.hash);
-        const str = JSON.stringify({ code: code, mermaid: conf });
-        replace('/edit/' + Base64.encodeURI(str));
         const l = e.hash.line;
         decArr.push(
           edit.deltaDecorations(
@@ -61,35 +57,29 @@
   };
 
   onMount(async () => {
-    const unsubscribe = codeStore.subscribe((state) => {
-      console.log('Code change');
-      if (editorElem === null) {
-        editorElem = document.getElementById('editor');
-      }
-      if (!code && state) {
-        code = state.code;
-      }
-      if (state) {
-        conf = state.mermaid;
-      }
-      if (!edit && code && editorElem !== null) {
-        edit = monaco.editor.create(editorElem, {
-          value: [code].join('\n'),
-          theme: 'myCoolTheme',
-          language: 'mermaid',
-        });
-        resizeHandler = getResizeHandler(edit);
+    initEditor(monaco);
 
-        let decorations = [];
-        edit.onDidChangeModelContent(function (e) {
-          const code = edit.getValue();
-          handleCodeUpdate(code);
-        });
-        handleCodeUpdate(code);
+    editorElem = document.getElementById('editor');
+    edit = monaco.editor.create(editorElem, {
+      value: [code].join('\n'),
+      theme: 'myCoolTheme',
+      language: 'mermaid',
+    });
+    resizeHandler = getResizeHandler(edit);
+    edit.onDidChangeModelContent(function (e) {
+      handleCodeUpdate(edit.getValue(), false);
+    });
+
+
+    const unsubscribe = codeStore.subscribe((state) => {
+      console.log(`Code change ${JSON.stringify(state)}`);
+      
+      if (state) {
+        code = state.code || code;
       }
-      if (state && state.updateEditor && edit && code && editorElem !== null) {
-        edit.setValue(state.code);
-        handleCodeUpdate(state.code);
+
+      if(state.updateEditor){
+        handleCodeUpdate(code, true);
       }
     });
 
@@ -100,8 +90,6 @@
         error = false;
       }
     });
-
-    initEditor(monaco);
   });
 </script>
 

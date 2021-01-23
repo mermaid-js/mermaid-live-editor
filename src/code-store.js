@@ -24,12 +24,10 @@ export const fromUrl = (data) => {
     console.error('Init error', e);
     state = defaultState;
   }
-
-  codeStore.set(state);
+  codeStore.set({...state, updateEditor: true});
 };
 export const updateCodeStore = (newState) => {
   codeStore.set(newState);
-  replace('/edit/' + Base64.encodeURI(JSON.stringify(newState)));
 };
 export const updateCode = (code, updateEditor) => {
   const state = get(codeStore);
