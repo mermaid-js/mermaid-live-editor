@@ -27,27 +27,25 @@
       updateCode(updatedCode, false);
       codeErrorStore.set(undefined);
     } catch (e) {
-      if (e) {
-        codeErrorStore.set("Syntax Error");
-        console.log('Error in parsed', e.hash);
-        const l = e.hash.line;
-        decArr.push(
-          edit.deltaDecorations(
-            [],
-            [
-              {
-                range: new monaco.Range(
-                  e.hash.loc.first_line,
-                  e.hash.loc.last_line,
-                  e.hash.loc.first_column,
-                  e.hash.loc.last_column
-                ),
-                options: { inlineClassName: 'myInlineDecoration' },
-              },
-            ]
-          )
-        );
-      }
+      codeErrorStore.set('Syntax Error');
+      console.log('Error in parsed', e.hash);
+      const l = e.hash.line;
+      decArr.push(
+        edit.deltaDecorations(
+          [],
+          [
+            {
+              range: new monaco.Range(
+                e.hash.loc.first_line,
+                e.hash.loc.last_line,
+                e.hash.loc.first_column,
+                e.hash.loc.last_column
+              ),
+              options: { inlineClassName: 'myInlineDecoration' },
+            },
+          ]
+        )
+      );
     }
   };
 
