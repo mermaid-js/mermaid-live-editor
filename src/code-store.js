@@ -24,8 +24,7 @@ export const fromUrl = (data) => {
     console.error('Init error', e);
     state = defaultState;
   }
-
-  codeStore.set(state);
+  codeStore.set({...state, updateEditor: true});
 };
 export const updateCodeStore = (newState) => {
   codeStore.set(newState);
