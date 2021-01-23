@@ -32,41 +32,36 @@
     }
   };
 
-  const unsubscribe = codeStore.subscribe((state) => {
-    if (editorElem === null) {
-      console.log('Starting stuff', document.getElementById('editor-conf'));
-      editorElem = document.getElementById('editor-conf');
-    }
-    if (!conf && state) {
-      conf = JSON.stringify(state.mermaid, null, 2) || '{}';
-    }
-    if (state) {
-      code = state.code;
-    }
-    if (!edit && conf && editorElem !== null) {
-      edit = monaco.editor.create(editorElem, {
-        value: [conf].join('\n'),
-        theme: 'myCoolTheme',
-        language: 'JSON',
-      });
-      resizeHandler = getResizeHandler(edit);
-      edit.onDidChangeModelContent(function (e) {
-        const conf = edit.getValue();
-        handleConfUpdate(conf);
-      });
-      handleConfUpdate(conf);
-    }
-  });
-
-  initEditor(monaco);
-
   onMount(async () => {
     console.log('Mounting config');
-    self.MonacoEnvironment = {
-      getWorkerUrl: function (moduleId, label) {
-        return './editor.worker.bundle.js';
-      },
-    };
+
+    const unsubscribe = codeStore.subscribe((state) => {
+      if (editorElem === null) {
+        console.log('Starting stuff', document.getElementById('editor-conf'));
+        editorElem = document.getElementById('editor-conf');
+      }
+      if (!conf && state) {
+        conf = JSON.stringify(state.mermaid, null, 2);
+      }
+      if (state) {
+        code = state.code;
+      }
+      if (!edit && conf && editorElem !== null) {
+        edit = monaco.editor.create(editorElem, {
+          value: [conf].join('\n'),
+          theme: 'myCoolTheme',
+          language: 'json',
+        });
+        resizeHandler = getResizeHandler(edit);
+        edit.onDidChangeModelContent(function (e) {
+          const conf = edit.getValue();
+          handleConfUpdate(conf);
+        });
+        handleConfUpdate(conf);
+      }
+    });
+
+    initEditor(monaco);
   });
 </script>
 
