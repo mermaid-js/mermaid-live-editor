@@ -24,23 +24,18 @@ export const fromUrl = (data) => {
     console.error('Init error', e);
     state = defaultState;
   }
-
-  codeStore.set(state);
+  codeStore.set({ ...state, updateEditor: true });
 };
 export const updateCodeStore = (newState) => {
   codeStore.set(newState);
-  replace('/edit/' + Base64.encodeURI(JSON.stringify(newState)));
 };
 export const updateCode = (code, updateEditor) => {
   const state = get(codeStore);
-  state.code = code;
-  state.updateEditor = updateEditor;
-  codeStore.set(state);
+  codeStore.set({...state, code, updateEditor});
 };
-export const updateConfig = (config) => {
+export const updateConfig = (config, updateEditor) => {
   const state = get(codeStore);
-  state.mermaid = config;
-  codeStore.set(state);
+  codeStore.set({ ...state, mermaid: config, updateEditor });
 };
 
 const unsubscribe = codeStore.subscribe((state) => {
