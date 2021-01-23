@@ -2,62 +2,48 @@
   import { codeStore, updateConfig } from '../code-store.js';
   import { configErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
-  import { replace } from 'svelte-spa-router';
-  import { Base64 } from 'js-base64';
   import Error from './Error.svelte';
   import { getResizeHandler, initEditor } from './editor-utils';
   import { watchResize } from 'svelte-watch-resize';
   import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
-  export let conf = '';
-  export let code = '';
-
   let edit;
-  let editorElem = null;
 
   let resizeHandler = () => {};
 
-  let oldConf = {};
-  const handleConfUpdate = (conf) => {
-    try {
-      console.log(conf);
-      updateConfig(JSON.parse(conf));
-      configErrorStore.set(undefined);
-      const model = edit.getModel();
-    } catch (e) {
-      console.log('Error in parsed', e);
-      configErrorStore.set(e);
-      const str = JSON.stringify({ code, mermaid: oldConf });
-      replace('/edit/' + Base64.encodeURI(str));
+  const handleConfUpdate = (conf, updateEditor) => {
+    console.log(conf);
+    if (updateEditor && edit) {
+      edit.setValue(JSON.stringify(conf, null, 2));
     }
+    updateConfig(conf, false);
+    configErrorStore.set(undefined);
   };
+  
+
+  const unsubscribe = codeStore.subscribe((state) => {
+    console.log(state.mermaid, state.updateEditor);
+    if (state.updateEditor) {
+      handleConfUpdate(state.mermaid, true);
+    }
+  });
 
   onMount(async () => {
     console.log('Mounting config');
-
-    const unsubscribe = codeStore.subscribe((state) => {
-      if (editorElem === null) {
-        console.log('Starting stuff', document.getElementById('editor-conf'));
-        editorElem = document.getElementById('editor-conf');
-      }
-      if (!conf && state) {
-        conf = JSON.stringify(state.mermaid, null, 2);
-      }
-      if (state) {
-        code = state.code;
-      }
-      if (!edit && conf && editorElem !== null) {
-        edit = monaco.editor.create(editorElem, {
-          value: [conf].join('\n'),
-          theme: 'myCoolTheme',
-          language: 'json',
-        });
-        resizeHandler = getResizeHandler(edit);
-        edit.onDidChangeModelContent(function (e) {
-          const conf = edit.getValue();
-          handleConfUpdate(conf);
-        });
-        handleConfUpdate(conf);
+    const editorElem = document.getElementById('editor-conf');
+    edit = monaco.editor.create(editorElem, {
+      value: '',
+      theme: 'myCoolTheme',
+      language: 'json',
+    });
+    resizeHandler = getResizeHandler(edit);
+    edit.onDidChangeModelContent(function (e) {
+      try {
+        const conf = JSON.parse(edit.getValue());
+        handleConfUpdate(conf, false);
+      } catch (err) {
+        console.log('Error in parsed', err);
+        configErrorStore.set(err);
       }
     });
 
