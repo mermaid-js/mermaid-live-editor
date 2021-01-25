@@ -1,40 +1,43 @@
-import { writable } from 'svelte/store';
-// import mermaid from '@mermaid-js/mermaid';
-import mermaid from '@mermaid';
-import { Base64 } from 'js-base64'
-import {push, pop, replace} from 'svelte-spa-router'
-
-export const codeStore = writable(undefined);
-export const fromUrl = data => {
-  let code;
+import { writable, get } from 'svelte/store';
+import { Base64 } from 'js-base64';
+import { replace } from 'svelte-spa-router';
+const isDarkMode =
+  window.matchMedia('(prefers-color-scheme: dark)').matches && false;
+const defaultState = {
+  code: `graph TD
+A[Christmas] -->|Get money| B(Go shopping)
+B --> C{Let me think}
+C -->|One| D[Laptop]
+C -->|Two| E[iPhone]
+C -->|Three| F[fa:fa-car Car]
+  `,
+  mermaid: { theme: isDarkMode ? 'dark' : 'default' },
+};
+export const codeStore = writable(defaultState);
+export const fromUrl = (data) => {
   let state;
-  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches && false
   try {
-    let stateStr = Base64.decode(data)
+    const stateStr = Base64.decode(data);
+    console.log('state from url', stateStr);
     state = JSON.parse(stateStr);
-
-    console.log('state from url', state)
-
-    if (state.code === undefined) { // not valid json
-//      state = { code: '', mermaid: { theme: themeFromUrl } }
-		}
-		code = state.code;
   } catch (e) {
-    // console.error('Init error', e);
-		code = `graph TD
-  A[Christmas] -->|Get money| B(Go shopping)
-  B --> C{Let me think}
-  C -->|One| D[Laptop]
-  C -->|Two| E[iPhone]
-  C -->|Three| F[fa:fa-car Car]
-		`;
-		state = { code, mermaid: { theme: isDarkMode?'dark':'default' } };
+    console.error('Init error', e);
+    state = defaultState;
   }
-
-  codeStore.set(state);
-
+  codeStore.set({ ...state, updateEditor: true });
 };
-export const updateCodeStore = newState => {
+export const updateCodeStore = (newState) => {
   codeStore.set(newState);
-  replace('/edit/' + Base64.encodeURI(JSON.stringify(newState)))
 };
+export const updateCode = (code, updateEditor) => {
+  const state = get(codeStore);
+  codeStore.set({...state, code, updateEditor});
+};
+export const updateConfig = (config, updateEditor) => {
+  const state = get(codeStore);
+  codeStore.set({ ...state, mermaid: config, updateEditor });
+};
+
+const unsubscribe = codeStore.subscribe((state) => {
+  replace('/edit/' + Base64.encodeURI(JSON.stringify(state)));
+});
