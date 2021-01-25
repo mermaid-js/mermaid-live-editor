@@ -28,7 +28,7 @@
     "pretty": "prettier --write ./src/*"
   },
   "dependencies": {
-    "@mermaid-js/mermaid": "8.9.0-preview.1176",
+    "mermaid": "8.9.0",
     "js-base64": "^2.5.1",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
