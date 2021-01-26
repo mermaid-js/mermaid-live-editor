@@ -4511,9 +4511,10 @@ svelte-loader@2.13.3:
     loader-utils "^1.1.0"
     svelte-dev-helper "^1.1.9"
 
-svelte-routing@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/svelte-routing/-/svelte-routing-1.4.0.tgz#09285f3c7b19f509dfb1289fbc1235b348aa7d80"
+svelte-routing@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/svelte-routing/-/svelte-routing-1.4.2.tgz#291160b537c9c73e711731eb099c48bb24cc3419"
+  integrity sha512-CSCKRLeOp9vjsDGGOEgL9DPm9HZLgZuTNehyTCl3K+6fCVH1Aw/K/WicavAVNcbsHmdR4wgF//0YVR9hrcdvGA==
 
 svelte-spa-router@^1.3.0:
   version "1.3.0"
