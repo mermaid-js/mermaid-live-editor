@@ -18,12 +18,12 @@
     "svelte-loader": "2.13.3",
     "svelte-watch-resize": "^1.0.3",
     "webpack": "^4.30.0",
-    "webpack-cli": "^4.4.0"
+    "webpack-cli": "^4.4.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "release": "cross-env NODE_ENV=production webpack -p",
-    "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack-cli serve --content-base docs",
+    "release": "cross-env NODE_ENV=production webpack build",
+    "dev": "webpack serve --content-base docs",
     "pretty": "prettier --write ./src/*"
   },
   "dependencies": {
