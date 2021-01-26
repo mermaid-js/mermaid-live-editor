@@ -34,7 +34,7 @@
     "mermaid": "8.8.4",
     "moment": "^2.24.0",
     "monaco-editor": "0.21.2",
-    "svelte-routing": "^1.4.0",
+    "svelte-routing": "^1.4.2",
     "svelte-spa-router": "^1.3.0"
   },
   "husky": {
