@@ -1,6 +1,7 @@
 import { writable, get } from 'svelte/store';
 import { Base64 } from 'js-base64';
-import { replace } from 'svelte-spa-router';
+import { replace, location } from 'svelte-spa-router';
+
 const isDarkMode =
   window.matchMedia('(prefers-color-scheme: dark)').matches && false;
 const defaultState = {
@@ -31,7 +32,7 @@ export const updateCodeStore = (newState) => {
 };
 export const updateCode = (code, updateEditor) => {
   const state = get(codeStore);
-  codeStore.set({...state, code, updateEditor});
+  codeStore.set({ ...state, code, updateEditor });
 };
 export const updateConfig = (config, updateEditor) => {
   const state = get(codeStore);
@@ -39,5 +40,8 @@ export const updateConfig = (config, updateEditor) => {
 };
 
 const unsubscribe = codeStore.subscribe((state) => {
-  replace('/edit/' + Base64.encodeURI(JSON.stringify(state)));
+  const currentLocation = get(location).split('/')[1];
+  replace(
+    `/${currentLocation || 'edit'}/` + Base64.encodeURI(JSON.stringify(state))
+  );
 });

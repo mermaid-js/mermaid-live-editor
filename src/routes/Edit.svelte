@@ -29,6 +29,8 @@
         mermaid: {},
         updateEditor: true,
       });
+    } else {
+      loadFlowChart();
     }
 
     let code = null;
