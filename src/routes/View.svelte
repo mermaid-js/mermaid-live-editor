@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte';
-  import Editor from '../components/Editor.svelte';
   import View from '../components/View.svelte';
   // import { fromUrl } from '../code-store.js';
 
