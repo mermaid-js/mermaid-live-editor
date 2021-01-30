@@ -50,6 +50,10 @@
     };
   };
 
+  const isClipboardAvailable = () => {
+    return !!window.ClipboardItem;
+  };
+
   const clipboardCopy = (canvas, context, image) => {
     return () => {
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -101,7 +105,7 @@
 
   const unsubscribe = codeStore.subscribe((state) => {
     b64Code = Base64.encodeURI(JSON.stringify(state));
-    url = `${window.location.pathname.split("#")[0]}#/view/${b64Code}`;
+    url = `${window.location.pathname.split('#')[0]}#/view/${b64Code}`;
     iUrl = `https://mermaid.ink/img/${b64Code}`;
     svgUrl = `https://mermaid.ink/svg/${b64Code}`;
     mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#/edit/${b64Code})`;
@@ -159,11 +163,13 @@
 </style>
 
 <div id="links">
-  <button class="button-style">
-    <a class="link-style" href={url} download="" on:click={onCopyClipboard}>
-      Copy Image
-    </a>
-  </button>
+  {#if isClipboardAvailable()}
+    <button class="button-style">
+      <a class="link-style" href={url} download="" on:click={onCopyClipboard}>
+        Copy Image
+      </a>
+    </button>
+  {/if}
   <button class="button-style">
     <a class="link-style" href={url} download="" on:click={onDownloadPNG}>
       Download PNG
@@ -191,13 +197,13 @@
   <input id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
 </div>
 <p>
-  <label>PNG size:</label>
+  <label>PNG size:</label><br />
   <input
     type="radio"
     value="auto"
     id="autosize"
     bind:group={imagemodeselected} />
-  <label for="autosize">auto</label>
+  <label for="autosize">auto</label><br />
   <input
     type="radio"
     value="width"
@@ -210,7 +216,7 @@
     min="3"
     max="10000"
     bind:value={userimagewidth}
-    disabled={imagemodeselected !== 'width'} />
+    disabled={imagemodeselected !== 'width'} /><br />
   <input
     type="radio"
     value="height"
