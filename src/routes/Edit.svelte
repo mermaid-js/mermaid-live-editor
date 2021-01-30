@@ -30,7 +30,7 @@
         updateEditor: true,
       });
     } else {
-      loadFlowChart();
+      loadSampleDiagram('Flow Chart');
     }
 
     let code = null;
