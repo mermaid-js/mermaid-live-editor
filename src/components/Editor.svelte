@@ -1,6 +1,6 @@
 <script>
   import { codeStore, updateCode } from '../code-store.js';
-  import { codeErrorStore } from '../code-error-store.js';
+  import { codeErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
   import mermaid from '@mermaid';
   import Error from './Error.svelte';
