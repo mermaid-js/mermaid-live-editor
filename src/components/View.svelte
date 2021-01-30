@@ -1,9 +1,7 @@
 <script>
   import { codeStore } from '../code-store.js';
-  import { codeErrorStore } from '../code-error-store.js';
-  import { configErrorStore } from '../config-error-store.js';
+  import { codeErrorStore, configErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
-  // import mermaid from '@mermaid-js/mermaid';
   import mermaid from '@mermaid';
 
   const detectType = (text) => {
@@ -53,21 +51,21 @@
     }, 5000);
   };
 
-  let element;
   let container;
+
+  export let code = '';
+  export let configClasses = '';
+  export let codeClasses = '';
+
   onMount(async () => {
-    element = document.querySelector('graph-div');
     const unsubscribe = codeStore.subscribe((state) => {
       try {
         if (container && state) {
-          code = state.code;
 
           // Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
-          let _code = code;
-          _code = _code.replace(/</g, '&lt;');
-          _code = _code.replace(/>/g, '&gt;');
+          code = state.code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-          container.innerHTML = _code;
+          container.innerHTML = code;
           saveStatistcs(detectType(code));
           delete container.dataset.processed;
           mermaid.initialize(Object.assign({}, state.mermaid));
@@ -96,13 +94,8 @@
     });
   });
 
-  let insertSvg = function (svgCode, bindFunctions) {
-    // element.innerHTML = svgCode;
-  };
+  let insertSvg = function (svgCode, bindFunctions) {};
 
-  export let code = '';
-  export let configClasses = '';
-  export let codeClasses = '';
 </script>
 
 <style>
