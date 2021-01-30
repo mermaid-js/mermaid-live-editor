@@ -51,7 +51,7 @@
   };
 
   const isClipboardAvailable = () => {
-    return !!window.ClipboardItem;
+    return window.hasOwnProperty('ClipboardItem');
   };
 
   const clipboardCopy = (canvas, context, image) => {
