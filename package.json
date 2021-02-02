@@ -22,8 +22,9 @@
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "release": "cross-env NODE_ENV=production webpack build",
+    "build": "webpack build",
     "dev": "webpack serve --content-base docs",
+    "release": "cross-env NODE_ENV=production webpack build",
     "pretty": "prettier --write ./src/*"
   },
   "dependencies": {
