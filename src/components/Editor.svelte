@@ -1,5 +1,5 @@
 <script>
-  import { codeStore, updateCode } from '../code-store.js';
+  import { codeStore, updateCode, updateConfig } from '../code-store.js';
   import { codeErrorStore } from '../error-store.js';
   import { onMount } from 'svelte';
   import mermaid from '@mermaid';
@@ -7,7 +7,7 @@
   import { getResizeHandler, initEditor } from './editor-utils';
   import * as monaco from 'monaco-editor';
   import { watchResize } from 'svelte-watch-resize';
-
+  import { getMermaidData } from '../gist-utils';
   let edit;
 
   const decArr = [];
@@ -69,6 +69,16 @@
     });
 
     initEditor(monaco);
+
+    setTimeout(async () => {
+      // https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a
+      const { code, config } = await getMermaidData(
+        '6268a23e673a533dcb198f241fd7012a'
+      );
+      console.log(code, config);
+      updateCode(code, true);
+      updateConfig(JSON.parse(config), true);
+    }, 500);
   });
 </script>
 
