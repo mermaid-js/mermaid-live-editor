@@ -4692,9 +4692,10 @@ svelte-watch-resize@^1.0.3:
   dependencies:
     element-resize-detector "^1.1"
 
-svelte@^3.0.0:
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.16.0.tgz#7ead284547240fcbcb985c73473dce811315fd15"
+svelte@^3.34.0:
+  version "3.34.0"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.34.0.tgz#a0195a0db0305d78df87520711317b99e6fb8a26"
+  integrity sha512-xWcaQ/J4Yd5k0UWz+ef6i5RW5WP3hNpluEI2qtTTKlMOXERHpVL509O9lIw7sgEn1JjJgTOS+lnnDj99vQ3YqQ==
 
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"
