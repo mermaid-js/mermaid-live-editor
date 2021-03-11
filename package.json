@@ -33,7 +33,7 @@
     "jsonlint": "^1.6.3",
     "mermaid": "8.9.2",
     "moment": "^2.24.0",
-    "monaco-editor": "0.21.2",
+    "monaco-editor": "0.21.3",
     "svelte-routing": "^1.4.2",
     "svelte-spa-router": "^1.3.0"
   },
