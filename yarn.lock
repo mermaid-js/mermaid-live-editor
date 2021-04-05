@@ -4667,12 +4667,19 @@ svelte-dev-helper@^1.1.9:
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/svelte-dev-helper/-/svelte-dev-helper-1.1.9.tgz#7d187db5c6cdbbd64d75a32f91b8998bde3273c3"
 
-svelte-loader@2.13.3:
-  version "2.13.3"
-  resolved "https://registry.yarnpkg.com/svelte-loader/-/svelte-loader-2.13.3.tgz#866046f3ce85a2c4b884f14fb0ba0f205af8cc5c"
+svelte-hmr@^0.12.3:
+  version "0.12.9"
+  resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.12.9.tgz#e323b71062a59bf4b73d2d5a7cc80dba256217e1"
+  integrity sha512-SGE7Odznj4dqZtUVIWcoPCvZ9gHImxVIIjrz+O3DDSi0j4OaSLim6MRF4UdhlBKeW3glSRc+tXNSKYvM5x+Dyw==
+
+svelte-loader@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/svelte-loader/-/svelte-loader-3.1.0.tgz#17394d687408e67cbf1859f45511f766c5d1efc9"
+  integrity sha512-KOst7tLtYPDXl3q7W1d3kezPapDyNZ/WJZypgKfqplTYS1ia/zdsgJBMnWrOQfec+8W9pInOngsJ8CUF9ejDDA==
   dependencies:
-    loader-utils "^1.1.0"
+    loader-utils "^2.0.0"
     svelte-dev-helper "^1.1.9"
+    svelte-hmr "^0.12.3"
 
 svelte-routing@^1.4.2:
   version "1.4.2"
