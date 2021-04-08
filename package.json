@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "license": "MIT",
   "devDependencies": {
-    "cross-env": "^5.2.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^2.1.1",
     "file-loader": "^6.2.0",
     "husky": "^4.3.8",
