@@ -22,15 +22,16 @@
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "release": "cross-env NODE_ENV=production webpack build",
+    "build": "webpack build",
     "dev": "webpack serve --content-base docs",
+    "release": "cross-env NODE_ENV=production webpack build",
     "pretty": "prettier --write ./src/*"
   },
   "dependencies": {
     "js-base64": "^2.5.1",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
-    "mermaid": "8.9.0",
+    "mermaid": "8.9.2",
     "moment": "^2.24.0",
     "monaco-editor": "0.21.2",
     "svelte-routing": "^1.4.2",
