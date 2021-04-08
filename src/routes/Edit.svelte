@@ -282,6 +282,14 @@
               </button>
               <button class="button-style">
                 <a
+                    href="https://github.com/mermaid-js/mermaid/blob/master/docs/getting-started/Tutorials.md"
+                    target="_blank"
+                    class="link-style">
+                    Live Editor Video Tutorials
+                </a>
+              </button>
+              <button class="button-style">
+                <a
                   href="https://github.com/mermaid-js/mermaid"
                   target="_blank"
                   class="link-style">
