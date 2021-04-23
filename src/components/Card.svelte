@@ -29,7 +29,7 @@
 </style>
 
 <div id="card">
-  <div id="title" class="padding">{title}</div>
+  <div id="title" class="padding text-gray-900">{title}</div>
   <div id="content" class={contentClass}>
     <slot />
   </div>
