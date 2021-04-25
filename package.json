@@ -4,7 +4,7 @@
   "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.2.0",
-    "css-loader": "^2.1.1",
+    "css-loader": "^5.2.4",
     "file-loader": "^6.2.0",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.2",
@@ -31,7 +31,7 @@
     "js-base64": "^2.5.1",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
-    "mermaid": "8.9.2",
+    "mermaid": "8.9.3",
     "moment": "^2.24.0",
     "monaco-editor": "0.21.2",
     "svelte-routing": "^1.4.2",
