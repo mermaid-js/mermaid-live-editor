@@ -1,17 +1,17 @@
 html {
-	padding: 0;
-	width: 100%;
-	height: 100%;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
 body {
   padding: 32px;
-	font-family: 'trebuchet ms', verdana, arial;
-	position: relative;
-	width: 100%;
-	height: 100%;
-	box-sizing: border-box;
-	margin: 0;
+  font-family: 'trebuchet ms', verdana, arial;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -42,7 +42,19 @@ i {
   position: absolute;
 }
 
-@font-face{
-	font-family: "codicon";
-	src: url("codicon.ttf") format("truetype");
+@font-face {
+  font-family: 'codicon';
+  src: url('codicon.ttf') format('truetype');
+}
+
+.myInlineDecoration {
+  /* cursor: pointer; */
+  /* text-decoration: underline; */
+  font-weight: bold;
+  font-style: oblique;
+  background: #ffcccc;
+}
+
+#dgraph-div {
+  display: none;
 }
