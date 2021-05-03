@@ -1,45 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-	<meta charset='utf8'>
-	<meta name='viewport' content='width=device-width'>
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width" />
 
-	<title>Mermaid live editor</title>
+    <title>Mermaid live editor</title>
 
-	<link rel='icon' type='image/png' href='favicon.png'>
-	<link rel='stylesheet' href='styles.css'>
-	<link rel='stylesheet' href='bundle.css'>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-<!-- Google Analytics -->
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dist/bundle.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <!-- Google Analytics -->
+    <script>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        'script',
+        'https://www.google-analytics.com/analytics.js',
+        'ga'
+      );
 
-	ga('create', 'UA-153180559-1', 'auto');
-	</script>
-	<!-- End Google Analytics -->
+      ga('create', 'UA-153180559-1', 'auto');
+    </script>
+    <!-- End Google Analytics -->
 
-	<style>
-		.myInlineDecoration {
-			/* cursor: pointer; */
-			/* text-decoration: underline; */
-			font-weight: bold;
-			font-style: oblique;
-			background: #ffcccc;
-		}
-		#dgraph-div {
-			display: none;
-		}
-</style>
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>Online FlowChart &amp; Diagrams Editor - Mermaid Live Editor</title>
-  <meta name="og:image" content="https://github.com/mermaid-js/mermaid/raw/develop/img/header.png">
-  <link rel="canonical" href="https://mermaid-js.github.io/mermaid-live-editor/">
-  <meta name="description" content="Simplify documentation and avoid heavy tools. Open source Visio Alternative. Commonly used for explaining your code! Mermaid is a simple markdown-like script language for generating charts from text via javascript.">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>Online FlowChart &amp; Diagrams Editor - Mermaid Live Editor</title>
+    <meta
+      name="og:image"
+      content="https://github.com/mermaid-js/mermaid/raw/develop/img/header.png"
+    />
+    <link
+      rel="canonical"
+      href="https://mermaid-js.github.io/mermaid-live-editor/"
+    />
+    <meta
+      name="description"
+      content="Simplify documentation and avoid heavy tools. Open source Visio Alternative. Commonly used for explaining your code! Mermaid is a simple markdown-like script language for generating charts from text via javascript."
+    />
   </head>
-<body>
-	<script src='bundle.js'></script>
-</body>
+  <body>
+    <script src="dist/bundle.js"></script>
+  </body>
 </html>
