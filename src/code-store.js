@@ -6,11 +6,11 @@ const isDarkMode =
   window.matchMedia('(prefers-color-scheme: dark)').matches && false;
 const defaultState = {
   code: `graph TD
-A[Christmas] -->|Get money| B(Go shopping)
-B --> C{Let me think}
-C -->|One| D[Laptop]
-C -->|Two| E[iPhone]
-C -->|Three| F[fa:fa-car Car]
+    A[Christmas] -->|Get money| B(Go shopping)
+    B --> C{Let me think}
+    C -->|One| D[Laptop]
+    C -->|Two| E[iPhone]
+    C -->|Three| F[fa:fa-car Car]
   `,
   mermaid: { theme: isDarkMode ? 'dark' : 'default' },
 };
