@@ -1,8 +1,8 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    target-banch: "develop"
+  - package-ecosystem: 'npm'
+    directory: '/'
+    target-branch: 'develop'
     schedule:
-      interval: "weekly" 
-      day: "friday"
+      interval: 'weekly'
+      day: 'friday'

@@ -196,38 +196,34 @@
   <br />
   <input id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
 </div>
-<p>
-  <label>PNG size:</label><br />
-  <input
-    type="radio"
-    value="auto"
-    id="autosize"
-    bind:group={imagemodeselected} />
-  <label for="autosize">auto</label><br />
-  <input
-    type="radio"
-    value="width"
-    id="width-active"
-    bind:group={imagemodeselected} />
-  <label for="width">width</label>
-  <input
-    id="width"
-    type="number"
-    min="3"
-    max="10000"
-    bind:value={userimagewidth}
-    disabled={imagemodeselected !== 'width'} /><br />
-  <input
-    type="radio"
-    value="height"
-    id="height-active"
-    bind:group={imagemodeselected} />
-  <label for="height">height</label>
-  <input
-    id="height"
-    type="number"
-    min="3"
-    max="10000"
-    bind:value={userimageheight}
-    disabled={imagemodeselected !== 'height'} /><br />
-</p>
+
+PNG size:
+<br />
+<input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} />
+<label for="autosize">auto</label><br />
+<input
+  type="radio"
+  value="width"
+  id="width-active"
+  bind:group={imagemodeselected} />
+<label for="width">width</label>
+<input
+  id="width"
+  type="number"
+  min="3"
+  max="10000"
+  bind:value={userimagewidth}
+  disabled={imagemodeselected !== 'width'} /><br />
+<input
+  type="radio"
+  value="height"
+  id="height-active"
+  bind:group={imagemodeselected} />
+<label for="height">height</label>
+<input
+  id="height"
+  type="number"
+  min="3"
+  max="10000"
+  bind:value={userimageheight}
+  disabled={imagemodeselected !== 'height'} /><br />

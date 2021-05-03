@@ -19,7 +19,6 @@
     updateConfig(conf, false);
     configErrorStore.set(undefined);
   };
-  
 
   const unsubscribe = codeStore.subscribe((state) => {
     console.log(state.mermaid, state.updateEditor);
