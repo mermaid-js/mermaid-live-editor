@@ -1,5 +1,5 @@
 {
     "singleQuote": true,
-    "svelteSortOrder": "options-scripts-styles-markup",
+    "svelteSortOrder": "scripts-styles-markup",
     "svelteBracketNewLine": false
 }
