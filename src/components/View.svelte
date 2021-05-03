@@ -61,7 +61,6 @@
     const unsubscribe = codeStore.subscribe((state) => {
       try {
         if (container && state) {
-
           // Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
           code = state.code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -95,7 +94,6 @@
   });
 
   let insertSvg = function (svgCode, bindFunctions) {};
-
 </script>
 
 <style>

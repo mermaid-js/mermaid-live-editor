@@ -255,8 +255,8 @@
       <div id="link-root">
         <div id="link-col1">
           <Card title="Editing history">
-            <span id="historyLoaderSubTitle">Automatically saves once every
-              minute, up to 10 records.</span>
+            <span id="historyLoaderSubTitle"
+              >Automatically saves once every minute, up to 10 records.</span>
             <br />
             <div id="historyList" class="button-container">
               {#if historyList.length > 0}
@@ -282,10 +282,10 @@
               </button>
               <button class="button-style">
                 <a
-                    href="https://github.com/mermaid-js/mermaid/blob/master/docs/getting-started/Tutorials.md"
-                    target="_blank"
-                    class="link-style">
-                    Live Editor Video Tutorials
+                  href="https://github.com/mermaid-js/mermaid/blob/master/docs/getting-started/Tutorials.md"
+                  target="_blank"
+                  class="link-style">
+                  Live Editor Video Tutorials
                 </a>
               </button>
               <button class="button-style">
