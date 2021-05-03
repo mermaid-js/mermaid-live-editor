@@ -274,7 +274,7 @@
             <div class="button-container">
               <button class="button-style">
                 <a
-                  href="https://mermaid-js.github.io/mermaid"
+                  href="https://mermaid-js.github.io/mermaid/#/n00b-gettingStarted"
                   target="_blank"
                   class="link-style">
                   Mermaid Documentation
