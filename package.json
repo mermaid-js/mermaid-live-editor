@@ -27,7 +27,8 @@
     "release": "cross-env NODE_ENV=production webpack build",
     "pretty": "prettier --plugin-search-dir=. --write ./src/*",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "js-base64": "^2.5.1",
