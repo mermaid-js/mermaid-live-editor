@@ -8,7 +8,6 @@ If you want to speed up the progress for mermaid-live-editor, join the slack cha
 
 Edit, preview and share mermaid charts/diagrams.
 
-
 ## Features
 
 - Edit and preview flowcharts, sequence diagrams, gantt diagrams in real time.
@@ -16,14 +15,15 @@ Edit, preview and share mermaid charts/diagrams.
 - Get a link to a viewer of the diagram so that you can share it with others.
 - Get a link to edit the diagram so that someone else can tweak it and send a new link back
 
-
 ## Live demo
 
 You can try out a live version [here](https://mermaid-js.github.io/mermaid-live-editor/).
 
 ## Setup
 
-This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started):
+[Volta](https://volta.sh) is used for managing node and yarn versions.
+
+This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started). :
 
 ```
 yarn install
@@ -43,7 +43,6 @@ registry=https://registry.npmjs.com/
 //npm.pkg.github.com/:_authToken="XXXXXXXXX"
 ```
 
-
 ## Development
 
 ```
@@ -52,7 +51,6 @@ open http://localhost:8080
 ```
 
 This app is created with Svelte + svelte-spa-router.
-
 
 ## Release
 

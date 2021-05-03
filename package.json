@@ -42,5 +42,10 @@
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md}": "prettier --plugin-search-dir=. --write"
+  },
+  "volta": {
+    "node": "14.16.1",
+    "yarn": "1.22.10",
+    "npm": "7.11.2"
   }
 }
