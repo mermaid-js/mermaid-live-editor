@@ -1,6 +1,6 @@
 {
   "name": "mermaid-live-editor",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "license": "MIT",
   "devDependencies": {
     "cross-env": "^7.0.3",
