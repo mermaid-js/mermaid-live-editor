@@ -4,9 +4,10 @@
 
 # git clone git@github.com:mermaid-js/docs.git
 # git clone https://github.com/mermaid-js/docs.git
-
-yarn release
+# set -e
+# yarn release
 pushd .
+[ -d ../docs ] || (echo "Clone https://github.com/mermaid-js/docs to parent folder before continuing." && exit)
 cp -r docs/* ../docs/mermaid-live-editor-beta
 cd ../docs
 git add .

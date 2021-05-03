@@ -2977,7 +2977,7 @@
 
 @font-face {
 	font-family: "codicon";
-	src: url([object Module]) format("truetype");
+	src: url(codicon.ttf) format("truetype");
 }
 
 .codicon[class*='codicon-'] {
