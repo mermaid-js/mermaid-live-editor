@@ -18,9 +18,10 @@ jobs:
         run: |
           npm i -g yarn
           yarn install
+          yarn version --patch --no-git-tag-version
           yarn release
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add ./docs/*
-          git commit -m "Release"
+          git add .
+          git commit -m "Release $(yarn version --version)"
           git push
