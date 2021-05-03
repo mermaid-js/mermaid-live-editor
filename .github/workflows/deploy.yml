@@ -22,6 +22,6 @@ jobs:
           yarn version --prerelease --no-git-tag-version
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add ./docs/*
+          git add .
           git commit -m "Release $(yarn version --version)"
           git push
