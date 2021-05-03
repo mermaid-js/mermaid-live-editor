@@ -18,8 +18,8 @@ jobs:
         run: |
           npm i -g yarn
           yarn install
+          yarn version --patch --no-git-tag-version
           yarn release
-          yarn version --prerelease --no-git-tag-version
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
