@@ -1,6 +1,11 @@
 <script>
   import { onMount } from 'svelte';
-  import { codeStore, updateCode, updateCodeStore } from '../code-store.js';
+  import {
+    codeStore,
+    updateCode,
+    updateCodeStore,
+    initURLSubscription,
+  } from '../code-store.js';
   import Editor from '../components/Editor.svelte';
   import Config from '../components/Config.svelte';
   import View from '../components/View.svelte';
@@ -11,6 +16,8 @@
   import pkg from '@mermaid/package.json';
   import moment from 'moment';
   export let mermaidVersion = pkg.version;
+  export let params = {};
+
   let historyList = [];
   onMount(async () => {
     ga('send', 'pageview');
@@ -20,7 +27,6 @@
     historyList = JSON.parse(localStorage.getItem(historyListKey) || '[]');
     let hisCode =
       historyList.length > 0 ? historyList[historyList.length - 1] : null;
-
     if (params.data) {
       fromUrl(params.data);
     } else if (hisCode) {
@@ -32,7 +38,7 @@
     } else {
       loadSampleDiagram('Flow Chart');
     }
-
+    initURLSubscription();
     let code = null;
     codeStore.subscribe((state) => {
       code = (state && state.code) || code;
@@ -54,7 +60,6 @@
     }, 1 * 60 * 1000);
   });
 
-  export let params = {};
   const samples = {
     'Flow Chart': `graph TD
     A[Christmas] -->|Get money| B(Go shopping)

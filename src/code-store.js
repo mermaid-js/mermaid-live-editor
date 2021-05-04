@@ -39,9 +39,11 @@ export const updateConfig = (config, updateEditor) => {
   codeStore.set({ ...state, mermaid: config, updateEditor });
 };
 
-const unsubscribe = codeStore.subscribe((state) => {
-  const currentLocation = get(location).split('/')[1];
-  replace(
-    `/${currentLocation || 'edit'}/` + Base64.encodeURI(JSON.stringify(state))
-  );
-});
+export const initURLSubscription = () => {
+  codeStore.subscribe((state) => {
+    const currentLocation = get(location).split('/')[1];
+    replace(
+      `/${currentLocation || 'edit'}/` + Base64.encodeURI(JSON.stringify(state))
+    );
+  });
+};
