@@ -1,5 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+
 const path = require('path');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -67,6 +69,9 @@ module.exports = {
     new MonacoWebpackPlugin({
       languages: ['json'],
       features: ['!referenceSearch'],
+    }),
+    new CopyPlugin({
+      patterns: [{ from: 'public', to: '' }],
     }),
   ],
   devtool: prod ? false : 'source-map',
