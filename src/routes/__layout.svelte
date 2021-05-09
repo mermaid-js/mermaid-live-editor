@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/Header/index.svelte';
-	import '../app.css';
+	import '../app.postcss';
 </script>
 
 <Header />
