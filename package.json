@@ -1,8 +1,9 @@
 {
   "name": "mermaid-live-editor",
-  "version": "1.2.7",
+  "version": "1.2.13",
   "license": "MIT",
   "devDependencies": {
+    "copy-webpack-plugin": "^8.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.0",
     "file-loader": "^6.2.0",
@@ -23,10 +24,9 @@
   },
   "scripts": {
     "build": "webpack build",
-    "dev": "webpack serve --content-base docs",
+    "dev": "webpack serve --content-base public",
     "release": "cross-env NODE_ENV=production webpack build",
     "pretty": "prettier --plugin-search-dir=. --write ./src/*",
-    "prepare": "husky install",
     "pre-commit": "lint-staged",
     "postinstall": "husky install"
   },
@@ -42,5 +42,10 @@
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md}": "prettier --plugin-search-dir=. --write"
+  },
+  "volta": {
+    "node": "14.16.1",
+    "yarn": "1.22.10",
+    "npm": "7.11.2"
   }
 }
