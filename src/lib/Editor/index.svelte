@@ -6,14 +6,21 @@
 	import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 	import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+	import { initEditor } from './util';
+
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
 	let Monaco;
+
+	export let text: string;
+	export let language: string;
 	export let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
-		value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
-		language: 'javascript'
-		// automaticLayout: true
+		value: text,
+		language: language
 	};
+
+	$: Monaco?.editor.setModelLanguage(editor.getModel(), language);
+	$: editor?.setValue(text);
 
 	const dispatch = createEventDispatcher<EditorEvents>();
 
@@ -37,6 +44,8 @@
 			}
 		};
 		Monaco = await import('monaco-editor');
+		initEditor(Monaco);
+
 		// divEl = document.getElementById('editor') as HTMLDivElement;
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(async () => {

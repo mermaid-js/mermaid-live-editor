@@ -9,7 +9,9 @@ const defaultState: State = {
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]
   `,
-	mermaid: 'default',
+	mermaid: JSON.stringify({
+		theme: 'default'
+	}),
 	updateEditor: false
 };
 
@@ -17,6 +19,7 @@ export const codeStore = writable(defaultState);
 
 export const loadState = (data: string): void => {
 	let state: State;
+	// debugger;
 	try {
 		const stateStr = decode(data);
 		console.log('state from url', stateStr);
@@ -38,7 +41,7 @@ export const updateCode = (code: string, updateEditor: boolean): void => {
 	});
 };
 
-export const updateConfig = (config: any, updateEditor: boolean): void => {
+export const updateConfig = (config: string, updateEditor: boolean): void => {
 	codeStore.update((state) => {
 		return { ...state, mermaid: config, updateEditor };
 	});
