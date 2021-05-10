@@ -34,7 +34,7 @@
     "js-base64": "^3.6.0",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
-    "mermaid": "8.9.3",
+    "mermaid": "8.10.1",
     "moment": "^2.29.1",
     "monaco-editor": "0.21.3",
     "svelte-routing": "^1.6.0",
