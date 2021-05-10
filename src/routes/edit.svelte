@@ -11,15 +11,18 @@
 	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/Util/state';
 	import { loadStateFromURL } from '$lib/Util/util';
 	import { errorStore } from '$lib/Util/error';
+	import { getMermaid } from '$lib/Util/mermaid';
+	import { onMount } from 'svelte';
+	import type monaco from 'monaco-editor';
 
 	let selectedMode = 'code';
-	let autoSync = true;
 	const languageMap = {
 		code: 'mermaid',
 		config: 'json'
 	};
 	let text: string = '';
 	let language: 'mermaid' | 'json' = 'mermaid';
+	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
 	$: {
 		if ($codeStore.updateEditor) {
@@ -45,35 +48,56 @@
 		}
 	];
 
-	const handleCodeUpdate = (code: string): void => {
+	const handleCodeUpdate = async (code: string): Promise<void> => {
+		const mermaid = await getMermaid();
+		mermaid.parse(code);
 		updateCode(code, false);
 	};
 
 	const handleConfigUpdate = (config: string): void => {
+		JSON.parse(config);
 		updateConfig(config, false);
 	};
 
-	let editorText: string = '';
 	const syncDiagram = () => {
-		try {
-			if (selectedMode === 'code') {
-				handleCodeUpdate(editorText);
-			} else {
-				handleConfigUpdate(editorText);
-			}
-		} catch (e) {
-			errorStore.set(e);
-		}
+		$codeStore.updateDiagram = true;
 	};
 
-	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
-		editorText = message.detail.text;
-		if (autoSync) {
-			syncDiagram();
+	const updateHandler = async (message: CustomEvent<EditorUpdateEvent>) => {
+		try {
+			if (selectedMode === 'code') {
+				await handleCodeUpdate(message.detail.text);
+			} else {
+				handleConfigUpdate(message.detail.text);
+			}
+			errorStore.set(undefined);
+			errorMarkers = [];
+		} catch (e) {
+			errorStore.set(e);
+			if (e.hash) {
+				const marker: monaco.editor.IMarkerData = {
+					severity: 8, //Error
+					startLineNumber: e.hash.loc.first_line,
+					startColumn: e.hash.loc.first_column,
+					endLineNumber: e.hash.loc.last_line,
+					endColumn: e.hash.loc.last_column + 1,
+					message: e.str
+				};
+				errorMarkers.push(marker);
+				// Clear all previous errors before this error.
+				errorMarkers = errorMarkers.filter(
+					(m) => m.startLineNumber >= marker.startLineNumber && m.startColumn >= marker.startColumn
+				);
+			}
+			console.error(e);
 		}
 	};
 	loadStateFromURL();
-	initURLSubscription();
+
+	onMount(() => {
+		syncDiagram();
+		initURLSubscription();
+	});
 </script>
 
 <svelte:head>
@@ -88,25 +112,25 @@
 					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
 					<div class="flex-grow" />
 					<div class="flex gap-x-4 text-white">
-						{#if !autoSync}
+						{#if !$codeStore.autoSync}
 							<button on:click={syncDiagram}>↻ Sync</button>
 						{/if}
 						<label for="autoSync">
-							<input type="checkbox" name="autoSync" bind:checked={autoSync} />
+							<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
 							Auto
 						</label>
 					</div>
 				</div>
 			</div>
 
-			<Editor on:update={updateHandler} {language} {text} />
+			<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 		</Card>
 	</div>
 
-	<div class="w-3/5 h-screen">
+	<div class="w-3/5 h-3/5">
 		<Card class="h-full">
 			<div slot="title" class="text-white">Diagram</div>
-			<View /></Card
-		>
+			<View />
+		</Card>
 	</div>
 </div>

@@ -12,13 +12,16 @@
 		const mermaid = await getMermaid();
 		codeStore.subscribe((state) => {
 			try {
-				if (container && state) {
+				if (container && state && (state.updateDiagram || state.autoSync)) {
+					if (!state.autoSync) {
+						$codeStore.updateDiagram = false;
+					}
 					// Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
 					code = state.code; //.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 					container.innerHTML = code;
 					delete container.dataset.processed;
-					mermaid.initialize(Object.assign({}, state.mermaid));
+					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.init(undefined, container);
 					mermaid.render('graph-div', code, insertSvg);
 				}

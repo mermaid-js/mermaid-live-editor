@@ -12,7 +12,8 @@ const defaultState: State = {
 	mermaid: JSON.stringify({
 		theme: 'default'
 	}),
-	updateEditor: false
+	updateEditor: false,
+	autoSync: true
 };
 
 export const codeStore = writable(defaultState);
@@ -49,6 +50,8 @@ export const updateConfig = (config: string, updateEditor: boolean): void => {
 
 export const initURLSubscription = (): void => {
 	codeStore.subscribe((state: State) => {
+		console.log(state);
+
 		window.location.hash = encode(JSON.stringify(state), true);
 	});
 };

@@ -18,6 +18,8 @@ interface Tab {
 
 interface State {
 	code: string;
-	mermaid: any;
+	mermaid: string;
 	updateEditor: boolean;
+	updateDiagram: boolean;
+	autoSync: boolean;
 }

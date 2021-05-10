@@ -18,9 +18,13 @@
 		value: text,
 		language: language
 	};
-
+	export let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: Monaco?.editor.setModelLanguage(editor.getModel(), language);
 	$: editor?.setValue(text);
+	$: {
+		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
+		console.log(errorMarkers);
+	}
 
 	const dispatch = createEventDispatcher<EditorEvents>();
 
