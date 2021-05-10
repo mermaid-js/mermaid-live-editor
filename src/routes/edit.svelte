@@ -1,11 +1,35 @@
+<script context="module">
+	export const ssr = false;
+</script>
+
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Editor from '$lib/Editor/index.svelte';
-	import { encode, decode } from 'js-base64';
 	import Card from '$lib/Card/index.svelte';
-	const updateHandler = async (message: CustomEvent<EditorUpdateEvent>) => {
-		window.location.hash = encode(message.detail.text, true);
+	import Tabs from '$lib/Tabs/index.svelte';
+	import { initURLSubscription, updateCode } from '$lib/Util/state';
+	import { loadStateFromURL } from '$lib/Util/util';
+
+	let selectedTab = 'code';
+	const tabSelectHandler = (message: CustomEvent<Tab>) => {
+		selectedTab = message.detail.id;
 	};
+	const tabs: Tab[] = [
+		{
+			id: 'code',
+			title: 'Code'
+		},
+		{
+			id: 'config',
+			title: 'Config'
+		}
+	];
+
+	const updateHandler = async (message: CustomEvent<EditorUpdateEvent>) => {
+		updateCode(message.detail.text, false);
+	};
+
+	loadStateFromURL();
+	initURLSubscription();
 </script>
 
 <svelte:head>
@@ -13,13 +37,17 @@
 </svelte:head>
 
 <div class="w-2/5 h-screen flex flex-col gap-6">
-	<div class="h-2/3  overflow-hidden">
-		<Card>
-			<h1 slot="title">Hello</h1>
-			<Editor slot="body" on:update={updateHandler} />
-		</Card>
-	</div>
-	<div class="flex-grow shadow bg-white p-4 rounded">
-		<Editor on:update={updateHandler} />
-	</div>
+	<Card class="h-1/2">
+		<div slot="title">
+			<Tabs on:select={tabSelectHandler} {tabs} />
+		</div>
+
+		{#if selectedTab == 'code'}
+			<Editor on:update={updateHandler} />
+		{:else}
+			<Editor on:update={updateHandler} />
+		{/if}
+	</Card>
+
+	<Card class="h-1/3" />
 </div>

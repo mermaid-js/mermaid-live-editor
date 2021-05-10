@@ -1,8 +1,8 @@
-<div class="bg-white p-2 m-2 rounded shadow h-full flex-col">
-	<div class="bg-blue-400 border-gray-400 -p-2">
+<div class={`bg-white m-2 rounded overflow-hidden shadow flex flex-col ${$$props.class}`}>
+	<div class="bg-blue-400 border-gray-400 p-2 flex-none">
 		<slot name="title" />
 	</div>
-	<div class="h-full">
-		<slot name="body" />
+	<div class="flex-grow">
+		<slot />
 	</div>
 </div>

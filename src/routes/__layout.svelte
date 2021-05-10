@@ -1,12 +1,11 @@
 <script lang="ts">
-	import Header from '$lib/Header/index.svelte';
 	import '../app.postcss';
 </script>
 
 <div class="h-screen">
 	<!-- <Header /> -->
 
-	<main class="h-full bg-red-300">
+	<main class="h-full">
 		<slot />
 	</main>
 </div>

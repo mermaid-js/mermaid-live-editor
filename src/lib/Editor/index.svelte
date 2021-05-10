@@ -12,15 +12,12 @@
 	export let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
 		value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
 		language: 'javascript'
+		// automaticLayout: true
 	};
-	const dispatch = createEventDispatcher<EditorEvents>();
-	let resizeHandler: any = () => {};
 
-	export const getResizeHandler = (editor) => {
-		return (node) => editor && editor.layout();
-	};
+	const dispatch = createEventDispatcher<EditorEvents>();
+
 	onMount(async () => {
-		resizeHandler = getResizeHandler(divEl);
 		// @ts-ignore
 		self.MonacoEnvironment = {
 			getWorker: function (_moduleId: any, label: string) {
@@ -40,14 +37,14 @@
 			}
 		};
 		Monaco = await import('monaco-editor');
+		// divEl = document.getElementById('editor') as HTMLDivElement;
 		editor = Monaco.editor.create(divEl, editorOptions);
-
 		editor.onDidChangeModelContent(async () => {
 			dispatch('update', {
 				text: editor.getValue()
 			});
 		});
-		editor.layout();
+		// editor.layout();
 		return () => {
 			editor.dispose();
 		};
