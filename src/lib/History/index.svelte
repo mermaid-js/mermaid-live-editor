@@ -2,8 +2,15 @@
 	import Tabs from '$lib/Tabs/index.svelte';
 	import Card from '$lib/Card/index.svelte';
 	import { codeStore, getStateString } from '$lib/Util/state';
-	import { addHistoryEntry, autoHistoryMode, historyStore } from './history';
-	import { notify } from '$lib/Util/notify';
+	import {
+		addHistoryEntry,
+		autoHistoryMode,
+		clearHistoryData,
+		getPreviousState,
+		historyStore
+	} from './history';
+	import { notify, prompt } from '$lib/Util/notify';
+	import { onMount } from 'svelte';
 
 	const HISTORY_SAVE_INTERVAL: number = 60000;
 
@@ -21,30 +28,38 @@
 		}
 	];
 
-	const previousState = {};
-
-	setInterval(() => {
-		saveHistory(true);
-	}, HISTORY_SAVE_INTERVAL);
-
 	const saveHistory = (auto = false) => {
-		const currentState = getStateString();
-		if (previousState[`${auto}`] !== currentState) {
+		const currentState: string = getStateString();
+		const previousState: string = getPreviousState(auto);
+		if (previousState !== currentState) {
 			addHistoryEntry({
 				state: $codeStore,
 				time: new Date(),
 				name: 'test',
 				auto
 			});
-			previousState[`${auto}`] = currentState;
 		} else if (!auto) {
 			notify('State already saved.');
 		}
 	};
 
-	const restoreHistory = (state: State): any => {
+	const clearHistory = (date?: Date): void => {
+		if (!date && !prompt('Clear all saved items?')) {
+			return;
+		}
+		clearHistoryData(date);
+	};
+
+	const restoreHistory = (state: State): void => {
 		codeStore.set({ ...state, updateEditor: true, updateDiagram: true });
 	};
+
+	onMount(() => {
+		autoHistoryMode.set(false);
+		setInterval(() => {
+			saveHistory(true);
+		}, HISTORY_SAVE_INTERVAL);
+	});
 </script>
 
 <Card class="h-1/2">
@@ -55,14 +70,18 @@
 			<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => saveHistory()}
 				>💾</button
 			>
+			<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => clearHistory()}
+				>❌</button
+			>
 		</div>
 	</div>
-	<ul>
+	<ul class="p-2 space-y-2">
 		{#each $historyStore as { state, time, name }}
-			<li>
+			<li class="rounded p-2 shadow block">
 				{time}
 				{name}
-				<button on:click={restoreHistory(state)}>Restore</button>
+				<button on:click={() => restoreHistory(state)}>Restore</button>
+				<button on:click={() => clearHistory(time)}>Delete</button>
 			</li>
 		{/each}
 	</ul>

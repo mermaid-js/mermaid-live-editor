@@ -1,4 +1,4 @@
-import { derived, Readable, Writable, writable } from 'svelte/store';
+import { derived, Readable, Writable, writable, get } from 'svelte/store';
 
 const MAX_AUTO_HISTORY_LENGTH = 10;
 
@@ -22,4 +22,18 @@ export const addHistoryEntry = (entry: HistoryEntry): void => {
 		}
 		return [entry, ...entries];
 	});
+};
+
+export const clearHistoryData = (time?: Date): void => {
+	(get(autoHistoryMode) ? autoHistoryStore : manualHistoryStore).update((entries) =>
+		entries.filter((entry) => time && entry.time != time)
+	);
+};
+
+export const getPreviousState = (auto: boolean): string => {
+	const entries = get(auto ? autoHistoryStore : manualHistoryStore);
+	if (entries.length > 0) {
+		return JSON.stringify(entries[0].state);
+	}
+	return '';
 };
