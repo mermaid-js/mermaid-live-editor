@@ -109,7 +109,7 @@
 				<div class="flex gap-x-4 text-white">
 					{#if !$codeStore.autoSync}
 						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
-							>↻ Sync</button
+							>🔄</button
 						>
 					{/if}
 					<label for="autoSync">
