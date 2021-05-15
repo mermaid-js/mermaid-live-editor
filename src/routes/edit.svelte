@@ -1,20 +1,17 @@
-<script context="module">
-	export const ssr = false;
-	// import mermaid from 'mermaid';
-</script>
-
 <script lang="ts">
 	import Editor from '$lib/Editor/index.svelte';
 	import View from '$lib/View/index.svelte';
 	import Card from '$lib/Card/index.svelte';
 	import Tabs from '$lib/Tabs/index.svelte';
+	import History from '$lib/History/index.svelte';
 	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/Util/state';
 	import { loadStateFromURL } from '$lib/Util/util';
 	import { errorStore } from '$lib/Util/error';
-	import { getMermaid } from '$lib/Util/mermaid';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
+	import type { Mermaid } from 'mermaid';
 
+	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
 	let selectedMode = 'code';
 	const languageMap = {
 		code: 'mermaid',
@@ -49,7 +46,6 @@
 	];
 
 	const handleCodeUpdate = async (code: string): Promise<void> => {
-		const mermaid = await getMermaid();
 		mermaid.parse(code);
 		updateCode(code, false);
 	};
@@ -107,24 +103,25 @@
 <div class="flex">
 	<div class="w-2/5 h-screen flex flex-col gap-6">
 		<Card class="h-1/2">
-			<div slot="title">
-				<div class="flex">
-					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
-					<div class="flex-grow" />
-					<div class="flex gap-x-4 text-white">
-						{#if !$codeStore.autoSync}
-							<button on:click={syncDiagram}>↻ Sync</button>
-						{/if}
-						<label for="autoSync">
-							<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
-							Auto
-						</label>
-					</div>
+			<div slot="title" class="flex">
+				<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
+				<div class="flex-grow" />
+				<div class="flex gap-x-4 text-white">
+					{#if !$codeStore.autoSync}
+						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
+							>↻ Sync</button
+						>
+					{/if}
+					<label for="autoSync">
+						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
+						Auto sync
+					</label>
 				</div>
 			</div>
 
 			<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 		</Card>
+		<History />
 	</div>
 
 	<div class="w-3/5 h-3/5">

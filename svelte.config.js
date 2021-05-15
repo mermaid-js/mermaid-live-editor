@@ -20,7 +20,8 @@ const config = {
 			optimizeDeps: {
 				include: ['mermaid']
 			}
-		}
+		},
+		ssr: false
 	}
 };
 
