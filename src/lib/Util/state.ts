@@ -1,5 +1,6 @@
 import { writable, get } from 'svelte/store';
 import { encode, decode } from 'js-base64';
+import { persist, localStorage } from '@macfja/svelte-persistent-store';
 
 const defaultState: State = {
 	code: `graph TD
@@ -17,20 +18,19 @@ const defaultState: State = {
 	updateDiagram: true
 };
 
-export const codeStore = writable(defaultState);
+export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
 
 export const loadState = (data: string): void => {
 	let state: State;
-	// debugger;
 	try {
 		const stateStr = decode(data);
 		console.log('state from url', stateStr);
 		state = JSON.parse(stateStr);
 	} catch (e) {
 		console.error('Init error', e);
-		state = defaultState;
+		state = get(codeStore);
 	}
-	codeStore.set({ ...state, updateEditor: true });
+	updateCodeStore({ ...state, updateEditor: true });
 };
 
 export const updateCodeStore = (newState: State): void => {

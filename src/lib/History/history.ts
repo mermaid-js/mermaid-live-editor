@@ -1,10 +1,23 @@
 import { derived, Readable, Writable, writable, get } from 'svelte/store';
+import { persist, localStorage } from '@macfja/svelte-persistent-store';
 
 const MAX_AUTO_HISTORY_LENGTH = 10;
 
-export const autoHistoryMode: Writable<boolean> = writable(true);
-const autoHistoryStore: Writable<HistoryEntry[]> = writable([]);
-const manualHistoryStore: Writable<HistoryEntry[]> = writable([]);
+export const autoHistoryMode: Writable<boolean> = persist(
+	writable(true),
+	localStorage(),
+	'autoHistoryMode'
+);
+const autoHistoryStore: Writable<HistoryEntry[]> = persist(
+	writable([]),
+	localStorage(),
+	'autoHistoryStore'
+);
+const manualHistoryStore: Writable<HistoryEntry[]> = persist(
+	writable([]),
+	localStorage(),
+	'manualHistoryStore'
+);
 export const historyStore: Readable<HistoryEntry[]> = derived(
 	[autoHistoryMode, autoHistoryStore, manualHistoryStore],
 	([autoMode, autoHistories, manualHistories], set) => {
@@ -24,7 +37,7 @@ export const addHistoryEntry = (entry: HistoryEntry): void => {
 	});
 };
 
-export const clearHistoryData = (time?: Date): void => {
+export const clearHistoryData = (time?: number): void => {
 	(get(autoHistoryMode) ? autoHistoryStore : manualHistoryStore).update((entries) =>
 		entries.filter((entry) => time && entry.time != time)
 	);

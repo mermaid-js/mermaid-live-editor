@@ -32,6 +32,7 @@
   "dependencies": {
     "@fontsource/fira-mono": "^4.2.2",
     "@lukeed/uuid": "^2.0.0",
+    "@macfja/svelte-persistent-store": "^1.1.0",
     "@tailwindcss/forms": "^0.3.2",
     "cookie": "^0.4.1",
     "js-base64": "^3.6.0",

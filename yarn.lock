@@ -74,6 +74,14 @@
   dependencies:
     "@lukeed/csprng" "^1.0.0"
 
+"@macfja/svelte-persistent-store@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.1.0.tgz#9652f89f59c7a275073622718c5e9d58d4435f0a"
+  integrity sha512-wbx1VR6GTBc0uH9YQZc3vcvhaQdNDK6T3xGr9c/2VJng4B0hoOhOwO9HVoS15WuRu51aLHS/uTjjr26eTtba1g==
+  dependencies:
+    idb-keyval "^5.0.4"
+    js-cookies "^1.0.4"
+
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"
@@ -1475,6 +1483,11 @@ iconv-lite@0.4:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
+idb-keyval@^5.0.4:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-5.0.5.tgz#1b02984dcf42ad4aa290bf9f10935b485419df34"
+  integrity sha512-cqi65rrjhgPExI9vmSU7VcYEbHCUfIBY+9YUWxyr0PyGizptFgGFnvZQ0w+tqOXk1lUcGCZGVLfabf7QnR2S0g==
+
 ignore@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
@@ -1629,6 +1642,11 @@ js-base64@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.6.0.tgz#773e1de628f4f298d65a7e9842c50244751f5756"
   integrity sha512-wVdUBYQeY2gY73RIlPrysvpYx+2vheGo8Y1SNQv/BzHToWpAZzJU7Z6uheKMAe+GLSBig5/Ps2nxg/8tRB73xg==
+
+js-cookies@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/js-cookies/-/js-cookies-1.0.4.tgz#d46e576c420ff6d5542c0f52b6d4ef7d637e754e"
+  integrity sha1-1G5XbEIP9tVULA9SttTvfWN+dU4=
 
 js-tokens@^4.0.0:
   version "4.0.0"

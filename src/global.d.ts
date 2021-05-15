@@ -26,7 +26,7 @@ interface State {
 
 interface HistoryEntry {
 	state: State;
-	time: Date;
+	time: number;
 	name: string;
 	auto: boolean;
 }

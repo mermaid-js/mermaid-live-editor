@@ -34,7 +34,7 @@
 		if (previousState !== currentState) {
 			addHistoryEntry({
 				state: $codeStore,
-				time: new Date(),
+				time: Date.now(),
 				name: 'test',
 				auto
 			});
@@ -43,7 +43,7 @@
 		}
 	};
 
-	const clearHistory = (date?: Date): void => {
+	const clearHistory = (date?: number): void => {
 		if (!date && !prompt('Clear all saved items?')) {
 			return;
 		}
@@ -78,7 +78,7 @@
 	<ul class="p-2 space-y-2">
 		{#each $historyStore as { state, time, name }}
 			<li class="rounded p-2 shadow block">
-				{time}
+				{new Date(time)}
 				{name}
 				<button on:click={() => restoreHistory(state)}>Restore</button>
 				<button on:click={() => clearHistory(time)}>Delete</button>
