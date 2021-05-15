@@ -23,3 +23,10 @@ interface State {
 	updateDiagram: boolean;
 	autoSync: boolean;
 }
+
+interface HistoryEntry {
+	state: State;
+	time: Date;
+	name: string;
+	auto: boolean;
+}
