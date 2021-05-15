@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { encode, decode } from 'js-base64';
 
 const defaultState: State = {
@@ -13,7 +13,8 @@ const defaultState: State = {
 		theme: 'default'
 	}),
 	updateEditor: false,
-	autoSync: true
+	autoSync: true,
+	updateDiagram: true
 };
 
 export const codeStore = writable(defaultState);
@@ -52,4 +53,8 @@ export const initURLSubscription = (): void => {
 	codeStore.subscribe((state: State) => {
 		window.location.hash = encode(JSON.stringify(state), true);
 	});
+};
+
+export const getStateString = (): string => {
+	return JSON.stringify(get(codeStore));
 };

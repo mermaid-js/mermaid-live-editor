@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { errorStore } from '$lib/Util/error';
-	import { getMermaid } from '$lib/Util/mermaid';
 
 	import { codeStore } from '$lib/Util/state';
 	import { onMount } from 'svelte';
+	import type { Mermaid } from 'mermaid';
+
+	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
 	let container;
 
 	export let code = '';
 	export let errorClass = '';
 	onMount(async () => {
-		const mermaid = await getMermaid();
 		codeStore.subscribe((state) => {
 			try {
 				if (container && state && (state.updateDiagram || state.autoSync)) {
@@ -22,7 +23,7 @@
 					container.innerHTML = code;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
-					mermaid.init(undefined, container);
+					mermaid.init(container);
 					mermaid.render('graph-div', code, insertSvg);
 				}
 			} catch (e) {
