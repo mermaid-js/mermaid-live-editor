@@ -126,9 +126,10 @@
 					<div class="flex-1">
 						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 					</div>
-					<Preset />
 				</div>
 			</Card>
+			<Preset />
+
 			<div class="flex-1">
 				<History />
 				<!-- Hello -->
