@@ -61,10 +61,10 @@
 				text: editor.getValue()
 			});
 		});
-		// editor.layout({
-		// 	height: divEl.offsetHeight,
-		// 	width: divEl.offsetWidth
-		// });
+		editor.layout({
+			height: divEl.parentElement.offsetHeight,
+			width: divEl.offsetWidth
+		});
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,
@@ -78,14 +78,4 @@
 	});
 </script>
 
-<div bind:this={divEl} class="edit" />
-
-<style>
-	.edit {
-		position: absolute;
-		width: 100%;
-		height: 90%;
-		left: 0;
-		top: 0;
-	}
-</style>
+<div bind:this={divEl} class="overflow-hidden" />
