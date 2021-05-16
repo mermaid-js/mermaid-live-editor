@@ -80,16 +80,18 @@
 					<div class="flex-1">
 						<div class="flex flex-col">
 							<span>{name}</span>
+							<span class="text-gray-400 text-sm">{relativeTime(time)}</span>
 						</div>
 					</div>
 					<div class="flex gap-2 content-center">
-						<button class="rounded px-2 bg-green-200" on:click={() => restoreHistory(state)}
-							>Restore</button>
-						<button class="rounded px-2 bg-red-200" on:click={() => clearHistory(time)}
-							>Delete</button>
+						<button
+							class="rounded px-2 w-24 bg-green-200 hover:bg-green-300"
+							on:click={() => restoreHistory(state)}>Restore</button>
+						<button
+							class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
+							on:click={() => clearHistory(time)}>Delete</button>
 					</div>
 				</div>
-				<span class="text-gray-400 text-sm">{relativeTime(time)}</span>
 			</li>
 		{/each}
 	</ul>
