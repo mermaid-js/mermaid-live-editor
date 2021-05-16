@@ -3,6 +3,7 @@
 
 	export let tabs: Tab[] = [];
 	export let activeTabID: string = tabs[0].id;
+	export let title: string;
 	const dispatch = createEventDispatcher<TabEvents>();
 	const toggleTabs = (tab: Tab) => {
 		activeTabID = tab.id;
@@ -10,6 +11,7 @@
 	};
 </script>
 
+<span class="text-white mr-2">{title}</span>
 <ul class="flex list-none flex-wrap flex-row">
 	{#each tabs as tab}
 		<li class="mr-2 last:mr-0 flex-auto text-center">

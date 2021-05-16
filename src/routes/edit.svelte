@@ -107,7 +107,7 @@
 		<div class="w-2/5 flex flex-col">
 			<Card class="flex-1">
 				<div slot="title" class="flex">
-					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
+					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} title="Mermaid" /></div>
 					<div class="flex-grow" />
 					<div class="flex gap-x-4 text-white">
 						{#if !$codeStore.autoSync}
@@ -123,7 +123,7 @@
 				</div>
 
 				<div class="h-full flex-grow flex flex-col">
-					<div class="flex-grow" style="position: relative;">
+					<div class="flex-1">
 						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 					</div>
 				</div>
