@@ -2,7 +2,7 @@
 	import '../app.postcss';
 </script>
 
-<main class="h-screen flex flex-col overflow-hidden">
+<main class="h-screen">
 	<slot />
 </main>
 

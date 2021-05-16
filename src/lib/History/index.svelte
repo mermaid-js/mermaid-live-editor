@@ -62,7 +62,7 @@
 	});
 </script>
 
-<Card class="flex-1">
+<Card class="h-64">
 	<div slot="title" class="flex">
 		<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
 		<div class="flex-grow" />
@@ -75,7 +75,7 @@
 			>
 		</div>
 	</div>
-	<ul class="p-2 space-y-2 custom-container overflow-auto">
+	<ul class="p-2 space-y-2 overflow-auto">
 		{#each $historyStore as { state, time, name }}
 			<li class="rounded p-2 shadow block">
 				{new Date(time)}
@@ -86,10 +86,3 @@
 		{/each}
 	</ul>
 </Card>
-
-<style>
-	.custom-contaniner {
-		/* height: 100%;
-		overflow-y: auto; */
-	}
-</style>
