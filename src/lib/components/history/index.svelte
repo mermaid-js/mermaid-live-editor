@@ -11,6 +11,7 @@
 	} from './history';
 	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
+	import moment from 'moment';
 
 	const HISTORY_SAVE_INTERVAL: number = 1000;
 
@@ -35,7 +36,6 @@
 			addHistoryEntry({
 				state: $codeStore,
 				time: Date.now(),
-				name: 'test',
 				auto
 			});
 		} else if (!auto) {
@@ -54,6 +54,11 @@
 		codeStore.set({ ...state, updateEditor: true, updateDiagram: true });
 	};
 
+	const relativeTime = (time: number) => {
+		const t = new Date(time);
+		return `${new Date(t).toLocaleString()} (${moment(t).fromNow()})`;
+	};
+
 	onMount(() => {
 		autoHistoryMode.set(false);
 		setInterval(() => {
@@ -62,7 +67,7 @@
 	});
 </script>
 
-<Card class="h-64">
+<Card class="h-52">
 	<div slot="title" class="flex justify-between">
 		<div class="flex">
 			<Tabs on:select={tabSelectHandler} {tabs} title="History" />
@@ -78,11 +83,23 @@
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto">
 		{#each $historyStore as { state, time, name }}
-			<li class="rounded p-2 shadow block">
-				{new Date(time)}
-				{name}
-				<button on:click={() => restoreHistory(state)}>Restore</button>
-				<button on:click={() => clearHistory(time)}>Delete</button>
+			<li class="rounded p-2 shadow flex-col">
+				<div class="flex">
+					<div class="flex-1">
+						<div class="flex flex-col">
+							<span>{name}</span>
+						</div>
+					</div>
+					<div class="flex gap-2 content-center">
+						<button class="rounded px-2 bg-green-200" on:click={() => restoreHistory(state)}
+							>Restore</button
+						>
+						<button class="rounded px-2 bg-red-200" on:click={() => clearHistory(time)}
+							>Delete</button
+						>
+					</div>
+				</div>
+				<span class="text-gray-400 text-sm">{relativeTime(time)}</span>
 			</li>
 		{/each}
 	</ul>
