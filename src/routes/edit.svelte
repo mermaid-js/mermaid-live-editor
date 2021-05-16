@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Editor from '$lib/Editor/index.svelte';
-	import Navbar from '$lib/Navbar/index.svelte';
-
-	import View from '$lib/View/index.svelte';
-	import Card from '$lib/Card/index.svelte';
-	import Tabs from '$lib/Tabs/index.svelte';
-	import History from '$lib/History/index.svelte';
-	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/Util/state';
-	import { loadStateFromURL } from '$lib/Util/util';
-	import { errorStore } from '$lib/Util/error';
+	import Editor from '$lib/components/editor/editor.svelte';
+	import Navbar from '$lib/components/navbar.svelte';
+	import Preset from '$lib/components/preset.svelte';
+	import View from '$lib/components/view.svelte';
+	import Card from '$lib/components/card.svelte';
+	import Tabs from '$lib/components/tabs.svelte';
+	import History from '$lib/components/history/index.svelte';
+	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/util/state';
+	import { loadStateFromURL } from '$lib/util/util';
+	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
@@ -126,6 +126,7 @@
 					<div class="flex-1">
 						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 					</div>
+					<Preset />
 				</div>
 			</Card>
 			<div class="flex-1">

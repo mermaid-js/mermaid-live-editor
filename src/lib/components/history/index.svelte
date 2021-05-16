@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Tabs from '$lib/Tabs/index.svelte';
-	import Card from '$lib/Card/index.svelte';
-	import { codeStore, getStateString } from '$lib/Util/state';
+	import Tabs from '$lib/components/tabs.svelte';
+	import Card from '$lib/components/card.svelte';
+	import { codeStore, getStateString } from '$lib/util/state';
 	import {
 		addHistoryEntry,
 		autoHistoryMode,
@@ -9,7 +9,7 @@
 		getPreviousState,
 		historyStore
 	} from './history';
-	import { notify, prompt } from '$lib/Util/notify';
+	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
 
 	const HISTORY_SAVE_INTERVAL: number = 1000;

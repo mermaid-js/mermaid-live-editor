@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { errorStore } from '$lib/Util/error';
+	import { errorStore } from '$lib/util/error';
 
-	import { codeStore } from '$lib/Util/state';
+	import { codeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
 	import type { Mermaid } from 'mermaid';
 
