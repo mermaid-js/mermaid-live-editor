@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Tabs from '$lib/components/tabs.svelte';
-	import Card from '$lib/components/card.svelte';
+	import Card from '$lib/components/card/card.svelte';
 	import { codeStore, getStateString } from '$lib/util/state';
 	import {
 		addHistoryEntry,

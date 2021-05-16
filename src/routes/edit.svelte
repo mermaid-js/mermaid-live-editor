@@ -3,16 +3,10 @@
 	import Navbar from '$lib/components/navbar.svelte';
 	import Preset from '$lib/components/preset.svelte';
 	import View from '$lib/components/view.svelte';
-	import Card from '$lib/components/card.svelte';
+	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
-	import {
-		initURLSubscription,
-		updateCode,
-		updateConfig,
-		codeStore,
-		base64State
-	} from '$lib/util/state';
-	import { initHandler, loadStateFromURL } from '$lib/util/util';
+	import { updateCode, updateConfig, codeStore, base64State } from '$lib/util/state';
+	import { initHandler } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
@@ -110,7 +104,7 @@
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="w-2/5 flex flex-col">
-			<Card on:select={tabSelectHandler} {tabs} isOpen={true} title="Mermaid">
+			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
 						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}

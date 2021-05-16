@@ -61,10 +61,7 @@
 				text: editor.getValue()
 			});
 		});
-		editor.layout({
-			height: divEl.parentElement.parentElement.offsetHeight,
-			width: divEl.parentElement.parentElement.offsetWidth
-		});
+
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,
@@ -72,7 +69,7 @@
 			});
 		});
 
-		resizeObserver.observe(divEl.parentElement.parentElement);
+		resizeObserver.observe(divEl.parentElement);
 		return () => {
 			editor.dispose();
 		};

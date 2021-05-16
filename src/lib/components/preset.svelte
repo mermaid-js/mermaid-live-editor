@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { updateCode } from '$lib/util/state';
-	import Card from '$lib/components/card.svelte';
+	import Card from '$lib/components/card/card.svelte';
 
 	const samples = {
 		'Flow Chart': `graph TD
