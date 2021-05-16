@@ -15,7 +15,7 @@
 	};
 </script>
 
-<div class="flex">
+<div class="flex cursor-default">
 	<span class="text-white mr-2" on:click|stopPropagation={() => (isOpen = !isOpen)}>
 		{#if isCloseable}
 			<svg
@@ -44,16 +44,15 @@
 		<ul class="flex list-none flex-wrap flex-row" transition:fade>
 			{#each tabs as tab}
 				<li class="mr-2 last:mr-0 flex-auto text-center">
-					<!-- svelte-ignore a11y-missing-attribute -->
-					<a
-						class="text font-bold min-w-16 w-auto px-2 py-1 -mb-4 rounded-t  block leading-normal {activeTabID ===
+					<div
+						class="text cursor-pointer font-bold min-w-16 w-auto px-2 py-1 -mb-4 rounded-t  block leading-normal {activeTabID ===
 						tab.id
 							? 'text-blue-500 bg-white border-white'
 							: 'text-white bg-blue-500 border-blue-500'}"
-						on:click={() => toggleTabs(tab)}
+						on:click|stopPropagation={() => toggleTabs(tab)}
 					>
 						{tab.title}
-					</a>
+					</div>
 				</li>
 			{/each}
 		</ul>
