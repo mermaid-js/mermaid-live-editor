@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store';
-import { encode, decode } from 'js-base64';
+import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 
 const defaultState: State = {
@@ -23,7 +23,7 @@ export const codeStore = persist(writable(defaultState), localStorage(), 'codeSt
 export const loadState = (data: string): void => {
 	let state: State;
 	try {
-		const stateStr = decode(data);
+		const stateStr = fromBase64(data);
 		console.log('state from url', stateStr);
 		state = JSON.parse(stateStr);
 	} catch (e) {
@@ -51,7 +51,7 @@ export const updateConfig = (config: string, updateEditor: boolean): void => {
 
 export const initURLSubscription = (): void => {
 	codeStore.subscribe((state: State) => {
-		window.location.hash = encode(JSON.stringify(state), true);
+		window.location.hash = toBase64(JSON.stringify(state), true);
 	});
 };
 

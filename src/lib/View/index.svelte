@@ -47,7 +47,7 @@
 			}
 		});
 	});
-	let insertSvg = function (svgCode, bindFunctions) {};
+	const insertSvg = (svgCode, bindFunctions) => {};
 </script>
 
 <div id="view" class="p-4" class:error class:outOfSync>
