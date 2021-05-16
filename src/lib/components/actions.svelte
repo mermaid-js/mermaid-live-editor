@@ -153,6 +153,6 @@
 
 <style>
 	.btn {
-		@apply rounded p-2 bg-blue-400 shadow flex-auto text-white hover:bg-blue-500;
+		@apply rounded p-2 bg-indigo-400 shadow flex-auto text-white hover:bg-indigo-500;
 	}
 </style>

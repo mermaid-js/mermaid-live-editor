@@ -27,7 +27,7 @@
 	];
 </script>
 
-<header class="p-2 bg-blue-400 text-white font-bold flex flex-wrap items-center">
+<header class="p-2 bg-indigo-400 text-white font-bold flex flex-wrap items-center">
 	<div class="flex-1 flex justify-between items-center">
 		<a href="/"> Mermaid Live Editor </a>
 	</div>
@@ -40,8 +40,7 @@
 			height="20"
 			viewBox="0 0 20 20"
 			><title>menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg
-		></label
-	>
+		></label>
 	<input class="hidden" type="checkbox" id="menu-toggle" />
 
 	<div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
