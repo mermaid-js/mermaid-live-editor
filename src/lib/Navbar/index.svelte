@@ -1,0 +1,67 @@
+<script lang="ts">
+	interface Link {
+		title: string;
+		href: string;
+	}
+	const links: Link[] = [
+		{
+			title: 'Documentation',
+			href: 'https://mermaid-js.github.io/mermaid/#/n00b-gettingStarted'
+		},
+		{
+			title: 'Tutorial',
+			href: 'https://github.com/mermaid-js/mermaid/blob/develop/docs/Tutorials.md'
+		},
+		{
+			title: 'Github',
+			href: 'https://github.com/mermaid-js/mermaid-live-editor'
+		},
+		{
+			title: 'Mermaid',
+			href: 'https://github.com/mermaid-js/mermaid'
+		},
+		{
+			title: 'CLI',
+			href: 'https://github.com/mermaid-js/mermaid-cli'
+		}
+	];
+</script>
+
+<header class="p-2 bg-blue-400 text-white font-bold flex flex-wrap items-center">
+	<div class="flex-1 flex justify-between items-center">
+		<a href="/"> Mermaid Live Editor </a>
+	</div>
+
+	<label for="menu-toggle" class="pointer-cursor lg:hidden block"
+		><svg
+			class="fill-current text-gray-900"
+			xmlns="http://www.w3.org/2000/svg"
+			width="20"
+			height="20"
+			viewBox="0 0 20 20"
+			><title>menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg
+		></label
+	>
+	<input class="hidden" type="checkbox" id="menu-toggle" />
+
+	<div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
+		<nav>
+			<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
+				{#each links as { title, href }}
+					<li>
+						<a class="nav-btn" {href}>{title}</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style lang="postcss">
+	#menu-toggle:checked + #menu {
+		display: block;
+	}
+	.nav-btn {
+		@apply lg:p-2 py-3 px-0 block border-b-2 border-transparent hover:border-white;
+	}
+</style>

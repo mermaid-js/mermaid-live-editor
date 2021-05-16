@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Editor from '$lib/Editor/index.svelte';
+	import Navbar from '$lib/Navbar/index.svelte';
+
 	import View from '$lib/View/index.svelte';
 	import Card from '$lib/Card/index.svelte';
 	import Tabs from '$lib/Tabs/index.svelte';
@@ -99,33 +101,38 @@
 <svelte:head>
 	<title>Edit</title>
 </svelte:head>
-
-<div class="flex">
-	<div class="w-2/5 h-screen flex flex-col gap-6">
-		<Card class="h-1/2">
-			<div slot="title" class="flex">
-				<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
-				<div class="flex-grow" />
-				<div class="flex gap-x-4 text-white">
-					{#if !$codeStore.autoSync}
-						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
-							>🔄</button
-						>
-					{/if}
-					<label for="autoSync">
-						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
-						Auto sync
-					</label>
+<div>
+	<Navbar />
+	<div class="flex">
+		<div class="w-2/5 flex-grow flex flex-col" style="resize:both;">
+			<Card class="h-3/5">
+				<div slot="title" class="flex">
+					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
+					<div class="flex-grow" />
+					<div class="flex gap-x-4 text-white">
+						{#if !$codeStore.autoSync}
+							<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
+								>🔄</button
+							>
+						{/if}
+						<label for="autoSync">
+							<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
+							Auto sync
+						</label>
+					</div>
 				</div>
-			</div>
 
-			<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
-		</Card>
-		<History />
-	</div>
+				<div class="h-full flex-grow flex flex-col">
+					<div class="flex-grow">
+						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
+					</div>
+					<div class="flex-none">Sample</div>
+				</div>
+			</Card>
+			<History />
+		</div>
 
-	<div class="w-3/5 h-3/5">
-		<Card class="h-full">
+		<Card class="w-3/5 h-3/5">
 			<div slot="title" class="text-white">Diagram</div>
 			<View />
 		</Card>
