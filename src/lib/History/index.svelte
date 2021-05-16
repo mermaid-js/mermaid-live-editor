@@ -62,7 +62,7 @@
 	});
 </script>
 
-<Card class="h-2/5">
+<Card class="flex-1">
 	<div slot="title" class="flex">
 		<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
 		<div class="flex-grow" />
@@ -89,7 +89,7 @@
 
 <style>
 	.custom-contaniner {
-		height: 100%;
-		overflow-y: auto;
+		/* height: 100%;
+		overflow-y: auto; */
 	}
 </style>

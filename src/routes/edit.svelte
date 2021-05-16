@@ -101,39 +101,45 @@
 <svelte:head>
 	<title>Edit</title>
 </svelte:head>
-<div>
-	<Navbar />
-	<div class="flex">
-		<div class="w-2/5 flex-grow flex flex-col" style="resize:both;">
-			<Card class="h-3/5">
-				<div slot="title" class="flex">
-					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
-					<div class="flex-grow" />
-					<div class="flex gap-x-4 text-white">
-						{#if !$codeStore.autoSync}
-							<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
-								>🔄</button
-							>
-						{/if}
-						<label for="autoSync">
-							<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
-							Auto sync
-						</label>
-					</div>
-				</div>
 
-				<div class="h-full flex-grow flex flex-col">
-					<div class="flex-grow" style="position: relative;">
-						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
-					</div>
+<Navbar />
+<div class="flex-1 flex overflow-hidden">
+	<div class="w-2/5 flex flex-col">
+		<Card class="flex-1">
+			<div slot="title" class="flex">
+				<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
+				<div class="flex-grow" />
+				<div class="flex gap-x-4 text-white">
+					{#if !$codeStore.autoSync}
+						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
+							>🔄</button
+						>
+					{/if}
+					<label for="autoSync">
+						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
+						Auto sync
+					</label>
 				</div>
-			</Card>
-			<History />
-		</div>
+			</div>
 
-		<Card class="w-3/5 h-3/5">
-			<div slot="title" class="text-white">Diagram</div>
-			<View />
+			<div class="h-full flex-grow flex flex-col">
+				<div class="flex-grow" style="position: relative;">
+					<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
+				</div>
+			</div>
 		</Card>
+		<History />
+		<History />
+	</div>
+
+	<div class="flex-1 flex bg-gray-100 overflow-hidden">
+		<!-- Scrollable container -->
+		<div class="flex-1 overflow-auto">
+			<!-- Your content -->
+			<Card>
+				<div slot="title" class="text-white">Diagram</div>
+				<View />
+			</Card>
+		</div>
 	</div>
 </div>
