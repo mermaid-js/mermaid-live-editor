@@ -123,31 +123,34 @@
 <Card title="Actions" isOpen={true}>
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
-			<button class="btn" on:click={onCopyClipboard}> Copy Image </button>
+			<button class="btn w-full" on:click={onCopyClipboard}> 📋 Copy Image </button>
 		{/if}
-		<button class="btn" on:click={onDownloadPNG}> Download PNG </button>
-		<button class="btn" on:click={onDownloadSVG}> Download SVG </button>
-		<button class="btn">
+		<button class="btn flex-auto" on:click={onDownloadPNG}> Download PNG </button>
+		<button class="btn flex-auto" on:click={onDownloadSVG}> Download SVG </button>
+		<button class="btn flex-auto">
 			<a class="link-style" href={iUrl}>Link to Image</a>
 		</button>
-		<button class="btn">
+		<button class="btn flex-auto">
 			<a class="link-style" href={svgUrl}>Link to SVG</a>
 		</button>
-		<div class="w-full flex  content-center ">
-			<label for="markdown" class="">Copy Markdown</label>
-			<input class="" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+
+		<div class="flex gap-2 items-center">
+			PNG size
+			<input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} />
+			<label for="autosize">Auto</label>
+			<input type="radio" value="width" id="width-active" bind:group={imagemodeselected} />
+			<label for="width">Width</label>
+			<input type="radio" value="height" id="height-active" bind:group={imagemodeselected} />
+			<label for="height">Height</label>
+			{#if imagemodeselected !== 'auto'}
+				<input id="height" type="number" min="3" max="10000" bind:value={userimagesize} />
+			{/if}
 		</div>
 
-		PNG size:
-		<input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} />
-		<label for="autosize">Auto</label>
-		<input type="radio" value="width" id="width-active" bind:group={imagemodeselected} />
-		<label for="width">Width</label>
-		<input type="radio" value="height" id="height-active" bind:group={imagemodeselected} />
-		<label for="height">Height</label>
-		{#if imagemodeselected !== 'auto'}
-			<input id="height" type="number" min="3" max="10000" bind:value={userimagesize} />
-		{/if}
+		<div class="w-full flex gap-2 items-center">
+			<label for="markdown">Copy Markdown</label>
+			<input class="flex-1" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+		</div>
 	</div>
 </Card>
 
