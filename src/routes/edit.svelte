@@ -123,10 +123,9 @@
 				</div>
 
 				<div class="h-full flex-grow flex flex-col">
-					<div class="flex-grow">
+					<div class="flex-grow" style="position: relative;">
 						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 					</div>
-					<div class="flex-none">Sample</div>
 				</div>
 			</Card>
 			<History />

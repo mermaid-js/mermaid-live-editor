@@ -2,7 +2,7 @@
 	<div class="bg-blue-400 border-gray-400 p-2 flex-none">
 		<slot name="title" />
 	</div>
-	<div class="flex-grow">
+	<div class="flex-grow overflow-auto">
 		<slot />
 	</div>
 </div>

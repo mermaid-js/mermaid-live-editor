@@ -55,17 +55,16 @@
 		Monaco = await import('monaco-editor');
 		initEditor(Monaco);
 
-		// divEl = document.getElementById('editor') as HTMLDivElement;
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(async () => {
 			dispatch('update', {
 				text: editor.getValue()
 			});
 		});
-		editor.layout({
-			height: divEl.parentElement.offsetHeight,
-			width: divEl.parentElement.offsetWidth
-		});
+		// editor.layout({
+		// 	height: divEl.offsetHeight,
+		// 	width: divEl.offsetWidth
+		// });
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,
@@ -79,4 +78,14 @@
 	});
 </script>
 
-<div bind:this={divEl} />
+<div bind:this={divEl} class="edit" />
+
+<style>
+	.edit {
+		position: absolute;
+		width: 100%;
+		height: 90%;
+		left: 0;
+		top: 0;
+	}
+</style>
