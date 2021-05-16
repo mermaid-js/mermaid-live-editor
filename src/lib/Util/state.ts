@@ -37,7 +37,9 @@ export const loadState = (data: string): void => {
 };
 
 export const updateCodeStore = (newState: State): void => {
-	codeStore.set(newState);
+	codeStore.update((state) => {
+		return { ...state, ...newState };
+	});
 };
 
 export const updateCode = (code: string, updateEditor: boolean): void => {

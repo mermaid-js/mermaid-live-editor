@@ -2,7 +2,7 @@ import { derived, Readable, Writable, writable, get } from 'svelte/store';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { generateSlug } from 'random-word-slugs';
 
-const MAX_AUTO_HISTORY_LENGTH = 10;
+const MAX_AUTO_HISTORY_LENGTH = 30;
 
 export const autoHistoryMode: Writable<boolean> = persist(
 	writable(true),

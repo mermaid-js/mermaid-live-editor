@@ -7,7 +7,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
 	import { updateCode, updateConfig, codeStore, base64State } from '$lib/util/state';
-	import { initHandler } from '$lib/util/util';
+	import { initHandler, syncDiagram } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
@@ -58,10 +58,6 @@
 		updateConfig(config, false);
 	};
 
-	const syncDiagram = () => {
-		$codeStore.updateDiagram = true;
-	};
-
 	const updateHandler = async (message: CustomEvent<EditorUpdateEvent>) => {
 		try {
 			if (selectedMode === 'code') {
@@ -108,8 +104,9 @@
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
-						<button class="bg-indigo-500 hover:bg-indigo-700 rounded px-1" on:click={syncDiagram}
-							>🔄</button>
+						<button
+							class="bg-indigo-500 hover:bg-indigo-700 rounded px-1 mx-2"
+							on:click={syncDiagram}>🔄</button>
 					{/if}
 					<label for="autoSync">
 						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />

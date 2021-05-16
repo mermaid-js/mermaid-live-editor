@@ -16,7 +16,7 @@
 	<div class="bg-indigo-400 border-gray-400 p-2 flex-none" on:click={() => (isOpen = !isOpen)}>
 		<div class="flex justify-between">
 			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} />
-			<div class="flex gap-x-4 text-white">
+			<div class="flex gap-x-4 items-center text-white">
 				<slot name="actions" />
 			</div>
 		</div>

@@ -10,7 +10,7 @@
 	} from './history';
 	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
-	import moment from 'moment';
+	import moment, { lang } from 'moment';
 
 	const HISTORY_SAVE_INTERVAL: number = 60000;
 
@@ -70,12 +70,8 @@
 
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
-		<button
-			class="bg-yellow-500 hover:bg-yellow-700 rounded px-1"
-			on:click|stopPropagation={() => saveHistory()}>💾</button>
-		<button
-			class="bg-yellow-500 hover:bg-yellow-700 rounded px-1"
-			on:click|stopPropagation={() => clearHistory()}>❌</button>
+		<button class="btn" on:click|stopPropagation={() => saveHistory()}>💾</button>
+		<button class="btn" on:click|stopPropagation={() => clearHistory()}>❌</button>
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56">
 		{#each $historyStore as { state, time, name }}
@@ -98,3 +94,9 @@
 		{/each}
 	</ul>
 </Card>
+
+<style lang="postcss">
+	.btn {
+		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-1 shadow;
+	}
+</style>
