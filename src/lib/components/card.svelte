@@ -1,11 +1,19 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+	import Tabs from '$lib/components/tabs.svelte';
 	export let isOpen: boolean = true;
+	export let tabs: Tab[] = [];
+	export let title: string;
 </script>
 
 <div class={`bg-white rounded overflow-hidden shadow m-2 flex-grow flex flex-col `}>
 	<div class="bg-blue-400 border-gray-400 p-2 flex-none">
-		<slot name="title" />
+		<div class="flex justify-between">
+			<Tabs on:select {tabs} bind:isOpen {title} />
+			<div class="flex gap-x-4 text-white">
+				<slot name="actions" />
+			</div>
+		</div>
 	</div>
 	{#if isOpen}
 		<div class="flex-grow overflow-auto" transition:slide>

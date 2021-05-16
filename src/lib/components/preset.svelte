@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { updateCode, updateCodeStore } from '$lib/util/state';
+	import { updateCode } from '$lib/util/state';
+	import Card from '$lib/components/card.svelte';
 
 	const samples = {
 		'Flow Chart': `graph TD
@@ -76,11 +77,13 @@
 	};
 </script>
 
-<div class="flex gap-2 flex-wrap p-2">
-	{#each Object.keys(samples) as sample}
-		<button
-			class="rounded p-2 bg-blue-400 shadow flex-auto text-white hover:bg-blue-500"
-			on:click={() => loadSampleDiagram(sample)}>{sample}</button
-		>
-	{/each}
-</div>
+<Card title="Presets" isOpen={false}>
+	<div class="flex gap-2 flex-wrap p-2">
+		{#each Object.keys(samples) as sample}
+			<button
+				class="rounded p-2 bg-blue-400 shadow flex-auto text-white hover:bg-blue-500"
+				on:click={() => loadSampleDiagram(sample)}>{sample}</button
+			>
+		{/each}
+	</div>
+</Card>

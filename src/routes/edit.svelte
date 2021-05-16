@@ -4,7 +4,6 @@
 	import Preset from '$lib/components/preset.svelte';
 	import View from '$lib/components/view.svelte';
 	import Card from '$lib/components/card.svelte';
-	import Tabs from '$lib/components/tabs.svelte';
 	import History from '$lib/components/history/history.svelte';
 	import {
 		initURLSubscription,
@@ -111,22 +110,17 @@
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="w-2/5 flex flex-col">
-			<Card>
-				<div slot="title" class="flex justify-between">
-					<div class="flex">
-						<Tabs on:select={tabSelectHandler} {tabs} isOpen={true} title="Mermaid" />
-					</div>
-					<div class="flex gap-x-4 text-white">
-						{#if !$codeStore.autoSync}
-							<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
-								>🔄</button
-							>
-						{/if}
-						<label for="autoSync">
-							<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
-							Auto sync
-						</label>
-					</div>
+			<Card on:select={tabSelectHandler} {tabs} isOpen={true} title="Mermaid">
+				<div slot="actions">
+					{#if !$codeStore.autoSync}
+						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
+							>🔄</button
+						>
+					{/if}
+					<label for="autoSync">
+						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
+						Auto sync
+					</label>
 				</div>
 
 				<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
@@ -140,14 +134,13 @@
 		</div>
 
 		<div class="flex-1 flex flex-col  overflow-hidden">
-			<Card>
-				<div slot="title" class="text-white  flex justify-between">
-					<div>Diagram</div>
-					<button
-						class="rounded shadow px-2 bg-blue-500 hover:bg-blue-700"
-						on:click={() => viewDiagram()}>View</button
-					>
-				</div>
+			<Card title="Diagram">
+				<button
+					slot="actions"
+					class="rounded shadow px-2 bg-blue-500 hover:bg-blue-700"
+					on:click={() => viewDiagram()}>View</button
+				>
+
 				<div class="flex-1 overflow-auto">
 					<View />
 				</div>

@@ -69,19 +69,14 @@
 	let isOpen = true;
 </script>
 
-<Card {isOpen}>
-	<div slot="title" class="flex justify-between">
-		<div class="flex">
-			<Tabs on:select={tabSelectHandler} bind:isOpen {tabs} title="History" />
-		</div>
-		<div class="flex gap-x-4 text-white">
-			<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => saveHistory()}
-				>💾</button
-			>
-			<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => clearHistory()}
-				>❌</button
-			>
-		</div>
+<Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
+	<div slot="actions">
+		<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => saveHistory()}
+			>💾</button
+		>
+		<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => clearHistory()}
+			>❌</button
+		>
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56">
 		{#each $historyStore as { state, time, name }}
