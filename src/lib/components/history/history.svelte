@@ -13,7 +13,7 @@
 	import { onMount } from 'svelte';
 	import moment from 'moment';
 
-	const HISTORY_SAVE_INTERVAL: number = 5000;
+	const HISTORY_SAVE_INTERVAL: number = 60000;
 
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		autoHistoryMode.set('timeline' === message.detail.id);

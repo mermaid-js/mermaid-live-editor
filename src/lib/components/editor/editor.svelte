@@ -62,8 +62,8 @@
 			});
 		});
 		editor.layout({
-			height: divEl.parentElement.offsetHeight,
-			width: divEl.parentElement.offsetWidth
+			height: divEl.parentElement.parentElement.offsetHeight,
+			width: divEl.parentElement.parentElement.offsetWidth
 		});
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({

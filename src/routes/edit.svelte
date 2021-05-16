@@ -111,9 +111,11 @@
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="w-2/5 flex flex-col">
-			<Card class="flex-1">
+			<Card isOpen={true}>
 				<div slot="title" class="flex justify-between">
-					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} title="Mermaid" /></div>
+					<div class="flex">
+						<Tabs on:select={tabSelectHandler} {tabs} isOpen={true} title="Mermaid" />
+					</div>
 					<div class="flex gap-x-4 text-white">
 						{#if !$codeStore.autoSync}
 							<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
@@ -127,7 +129,7 @@
 					</div>
 				</div>
 
-				<div class="h-full flex-grow flex-shrink-0 flex flex-col">
+				<div class="h-full flex-grow flex flex-col">
 					<div class="flex-1">
 						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 					</div>
