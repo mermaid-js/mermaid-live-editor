@@ -6,10 +6,11 @@
 	import type { Mermaid } from 'mermaid';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
-	let container;
-
-	export let code = '';
-	export let errorClass = '';
+	let code: string = '';
+	let container: HTMLDivElement;
+	let error: boolean = false;
+	let outOfSync: boolean = false;
+	let manualUpdate: boolean = true;
 	onMount(async () => {
 		codeStore.subscribe((state) => {
 			try {
@@ -17,6 +18,8 @@
 					if (!state.autoSync) {
 						$codeStore.updateDiagram = false;
 					}
+					outOfSync = false;
+					manualUpdate = true;
 					// Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
 					code = state.code; //.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -25,25 +28,29 @@
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.init(container);
 					mermaid.render('graph-div', code, insertSvg);
+				} else if (manualUpdate) {
+					manualUpdate = false;
+				} else {
+					outOfSync = true;
 				}
 			} catch (e) {
 				console.log('view fail', e);
-				errorClass = 'error';
+				error = true;
 			}
 		});
-		errorStore.subscribe((error) => {
-			if (typeof error === 'undefined') {
-				errorClass = '';
+		errorStore.subscribe((err) => {
+			if (typeof err === 'undefined') {
+				error = false;
 			} else {
-				errorClass = 'error';
-				console.log('Error: ', error);
+				error = true;
+				console.log('Error: ', err);
 			}
 		});
 	});
 	let insertSvg = function (svgCode, bindFunctions) {};
 </script>
 
-<div id="view" class={`p-4 ${errorClass}`}>
+<div id="view" class="p-4" class:error class:outOfSync>
 	<div bind:this={container} class="flex-grow overflow-auto" />
 </div>
 
@@ -52,7 +59,8 @@
 		border: 1px solor darkred;
 		flex: 1;
 	}
-	.error {
+	.error,
+	.outOfSync {
 		opacity: 0.5;
 	}
 </style>
