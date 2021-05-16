@@ -8,6 +8,7 @@
 		if (hash.length > 2) {
 			newURL = `/${hash[1]}#${hash[2]}`;
 		}
+		debugger;
 		await goto(newURL, {
 			replaceState: true
 		});

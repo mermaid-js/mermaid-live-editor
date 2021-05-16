@@ -6,12 +6,19 @@
 	import Card from '$lib/components/card.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import History from '$lib/components/history/index.svelte';
-	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/util/state';
+	import {
+		initURLSubscription,
+		updateCode,
+		updateConfig,
+		codeStore,
+		base64State
+	} from '$lib/util/state';
 	import { initHandler, loadStateFromURL } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
+	import { goto } from '$app/navigation';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
 	let selectedMode = 'code';
@@ -91,6 +98,9 @@
 		}
 	};
 
+	const viewDiagram = async () => {
+		await goto(`/view#${$base64State}`, { replaceState: true });
+	};
 	onMount(initHandler);
 </script>
 
@@ -102,9 +112,8 @@
 	<div class="flex-1 flex overflow-hidden">
 		<div class="w-2/5 flex flex-col">
 			<Card class="flex-1">
-				<div slot="title" class="flex">
+				<div slot="title" class="flex justify-between">
 					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} title="Mermaid" /></div>
-					<div class="flex-grow" />
 					<div class="flex gap-x-4 text-white">
 						{#if !$codeStore.autoSync}
 							<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
@@ -134,7 +143,13 @@
 
 		<div class="flex-1 flex flex-col  overflow-hidden">
 			<Card>
-				<div slot="title" class="text-white">Diagram</div>
+				<div slot="title" class="text-white  flex justify-between">
+					<div>Diagram</div>
+					<button
+						class="rounded shadow px-2 bg-blue-500 hover:bg-blue-700"
+						on:click={() => viewDiagram()}>View</button
+					>
+				</div>
 				<div class="flex-1 overflow-auto">
 					<View />
 				</div>

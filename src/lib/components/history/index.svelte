@@ -63,11 +63,10 @@
 </script>
 
 <Card class="h-64">
-	<div slot="title" class="flex">
+	<div slot="title" class="flex justify-between">
 		<div class="flex">
 			<Tabs on:select={tabSelectHandler} {tabs} title="History" />
 		</div>
-		<div class="flex-grow" />
 		<div class="flex gap-x-4 text-white">
 			<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => saveHistory()}
 				>💾</button
