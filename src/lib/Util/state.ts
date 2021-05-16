@@ -42,9 +42,24 @@ export const updateCodeStore = (newState: State): void => {
 	});
 };
 
-export const updateCode = (code: string, updateEditor: boolean): void => {
+let prompted = false;
+export const updateCode = (code: string, updateEditor: boolean, updateDiagram = false): void => {
+	const lines = (code.match(/\n/g) || '').length + 1;
+
+	if (lines > 50 && !prompted && get(codeStore).autoSync) {
+		const turnOff = confirm(
+			'Long diagram deteced. Turn off Auto Sync? Click the sync logo to manually sync.'
+		);
+		prompted = true;
+		if (turnOff) {
+			updateCodeStore({
+				autoSync: false
+			} as State);
+		}
+	}
+
 	codeStore.update((state) => {
-		return { ...state, code, updateEditor };
+		return { ...state, code, updateEditor, updateDiagram };
 	});
 };
 

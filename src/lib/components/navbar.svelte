@@ -13,16 +13,16 @@
 			href: 'https://github.com/mermaid-js/mermaid/blob/develop/docs/Tutorials.md'
 		},
 		{
-			title: 'Github',
-			href: 'https://github.com/mermaid-js/mermaid-live-editor'
-		},
-		{
 			title: 'Mermaid',
 			href: 'https://github.com/mermaid-js/mermaid'
 		},
 		{
 			title: 'CLI',
 			href: 'https://github.com/mermaid-js/mermaid-cli'
+		},
+		{
+			title: 'Github',
+			href: 'https://github.com/mermaid-js/mermaid-live-editor'
 		}
 	];
 </script>

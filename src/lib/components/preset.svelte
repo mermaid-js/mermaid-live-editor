@@ -73,7 +73,7 @@
 	};
 
 	const loadSampleDiagram = (diagramType: string): void => {
-		updateCode(samples[diagramType], true);
+		updateCode(samples[diagramType], true, true);
 	};
 </script>
 

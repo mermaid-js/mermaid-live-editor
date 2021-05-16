@@ -128,10 +128,10 @@
 		<button class="btn flex-auto" on:click={onDownloadPNG}> Download PNG </button>
 		<button class="btn flex-auto" on:click={onDownloadSVG}> Download SVG </button>
 		<button class="btn flex-auto">
-			<a class="link-style" href={iUrl}>Link to Image</a>
+			<a class="link-style" target="_blank" href={iUrl}>Link to Image</a>
 		</button>
 		<button class="btn flex-auto">
-			<a class="link-style" href={svgUrl}>Link to SVG</a>
+			<a class="link-style" target="_blank" href={svgUrl}>Link to SVG</a>
 		</button>
 
 		<div class="flex gap-2 items-center">
