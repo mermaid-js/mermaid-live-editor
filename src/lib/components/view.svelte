@@ -22,12 +22,13 @@
 					manualUpdate = true;
 					// Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
 					code = state.code; //.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
+					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
 					container.innerHTML = code;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.init(container);
 					mermaid.render('graph-div', code, insertSvg);
+					container.parentElement.parentElement.parentElement.scrollTop = scroll;
 				} else if (manualUpdate) {
 					manualUpdate = false;
 				} else {
