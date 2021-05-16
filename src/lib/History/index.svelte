@@ -62,7 +62,7 @@
 	});
 </script>
 
-<Card class="h-1/2">
+<Card class="h-2/5">
 	<div slot="title" class="flex">
 		<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
 		<div class="flex-grow" />

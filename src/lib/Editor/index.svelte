@@ -16,7 +16,12 @@
 	export let language: string;
 	export let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
 		value: text,
-		language: language
+		language: language,
+		scrollBeyondLastLine: false,
+		minimap: {
+			enabled: false
+		},
+		overviewRulerLanes: 0
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: Monaco?.editor.setModelLanguage(editor.getModel(), language);
@@ -57,11 +62,21 @@
 				text: editor.getValue()
 			});
 		});
-		// editor.layout();
+		editor.layout({
+			height: divEl.parentElement.offsetHeight,
+			width: divEl.parentElement.offsetWidth
+		});
+		const resizeObserver = new ResizeObserver((entries) => {
+			editor.layout({
+				height: entries[0].contentRect.height,
+				width: entries[0].contentRect.width
+			});
+		});
+		resizeObserver.observe(divEl);
 		return () => {
 			editor.dispose();
 		};
 	});
 </script>
 
-<div bind:this={divEl} class="h-full" />
+<div bind:this={divEl} />
