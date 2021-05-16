@@ -111,7 +111,7 @@
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="w-2/5 flex flex-col">
-			<Card isOpen={true}>
+			<Card>
 				<div slot="title" class="flex justify-between">
 					<div class="flex">
 						<Tabs on:select={tabSelectHandler} {tabs} isOpen={true} title="Mermaid" />
@@ -129,11 +129,7 @@
 					</div>
 				</div>
 
-				<div class="h-full flex-grow flex flex-col">
-					<div class="flex-1">
-						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
-					</div>
-				</div>
+				<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 			</Card>
 
 			<div class="flex-1">

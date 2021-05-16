@@ -66,7 +66,7 @@
 		}, HISTORY_SAVE_INTERVAL);
 	});
 
-	let isOpen = false;
+	let isOpen = true;
 </script>
 
 <Card {isOpen}>
