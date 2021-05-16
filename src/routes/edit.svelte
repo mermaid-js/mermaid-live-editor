@@ -7,7 +7,7 @@
 	import Tabs from '$lib/components/tabs.svelte';
 	import History from '$lib/components/history/index.svelte';
 	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/util/state';
-	import { loadStateFromURL } from '$lib/util/util';
+	import { initHandler, loadStateFromURL } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
@@ -90,12 +90,8 @@
 			console.error(e);
 		}
 	};
-	loadStateFromURL();
 
-	onMount(() => {
-		syncDiagram();
-		initURLSubscription();
-	});
+	onMount(initHandler);
 </script>
 
 <svelte:head>
@@ -128,9 +124,9 @@
 					</div>
 				</div>
 			</Card>
-			<Preset />
 
 			<div class="flex-1">
+				<Preset />
 				<History />
 				<!-- Hello -->
 			</div>
@@ -143,7 +139,6 @@
 					<View />
 				</div>
 			</Card>
-			<!-- <div class="h-40">Hello</div> -->
 		</div>
 	</div>
 </div>
