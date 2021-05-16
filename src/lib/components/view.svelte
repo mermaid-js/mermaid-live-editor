@@ -52,7 +52,7 @@
 </script>
 
 <div id="view" class="p-4" class:error class:outOfSync>
-	<div bind:this={container} class="flex-grow overflow-auto" />
+	<div id="container" bind:this={container} class="flex-grow overflow-auto" />
 </div>
 
 <style>

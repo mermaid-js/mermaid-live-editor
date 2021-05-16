@@ -2,6 +2,7 @@
 	import Editor from '$lib/components/editor/editor.svelte';
 	import Navbar from '$lib/components/navbar.svelte';
 	import Preset from '$lib/components/preset.svelte';
+	import Actions from '$lib/components/actions.svelte';
 	import View from '$lib/components/view.svelte';
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
@@ -123,7 +124,7 @@
 			<div class="flex-1">
 				<Preset />
 				<History />
-				<!-- Hello -->
+				<Actions />
 			</div>
 		</div>
 
