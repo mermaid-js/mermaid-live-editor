@@ -70,12 +70,12 @@
 
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
-		<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => saveHistory()}
-			>💾</button
-		>
-		<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => clearHistory()}
-			>❌</button
-		>
+		<button
+			class="bg-yellow-500 hover:bg-yellow-700 rounded px-1"
+			on:click|stopPropagation={() => saveHistory()}>💾</button>
+		<button
+			class="bg-yellow-500 hover:bg-yellow-700 rounded px-1"
+			on:click|stopPropagation={() => clearHistory()}>❌</button>
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56">
 		{#each $historyStore as { state, time, name }}
@@ -88,11 +88,9 @@
 					</div>
 					<div class="flex gap-2 content-center">
 						<button class="rounded px-2 bg-green-200" on:click={() => restoreHistory(state)}
-							>Restore</button
-						>
+							>Restore</button>
 						<button class="rounded px-2 bg-red-200" on:click={() => clearHistory(time)}
-							>Delete</button
-						>
+							>Delete</button>
 					</div>
 				</div>
 				<span class="text-gray-400 text-sm">{relativeTime(time)}</span>

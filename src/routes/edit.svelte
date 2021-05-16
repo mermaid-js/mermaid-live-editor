@@ -109,8 +109,7 @@
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
 						<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
-							>🔄</button
-						>
+							>🔄</button>
 					{/if}
 					<label for="autoSync">
 						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
@@ -129,12 +128,11 @@
 		</div>
 
 		<div class="flex-1 flex flex-col  overflow-hidden">
-			<Card title="Diagram">
+			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
 					class="rounded shadow px-2 bg-blue-500 hover:bg-blue-700"
-					on:click={() => viewDiagram()}>View</button
-				>
+					on:click|stopPropagation={() => viewDiagram()}>View</button>
 
 				<div class="flex-1 overflow-auto">
 					<View />

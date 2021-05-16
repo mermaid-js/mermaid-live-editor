@@ -140,11 +140,11 @@
 
 		PNG size:
 		<input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} />
-		<label for="autosize">auto</label>
+		<label for="autosize">Auto</label>
 		<input type="radio" value="width" id="width-active" bind:group={imagemodeselected} />
-		<label for="width">width</label>
+		<label for="width">Width</label>
 		<input type="radio" value="height" id="height-active" bind:group={imagemodeselected} />
-		<label for="height">height</label>
+		<label for="height">Height</label>
 		{#if imagemodeselected !== 'auto'}
 			<input id="height" type="number" min="3" max="10000" bind:value={userimagesize} />
 		{/if}
