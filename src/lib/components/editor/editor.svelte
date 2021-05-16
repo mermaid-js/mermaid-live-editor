@@ -63,7 +63,7 @@
 		});
 		editor.layout({
 			height: divEl.parentElement.offsetHeight,
-			width: divEl.offsetWidth
+			width: divEl.parentElement.offsetWidth
 		});
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
@@ -71,7 +71,8 @@
 				width: entries[0].contentRect.width
 			});
 		});
-		resizeObserver.observe(divEl);
+
+		resizeObserver.observe(divEl.parentElement.parentElement);
 		return () => {
 			editor.dispose();
 		};

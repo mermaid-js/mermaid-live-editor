@@ -13,7 +13,7 @@
 	import { onMount } from 'svelte';
 	import moment from 'moment';
 
-	const HISTORY_SAVE_INTERVAL: number = 1000;
+	const HISTORY_SAVE_INTERVAL: number = 5000;
 
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		autoHistoryMode.set('timeline' === message.detail.id);
@@ -65,12 +65,14 @@
 			saveHistory(true);
 		}, HISTORY_SAVE_INTERVAL);
 	});
+
+	let isOpen = false;
 </script>
 
-<Card class="h-52">
+<Card {isOpen}>
 	<div slot="title" class="flex justify-between">
 		<div class="flex">
-			<Tabs on:select={tabSelectHandler} {tabs} title="History" />
+			<Tabs on:select={tabSelectHandler} bind:isOpen {tabs} title="History" />
 		</div>
 		<div class="flex gap-x-4 text-white">
 			<button class="bg-yellow-500 hover:bg-yellow-700 rounded px-1" on:click={() => saveHistory()}
@@ -81,7 +83,7 @@
 			>
 		</div>
 	</div>
-	<ul class="p-2 space-y-2 overflow-auto">
+	<ul class="p-2 space-y-2 overflow-auto h-56">
 		{#each $historyStore as { state, time, name }}
 			<li class="rounded p-2 shadow flex-col">
 				<div class="flex">

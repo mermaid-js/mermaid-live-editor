@@ -5,7 +5,7 @@
 	import View from '$lib/components/view.svelte';
 	import Card from '$lib/components/card.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
-	import History from '$lib/components/history/index.svelte';
+	import History from '$lib/components/history/history.svelte';
 	import {
 		initURLSubscription,
 		updateCode,
@@ -127,7 +127,7 @@
 					</div>
 				</div>
 
-				<div class="h-full flex-grow flex flex-col">
+				<div class="h-full flex-grow flex-shrink-0 flex flex-col">
 					<div class="flex-1">
 						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 					</div>
