@@ -27,7 +27,6 @@ export const loadState = (data: string): void => {
 	let state: State;
 	try {
 		const stateStr = fromBase64(data);
-		console.log('state from url', stateStr);
 		state = JSON.parse(stateStr);
 	} catch (e) {
 		console.error('Init error', e);

@@ -40,7 +40,6 @@
 		const image = new Image();
 		image.onload = exporter(canvas, context, image);
 
-		console.log('SVG', getBase64SVG());
 		image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
 		event.stopPropagation();
 		event.preventDefault();

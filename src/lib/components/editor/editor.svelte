@@ -28,7 +28,6 @@
 	$: editor?.setValue(text);
 	$: {
 		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
-		console.log(errorMarkers);
 	}
 
 	const dispatch = createEventDispatcher<EditorEvents>();

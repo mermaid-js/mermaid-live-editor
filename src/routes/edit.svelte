@@ -12,9 +12,11 @@
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
+	import { version } from 'mermaid/package.json';
 	import { goto } from '$app/navigation';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
+
 	let selectedMode = 'code';
 	const languageMap = {
 		code: 'mermaid',
@@ -97,6 +99,7 @@
 <svelte:head>
 	<title>Edit</title>
 </svelte:head>
+
 <div class="h-full flex flex-col overflow-hidden bg-gray-100">
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
@@ -135,6 +138,7 @@
 					<View />
 				</div>
 			</Card>
+			<div class="self-end mx-2 -mt-2">Powered by Mermaid v{version}</div>
 		</div>
 	</div>
 </div>

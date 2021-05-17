@@ -5,11 +5,7 @@
 	export let isOpen: boolean = true;
 	export let tabs: Tab[] = [];
 	export let title: string;
-	$: {
-		console.log('a', isOpen);
-		isOpen = isCloseable ? isOpen : true;
-		console.log(isOpen);
-	}
+	$: isOpen = isCloseable ? isOpen : true;
 </script>
 
 <div class={`bg-white rounded overflow-hidden shadow m-2 flex-grow flex flex-col `}>
