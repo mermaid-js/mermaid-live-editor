@@ -69,7 +69,3 @@ export const initEditor = (monaco) => {
 		}
 	});
 };
-
-export const getResizeHandler = (editor) => {
-	return (node) => editor && editor.layout();
-};

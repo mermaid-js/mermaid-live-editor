@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { errorStore } from '$lib/Util/error';
+	import { errorStore } from '$lib/util/error';
 
-	import { codeStore } from '$lib/Util/state';
+	import { codeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
 	import type { Mermaid } from 'mermaid';
 
@@ -22,12 +22,13 @@
 					manualUpdate = true;
 					// Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
 					code = state.code; //.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
+					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
 					container.innerHTML = code;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.init(container);
 					mermaid.render('graph-div', code, insertSvg);
+					container.parentElement.parentElement.parentElement.scrollTop = scroll;
 				} else if (manualUpdate) {
 					manualUpdate = false;
 				} else {
@@ -50,8 +51,8 @@
 	const insertSvg = (svgCode, bindFunctions) => {};
 </script>
 
-<div id="view" class="p-4" class:error class:outOfSync>
-	<div bind:this={container} class="flex-grow overflow-auto" />
+<div id="view" class="p-2" class:error class:outOfSync>
+	<div id="container" bind:this={container} class="flex-1 overflow-auto" />
 </div>
 
 <style>

@@ -28,7 +28,6 @@
 	$: editor?.setValue(text);
 	$: {
 		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
-		console.log(errorMarkers);
 	}
 
 	const dispatch = createEventDispatcher<EditorEvents>();
@@ -55,28 +54,25 @@
 		Monaco = await import('monaco-editor');
 		initEditor(Monaco);
 
-		// divEl = document.getElementById('editor') as HTMLDivElement;
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(async () => {
 			dispatch('update', {
 				text: editor.getValue()
 			});
 		});
-		editor.layout({
-			height: divEl.parentElement.offsetHeight,
-			width: divEl.parentElement.offsetWidth
-		});
+
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,
 				width: entries[0].contentRect.width
 			});
 		});
-		resizeObserver.observe(divEl);
+
+		resizeObserver.observe(divEl.parentElement);
 		return () => {
 			editor.dispose();
 		};
 	});
 </script>
 
-<div bind:this={divEl} />
+<div bind:this={divEl} class="overflow-hidden" />

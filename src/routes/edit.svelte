@@ -1,19 +1,22 @@
 <script lang="ts">
-	import Editor from '$lib/Editor/index.svelte';
-	import Navbar from '$lib/Navbar/index.svelte';
-
-	import View from '$lib/View/index.svelte';
-	import Card from '$lib/Card/index.svelte';
-	import Tabs from '$lib/Tabs/index.svelte';
-	import History from '$lib/History/index.svelte';
-	import { initURLSubscription, updateCode, updateConfig, codeStore } from '$lib/Util/state';
-	import { loadStateFromURL } from '$lib/Util/util';
-	import { errorStore } from '$lib/Util/error';
+	import Editor from '$lib/components/editor/editor.svelte';
+	import Navbar from '$lib/components/navbar.svelte';
+	import Preset from '$lib/components/preset.svelte';
+	import Actions from '$lib/components/actions.svelte';
+	import View from '$lib/components/view.svelte';
+	import Card from '$lib/components/card/card.svelte';
+	import History from '$lib/components/history/history.svelte';
+	import { updateCode, updateConfig, codeStore, base64State } from '$lib/util/state';
+	import { initHandler, syncDiagram } from '$lib/util/util';
+	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
+	import { version } from 'mermaid/package.json';
+	import { goto } from '$app/navigation';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
+
 	let selectedMode = 'code';
 	const languageMap = {
 		code: 'mermaid',
@@ -57,10 +60,6 @@
 		updateConfig(config, false);
 	};
 
-	const syncDiagram = () => {
-		$codeStore.updateDiagram = true;
-	};
-
 	const updateHandler = async (message: CustomEvent<EditorUpdateEvent>) => {
 		try {
 			if (selectedMode === 'code') {
@@ -90,51 +89,55 @@
 			console.error(e);
 		}
 	};
-	loadStateFromURL();
 
-	onMount(() => {
-		syncDiagram();
-		initURLSubscription();
-	});
+	const viewDiagram = async () => {
+		await goto(`/view#${$base64State}`, { replaceState: true });
+	};
+	onMount(initHandler);
 </script>
 
 <svelte:head>
 	<title>Edit</title>
 </svelte:head>
-<div>
+
+<div class="h-full flex flex-col overflow-hidden bg-gray-100">
 	<Navbar />
-	<div class="flex">
-		<div class="w-2/5 flex-grow flex flex-col" style="resize:both;">
-			<Card class="h-3/5">
-				<div slot="title" class="flex">
-					<div class="flex"><Tabs on:select={tabSelectHandler} {tabs} /></div>
-					<div class="flex-grow" />
-					<div class="flex gap-x-4 text-white">
-						{#if !$codeStore.autoSync}
-							<button class="bg-blue-500 hover:bg-blue-700 rounded px-1" on:click={syncDiagram}
-								>🔄</button
-							>
-						{/if}
-						<label for="autoSync">
-							<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
-							Auto sync
-						</label>
-					</div>
+	<div class="flex-1 flex overflow-hidden">
+		<div class="w-2/5 flex flex-col">
+			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
+				<div slot="actions">
+					{#if !$codeStore.autoSync}
+						<button
+							class="bg-indigo-500 hover:bg-indigo-700 rounded px-1 mx-2"
+							on:click={syncDiagram}>🔄</button>
+					{/if}
+					<label for="autoSync">
+						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
+						Auto sync
+					</label>
 				</div>
 
-				<div class="h-full flex-grow flex flex-col">
-					<div class="flex-grow">
-						<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
-					</div>
-					<div class="flex-none">Sample</div>
-				</div>
+				<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
 			</Card>
-			<History />
+
+			<div class="flex-1">
+				<Preset />
+				<History />
+				<Actions />
+			</div>
 		</div>
 
-		<Card class="w-3/5 h-3/5">
-			<div slot="title" class="text-white">Diagram</div>
-			<View />
-		</Card>
+		<div class="flex-1 flex flex-col  overflow-hidden">
+			<Card title="Diagram" isCloseable={false}>
+				<button
+					slot="actions"
+					class="rounded shadow px-2 bg-indigo-500 hover:bg-indigo-700"
+					on:click|stopPropagation={() => viewDiagram()}>View</button>
+
+				<div class="flex-1 overflow-auto">
+					<View />
+				</div>
+			</Card>
+		</div>
 	</div>
 </div>

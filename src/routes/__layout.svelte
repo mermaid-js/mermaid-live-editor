@@ -2,13 +2,9 @@
 	import '../app.postcss';
 </script>
 
-<div class="h-screen">
-	<!-- <Header /> -->
-
-	<main class="h-full">
-		<slot />
-	</main>
-</div>
+<main class="h-screen">
+	<slot />
+</main>
 
 <style>
 </style>

@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable, get, derived } from 'svelte/store';
 import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 
@@ -19,12 +19,14 @@ const defaultState: State = {
 };
 
 export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
+export const base64State = derived([codeStore], ([code], set) => {
+	set(toBase64(JSON.stringify(code), true));
+});
 
 export const loadState = (data: string): void => {
 	let state: State;
 	try {
 		const stateStr = fromBase64(data);
-		console.log('state from url', stateStr);
 		state = JSON.parse(stateStr);
 	} catch (e) {
 		console.error('Init error', e);
@@ -34,12 +36,29 @@ export const loadState = (data: string): void => {
 };
 
 export const updateCodeStore = (newState: State): void => {
-	codeStore.set(newState);
+	codeStore.update((state) => {
+		return { ...state, ...newState };
+	});
 };
 
-export const updateCode = (code: string, updateEditor: boolean): void => {
+let prompted = false;
+export const updateCode = (code: string, updateEditor: boolean, updateDiagram = false): void => {
+	const lines = (code.match(/\n/g) || '').length + 1;
+
+	if (lines > 50 && !prompted && get(codeStore).autoSync) {
+		const turnOff = confirm(
+			'Long diagram deteced. Turn off Auto Sync? Click the sync logo to manually sync.'
+		);
+		prompted = true;
+		if (turnOff) {
+			updateCodeStore({
+				autoSync: false
+			} as State);
+		}
+	}
+
 	codeStore.update((state) => {
-		return { ...state, code, updateEditor };
+		return { ...state, code, updateEditor, updateDiagram };
 	});
 };
 
@@ -50,8 +69,8 @@ export const updateConfig = (config: string, updateEditor: boolean): void => {
 };
 
 export const initURLSubscription = (): void => {
-	codeStore.subscribe((state: State) => {
-		window.location.hash = toBase64(JSON.stringify(state), true);
+	base64State.subscribe((state: string) => {
+		window.location.hash = state;
 	});
 };
 

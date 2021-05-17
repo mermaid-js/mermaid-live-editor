@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { version } from 'mermaid/package.json';
 	interface Link {
 		title: string;
 		href: string;
@@ -13,23 +14,23 @@
 			href: 'https://github.com/mermaid-js/mermaid/blob/develop/docs/Tutorials.md'
 		},
 		{
-			title: 'Github',
-			href: 'https://github.com/mermaid-js/mermaid-live-editor'
-		},
-		{
 			title: 'Mermaid',
 			href: 'https://github.com/mermaid-js/mermaid'
 		},
 		{
 			title: 'CLI',
 			href: 'https://github.com/mermaid-js/mermaid-cli'
+		},
+		{
+			title: 'Github',
+			href: 'https://github.com/mermaid-js/mermaid-live-editor'
 		}
 	];
 </script>
 
-<header class="p-2 bg-blue-400 text-white font-bold flex flex-wrap items-center">
+<header class="p-2 bg-indigo-400 text-white font-bold flex flex-wrap items-center">
 	<div class="flex-1 flex justify-between items-center">
-		<a href="/"> Mermaid Live Editor </a>
+		<a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
 	</div>
 
 	<label for="menu-toggle" class="pointer-cursor lg:hidden block"
@@ -40,8 +41,7 @@
 			height="20"
 			viewBox="0 0 20 20"
 			><title>menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg
-		></label
-	>
+		></label>
 	<input class="hidden" type="checkbox" id="menu-toggle" />
 
 	<div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
@@ -49,7 +49,7 @@
 			<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
 				{#each links as { title, href }}
 					<li>
-						<a class="nav-btn" {href}>{title}</a>
+						<a class="nav-btn" target="_blank" {href}>{title}</a>
 					</li>
 				{/each}
 			</ul>
