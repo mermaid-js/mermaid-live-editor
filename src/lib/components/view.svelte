@@ -51,8 +51,8 @@
 	const insertSvg = (svgCode, bindFunctions) => {};
 </script>
 
-<div id="view" class="p-4" class:error class:outOfSync>
-	<div id="container" bind:this={container} class="flex-grow overflow-auto" />
+<div id="view" class="p-2" class:error class:outOfSync>
+	<div id="container" bind:this={container} class="flex-1 overflow-auto" />
 </div>
 
 <style>

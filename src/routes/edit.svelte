@@ -138,7 +138,6 @@
 					<View />
 				</div>
 			</Card>
-			<div class="self-end mx-2 -mt-2">Powered by Mermaid v{version}</div>
 		</div>
 	</div>
 </div>

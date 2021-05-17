@@ -36,7 +36,7 @@
     "@tailwindcss/forms": "^0.3.2",
     "cookie": "^0.4.1",
     "js-base64": "^3.6.0",
-    "mermaid": "^8.9.3",
+    "mermaid": "^8.10.1",
     "moment": "^2.29.1",
     "monaco-editor": "^0.23.0",
     "random-word-slugs": "^0.0.2",

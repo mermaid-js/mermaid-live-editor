@@ -30,7 +30,7 @@
 
 <header class="p-2 bg-indigo-400 text-white font-bold flex flex-wrap items-center">
 	<div class="flex-1 flex justify-between items-center">
-		<a href="/">Mermaid<span class="text-xs font-thin">(v{version})</span> Live Editor</a>
+		<a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
 	</div>
 
 	<label for="menu-toggle" class="pointer-cursor lg:hidden block"
