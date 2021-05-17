@@ -10,7 +10,7 @@
 	} from './history';
 	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
-	import moment, { lang } from 'moment';
+	import moment from 'moment';
 
 	const HISTORY_SAVE_INTERVAL: number = 60000;
 

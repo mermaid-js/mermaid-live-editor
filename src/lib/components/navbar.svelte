@@ -49,7 +49,7 @@
 			<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
 				{#each links as { title, href }}
 					<li>
-						<a class="nav-btn" {href}>{title}</a>
+						<a class="nav-btn" target="_blank" {href}>{title}</a>
 					</li>
 				{/each}
 			</ul>
