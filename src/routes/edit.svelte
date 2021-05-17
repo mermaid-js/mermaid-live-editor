@@ -12,7 +12,6 @@
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
-	import { version } from 'mermaid/package.json';
 	import { goto } from '$app/navigation';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
@@ -109,6 +108,7 @@
 					{#if !$codeStore.autoSync}
 						<button
 							class="bg-indigo-500 hover:bg-indigo-700 rounded px-1 mx-2"
+							title="Sync Diagram"
 							on:click={syncDiagram}>🔄</button>
 					{/if}
 					<label for="autoSync">
@@ -132,6 +132,7 @@
 				<button
 					slot="actions"
 					class="rounded shadow px-2 bg-indigo-500 hover:bg-indigo-700"
+					title="View diagram in new page"
 					on:click|stopPropagation={() => viewDiagram()}>View</button>
 
 				<div class="flex-1 overflow-auto">
