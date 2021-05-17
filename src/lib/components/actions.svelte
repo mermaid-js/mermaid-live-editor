@@ -122,15 +122,23 @@
 <Card title="Actions" isOpen={false}>
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
-			<button class="btn w-full" on:click={onCopyClipboard}> 📋 Copy Image </button>
+			<button class="btn w-full" on:click={onCopyClipboard}
+				><i class="fas fa-clipboard" /> Copy Image
+			</button>
 		{/if}
-		<button class="btn flex-auto" on:click={onDownloadPNG}> Download PNG </button>
-		<button class="btn flex-auto" on:click={onDownloadSVG}> Download SVG </button>
-		<button class="btn flex-auto">
-			<a class="link-style" target="_blank" href={iUrl}>Link to Image</a>
+		<button class="btn flex-auto" on:click={onDownloadPNG}>
+			<i class="fas fa-download" /> PNG
+		</button>
+		<button class="btn flex-auto" on:click={onDownloadSVG}>
+			<i class="fas fa-download" /> SVG
 		</button>
 		<button class="btn flex-auto">
-			<a class="link-style" target="_blank" href={svgUrl}>Link to SVG</a>
+			<a class="link-style" target="_blank" href={iUrl}
+				><i class="fas fa-external-link-alt" /> PNG</a>
+		</button>
+		<button class="btn flex-auto">
+			<a class="link-style" target="_blank" href={svgUrl}
+				><i class="fas fa-external-link-alt" /> SVG</a>
 		</button>
 
 		<div class="flex gap-2 items-center">

@@ -41,11 +41,13 @@
 	const tabs: Tab[] = [
 		{
 			id: 'code',
-			title: 'Code'
+			title: 'Code',
+			icon: 'fas fa-code'
 		},
 		{
 			id: 'config',
-			title: 'Config'
+			title: 'Config',
+			icon: 'fas fa-cogs'
 		}
 	];
 
@@ -107,9 +109,9 @@
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
 						<button
-							class="bg-indigo-500 hover:bg-indigo-700 rounded px-1 mx-2"
+							class="bg-indigo-500 hover:bg-indigo-700 rounded px-4 mx-2"
 							title="Sync Diagram"
-							on:click={syncDiagram}>🔄</button>
+							on:click={syncDiagram}><i class="fas fa-sync" /></button>
 					{/if}
 					<label for="autoSync">
 						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
@@ -133,7 +135,7 @@
 					slot="actions"
 					class="rounded shadow px-2 bg-indigo-500 hover:bg-indigo-700"
 					title="View diagram in new page"
-					on:click|stopPropagation={() => viewDiagram()}>View</button>
+					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
 
 				<div class="flex-1 overflow-auto">
 					<View />

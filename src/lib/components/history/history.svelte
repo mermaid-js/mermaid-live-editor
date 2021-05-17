@@ -20,11 +20,13 @@
 	const tabs: Tab[] = [
 		{
 			id: 'saved',
-			title: 'Saved'
+			title: 'Saved',
+			icon: 'far fa-bookmark'
 		},
 		{
 			id: 'timeline',
-			title: 'Timeline'
+			title: 'Timeline',
+			icon: 'fas fa-history'
 		}
 	];
 
@@ -71,11 +73,11 @@
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
 		<button class="btn" on:click|stopPropagation={() => saveHistory()} title="Save current state"
-			>💾</button>
+			><i class="far fa-save" /></button>
 		<button
-			class="btn"
+			class="btn text-red-400"
 			on:click|stopPropagation={() => clearHistory()}
-			title="Delete all saved states">❌</button>
+			title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56">
 		{#each $historyStore as { state, time, name }}
@@ -90,10 +92,10 @@
 					<div class="flex gap-2 content-center">
 						<button
 							class="rounded px-2 w-24 bg-green-200 hover:bg-green-300"
-							on:click={() => restoreHistory(state)}>Restore</button>
+							on:click={() => restoreHistory(state)}><i class="fas fa-undo" /> Restore</button>
 						<button
 							class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
-							on:click={() => clearHistory(time)}>Delete</button>
+							on:click={() => clearHistory(time)}><i class="fas fa-trash-alt" /> Delete</button>
 					</div>
 				</div>
 			</li>
@@ -103,6 +105,6 @@
 
 <style lang="postcss">
 	.btn {
-		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-1 shadow;
+		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-4 shadow;
 	}
 </style>

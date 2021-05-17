@@ -14,6 +14,7 @@ interface TabEvents {
 interface Tab {
 	id: string;
 	title: string;
+	icon?: string;
 }
 
 interface State {

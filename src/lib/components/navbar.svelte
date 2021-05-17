@@ -3,6 +3,7 @@
 	interface Link {
 		title: string;
 		href: string;
+		icon?: string;
 	}
 	const links: Link[] = [
 		{
@@ -22,8 +23,9 @@
 			href: 'https://github.com/mermaid-js/mermaid-cli'
 		},
 		{
-			title: 'Github',
-			href: 'https://github.com/mermaid-js/mermaid-live-editor'
+			title: '',
+			href: 'https://github.com/mermaid-js/mermaid-live-editor',
+			icon: 'fab fa-github fa-lg'
 		}
 	];
 </script>
@@ -47,9 +49,13 @@
 	<div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
 		<nav>
 			<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
-				{#each links as { title, href }}
+				{#each links as { title, href, icon }}
 					<li>
-						<a class="nav-btn" target="_blank" {href}>{title}</a>
+						<a class="nav-btn" target="_blank" {href}>
+							{#if icon}
+								<i class={icon} />
+							{/if}
+							{title}</a>
 					</li>
 				{/each}
 			</ul>
