@@ -47,7 +47,7 @@
 							? 'text-indigo-500 bg-white border-white'
 							: 'text-white bg-indigo-500 border-indigo-500 hover:bg-indigo-600'}"
 						on:click|stopPropagation={() => toggleTabs(tab)}>
-						{#if tab.icon}<i class={tab.icon} /> {/if}{tab.title}
+						<i class={tab.icon} />{tab.title}
 					</div>
 				</li>
 			{/each}
