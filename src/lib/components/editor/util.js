@@ -10,7 +10,9 @@ export const initEditor = (monaco) => {
 			'classDiagram',
 			'pie',
 			'flowchart',
-			'gantt'
+			'gantt',
+			'gitGraph',
+			'journey'
 		],
 		keywords: ['patricipant', 'as'],
 		arrows: ['---', '===', '-->', '==>'],
@@ -20,13 +22,13 @@ export const initEditor = (monaco) => {
 				[/[{}]/, 'delimiter.bracket'],
 				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'keyword', '@keywords': 'keyword' } }],
 				[/[-=>ox]+/, { cases: { '@arrows': 'transition' } }],
-				[/[\[\{\(}]+.+?[\)\]\}]+/, 'string'],
-				[/\".*\"/, 'string']
+				[/[[{(}]+.+?[)]}]+/, 'string'],
+				[/".*"/, 'string']
 			]
 		},
 		whitespace: [
 			[/[ \t\r\n]+/, 'white'],
-			[/\%\%.*$/, 'comment']
+			[/%%.*$/, 'comment']
 		]
 	});
 
