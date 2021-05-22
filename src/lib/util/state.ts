@@ -1,6 +1,7 @@
 import { writable, get, derived } from 'svelte/store';
 import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import type { State } from '$lib/types';
 
 const defaultState: State = {
 	code: `graph TD

@@ -1,7 +1,9 @@
 <script lang="ts">
+	import type { Tab, TabEvents } from '$lib/types';
+
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
-	export let isCloseable: boolean = true;
+	export let isCloseable = true;
 	export let tabs: Tab[] = [];
 	export let title: string;
 	export let isOpen = false;
@@ -14,6 +16,13 @@
 		dispatch('select', tab);
 	};
 </script>
+
+<style>
+	.isOpen {
+		transform: rotate(-90deg);
+		transition-duration: 0.5s;
+	}
+</style>
 
 <div class="flex cursor-default">
 	<span class="text-white mr-2 font-semibold" on:click|stopPropagation={() => (isOpen = !isOpen)}>
@@ -55,10 +64,3 @@
 		</ul>
 	{/if}
 </div>
-
-<style>
-	.isOpen {
-		transform: rotate(-90deg);
-		transition-duration: 0.5s;
-	}
-</style>

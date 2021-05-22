@@ -13,6 +13,7 @@
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
 	import { goto } from '$app/navigation';
+	import type { EditorUpdateEvent, Tab } from '$lib/types';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
 
@@ -21,7 +22,7 @@
 		code: 'mermaid',
 		config: 'json'
 	};
-	let text: string = '';
+	let text = '';
 	let language: 'mermaid' | 'json' = 'mermaid';
 	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
@@ -133,7 +134,7 @@
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="rounded shadow px-2 bg-indigo-500 hover:bg-indigo-700"
+					class="rounded shadow px-2 bg-indigo-500 hover:bg-indigo-700 hidden"
 					title="View diagram in new page"
 					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
 

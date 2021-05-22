@@ -11,6 +11,7 @@
 	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
 	import moment from 'moment';
+	import type { State, Tab } from '$lib/types';
 
 	const HISTORY_SAVE_INTERVAL: number = 60000;
 
@@ -70,6 +71,12 @@
 	let isOpen = true;
 </script>
 
+<style lang="postcss">
+	.btn {
+		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-4 shadow;
+	}
+</style>
+
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
 		<button class="btn" on:click|stopPropagation={() => saveHistory()} title="Save current state"
@@ -102,9 +109,3 @@
 		{/each}
 	</ul>
 </Card>
-
-<style lang="postcss">
-	.btn {
-		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-4 shadow;
-	}
-</style>

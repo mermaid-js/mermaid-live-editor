@@ -1,6 +1,7 @@
 import { derived, Readable, Writable, writable, get } from 'svelte/store';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { generateSlug } from 'random-word-slugs';
+import type { HistoryEntry } from '../../types';
 
 const MAX_AUTO_HISTORY_LENGTH = 30;
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { EditorEvents } from '$lib/types';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { initEditor } from './util';
@@ -28,8 +29,8 @@
 	const dispatch = createEventDispatcher<EditorEvents>();
 
 	onMount(async () => {
-		//@ts-ignore
-		Monaco = monaco; // This is a hack to handle a svelte-kit error when importing monaco.
+		//@ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+		Monaco = monaco;
 		initEditor(Monaco);
 
 		editor = Monaco.editor.create(divEl, editorOptions);
