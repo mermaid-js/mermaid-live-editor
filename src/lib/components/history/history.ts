@@ -9,22 +9,26 @@ export const autoHistoryMode: Writable<boolean> = persist(
 	localStorage(),
 	'autoHistoryMode'
 );
+
 const autoHistoryStore: Writable<HistoryEntry[]> = persist(
 	writable([]),
 	localStorage(),
 	'autoHistoryStore'
 );
+
 const manualHistoryStore: Writable<HistoryEntry[]> = persist(
 	writable([]),
 	localStorage(),
 	'manualHistoryStore'
 );
+
 export const historyStore: Readable<HistoryEntry[]> = derived(
 	[autoHistoryMode, autoHistoryStore, manualHistoryStore],
 	([autoMode, autoHistories, manualHistories], set) => {
 		set(autoMode ? autoHistories : manualHistories);
 	}
 );
+
 export const addHistoryEntry = (entry: HistoryEntry): void => {
 	entry.name = generateSlug(2);
 
