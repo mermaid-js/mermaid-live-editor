@@ -103,7 +103,11 @@
 				</li>
 			{/each}
 		{:else}
-			<div class="m-2">Click the Save button to save current state and restore it later.</div>
+			<div class="m-2 text-gray-600">
+				No items in History<br />
+				Click the Save button to save current state and restore it later.<br />
+				Timeline will automatically be saved every minute.
+			</div>
 		{/if}
 	</ul>
 </Card>
