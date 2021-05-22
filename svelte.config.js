@@ -17,7 +17,7 @@ const config = {
 		}),
 		paths: process.env['CI']
 			? {
-					base: '/mermaid-svelte-kit'
+					base: '/mermaid-live-editor'
 			  }
 			: {},
 		ssr: false,
