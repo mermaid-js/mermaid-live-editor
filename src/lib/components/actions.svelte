@@ -123,7 +123,7 @@
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
 			<button class="btn w-full" on:click={onCopyClipboard}
-				><i class="fas fa-clipboard" /> Copy Image
+				><i class="far fa-copy" /> Copy Image to clipboard
 			</button>
 		{/if}
 		<button class="btn flex-auto" on:click={onDownloadPNG}>
