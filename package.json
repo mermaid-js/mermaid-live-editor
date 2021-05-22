@@ -1,6 +1,6 @@
 {
   "name": "~TODO~",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
