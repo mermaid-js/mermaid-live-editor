@@ -37,8 +37,8 @@
             {
               range: new monaco.Range(
                 e.hash.loc.first_line,
-                e.hash.loc.last_line,
                 e.hash.loc.first_column,
+                e.hash.loc.last_line,
                 e.hash.loc.last_column
               ),
               options: { inlineClassName: 'myInlineDecoration' },
