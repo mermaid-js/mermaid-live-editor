@@ -104,7 +104,7 @@
 <div class="h-full flex flex-col overflow-hidden bg-gray-100">
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
-		<div class="w-2/5 flex flex-col">
+		<div class="w-2/5 hidden md:flex flex-col">
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
@@ -129,7 +129,7 @@
 			</div>
 		</div>
 
-		<div class="flex-1 flex flex-col  overflow-hidden">
+		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
@@ -141,6 +141,9 @@
 					<View />
 				</div>
 			</Card>
+			<div class="flex md:hidden bg-white rounded shadow p-2 mx-2">
+				Code editing not supported on mobile. Please use a desktop browser
+			</div>
 		</div>
 	</div>
 </div>

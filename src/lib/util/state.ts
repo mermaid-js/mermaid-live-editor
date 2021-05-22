@@ -10,9 +10,13 @@ const defaultState: State = {
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]
   `,
-	mermaid: JSON.stringify({
-		theme: 'default'
-	}),
+	mermaid: JSON.stringify(
+		{
+			theme: 'default'
+		},
+		null,
+		2
+	),
 	updateEditor: false,
 	autoSync: true,
 	updateDiagram: true
@@ -27,10 +31,14 @@ export const loadState = (data: string): void => {
 	let state: State;
 	try {
 		const stateStr = fromBase64(data);
+		console.log(`Tring to load state: ${stateStr}`);
 		state = JSON.parse(stateStr);
 	} catch (e) {
-		console.error('Init error', e);
+		if (data) {
+			console.error('Init error', e);
+		}
 		state = get(codeStore);
+		console.log(state);
 	}
 	updateCodeStore({ ...state, updateEditor: true });
 };

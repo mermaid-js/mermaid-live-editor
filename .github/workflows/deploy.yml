@@ -2,7 +2,7 @@ name: Deploy Live Editor
 on:
   push:
     branches:
-      - none
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
