@@ -98,10 +98,6 @@
 	onMount(initHandler);
 </script>
 
-<svelte:head>
-	<title>Edit</title>
-</svelte:head>
-
 <div class="h-full flex flex-col overflow-hidden bg-gray-100">
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
