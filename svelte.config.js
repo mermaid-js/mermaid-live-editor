@@ -15,9 +15,11 @@ const config = {
 		adapter: adapter({
 			pages: 'docs'
 		}),
-		paths: {
-			base: '/mermaid-svelte-kit'
-		},
+		paths: process.env['CI']
+			? {
+					base: '/mermaid-svelte-kit'
+			  }
+			: {},
 		ssr: false,
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte'
