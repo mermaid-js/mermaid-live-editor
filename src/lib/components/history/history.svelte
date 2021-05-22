@@ -71,12 +71,6 @@
 	let isOpen = true;
 </script>
 
-<style lang="postcss">
-	.btn {
-		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-4 shadow;
-	}
-</style>
-
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
 		<button class="btn" on:click|stopPropagation={() => saveHistory()} title="Save current state"
@@ -87,25 +81,35 @@
 			title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56">
-		{#each $historyStore as { state, time, name }}
-			<li class="rounded p-2 shadow flex-col">
-				<div class="flex">
-					<div class="flex-1">
-						<div class="flex flex-col">
-							<span>{name}</span>
-							<span class="text-gray-400 text-sm">{relativeTime(time)}</span>
+		{#if $historyStore.length > 0}
+			{#each $historyStore as { state, time, name }}
+				<li class="rounded p-2 shadow flex-col">
+					<div class="flex">
+						<div class="flex-1">
+							<div class="flex flex-col">
+								<span>{name}</span>
+								<span class="text-gray-400 text-sm">{relativeTime(time)}</span>
+							</div>
+						</div>
+						<div class="flex gap-2 content-center">
+							<button
+								class="rounded px-2 w-24 bg-green-200 hover:bg-green-300"
+								on:click={() => restoreHistory(state)}><i class="fas fa-undo" /> Restore</button>
+							<button
+								class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
+								on:click={() => clearHistory(time)}><i class="fas fa-trash-alt" /> Delete</button>
 						</div>
 					</div>
-					<div class="flex gap-2 content-center">
-						<button
-							class="rounded px-2 w-24 bg-green-200 hover:bg-green-300"
-							on:click={() => restoreHistory(state)}><i class="fas fa-undo" /> Restore</button>
-						<button
-							class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
-							on:click={() => clearHistory(time)}><i class="fas fa-trash-alt" /> Delete</button>
-					</div>
-				</div>
-			</li>
-		{/each}
+				</li>
+			{/each}
+		{:else}
+			<div class="m-2">Click the Save button to save current state and restore it later.</div>
+		{/if}
 	</ul>
 </Card>
+
+<style lang="postcss">
+	.btn {
+		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-4 shadow;
+	}
+</style>
