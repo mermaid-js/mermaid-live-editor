@@ -4,4 +4,7 @@ coverage/
 build/
 yarn-error.log
 .npmrc
-*node_modules*
+.DS_Store
+/.svelte-kit
+/build
+/functions

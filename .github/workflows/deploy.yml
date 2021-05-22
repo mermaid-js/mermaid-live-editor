@@ -19,7 +19,8 @@ jobs:
           npm i -g yarn
           yarn install
           yarn version --patch --no-git-tag-version
-          yarn release
+          export CI=true
+          yarn build
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .

@@ -46,8 +46,7 @@ registry=https://registry.npmjs.com/
 ## Development
 
 ```
-yarn dev
-open http://localhost:8080
+yarn dev -- --open
 ```
 
 This app is created with Svelte + svelte-spa-router.
