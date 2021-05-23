@@ -1,8 +1,13 @@
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-	plugins: ['svelte3', '@typescript-eslint'],
+	extends: [
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:jest/recommended',
+		'prettier'
+	],
+	plugins: ['svelte3', 'jest', '@typescript-eslint'],
 	ignorePatterns: ['docs/*', '*.cjs'],
 	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
 	settings: {
@@ -15,7 +20,8 @@ module.exports = {
 	env: {
 		browser: true,
 		es2017: true,
-		node: true
+		node: true,
+		'jest/globals': true
 	},
 	rules: {
 		'@typescript-eslint/ban-ts-comment': [
