@@ -3,3 +3,4 @@ docs/**
 static/**
 build/**
 node_modules/**
+snapshots.js
