@@ -1,6 +1,6 @@
 {
 	"name": "mermaid-live-editor",
-	"version": "2.0.14",
+	"version": "2.0.15",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
