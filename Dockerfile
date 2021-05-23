@@ -7,7 +7,6 @@
 #                                     or 
 #                                        docker stop mermaid-live-editor
 
-
 FROM node:14.16.0-alpine3.13 as mermaid-live-editor-builder
 COPY --chown=node:node . /home
 WORKDIR /home
