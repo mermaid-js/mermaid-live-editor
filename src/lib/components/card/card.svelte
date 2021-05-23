@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Tab } from '$lib/types';
-
 	import { slide } from 'svelte/transition';
 	import Tabs from './tabs.svelte';
 	export let isCloseable = true;

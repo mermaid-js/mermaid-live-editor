@@ -2674,6 +2674,13 @@ eslint-plugin-svelte3@^3.2.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-3.2.0.tgz#a6deb4ead4b31a647ea88a3823d7c96578f74683"
   integrity sha512-qdWB1QN21dEozsJFdR8XlEhMnsS6aKHjsXWuNmchYwxoet5I6QdCr1Xcq62++IzRBMCNCeH4waXqSOAdqrZzgA==
 
+eslint-plugin-tailwindcss@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.8.0.tgz#f55b6acfc5825e5a0804973293ac110b6b803c10"
+  integrity sha512-5jPmJbPb4AKDVz3UyzKJaXVUBKqqQU9iQFPN6Y6IlfALk9faIqlkC8Aj+7mXx+2ayXDVu0UnHvA05eu7yprFaA==
+  dependencies:
+    tailwindcss "^2.1.2"
+
 eslint-scope@^5.0.0, eslint-scope@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-5.1.1.tgz#e786e59a66cb92b3f6c1fb0d508aab174848f48c"
@@ -6602,7 +6609,7 @@ table@^6.0.9:
     string-width "^4.2.0"
     strip-ansi "^6.0.0"
 
-tailwindcss@^2.1.1:
+tailwindcss@^2.1.1, tailwindcss@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-2.1.2.tgz#29402bf73a445faedd03df6d3b177e7b52b7c4a1"
   integrity sha512-T5t+wwd+/hsOyRw2HJuFuv0LTUm3MUdHm2DJ94GPVgzqwPPFa9XxX0KlwLWupUuiOUj6uiKURCzYPHFcuPch/w==

@@ -5,6 +5,3 @@
 <main class="h-screen">
 	<slot />
 </main>
-
-<style>
-</style>

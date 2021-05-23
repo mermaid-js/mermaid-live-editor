@@ -13,7 +13,7 @@
 	import moment from 'moment';
 	import type { State, Tab } from '$lib/types';
 
-	const HISTORY_SAVE_INTERVAL: number = 60000;
+	const HISTORY_SAVE_INTERVAL = 60000;
 
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		autoHistoryMode.set('timeline' === message.detail.id);
@@ -111,9 +111,3 @@
 		{/if}
 	</ul>
 </Card>
-
-<style lang="postcss">
-	.btn {
-		@apply bg-indigo-500 hover:bg-indigo-700 rounded px-4 shadow;
-	}
-</style>

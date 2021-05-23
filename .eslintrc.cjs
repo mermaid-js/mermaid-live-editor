@@ -7,7 +7,7 @@ module.exports = {
 		'plugin:jest/recommended',
 		'prettier'
 	],
-	plugins: ['svelte3', 'jest', '@typescript-eslint'],
+	plugins: ['svelte3', 'jest', 'tailwindcss', '@typescript-eslint'],
 	ignorePatterns: ['docs/*', '*.cjs', 'snapshots.js'],
 	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
 	settings: {

@@ -70,11 +70,8 @@
 	</div>
 </header>
 
-<style lang="postcss">
+<style>
 	#menu-toggle:checked + #menu {
 		display: block;
-	}
-	.nav-btn {
-		@apply lg:p-2 py-3 px-0 block border-b-2 border-transparent hover:border-white;
 	}
 </style>
