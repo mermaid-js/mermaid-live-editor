@@ -105,7 +105,7 @@ merge newbranch
 	};
 </script>
 
-<Card title="Presets" isOpen={false}>
+<Card title="Sample Diagrams" isOpen={false}>
 	<div class="flex gap-2 flex-wrap p-2">
 		{#each Object.keys(samples) as sample}
 			<button
