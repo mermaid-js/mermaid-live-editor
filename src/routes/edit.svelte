@@ -108,10 +108,11 @@
 						<button
 							class="bg-indigo-500 hover:bg-indigo-700 rounded px-4 mx-2"
 							title="Sync Diagram"
+							data-cy="sync"
 							on:click={syncDiagram}><i class="fas fa-sync" /></button>
 					{/if}
 					<label for="autoSync">
-						<input type="checkbox" name="autoSync" bind:checked={$codeStore.autoSync} />
+						<input type="checkbox" id="autoSync" bind:checked={$codeStore.autoSync} />
 						Auto sync
 					</label>
 				</div>

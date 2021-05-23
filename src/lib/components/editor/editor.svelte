@@ -54,4 +54,4 @@
 	});
 </script>
 
-<div bind:this={divEl} class="overflow-hidden" />
+<div bind:this={divEl} id="editor" class="overflow-hidden" />

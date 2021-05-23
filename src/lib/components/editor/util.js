@@ -9,6 +9,7 @@ export const initEditor = (monaco) => {
 			'sequenceDiagram',
 			'classDiagram',
 			'pie',
+			'erDiagram',
 			'flowchart',
 			'gantt',
 			'gitGraph',
@@ -16,7 +17,6 @@ export const initEditor = (monaco) => {
 		],
 		keywords: ['patricipant', 'as'],
 		arrows: ['---', '===', '-->', '==>'],
-
 		tokenizer: {
 			root: [
 				[/[{}]/, 'delimiter.bracket'],

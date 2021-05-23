@@ -49,7 +49,7 @@ registry=https://registry.npmjs.com/
 yarn dev -- --open
 ```
 
-This app is created with Svelte + svelte-spa-router.
+This app is created with Svelte Kit.
 
 ## Release
 
