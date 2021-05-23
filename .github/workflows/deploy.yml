@@ -18,11 +18,11 @@ jobs:
         run: |
           npm i -g yarn
           yarn install
-          yarn version --patch --no-git-tag-version
+          version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
           export CI=true
           yarn build
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Release $(yarn version --version)"
+          git commit -m "Release $version"
           git push
