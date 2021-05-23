@@ -2,6 +2,7 @@ import { writable, get, derived } from 'svelte/store';
 import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import type { State } from '$lib/types';
+import { saveStatistcs } from './stats';
 
 const defaultState: State = {
 	code: `graph TD
@@ -55,6 +56,7 @@ export const updateCodeStore = (newState: State): void => {
 
 let prompted = false;
 export const updateCode = (code: string, updateEditor: boolean, updateDiagram = false): void => {
+	saveStatistcs(code);
 	const lines = (code.match(/\n/g) || '').length + 1;
 
 	if (lines > 50 && !prompted && get(codeStore).autoSync) {

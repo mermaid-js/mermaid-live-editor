@@ -35,6 +35,8 @@
 			}
 		}
 	}
+	onMount(initHandler);
+
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		$codeStore.updateEditor = true;
 		selectedMode = message.detail.id;
@@ -95,7 +97,6 @@
 	const viewDiagram = async () => {
 		await goto(`/view#${$base64State}`, { replaceState: true });
 	};
-	onMount(initHandler);
 </script>
 
 <div class="h-full flex flex-col overflow-hidden bg-gray-100">

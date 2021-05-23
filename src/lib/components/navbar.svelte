@@ -1,5 +1,12 @@
-<script lang="ts">
+<script context="module">
 	import { version } from 'mermaid/package.json';
+	import { analytics } from '$lib/util/stats';
+	analytics?.track('version', {
+		mermaidVersion: version
+	});
+</script>
+
+<script lang="ts">
 	interface Link {
 		title: string;
 		href: string;
