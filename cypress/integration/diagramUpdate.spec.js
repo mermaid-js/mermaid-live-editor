@@ -1,15 +1,3 @@
-describe('Diagram updates when code is edited', () => {
-	beforeEach(() => {
-		cy.clearLocalStorage();
-		cy.visit('/');
-	});
-	it('Editor Test', () => {
-		cy.get('#editor').type('  C --> Test');
-		cy.wrap(localStorage).snapshot();
-		// cy.get('#view > #container > svg').snapshot();
-	});
-});
-
 describe('Auto sync tests', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();

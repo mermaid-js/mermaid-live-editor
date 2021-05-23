@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { EditorEvents } from '$lib/types';
+	import { codeStore } from '$lib/util/state';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { initEditor } from './util';
@@ -20,9 +21,15 @@
 		overviewRulerLanes: 0
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
+	let oldText = text;
 	$: Monaco?.editor.setModelLanguage(editor.getModel(), language);
-	$: editor?.setValue(text);
 	$: {
+		if (text !== oldText) {
+			if ($codeStore.updateEditor) {
+				editor?.setValue(text);
+			}
+			oldText = text;
+		}
 		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
 	}
 
@@ -35,8 +42,9 @@
 
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(async () => {
+			text = editor.getValue();
 			dispatch('update', {
-				text: editor.getValue()
+				text
 			});
 		});
 

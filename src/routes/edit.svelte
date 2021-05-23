@@ -13,7 +13,7 @@
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
 	import { goto } from '$app/navigation';
-	import type { EditorUpdateEvent, Tab } from '$lib/types';
+	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
 
@@ -27,16 +27,20 @@
 	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
 	$: {
-		if ($codeStore.updateEditor) {
-			if (selectedMode === 'code') {
-				text = $codeStore.code;
-			} else {
-				text = $codeStore.mermaid;
-			}
+		if (selectedMode === 'code') {
+			text = $codeStore.code;
+		} else {
+			text = $codeStore.mermaid;
 		}
 	}
-	onMount(initHandler);
 
+	codeStore.subscribe((state: State) => {
+		console.log(state);
+
+		if (state.updateEditor) {
+			text = selectedMode === 'code' ? state.code : state.mermaid;
+		}
+	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		$codeStore.updateEditor = true;
 		selectedMode = message.detail.id;
@@ -97,6 +101,8 @@
 	const viewDiagram = async () => {
 		await goto(`/view#${$base64State}`, { replaceState: true });
 	};
+
+	onMount(initHandler);
 </script>
 
 <div class="h-full flex flex-col overflow-hidden bg-gray-100">
@@ -118,7 +124,7 @@
 					</label>
 				</div>
 
-				<Editor on:update={updateHandler} {language} {text} {errorMarkers} />
+				<Editor on:update={updateHandler} {language} bind:text {errorMarkers} />
 			</Card>
 
 			<div class="flex-1">

@@ -9,7 +9,7 @@
 	$: isOpen = isCloseable ? isOpen : true;
 </script>
 
-<div class={`bg-white rounded overflow-hidden shadow m-2 flex-grow flex flex-col `}>
+<div class="bg-white rounded overflow-hidden shadow m-2 flex-grow flex flex-col">
 	<div class="bg-indigo-400 border-gray-400 p-2 flex-none" on:click={() => (isOpen = !isOpen)}>
 		<div class="flex justify-between">
 			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} />

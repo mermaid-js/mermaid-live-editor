@@ -73,14 +73,18 @@
 
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
-		<button class="btn" on:click|stopPropagation={() => saveHistory()} title="Save current state"
-			><i class="far fa-save" /></button>
 		<button
+			id="saveHistory"
+			class="btn"
+			on:click|stopPropagation={() => saveHistory()}
+			title="Save current state"><i class="far fa-save" /></button>
+		<button
+			id="clearHistory"
 			class="btn text-red-400"
 			on:click|stopPropagation={() => clearHistory()}
 			title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
 	</div>
-	<ul class="p-2 space-y-2 overflow-auto h-56">
+	<ul class="p-2 space-y-2 overflow-auto h-56" id="historyList">
 		{#if $historyStore.length > 0}
 			{#each $historyStore as { state, time, name }}
 				<li class="rounded p-2 shadow flex-col">
