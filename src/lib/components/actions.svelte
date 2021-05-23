@@ -133,12 +133,10 @@
 			<i class="fas fa-download" /> SVG
 		</button>
 		<button class="action-btn flex-auto">
-			<a class="link-style" target="_blank" href={iUrl}
-				><i class="fas fa-external-link-alt" /> PNG</a>
+			<a target="_blank" href={iUrl}><i class="fas fa-external-link-alt" /> PNG</a>
 		</button>
 		<button class="action-btn flex-auto">
-			<a class="link-style" target="_blank" href={svgUrl}
-				><i class="fas fa-external-link-alt" /> SVG</a>
+			<a target="_blank" href={svgUrl}><i class="fas fa-external-link-alt" /> SVG</a>
 		</button>
 
 		<div class="flex gap-2 items-center">

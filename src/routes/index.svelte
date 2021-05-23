@@ -15,7 +15,3 @@
 		});
 	});
 </script>
-
-<svelte:head>
-	<title>Mermaid Live Editor</title>
-</svelte:head>

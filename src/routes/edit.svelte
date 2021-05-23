@@ -132,7 +132,7 @@
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="rounded shadow px-2 bg-indigo-500 hover:bg-indigo-700 hidden"
+					class="btn hidden"
 					title="View diagram in new page"
 					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
 
@@ -140,8 +140,8 @@
 					<View />
 				</div>
 			</Card>
-			<div class="flex md:hidden bg-white rounded shadow p-2 mx-2">
-				Code editing not supported on mobile. Please use a desktop browser
+			<div class="md:hidden bg-white rounded shadow p-2 mx-2">
+				Code editing not supported on mobile. Please use a desktop browser.
 			</div>
 		</div>
 	</div>
