@@ -1,4 +1,5 @@
-export const initEditor = (monaco) => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const initEditor = (monaco): void => {
 	monaco.languages.register({ id: 'mermaid' });
 
 	// Register a tokens provider for the language
@@ -47,7 +48,7 @@ export const initEditor = (monaco) => {
 	// Register a completion item provider for the new language
 	monaco.languages.registerCompletionItemProvider('mermaid', {
 		provideCompletionItems: () => {
-			var suggestions = [
+			const suggestions = [
 				{
 					label: 'simpleText',
 					kind: monaco.languages.CompletionItemKind.Text,

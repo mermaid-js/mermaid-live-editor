@@ -20,7 +20,6 @@
 	const exportImage = (event: Event, exporter: Exporter) => {
 		const canvas: HTMLCanvasElement = document.createElement('canvas');
 		const svg: HTMLElement = document.querySelector('#container svg');
-		debugger;
 		const box: DOMRect = svg.getBoundingClientRect();
 		canvas.width = box.width;
 		canvas.height = box.height;
@@ -63,7 +62,7 @@
 	};
 
 	const isClipboardAvailable = () => {
-		return window?.hasOwnProperty('ClipboardItem');
+		return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem');
 	};
 
 	const clipboardCopy: Exporter = (canvas, context, image) => {
@@ -72,9 +71,10 @@
 
 			canvas.toBlob((blob) => {
 				try {
-					// @ts-ignore
+					// @ts-ignore: https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1004/files
 					navigator.clipboard.write([
-						// @ts-ignore
+						/* eslint-disable no-undef */
+						// @ts-ignore: https://github.com/microsoft/TypeScript/issues/43821
 						new ClipboardItem({
 							[blob.type]: blob
 						})
@@ -86,15 +86,15 @@
 		};
 	};
 
-	const onCopyClipboard = (event) => {
+	const onCopyClipboard = (event: Event) => {
 		exportImage(event, clipboardCopy);
 	};
 
-	const onDownloadPNG = (event) => {
+	const onDownloadPNG = (event: Event) => {
 		exportImage(event, downloadImage);
 	};
 
-	const onDownloadSVG = (event) => {
+	const onDownloadSVG = () => {
 		simulateDownload(
 			`mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.svg`,
 			`data:image/svg+xml;base64,${getBase64SVG()}`
@@ -106,13 +106,13 @@
 		document.execCommand('Copy');
 	};
 
-	let iUrl;
-	let svgUrl;
-	let mdCode;
+	let iUrl: string;
+	let svgUrl: string;
+	let mdCode: string;
 	let imagemodeselected = 'auto';
 	let userimagesize = 1080;
 
-	const unsubscribe = base64State.subscribe((b64Code) => {
+	base64State.subscribe((b64Code) => {
 		iUrl = `https://mermaid.ink/img/${b64Code}`;
 		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}/edit#${b64Code})`;
@@ -122,21 +122,21 @@
 <Card title="Actions" isOpen={false}>
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
-			<button class="btn w-full" on:click={onCopyClipboard}
+			<button class="action-btn w-full" on:click={onCopyClipboard}
 				><i class="far fa-copy" /> Copy Image to clipboard
 			</button>
 		{/if}
-		<button class="btn flex-auto" on:click={onDownloadPNG}>
+		<button class="action-btn flex-auto" on:click={onDownloadPNG}>
 			<i class="fas fa-download" /> PNG
 		</button>
-		<button class="btn flex-auto" on:click={onDownloadSVG}>
+		<button class="action-btn flex-auto" on:click={onDownloadSVG}>
 			<i class="fas fa-download" /> SVG
 		</button>
-		<button class="btn flex-auto">
+		<button class="action-btn flex-auto">
 			<a class="link-style" target="_blank" href={iUrl}
 				><i class="fas fa-external-link-alt" /> PNG</a>
 		</button>
-		<button class="btn flex-auto">
+		<button class="action-btn flex-auto">
 			<a class="link-style" target="_blank" href={svgUrl}
 				><i class="fas fa-external-link-alt" /> SVG</a>
 		</button>
@@ -160,9 +160,3 @@
 		</div>
 	</div>
 </Card>
-
-<style>
-	.btn {
-		@apply rounded p-2 bg-indigo-400 shadow flex-auto text-white hover:bg-indigo-500;
-	}
-</style>

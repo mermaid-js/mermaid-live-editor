@@ -6,11 +6,11 @@
 	import type { Mermaid } from 'mermaid';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
-	let code: string = '';
+	let code = '';
 	let container: HTMLDivElement;
-	let error: boolean = false;
-	let outOfSync: boolean = false;
-	let manualUpdate: boolean = true;
+	let error = false;
+	let outOfSync = false;
+	let manualUpdate = true;
 	onMount(async () => {
 		codeStore.subscribe((state) => {
 			try {
@@ -27,7 +27,7 @@
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.init(container);
-					mermaid.render('graph-div', code, insertSvg);
+					mermaid.render('graph-div', code);
 					container.parentElement.parentElement.parentElement.scrollTop = scroll;
 				} else if (manualUpdate) {
 					manualUpdate = false;
@@ -48,7 +48,6 @@
 			}
 		});
 	});
-	const insertSvg = (svgCode, bindFunctions) => {};
 </script>
 
 <div id="view" class="p-2" class:error class:outOfSync>
