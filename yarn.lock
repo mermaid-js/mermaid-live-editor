@@ -1131,6 +1131,11 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
+cypress-localstorage-commands@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-1.4.4.tgz#96ebce71b78895bd34a96c6d424b5de18a257b82"
+  integrity sha512-j502dbaQxTkz8iXYPClpYn2AIFyMZvvODNNHVZVoKBSkKOEuWAx3/RT4RvH0naV4/T05oUw2O9Cm5VxeZbyxiw==
+
 cypress@^7.3.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-7.3.0.tgz#17345b8d18681c120f033e7d8fd0f0271e9d0d51"

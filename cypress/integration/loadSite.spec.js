@@ -6,7 +6,7 @@ describe('Site Loads', () => {
 		cy.visit('/');
 		cy.url().should('include', '/edit');
 		cy.contains('History').click();
-		cy.wrap(localStorage).snapshot();
+		cy.getLocalStorage('codeStore').snapshot();
 	});
 
 	it('Check Redirect from old URL', () => {
@@ -19,6 +19,6 @@ describe('Site Loads', () => {
 		);
 
 		cy.contains('History').click();
-		cy.wrap(localStorage).snapshot();
+		cy.getLocalStorage('codeStore').snapshot();
 	});
 });

@@ -8,6 +8,7 @@ describe('Auto sync tests', () => {
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		cy.get('#editor').type('  C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
+		cy.getLocalStorage('codeStore').snapshot();
 	});
 
 	it('should show/hide sync button with auto sync', () => {
@@ -27,6 +28,6 @@ describe('Auto sync tests', () => {
 		cy.get('#autoSync').check();
 		cy.get('#editor').type('ing');
 		cy.get('#view').should('not.have.class', 'outOfSync');
-		cy.wrap(localStorage).snapshot();
+		cy.getLocalStorage('codeStore').snapshot();
 	});
 });

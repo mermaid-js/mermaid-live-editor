@@ -25,3 +25,4 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import * as snapshot from '@cypress/snapshot';
 snapshot.register();
+import 'cypress-localstorage-commands';
