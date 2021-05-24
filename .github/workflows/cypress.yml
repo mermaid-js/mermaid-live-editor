@@ -33,5 +33,6 @@ jobs:
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           record: true
+          headed: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
