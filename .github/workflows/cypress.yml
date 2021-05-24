@@ -30,3 +30,8 @@ jobs:
           browser: chrome
           build: yarn build
           start: yarn preview
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
