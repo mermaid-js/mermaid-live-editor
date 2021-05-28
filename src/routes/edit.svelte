@@ -100,13 +100,32 @@
 		await goto(`/view#${$base64State}`, { replaceState: true });
 	};
 
-	onMount(initHandler);
+	onMount(() => {
+		initHandler();
+		const resizer = document.getElementById('resizeHandler');
+		const element = document.getElementById('editorPane');
+		const resize = (e) => {
+			const newWidth = e.pageX - element.getBoundingClientRect().left;
+			if (newWidth > 50) {
+				element.style.width = newWidth + 'px';
+			}
+		};
+
+		const stopResize = () => {
+			window.removeEventListener('mousemove', resize);
+		};
+		resizer.addEventListener('mousedown', (e) => {
+			e.preventDefault();
+			window.addEventListener('mousemove', resize);
+			window.addEventListener('mouseup', stopResize);
+		});
+	});
 </script>
 
 <div class="h-full flex flex-col overflow-hidden bg-gray-100">
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
-		<div class="w-2/5 hidden md:flex flex-col">
+		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
@@ -116,7 +135,9 @@
 							data-cy="sync"
 							on:click={syncDiagram}><i class="fas fa-sync" /></button>
 					{/if}
-					<label for="autoSync">
+					<label
+						for="autoSync"
+						style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
 						<input type="checkbox" id="autoSync" bind:checked={$codeStore.autoSync} />
 						Auto sync
 					</label>
@@ -131,7 +152,7 @@
 				<Actions />
 			</div>
 		</div>
-
+		<div id="resizeHandler" />
 		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
 				<button
@@ -150,3 +171,31 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	#resizeHandler {
+		height: 100%;
+		display: block;
+		cursor: col-resize;
+		padding: 0 2px;
+	}
+
+	#resizeHandler::after {
+		width: 1px;
+		height: 100%;
+		content: '';
+		position: absolute;
+		margin-left: -1px;
+		background-color: #ccc;
+	}
+
+	#resizeHandler:hover::after {
+		width: 2px;
+	}
+
+	@media screen and (max-width: 768px) {
+		#resizeHandler {
+			display: none;
+		}
+	}
+</style>

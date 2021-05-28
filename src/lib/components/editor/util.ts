@@ -17,7 +17,7 @@ export const initEditor = (monacoEditor): void => {
 			'journey'
 		],
 		keywords: ['patricipant', 'as'],
-		arrows: ['---', '===', '-->', '==>'],
+		arrows: ['---', '===', '-->', '==>', '->>', '->'],
 		tokenizer: {
 			root: [
 				[/[{}]/, 'delimiter.bracket'],

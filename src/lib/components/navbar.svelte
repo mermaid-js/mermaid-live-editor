@@ -74,4 +74,7 @@
 	#menu-toggle:checked + #menu {
 		display: block;
 	}
+	header {
+		z-index: 10000;
+	}
 </style>

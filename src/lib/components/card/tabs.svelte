@@ -25,7 +25,7 @@
 	{#if isOpen && tabs}
 		<ul class="flex flex-wrap flex-row" transition:fade>
 			{#each tabs as tab}
-				<li class="mr-2 last:mr-0 w-28 flex-auto text-center">
+				<li class="mr-2 last:mr-0 w-28 h-6 flex-auto text-center">
 					<div
 						class="text cursor-pointer font-semibold min-w-16 w-auto px-2 py-1 -mb-4 rounded-t  block leading-normal {activeTabID ===
 						tab.id
