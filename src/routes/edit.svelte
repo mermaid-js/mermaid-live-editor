@@ -35,8 +35,6 @@
 	}
 
 	codeStore.subscribe((state: State) => {
-		console.log(state);
-
 		if (state.updateEditor) {
 			text = selectedMode === 'code' ? state.code : state.mermaid;
 		}

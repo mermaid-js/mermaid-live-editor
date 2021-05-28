@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const initEditor = (monaco): void => {
-	monaco.languages.register({ id: 'mermaid' });
+export const initEditor = (monacoEditor): void => {
+	monacoEditor.languages.register({ id: 'mermaid' });
 
 	// Register a tokens provider for the language
-	monaco.languages.setMonarchTokensProvider('mermaid', {
+	monacoEditor.languages.setMonarchTokensProvider('mermaid', {
 		typeKeywords: [
 			'graph',
 			'stateDiagram',
@@ -23,7 +23,7 @@ export const initEditor = (monaco): void => {
 				[/[{}]/, 'delimiter.bracket'],
 				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'keyword', '@keywords': 'keyword' } }],
 				[/[-=>ox]+/, { cases: { '@arrows': 'transition' } }],
-				[/[[{(}]+.+?[)]}]+/, 'string'],
+				[/[[{(}]+.+?[)\]}]+/, 'string'],
 				[/".*"/, 'string']
 			]
 		},
@@ -33,7 +33,7 @@ export const initEditor = (monaco): void => {
 		]
 	});
 
-	monaco.editor.defineTheme('myCoolTheme', {
+	monacoEditor.editor.defineTheme('myCoolTheme', {
 		base: 'vs',
 		inherit: false,
 		rules: [
@@ -46,25 +46,25 @@ export const initEditor = (monaco): void => {
 	});
 
 	// Register a completion item provider for the new language
-	monaco.languages.registerCompletionItemProvider('mermaid', {
+	monacoEditor.languages.registerCompletionItemProvider('mermaid', {
 		provideCompletionItems: () => {
 			const suggestions = [
 				{
 					label: 'simpleText',
-					kind: monaco.languages.CompletionItemKind.Text,
+					kind: monacoEditor.languages.CompletionItemKind.Text,
 					insertText: 'simpleText'
 				},
 				{
 					label: 'testing',
-					kind: monaco.languages.CompletionItemKind.Keyword,
+					kind: monacoEditor.languages.CompletionItemKind.Keyword,
 					insertText: 'testing(${1:condition})',
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet
 				},
 				{
 					label: 'ifelse',
-					kind: monaco.languages.CompletionItemKind.Snippet,
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
 					insertText: ['if (${1:condition}) {', '\t$0', '} else {', '\t', '}'].join('\n'),
-					insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'If-Else Statement'
 				}
 			];

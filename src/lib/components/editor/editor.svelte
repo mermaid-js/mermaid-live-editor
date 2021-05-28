@@ -18,6 +18,7 @@
 		minimap: {
 			enabled: false
 		},
+		theme: 'myCoolTheme',
 		overviewRulerLanes: 0
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
