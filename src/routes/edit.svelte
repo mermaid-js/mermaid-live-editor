@@ -97,7 +97,7 @@
 	};
 
 	const viewDiagram = async () => {
-		await goto(`/view#${$base64State}`, { replaceState: true });
+		window.open(`/view#${$base64State}`, '_blank').focus();
 	};
 
 	onMount(() => {
@@ -157,7 +157,7 @@
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="btn hidden"
+					class="btn"
 					title="View diagram in new page"
 					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
 
