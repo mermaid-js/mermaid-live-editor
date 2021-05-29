@@ -18,6 +18,7 @@ jobs:
         run: |
           npm i -g yarn
           yarn install
+          yarn run lint
           version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
           export CI=true
           yarn build
