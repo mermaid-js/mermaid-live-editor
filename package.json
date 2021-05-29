@@ -55,7 +55,7 @@
 		"random-word-slugs": "^0.0.2"
 	},
 	"lint-staged": {
-		"*.{ts,svelte,js,css,md}": [
+		"*.{ts,svelte,js,css,md,json}": [
 			"prettier --plugin-search-dir=. --write",
 			"eslint --ignore-path .gitignore "
 		]
