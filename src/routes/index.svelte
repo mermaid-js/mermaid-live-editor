@@ -5,6 +5,8 @@
 
 	onMount(async () => {
 		// Handle old live editor links and redirect to new version
+		console.log(base);
+		debugger;
 		const hash = window.location.hash.split('/');
 		let newURL = 'edit';
 		if (hash.length > 2) {
