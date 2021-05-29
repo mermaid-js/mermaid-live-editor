@@ -12,7 +12,6 @@
 	import { onMount } from 'svelte';
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
-	import { goto } from '$app/navigation';
 	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;

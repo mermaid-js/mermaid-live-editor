@@ -11,3 +11,4 @@ yarn-error.log
 /snapshots.js
 /cypress/videos
 /cypress/screenshots
+/docs

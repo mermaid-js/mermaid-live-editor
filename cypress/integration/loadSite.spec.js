@@ -21,4 +21,12 @@ describe('Site Loads', () => {
 		cy.contains('History').click();
 		cy.getLocalStorage('codeStore').snapshot();
 	});
+
+	it('should load sample diagrams when clicked', () => {
+		cy.contains('Sample Diagrams').click();
+		cy.contains('Pie Chart').click();
+		cy.contains('pie title Pets adopted by volunteers');
+		cy.contains('Class Diagram').click();
+		cy.contains('classDiagram');
+	});
 });
