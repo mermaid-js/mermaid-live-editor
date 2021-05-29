@@ -27,11 +27,10 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          config: baseUrl=http://localhost:3001
-          browser: chrome
+          browser: firefox
           build: yarn build
-          start: yarn preview -p 3001
-          wait-on: 'http://localhost:3001'
+          start: yarn preview
+          wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           record: true
           headless: false
