@@ -27,6 +27,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
+          config: baseUrl=http://localhost:3001
           browser: chrome
           build: yarn build
           start: yarn preview -p 3001
