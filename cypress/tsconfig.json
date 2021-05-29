@@ -3,5 +3,5 @@
 		"allowJs": true,
 		"types": ["cypress", "cypress-localstorage-commands"]
 	},
-	"include": ["**/*.*"]
+	"include": ["**/*.ts"]
 }

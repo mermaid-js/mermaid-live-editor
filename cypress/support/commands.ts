@@ -23,6 +23,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import * as snapshot from '@cypress/snapshot';
-snapshot.register();
+import { register } from '@cypress/snapshot';
+register();
+declare global {
+	// eslint-disable-next-line @typescript-eslint/no-namespace
+	namespace Cypress {
+		interface Chainable {
+			snapshot(): void;
+		}
+	}
+}
+
 import 'cypress-localstorage-commands';
