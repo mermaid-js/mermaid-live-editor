@@ -146,7 +146,7 @@
 				<Editor on:update={updateHandler} {language} bind:text {errorMarkers} />
 			</Card>
 
-			<div class="flex-1">
+			<div class="-mt-2">
 				<Preset />
 				<History />
 				<Actions />
@@ -174,23 +174,24 @@
 
 <style>
 	#resizeHandler {
-		height: 100%;
-		display: block;
 		cursor: col-resize;
 		padding: 0 2px;
 	}
 
 	#resizeHandler::after {
-		width: 1px;
+		width: 2px;
 		height: 100%;
+		top: 0;
 		content: '';
 		position: absolute;
-		margin-left: -1px;
 		background-color: #ccc;
+		margin-left: -1px;
 	}
 
 	#resizeHandler:hover::after {
-		width: 2px;
+		margin-left: -2px;
+		background-color: #818cf8;
+		width: 4px;
 	}
 
 	@media screen and (max-width: 768px) {
