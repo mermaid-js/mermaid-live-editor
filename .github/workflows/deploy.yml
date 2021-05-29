@@ -17,7 +17,7 @@ jobs:
       - name: Build & Deploy
         run: |
           npm i -g yarn
-          export CI=true
+          export DEPLOY=true
           rm -rf docs/_app
           yarn install
           # yarn run lint

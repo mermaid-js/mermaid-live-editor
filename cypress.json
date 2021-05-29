@@ -1,7 +1,7 @@
 {
 	"projectId": "2ckppp",
 	"$schema": "https://on.cypress.io/cypress.schema.json",
-	"baseUrl": "http://localhost:3000/mermaid-live-editor",
+	"baseUrl": "http://localhost:3000",
 	"pluginsFile": "./cypress/plugins/index.cjs",
 	"viewportWidth": 1440,
 	"viewportHeight": 768,
