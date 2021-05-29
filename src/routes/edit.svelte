@@ -13,6 +13,7 @@
 	import type monaco from 'monaco-editor';
 	import type { Mermaid } from 'mermaid';
 	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
+	import { base } from '$app/paths';
 
 	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
 
@@ -96,7 +97,7 @@
 	};
 
 	const viewDiagram = async () => {
-		window.open(`/view#${$base64State}`, '_blank').focus();
+		window.open(`${base}/view#${$base64State}`, '_blank').focus();
 	};
 
 	onMount(() => {
