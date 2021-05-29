@@ -84,7 +84,7 @@ export const updateConfig = (config: string, updateEditor: boolean): void => {
 
 export const initURLSubscription = (): void => {
 	base64State.subscribe((state: string) => {
-		window.location.hash = state;
+		history.replaceState(undefined, undefined, `#${state}`);
 	});
 };
 
