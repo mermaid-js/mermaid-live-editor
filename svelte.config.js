@@ -13,8 +13,7 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			pages: 'docs',
-			fallback: 'index.html'
+			pages: 'docs'
 		}),
 		paths: {
 			base: '/mermaid-live-editor'
