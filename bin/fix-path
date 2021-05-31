@@ -1,3 +1,5 @@
 #!/bin/bash
-find ../docs -type f -exec sed -i '' 's/service-worker.js/mermaid-live-editor\/service-worker.js/g' *.js {} \;
-find ../docs -type f -exec sed -i '' 's/manifest.json/mermaid-live-editor\/manifest.json/g' *.html {} \;
+pushd ../docs
+find ./ -type f -exec sed -i 's/service-worker.js/mermaid-live-editor\/service-worker.js/g' {} \;
+find ./ -type f -exec sed -i 's/manifest.json/mermaid-live-editor\/manifest.json/g' {} \;
+popd
