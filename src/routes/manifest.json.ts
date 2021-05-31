@@ -16,7 +16,7 @@ export const get = (): { body: unknown } => {
 					sizes: '512x512'
 				}
 			],
-			start_url: `${base}/edit`,
+			start_url: `${base}/edit/`,
 			background_color: '#6366F1',
 			display: 'standalone',
 			scope: `${base}`,
