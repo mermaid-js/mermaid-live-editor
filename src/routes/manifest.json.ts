@@ -21,7 +21,8 @@ export const get = (): { body: unknown } => {
 			display: 'standalone',
 			scope: `${base}`,
 			theme_color: '#6366F1',
-			description: 'Description'
+			description: 'FlowChart & Diagrams Editor.',
+			orientation: 'landscape'
 		}
 	};
 };
