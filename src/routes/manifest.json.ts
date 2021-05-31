@@ -1,5 +1,5 @@
 import { base } from '$app/paths';
-export const get = (): { body: any } => {
+export const get = (): { body: unknown } => {
 	return {
 		body: {
 			short_name: 'Mermaid',
@@ -17,10 +17,10 @@ export const get = (): { body: any } => {
 				}
 			],
 			start_url: `${base}/edit`,
-			background_color: '#3367D6',
+			background_color: '#6366F1',
 			display: 'standalone',
 			scope: `${base}`,
-			theme_color: '#3367D6',
+			theme_color: '#6366F1',
 			description: 'Description'
 		}
 	};
