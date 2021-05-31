@@ -15,9 +15,11 @@ const config = {
 		adapter: adapter({
 			pages: 'docs'
 		}),
-		paths: {
-			base: '/mermaid-live-editor'
-		},
+		paths: process.env['DEPLOY']
+			? {
+					base: '/mermaid-live-editor'
+			  }
+			: {},
 		ssr: false,
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
