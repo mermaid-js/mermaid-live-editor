@@ -13,13 +13,12 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			pages: 'docs'
+			pages: 'docs',
+			fallback: 'index.html'
 		}),
-		paths: process.env['DEPLOY']
-			? {
-					base: '/mermaid-live-editor'
-			  }
-			: {},
+		paths: {
+			base: '/mermaid-live-editor'
+		},
 		ssr: false,
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
