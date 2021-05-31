@@ -5,15 +5,11 @@
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
-	type Exporter = (
-		canvas: HTMLCanvasElement,
-		context: CanvasRenderingContext2D,
-		image: HTMLImageElement
-	) => () => void;
+	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
 	const getBase64SVG = (): string => {
 		const container: HTMLElement = document.getElementById('container');
-		const svg = container.innerHTML.replaceAll('<br>', '<br/>');
+		const svg = container.innerHTML.replaceAll('<br>', '<br/>').replaceAll('100%', '500px'); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
 		return toBase64(svg);
 	};
 
@@ -37,9 +33,9 @@
 		context.fillRect(0, 0, canvas.width, canvas.height);
 
 		const image = new Image();
-		image.onload = exporter(canvas, context, image);
-
 		image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
+		image.onload = exporter(context, image);
+
 		event.stopPropagation();
 		event.preventDefault();
 	};
@@ -51,8 +47,9 @@
 		a.click();
 		a.remove();
 	};
-	const downloadImage: Exporter = (canvas, context, image) => {
+	const downloadImage: Exporter = (context, image) => {
 		return () => {
+			const { canvas } = context;
 			context.drawImage(image, 0, 0, canvas.width, canvas.height);
 			simulateDownload(
 				`mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.png`,
@@ -65,8 +62,9 @@
 		return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem');
 	};
 
-	const clipboardCopy: Exporter = (canvas, context, image) => {
+	const clipboardCopy: Exporter = (context, image) => {
 		return () => {
+			const { canvas } = context;
 			context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
 			canvas.toBlob((blob) => {
