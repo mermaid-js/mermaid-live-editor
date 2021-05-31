@@ -33,8 +33,8 @@
 		context.fillRect(0, 0, canvas.width, canvas.height);
 
 		const image = new Image();
-		image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
 		image.onload = exporter(context, image);
+		image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
 
 		event.stopPropagation();
 		event.preventDefault();
