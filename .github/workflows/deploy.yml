@@ -32,6 +32,7 @@ jobs:
           # yarn run lint
           version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
           yarn build
+          ./bin/fix-path
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
