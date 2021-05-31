@@ -19,7 +19,7 @@ export const get = (): { body: unknown } => {
 			start_url: `${base}/edit/`,
 			background_color: '#6366F1',
 			display: 'standalone',
-			scope: `${base}`,
+			scope: `${base}/edit/`,
 			theme_color: '#6366F1',
 			description: 'FlowChart & Diagrams Editor.',
 			orientation: 'landscape'
