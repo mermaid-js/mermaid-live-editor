@@ -1,4 +1,2 @@
-self.addEventListener('fetch', (e) => {
-	// @ts-ignore Will add types later
-	console.log(`[Service Worker] Fetched resource ${e.request.url}`);
-});
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+self.addEventListener('fetch', (e) => {});

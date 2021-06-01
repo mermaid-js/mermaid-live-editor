@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Card from '$lib/components/card/card.svelte';
 	import { base64State } from '$lib/util/state';
-
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
