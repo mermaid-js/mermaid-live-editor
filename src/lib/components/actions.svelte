@@ -7,10 +7,11 @@
 
 	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
-	const getBase64SVG = (): string => {
-		const container: HTMLElement = document.getElementById('container');
-		const svg = container.innerHTML.replaceAll('<br>', '<br/>').replaceAll('100%', '500px'); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
-		return toBase64(svg);
+	const getBase64SVG = (svg: HTMLElement, width: number, height: number): string => {
+		svg.setAttribute('height', `${height}px`);
+		svg.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+		const svgString = svg.outerHTML.replaceAll('<br>', '<br/>');
+		return toBase64(svgString);
 	};
 
 	const exportImage = (event: Event, exporter: Exporter) => {
@@ -34,7 +35,7 @@
 
 		const image = new Image();
 		image.onload = exporter(context, image);
-		image.src = `data:image/svg+xml;base64,${getBase64SVG()}`;
+		image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
 
 		event.stopPropagation();
 		event.preventDefault();
@@ -66,7 +67,6 @@
 		return () => {
 			const { canvas } = context;
 			context.drawImage(image, 0, 0, canvas.width, canvas.height);
-
 			canvas.toBlob((blob) => {
 				try {
 					// @ts-ignore: https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1004/files
