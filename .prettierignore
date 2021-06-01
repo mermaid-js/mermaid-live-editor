@@ -1,1 +1,6 @@
-dist/
+docs/**
+.svelte-kit/**
+static/**
+build/**
+node_modules/**
+snapshots.js
