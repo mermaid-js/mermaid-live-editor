@@ -41,6 +41,7 @@ jobs:
         run: |
           npm i -g yarn
           export DEPLOY=true
+          export BETA=true
           echo "$BETA"
           yarn install
           # yarn run lint
