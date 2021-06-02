@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,6 +30,8 @@ jobs:
         run: |
           npm i -g yarn
           export DEPLOY=true
+          export BETA=true
+          echo "$GITHUB_EVENT_NAME"
           rm -rf docs/_app
           yarn install
           # yarn run lint
