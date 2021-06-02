@@ -52,7 +52,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git config pull.rebase false
-          git pull origin gh-pages
+          # git pull origin gh-pages
           git add .
           git commit -nm "Release $version"
           git push origin gh-pages
