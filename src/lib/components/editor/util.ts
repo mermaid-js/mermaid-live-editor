@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const initEditor = (monacoEditor): void => {
 	monacoEditor.languages.register({ id: 'mermaid' });

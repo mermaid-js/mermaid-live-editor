@@ -24,6 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import { register } from '@cypress/snapshot';
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 register();
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace

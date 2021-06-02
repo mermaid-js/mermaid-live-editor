@@ -6,9 +6,12 @@
 
 	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
-	const getBase64SVG = (svg: HTMLElement, width: number, height: number): string => {
-		svg.setAttribute('height', `${height}px`);
-		svg.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+	const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
+		svg?.setAttribute('height', `${height}px`);
+		svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+		if (!svg) {
+			svg = document.querySelector('#container svg');
+		}
 		const svgString = svg.outerHTML.replaceAll('<br>', '<br/>');
 		return toBase64(svgString);
 	};
