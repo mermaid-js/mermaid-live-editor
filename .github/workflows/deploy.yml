@@ -26,13 +26,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-deploy-
 
+      - name: Setup Beta
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          export BETA=true
+          rm -rf docs/beta/
+
+      - name: Cleanup build
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          rm -rf docs/_app/
+
       - name: Build & Deploy
         run: |
           npm i -g yarn
           export DEPLOY=true
-          export BETA=true
           echo "$GITHUB_EVENT_NAME"
-          rm -rf docs/_app
           yarn install
           # yarn run lint
           version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
@@ -42,6 +51,7 @@ jobs:
           cd ..
           git config user.name github-actions
           git config user.email github-actions@github.com
+          git pull origin gh-pages
           git add .
           git commit -nm "Release $version"
-          git push
+          git push origin gh-pages
