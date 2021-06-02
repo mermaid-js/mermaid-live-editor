@@ -31,7 +31,7 @@
     "postinstall": "husky install"
   },
   "dependencies": {
-    "js-base64": "^3.6.0",
+    "js-base64": "^3.6.1",
     "json-lint": "^0.1.0",
     "jsonlint": "^1.6.3",
     "mermaid": "8.9.3",
