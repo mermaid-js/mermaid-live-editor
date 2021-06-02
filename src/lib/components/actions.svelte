@@ -116,7 +116,7 @@
 	base64State.subscribe((b64Code: string) => {
 		iUrl = `https://mermaid.ink/img/${b64Code}`;
 		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
-		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}/edit#${b64Code})`;
+		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${b64Code})`;
 	});
 </script>
 
