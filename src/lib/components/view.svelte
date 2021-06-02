@@ -11,7 +11,7 @@
 	let error = false;
 	let outOfSync = false;
 	let manualUpdate = true;
-	onMount(async () => {
+	onMount(() => {
 		codeStore.subscribe((state) => {
 			try {
 				if (container && state && (state.updateDiagram || state.autoSync)) {
@@ -26,9 +26,11 @@
 					container.innerHTML = code;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
-					mermaid.init(container);
-					mermaid.render('graph-div', code);
+					mermaid.render('graph-div', code, (svgCode) => {
+						container.innerHTML = svgCode;
+					});
 					container.parentElement.parentElement.parentElement.scrollTop = scroll;
+					error = false;
 				} else if (manualUpdate) {
 					manualUpdate = false;
 				} else {

@@ -13,11 +13,11 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			pages: 'docs'
+			pages: `docs${process.env['BETA'] ? '/beta' : ''}`
 		}),
 		paths: process.env['DEPLOY']
 			? {
-					base: '/mermaid-live-editor'
+					base: `/mermaid-live-editor${process.env['BETA'] ? '/beta' : ''}`
 			  }
 			: {},
 		ssr: false,

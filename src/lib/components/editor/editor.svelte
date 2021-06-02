@@ -23,7 +23,7 @@
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
 	let oldText = text;
-	$: Monaco?.editor.setModelLanguage(editor.getModel(), language);
+	$: editor && Monaco?.editor.setModelLanguage(editor.getModel(), language);
 	$: {
 		if (text !== oldText) {
 			if ($codeStore.updateEditor) {
@@ -31,18 +31,28 @@
 			}
 			oldText = text;
 		}
-		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
+		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
 	}
 
 	const dispatch = createEventDispatcher<EditorEvents>();
-
+	const loadMonaco = async () => {
+		let i = 0;
+		while (i++ < 10) {
+			try {
+				//@ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+				Monaco = monaco;
+				return;
+			} catch {
+				await new Promise((r) => setTimeout(r, 500));
+			}
+		}
+		alert('Loading Monaco Editor failed. Please try refreshing the page.');
+	};
 	onMount(async () => {
-		//@ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
-		Monaco = monaco;
+		await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
 		initEditor(Monaco);
-
 		editor = Monaco.editor.create(divEl, editorOptions);
-		editor.onDidChangeModelContent(async () => {
+		editor.onDidChangeModelContent(() => {
 			text = editor.getValue();
 			dispatch('update', {
 				text
