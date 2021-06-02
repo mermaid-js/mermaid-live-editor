@@ -26,8 +26,9 @@
 					container.innerHTML = code;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
-					mermaid.init(container);
-					mermaid.render('graph-div', code);
+					mermaid.render('graph-div', code, (svgCode) => {
+						container.innerHTML = svgCode;
+					});
 					container.parentElement.parentElement.parentElement.scrollTop = scroll;
 					error = false;
 				} else if (manualUpdate) {
