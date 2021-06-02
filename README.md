@@ -1,4 +1,4 @@
-[![Join our Slack!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack)](https://join.slack.com/t/mermaid-talk/shared_invite/enQtNzc4NDIyNzk4OTAyLWVhYjQxOTI2OTg4YmE1ZmJkY2Y4MTU3ODliYmIwOTY3NDJlYjA0YjIyZTdkMDMyZTUwOGI0NjEzYmEwODcwOTE)
+[![Mermaid Live Editor](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/2ckppp/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/2ckppp/runs) [![Join our Slack!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack)](https://join.slack.com/t/mermaid-talk/shared_invite/enQtNzc4NDIyNzk4OTAyLWVhYjQxOTI2OTg4YmE1ZmJkY2Y4MTU3ODliYmIwOTY3NDJlYjA0YjIyZTdkMDMyZTUwOGI0NjEzYmEwODcwOTE)
 
 # Contributors are welcome!
 
@@ -29,20 +29,6 @@ This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-
 yarn install
 ```
 
-or in develop branch to use the beta version of mermaid use
-
-```
-yarn install --update-checksums
-```
-
-This together with a .npmrc file:
-
-```
-registry=https://registry.npmjs.com/
-@mermaid-js:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken="XXXXXXXXX"
-```
-
 ## Development
 
 ```
@@ -53,6 +39,6 @@ This app is created with Svelte Kit.
 
 ## Release
 
-```
-yarn release
-```
+When a PR is created targeting master, it will be built and deployed as a beta in http://mermaid-js.github.io/mermaid-live-editor/beta
+
+Once the PR is merged, it will automatically be released.
