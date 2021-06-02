@@ -23,7 +23,7 @@
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
 	let oldText = text;
-	$: Monaco?.editor.setModelLanguage(editor.getModel(), language);
+	$: editor && Monaco?.editor.setModelLanguage(editor.getModel(), language);
 	$: {
 		if (text !== oldText) {
 			if ($codeStore.updateEditor) {
@@ -31,7 +31,7 @@
 			}
 			oldText = text;
 		}
-		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
+		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
 	}
 
 	const dispatch = createEventDispatcher<EditorEvents>();
