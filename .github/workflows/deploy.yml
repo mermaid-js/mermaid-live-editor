@@ -29,7 +29,6 @@ jobs:
       - name: Setup Beta
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          export BETA=true
           rm -rf docs/beta/
 
       - name: Cleanup build
@@ -42,21 +41,14 @@ jobs:
           npm i -g yarn
           export DEPLOY=true
           export BETA=true
-          echo "$BETA"
           yarn install
-          # yarn run lint
+          yarn run lint
           version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
           yarn build
           cd bin
           ./fix-path
           cd ..
-          # git config user.name github-actions
-          # git config user.email github-actions@github.com
-          # # git config pull.rebase false
-          # # git pull origin gh-pages
-          # git add .
-          # git commit -nm "Release $version"
-          # git push --force origin gh-pages
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
