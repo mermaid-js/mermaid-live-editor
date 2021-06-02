@@ -56,7 +56,7 @@
 		}
 	];
 
-	const handleCodeUpdate = async (code: string): Promise<void> => {
+	const handleCodeUpdate = (code: string): void => {
 		mermaid.parse(code);
 		updateCode(code, false);
 	};
@@ -66,10 +66,10 @@
 		updateConfig(config, false);
 	};
 
-	const updateHandler = async (message: CustomEvent<EditorUpdateEvent>) => {
+	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
 		try {
 			if (selectedMode === 'code') {
-				await handleCodeUpdate(message.detail.text);
+				handleCodeUpdate(message.detail.text);
 			} else {
 				handleConfigUpdate(message.detail.text);
 			}
@@ -96,18 +96,18 @@
 		}
 	};
 
-	const viewDiagram = async () => {
+	const viewDiagram = () => {
 		window.open(`${base}/view#${$base64State}`, '_blank').focus();
 	};
 
-	onMount(() => {
-		initHandler();
+	onMount(async () => {
+		await initHandler();
 		const resizer = document.getElementById('resizeHandler');
 		const element = document.getElementById('editorPane');
 		const resize = (e) => {
 			const newWidth = e.pageX - element.getBoundingClientRect().left;
 			if (newWidth > 50) {
-				element.style.width = newWidth + 'px';
+				element.style.width = `${newWidth}px`;
 			}
 		};
 

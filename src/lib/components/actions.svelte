@@ -62,8 +62,8 @@
 		};
 	};
 
-	const isClipboardAvailable = () => {
-		return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem');
+	const isClipboardAvailable = (): boolean => {
+		return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem') as boolean;
 	};
 
 	const clipboardCopy: Exporter = (context, image) => {
@@ -102,7 +102,7 @@
 		);
 	};
 
-	const onCopyMarkdown = (event) => {
+	const onCopyMarkdown = (event: Event) => {
 		event.target.select();
 		document.execCommand('Copy');
 	};
@@ -113,7 +113,7 @@
 	let imagemodeselected = 'auto';
 	let userimagesize = 1080;
 
-	base64State.subscribe((b64Code) => {
+	base64State.subscribe((b64Code: string) => {
 		iUrl = `https://mermaid.ink/img/${b64Code}`;
 		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}/edit#${b64Code})`;

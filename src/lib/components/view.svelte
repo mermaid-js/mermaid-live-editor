@@ -11,7 +11,7 @@
 	let error = false;
 	let outOfSync = false;
 	let manualUpdate = true;
-	onMount(async () => {
+	onMount(() => {
 		codeStore.subscribe((state) => {
 			try {
 				if (container && state && (state.updateDiagram || state.autoSync)) {

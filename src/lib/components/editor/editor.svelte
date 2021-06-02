@@ -42,7 +42,7 @@
 		initEditor(Monaco);
 
 		editor = Monaco.editor.create(divEl, editorOptions);
-		editor.onDidChangeModelContent(async () => {
+		editor.onDidChangeModelContent(() => {
 			text = editor.getValue();
 			dispatch('update', {
 				text
