@@ -17,7 +17,7 @@ const config = {
 		}),
 		paths: process.env['DEPLOY']
 			? {
-					base: `${process.env['BETA'] ? '/beta' : ''}/mermaid-live-editor`
+					base: `/mermaid-live-editor${process.env['BETA'] ? '/beta' : ''}`
 			  }
 			: {},
 		ssr: false,
