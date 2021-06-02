@@ -115,8 +115,11 @@
 	let userimagesize = 1080;
 
 	codeStore.subscribe((state: State) => {
-		state.mermaid = JSON.parse(state.mermaid);
-		const b64Code = toBase64(JSON.stringify(state), true);
+		const stateCopy = JSON.parse(JSON.stringify(state));
+		if (typeof stateCopy.mermaid === 'string') {
+			stateCopy.mermaid = JSON.parse(stateCopy.mermaid);
+		}
+		const b64Code = toBase64(JSON.stringify(stateCopy), true);
 		iUrl = `https://mermaid.ink/img/${b64Code}`;
 		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${window.location.hash})`;

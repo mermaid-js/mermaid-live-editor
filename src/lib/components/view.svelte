@@ -29,6 +29,7 @@
 					mermaid.init(container);
 					mermaid.render('graph-div', code);
 					container.parentElement.parentElement.parentElement.scrollTop = scroll;
+					error = false;
 				} else if (manualUpdate) {
 					manualUpdate = false;
 				} else {
