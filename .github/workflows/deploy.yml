@@ -26,21 +26,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-deploy-
 
-      - name: Setup Beta
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          rm -rf docs/beta/
-
-      - name: Cleanup build
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          rm -rf docs/_app/
-
       - name: Build & Deploy
         run: |
           npm i -g yarn
           export DEPLOY=true
-          export BETA=true
+          [ "$GITHUB_EVENT_NAME" == "pull_request" ] && export BETA=true && rm -rf docs/beta/
+          [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
           yarn install
           yarn run lint
           version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
