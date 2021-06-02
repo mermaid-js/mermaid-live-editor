@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/card/card.svelte';
-	import { base64State } from '$lib/util/state';
+	import type { State } from '$lib/types';
+	import { base64State, codeStore } from '$lib/util/state';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
@@ -113,10 +114,12 @@
 	let imagemodeselected = 'auto';
 	let userimagesize = 1080;
 
-	base64State.subscribe((b64Code: string) => {
+	codeStore.subscribe((state: State) => {
+		state.mermaid = JSON.parse(state.mermaid);
+		const b64Code = toBase64(JSON.stringify(state), true);
 		iUrl = `https://mermaid.ink/img/${b64Code}`;
 		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
-		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${b64Code})`;
+		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${window.location.hash})`;
 	});
 </script>
 
