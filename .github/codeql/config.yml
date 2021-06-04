@@ -1,0 +1,7 @@
+name: 'Mermaid CodeQL config'
+
+paths:
+  - src
+paths-ignore:
+  - node_modules
+  - '**/*.spec.js'

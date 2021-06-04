@@ -4,3 +4,10 @@ coverage/
 build/
 yarn-error.log
 .npmrc
+.DS_Store
+/.svelte-kit
+/build
+/functions
+/snapshots.js
+/cypress/videos
+/cypress/screenshots

@@ -1,3 +1,8 @@
 {
-    "singleQuote": true
+	"singleQuote": true,
+	"svelteSortOrder": "options-scripts-markup-styles",
+	"svelteBracketNewLine": false,
+	"useTabs": true,
+	"trailingComma": "none",
+	"printWidth": 100
 }
