@@ -1,7 +1,6 @@
 import { getGistData } from './gist';
 import { updateCode, updateConfig } from '../state';
-type MermaidData = { code: string; config?: string };
-type Loader = (url: string) => Promise<MermaidData>;
+import type { Loader } from '$lib/types';
 const loaders: Record<string, Loader> = {
 	gist: getGistData
 };

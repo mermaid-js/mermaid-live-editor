@@ -37,3 +37,6 @@ export interface HistoryEntry {
 	name?: string;
 	auto: boolean;
 }
+
+type MermaidData = { code: string; config?: string };
+type Loader = (url: string) => Promise<MermaidData>;

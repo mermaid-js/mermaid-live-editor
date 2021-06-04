@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { MermaidData } from '$lib/types';
 const isValidGist = (files: any): boolean => {
 	return 'diagram.mmd' in files;
 };
@@ -11,7 +12,7 @@ const getFileContent = async (file: any): Promise<string> => {
 	return file.content;
 };
 
-export const getGistData = async (gistURL: string): Promise<{ code: string; config?: string }> => {
+export const getGistData = async (gistURL: string): Promise<MermaidData> => {
 	const gistID = gistURL.split('/').pop();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const { files } = await (await fetch(`https://api.github.com/gists/${gistID}`)).json();
