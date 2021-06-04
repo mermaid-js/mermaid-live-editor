@@ -14,7 +14,6 @@ export const loadDataFromUrl = async (): Promise<void> => {
 	if (searchParams.has('config')) {
 		config = await (await fetch(searchParams.get('config'))).text();
 	}
-
 	if (!code) {
 		for (const [key, value] of searchParams.entries()) {
 			if (key in loaders) {

@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { MermaidData } from '$lib/types';
+
+const codeFileName = 'diagram.mmd';
+const configFileName = 'config.json';
+
 const isValidGist = (files: any): boolean => {
-	return 'diagram.mmd' in files;
+	return codeFileName in files;
 };
 
 const getFileContent = async (file: any): Promise<string> => {
@@ -18,11 +22,11 @@ export const getGistData = async (gistURL: string): Promise<MermaidData> => {
 	const { files } = await (await fetch(`https://api.github.com/gists/${gistID}`)).json();
 
 	if (isValidGist(files)) {
-		const code = await getFileContent(files['diagram.mmd']);
-		if (!('config.json' in files)) {
+		const code = await getFileContent(files[codeFileName]);
+		if (!(configFileName in files)) {
 			return { code };
 		}
-		const config = await getFileContent(files['config.json']);
+		const config = await getFileContent(files[configFileName]);
 		return { config, code };
 	} else {
 		throw 'Invalid gist provided';

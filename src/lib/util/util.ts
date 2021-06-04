@@ -15,7 +15,7 @@ export const syncDiagram = (): void => {
 
 export const initHandler = async (): Promise<void> => {
 	loadStateFromURL();
-	await loadDataFromUrl();
+	await loadDataFromUrl().catch(console.error);
 	syncDiagram();
 	initURLSubscription();
 	await initAnalytics();
