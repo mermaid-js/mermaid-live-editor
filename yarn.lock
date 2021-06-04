@@ -1766,10 +1766,10 @@ eslint-plugin-svelte3@^3.2.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-3.2.0.tgz#a6deb4ead4b31a647ea88a3823d7c96578f74683"
   integrity sha512-qdWB1QN21dEozsJFdR8XlEhMnsS6aKHjsXWuNmchYwxoet5I6QdCr1Xcq62++IzRBMCNCeH4waXqSOAdqrZzgA==
 
-eslint-plugin-tailwindcss@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.8.0.tgz#f55b6acfc5825e5a0804973293ac110b6b803c10"
-  integrity sha512-5jPmJbPb4AKDVz3UyzKJaXVUBKqqQU9iQFPN6Y6IlfALk9faIqlkC8Aj+7mXx+2ayXDVu0UnHvA05eu7yprFaA==
+eslint-plugin-tailwindcss@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.9.1.tgz#ff712fac8b52e4c685a4015f2088d3863d22d24b"
+  integrity sha512-3WhFcxD8ioytP/lGa5EOhbzcQlrk+rBF4wcffsVuTTEUrhuiOye8FUp04bxZ6FMC+eRfxGFkRM8vtWnmm+/f/A==
   dependencies:
     tailwindcss "^2.1.2"
 
@@ -4616,10 +4616,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.0.0:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
-  integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
+typescript@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.2.tgz#399ab18aac45802d6f2498de5054fcbbe716a805"
+  integrity sha512-zZ4hShnmnoVnAHpVHWpTcxdv7dWP60S2FsydQLV8V5PbS3FifjWFFRiHSWpDJahly88PRyV5teTSLoq4eG7mKw==
 
 uglify-js@^3.5.1:
   version "3.13.5"
