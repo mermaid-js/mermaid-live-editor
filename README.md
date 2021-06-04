@@ -17,6 +17,14 @@ Edit, preview and share mermaid charts/diagrams.
 - Get a link to edit the diagram so that someone else can tweak it and send a new link back
 
 
+## Docker
+
+```bash
+docker run --publish 8000:80 ghcr.io/mermaid-js/mermaid-live-editor
+```
+
+Then open http://localhost:8000
+
 ## Setup
 
 This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started):
