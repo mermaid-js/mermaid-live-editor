@@ -141,10 +141,10 @@
   dependencies:
     purgecss "^3.1.3"
 
-"@macfja/svelte-persistent-store@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.1.0.tgz#9652f89f59c7a275073622718c5e9d58d4435f0a"
-  integrity sha512-wbx1VR6GTBc0uH9YQZc3vcvhaQdNDK6T3xGr9c/2VJng4B0hoOhOwO9HVoS15WuRu51aLHS/uTjjr26eTtba1g==
+"@macfja/svelte-persistent-store@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.1.1.tgz#87c48cc99b2a3ce4de7aea7f7926b1fe5ec1b579"
+  integrity sha512-H7DSUJB9R0d1uxu9VUze4nl3YR93JYDWHV/jzxOPOzKLSIRxGHpa0+cc5hYrUBOgybP1+bzaHdd6PnW5z8xVCw==
   dependencies:
     idb-keyval "^5.0.4"
     js-cookies "^1.0.4"

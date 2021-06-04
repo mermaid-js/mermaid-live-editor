@@ -46,7 +46,7 @@
 	"type": "module",
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.2",
-		"@macfja/svelte-persistent-store": "^1.1.0",
+		"@macfja/svelte-persistent-store": "^1.1.1",
 		"analytics": "^0.7.5",
 		"js-base64": "^3.6.1",
 		"mermaid": "^8.10.1",
