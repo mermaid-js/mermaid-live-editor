@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { MermaidData } from '$lib/types';
 
-const codeFileName = 'diagram.mmd';
+const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
 
 const isValidGist = (files: any): boolean => {
