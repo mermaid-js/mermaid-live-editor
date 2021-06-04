@@ -1,10 +1,10 @@
 name: Cypress Tests
 
 on:
-  push:
   pull_request:
     branches:
       - master
+      - develop
 
 jobs:
   cypress-run:
