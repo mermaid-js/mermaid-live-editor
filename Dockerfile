@@ -6,8 +6,8 @@
 # Stop               : press ctrl + c 
 #                                     or 
 #                                        docker stop mermaid-live-editor
-
-FROM node:14.16.0-alpine3.13 as mermaid-live-editor-builder
+# Can go back to alpine image once https://github.com/bmatcuk/eslint-plugin-postcss-modules/issues/19 is fixed.
+FROM node:14.16.0 as mermaid-live-editor-builder 
 COPY --chown=node:node . /home
 WORKDIR /home
 RUN yarn install
