@@ -121,8 +121,7 @@
 		if (!gistURL) {
 			alert('Please enter a Gist URL first');
 		}
-		window.location.href = `/edit?gist=${gistURL}`;
-		// location.reload();
+		window.location.href = `${window.location.pathname}?gist=${gistURL}`;
 	};
 
 	let iUrl: string;
