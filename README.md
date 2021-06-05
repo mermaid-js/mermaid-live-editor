@@ -19,6 +19,14 @@ Edit, preview and share mermaid charts/diagrams.
 
 You can try out a live version [here](https://mermaid-js.github.io/mermaid-live-editor/).
 
+## Docker
+
+```bash
+docker run --publish 8000:80 ghcr.io/mermaid-js/mermaid-live-editor
+```
+
+Then open http://localhost:8000
+
 ## Setup
 
 [Volta](https://volta.sh) is used for managing node and yarn versions.
