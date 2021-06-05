@@ -87,7 +87,7 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
 				time: gist.time,
 				type: 'loader',
 				url: gist.url,
-				name: `${gist.author}-${gist.version}`
+				name: `${gist.author} v${gist.version}`
 			});
 		}
 		return state;
