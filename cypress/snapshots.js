@@ -19,6 +19,9 @@ module.exports = {
     },
     "should load diagram from raw files": {
       "1": "{\"code\":\"graph TD\\n    A[Party] -->|Get money| B(Go shopping!!)\\n    \",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"forest\\\",\\n  \\\"test\\\": \\\"hello world\\\"\\n}\",\"updateEditor\":false,\"autoSync\":true,\"updateDiagram\":true,\"loader\":{\"type\":\"files\",\"config\":{\"codeURL\":\"https://gist.githubusercontent.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/raw/4eb03887e6a41397e80bdcdbf94017c498f8f1e2/code.mmd\",\"configURL\":\"https://gist.githubusercontent.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/raw/4eb03887e6a41397e80bdcdbf94017c498f8f1e2/config.json\"}}}"
+    },
+    "should load diagram from gist revision": {
+      "1": "{\"code\":\"graph TD\\n    A[Party] -->|Get money| B(Go shopping)\\n    \",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"forest\\\",\\n  \\\"test\\\": \\\"hello\\\"\\n}\",\"updateEditor\":false,\"autoSync\":true,\"updateDiagram\":true}"
     }
   },
   "__version": "7.4.0"
