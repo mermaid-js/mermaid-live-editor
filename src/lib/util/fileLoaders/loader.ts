@@ -9,11 +9,13 @@ export const loadDataFromUrl = async (): Promise<void> => {
 	const searchParams = new URLSearchParams(window.location.search);
 	let state: State = defaultState;
 	let code: string, config: string;
+	let loaded = false;
 	const codeURL: string = searchParams.get('code');
 	const configURL: string = searchParams.get('config');
 
 	if (codeURL) {
 		code = await (await fetch(codeURL)).text();
+		loaded = true;
 	}
 	if (configURL) {
 		config = await (await fetch(configURL)).text();
@@ -25,6 +27,7 @@ export const loadDataFromUrl = async (): Promise<void> => {
 			if (key in loaders) {
 				try {
 					state = await loaders[key](value);
+					loaded = true;
 					break;
 				} catch (err) {
 					console.error(err);
@@ -47,6 +50,6 @@ export const loadDataFromUrl = async (): Promise<void> => {
 			}
 		};
 	}
-	updateCodeStore(state);
+	loaded && updateCodeStore(state);
 	// window.location.search = '';
 };

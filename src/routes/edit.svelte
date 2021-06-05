@@ -15,7 +15,7 @@
 	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
 	import { base } from '$app/paths';
 
-	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
+	const mermaid: Mermaid = window.mermaid as unknown as Mermaid;
 
 	let selectedMode = 'code';
 	const languageMap = {
