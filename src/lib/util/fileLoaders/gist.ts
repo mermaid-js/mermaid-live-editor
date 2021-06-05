@@ -55,9 +55,15 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
 };
 
 const getStateFromGist = (gist: GistData): State => {
-	const state = {
+	const state: State = {
 		...defaultState,
-		code: gist.code
+		code: gist.code,
+		loader: {
+			type: 'gist',
+			config: {
+				url: gist.url
+			}
+		}
 	};
 	gist.config && (state.mermaid = gist.config);
 	return state;
@@ -81,6 +87,8 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
 		}
 		gistHistory.reverse();
 		const state = getStateFromGist(gistHistory.slice(-1).pop());
+		// @ts-ignore Ignore
+		state.loader.config.url = gistURL;
 		for (const gist of gistHistory) {
 			addHistoryEntry({
 				state: getStateFromGist(gist),

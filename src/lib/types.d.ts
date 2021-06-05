@@ -36,6 +36,10 @@ export interface GistLoaderConfig {
 	url: string;
 }
 
+export interface LoadingState {
+	loading: boolean;
+	message?: string;
+}
 export interface FileLoaderConfig {
 	codeURL: string;
 	configURL?: string;

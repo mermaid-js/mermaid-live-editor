@@ -7,7 +7,7 @@ const loaders: Record<string, Loader> = {
 
 export const loadDataFromUrl = async (): Promise<void> => {
 	const searchParams = new URLSearchParams(window.location.search);
-	let state: State;
+	let state: State = defaultState;
 	let code: string, config: string;
 	const codeURL: string = searchParams.get('code');
 	const configURL: string = searchParams.get('config');
@@ -23,8 +23,12 @@ export const loadDataFromUrl = async (): Promise<void> => {
 	if (!code) {
 		for (const [key, value] of searchParams.entries()) {
 			if (key in loaders) {
-				state = await loaders[key](value);
-				break;
+				try {
+					state = await loaders[key](value);
+					break;
+				} catch (err) {
+					console.error(err);
+				}
 			}
 		}
 	} else {

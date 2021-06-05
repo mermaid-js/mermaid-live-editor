@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Card from '$lib/components/card/card.svelte';
 	import type { State } from '$lib/types';
-	import { base64State, codeStore } from '$lib/util/state';
+	import { codeStore } from '$lib/util/state';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
@@ -103,9 +104,25 @@
 		);
 	};
 
-	const onCopyMarkdown = (event: Event) => {
-		event.target.select();
+	const onCopyMarkdown = () => {
+		document.getElementById('markdown').select();
 		document.execCommand('Copy');
+	};
+
+	let gistURL = '';
+	codeStore.subscribe((state) => {
+		if (state.loader?.type === 'gist') {
+			// @ts-ignore Gist will have url
+			gistURL = state.loader.config.url;
+		}
+	});
+
+	const loadGist = () => {
+		if (!gistURL) {
+			alert('Please enter a Gist URL first');
+		}
+		goto(`/edit?gist=${gistURL}`);
+		location.reload();
 	};
 
 	let iUrl: string;
@@ -126,7 +143,7 @@
 	});
 </script>
 
-<Card title="Actions" isOpen={false}>
+<Card title="Actions" isOpen={true}>
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
 			<button class="action-btn w-full" on:click={onCopyClipboard}
@@ -160,8 +177,22 @@
 		</div>
 
 		<div class="w-full flex gap-2 items-center">
-			<label for="markdown">Copy Markdown</label>
-			<input class="flex-1" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+			<input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+			<label for="markdown">
+				<button class="btn text-white flex-auto" on:click={onCopyMarkdown}> Copy Markdown </button>
+			</label>
+		</div>
+
+		<div class="w-full flex gap-2 items-center">
+			<input
+				class="input"
+				id="gist"
+				type="text"
+				bind:value={gistURL}
+				placeholder="Enter Gist URL" />
+			<label for="gist">
+				<button class="btn text-white flex-auto" on:click={loadGist}> Load Gist </button>
+			</label>
 		</div>
 	</div>
 </Card>
