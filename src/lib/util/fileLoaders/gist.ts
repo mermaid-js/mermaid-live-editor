@@ -54,14 +54,14 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
 	}
 };
 
-const getStateFromGist = (gist: GistData): State => {
+const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => {
 	const state: State = {
 		...defaultState,
 		code: gist.code,
 		loader: {
 			type: 'gist',
 			config: {
-				url: gist.url
+				url: gistURL
 			}
 		}
 	};
@@ -86,9 +86,7 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
 			throw 'Invalid gist provided';
 		}
 		gistHistory.reverse();
-		const state = getStateFromGist(gistHistory.slice(-1).pop());
-		// @ts-ignore Ignore
-		state.loader.config.url = gistURL;
+		const state = getStateFromGist(gistHistory.slice(-1).pop(), gistURL);
 		for (const gist of gistHistory) {
 			addHistoryEntry({
 				state: getStateFromGist(gist),
