@@ -3,29 +3,30 @@
 	import { codeStore, getStateString } from '$lib/util/state';
 	import {
 		addHistoryEntry,
-		autoHistoryMode,
+		historyModeStore,
 		clearHistoryData,
 		getPreviousState,
-		historyStore
+		historyStore,
+		loaderHistoryStore
 	} from './history';
 	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
 	import moment from 'moment';
-	import type { State, Tab } from '$lib/types';
+	import type { HistoryType, State, Tab } from '$lib/types';
 
 	const HISTORY_SAVE_INTERVAL = 60000;
 
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
-		autoHistoryMode.set('timeline' === message.detail.id);
+		historyModeStore.set(message.detail.id as HistoryType);
 	};
-	const tabs: Tab[] = [
+	let tabs: Tab[] = [
 		{
-			id: 'saved',
+			id: 'manual',
 			title: 'Saved',
 			icon: 'far fa-bookmark'
 		},
 		{
-			id: 'timeline',
+			id: 'auto',
 			title: 'Timeline',
 			icon: 'fas fa-history'
 		}
@@ -38,7 +39,7 @@
 			addHistoryEntry({
 				state: $codeStore,
 				time: Date.now(),
-				auto
+				type: auto ? 'auto' : 'manual'
 			});
 		} else if (!auto) {
 			notify('State already saved.');
@@ -62,10 +63,24 @@
 	};
 
 	onMount(() => {
-		autoHistoryMode.set(false);
+		historyModeStore.set('manual');
 		setInterval(() => {
 			saveHistory(true);
 		}, HISTORY_SAVE_INTERVAL);
+	});
+
+	loaderHistoryStore.subscribe((entries) => {
+		if (entries.length > 0 && tabs.length === 2) {
+			tabs = [
+				{
+					id: 'loader',
+					title: 'Revisions',
+					icon: 'fab fa-git-alt'
+				},
+				...tabs
+			];
+			historyModeStore.set('loader');
+		}
 	});
 
 	let isOpen = true;
@@ -78,20 +93,30 @@
 			class="btn"
 			on:click|stopPropagation={() => saveHistory()}
 			title="Save current state"><i class="far fa-save" /></button>
-		<button
-			id="clearHistory"
-			class="btn text-red-400"
-			on:click|stopPropagation={() => clearHistory()}
-			title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
+		{#if $historyModeStore !== 'loader'}
+			<button
+				id="clearHistory"
+				class="btn text-red-400"
+				on:click|stopPropagation={() => clearHistory()}
+				title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
+		{/if}
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56" id="historyList">
 		{#if $historyStore.length > 0}
-			{#each $historyStore as { state, time, name }}
+			{#each $historyStore as { state, time, name, url, type }}
 				<li class="rounded p-2 shadow flex-col">
 					<div class="flex">
 						<div class="flex-1">
 							<div class="flex flex-col">
-								<span>{name}</span>
+								{#if url}
+									<a
+										href={url}
+										target="_blank"
+										title="Open revision in new tab"
+										class="hover:underline text-blue-500">{name}</a>
+								{:else}
+									<span>{name}</span>
+								{/if}
 								<span class="text-gray-400 text-sm">{relativeTime(time)}</span>
 							</div>
 						</div>
@@ -99,9 +124,11 @@
 							<button
 								class="rounded px-2 w-24 bg-green-200 hover:bg-green-300"
 								on:click={() => restoreHistory(state)}><i class="fas fa-undo" /> Restore</button>
-							<button
-								class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
-								on:click={() => clearHistory(time)}><i class="fas fa-trash-alt" /> Delete</button>
+							{#if type !== 'loader'}
+								<button
+									class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
+									on:click={() => clearHistory(time)}><i class="fas fa-trash-alt" /> Delete</button>
+							{/if}
 						</div>
 					</div>
 				</li>

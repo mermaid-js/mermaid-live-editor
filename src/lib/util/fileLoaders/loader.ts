@@ -1,27 +1,48 @@
-import { getGistData } from './gist';
-import { updateCode, updateConfig } from '../state';
-import type { Loader } from '$lib/types';
+import { loadGistData } from './gist';
+import { updateCodeStore, defaultState } from '../state';
+import type { Loader, State } from '$lib/types';
 const loaders: Record<string, Loader> = {
-	gist: getGistData
+	gist: loadGistData
 };
 
 export const loadDataFromUrl = async (): Promise<void> => {
 	const searchParams = new URLSearchParams(window.location.search);
+	let state: State;
 	let code: string, config: string;
-	if (searchParams.has('code')) {
-		code = await (await fetch(searchParams.get('code'))).text();
+	const codeURL: string = searchParams.get('code');
+	const configURL: string = searchParams.get('config');
+
+	if (codeURL) {
+		code = await (await fetch(codeURL)).text();
 	}
-	if (searchParams.has('config')) {
-		config = await (await fetch(searchParams.get('config'))).text();
+	if (configURL) {
+		config = await (await fetch(configURL)).text();
+	} else {
+		config = defaultState.mermaid;
 	}
 	if (!code) {
 		for (const [key, value] of searchParams.entries()) {
 			if (key in loaders) {
-				({ code, config } = await loaders[key](value));
+				state = await loaders[key](value);
 				break;
 			}
 		}
+	} else {
+		state = {
+			code,
+			mermaid: config,
+			autoSync: true,
+			updateDiagram: true,
+			updateEditor: true,
+			loader: {
+				type: 'files',
+				config: {
+					codeURL,
+					configURL
+				}
+			}
+		};
 	}
-	code && updateCode(code, true, true);
-	config && updateConfig(config, true);
+	updateCodeStore(state);
+	// window.location.search = '';
 };

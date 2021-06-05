@@ -29,4 +29,18 @@ describe('Site Loads', () => {
 		cy.contains('Class Diagram').click();
 		cy.contains('classDiagram');
 	});
+
+	it('should load diagram from gist', () => {
+		cy.visit(`/edit?gist=https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a`);
+		cy.contains('Party');
+		cy.getLocalStorage('codeStore').snapshot();
+	});
+
+	it('should load diagram from raw files', () => {
+		cy.visit(
+			`/edit?code=https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/raw/a76fc7c6d19b6b772d86ac87fa700ed2e2117c56/code.mmd&config=https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/raw/a76fc7c6d19b6b772d86ac87fa700ed2e2117c56/config.json`
+		);
+		cy.contains('Party');
+		cy.getLocalStorage('codeStore').snapshot();
+	});
 });
