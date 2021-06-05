@@ -38,9 +38,6 @@ export const loadDataFromUrl = async (): Promise<void> => {
 		state = {
 			code,
 			mermaid: config,
-			autoSync: true,
-			updateDiagram: true,
-			updateEditor: true,
 			loader: {
 				type: 'files',
 				config: {
@@ -48,8 +45,14 @@ export const loadDataFromUrl = async (): Promise<void> => {
 					configURL
 				}
 			}
-		};
+		} as State;
 	}
-	loaded && updateCodeStore(state);
+	loaded &&
+		updateCodeStore({
+			...state,
+			autoSync: true,
+			updateDiagram: true,
+			updateEditor: true
+		});
 	// window.location.search = '';
 };
