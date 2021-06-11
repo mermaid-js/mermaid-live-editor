@@ -25,7 +25,9 @@
 					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
 					container.innerHTML = code;
 					delete container.dataset.processed;
-					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
+					mermaid.initialize(
+						Object.assign({}, JSON.parse(state.mermaid), { securityLevel: 'strict' })
+					); // Monkey patch: force securityLevel: strict to mitigate XSS attacks
 					mermaid.render('graph-div', code, (svgCode) => {
 						container.innerHTML = svgCode;
 					});
