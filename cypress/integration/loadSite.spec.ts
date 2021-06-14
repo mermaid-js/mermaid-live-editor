@@ -29,4 +29,14 @@ describe('Site Loads', () => {
 		cy.contains('Class Diagram').click();
 		cy.contains('classDiagram');
 	});
+
+	it('should prevent setting the "securityLevel" option via URL', () => {
+		const b64State = btoa(
+			`{"code":"graph TD\\nA[\\"<img src='https://via.placeholder.com/64' width=64></img>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","updateEditor":true,"autoSync":true,"updateDiagram":true}`
+		);
+		cy.visit(`/edit#${b64State}`);
+		cy.contains('Config').click();
+		cy.contains('forest').should('exist');
+		cy.contains('securityLevel').should('not.exist');
+	});
 });

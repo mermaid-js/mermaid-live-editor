@@ -35,9 +35,11 @@ export const loadState = (data: string): void => {
 		const stateStr = fromBase64(data);
 		console.log(`Tring to load state: ${stateStr}`);
 		state = JSON.parse(stateStr);
-		if (typeof state.mermaid !== 'string') {
-			state.mermaid = JSON.stringify(state.mermaid, null, 2);
-		}
+		const mermaidConfig =
+			typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
+		delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
+
+		state.mermaid = JSON.stringify(mermaidConfig, null, 2);
 	} catch (e) {
 		if (data) {
 			console.error('Init error', e);

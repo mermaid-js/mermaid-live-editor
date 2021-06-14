@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import type { Mermaid } from 'mermaid';
 
-	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
+	const mermaid: Mermaid = window.mermaid as unknown as Mermaid;
 	let code = '';
 	let container: HTMLDivElement;
 	let error = false;
@@ -25,9 +25,7 @@
 					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
 					container.innerHTML = code;
 					delete container.dataset.processed;
-					mermaid.initialize(
-						Object.assign({}, JSON.parse(state.mermaid), { securityLevel: 'strict' })
-					); // Monkey patch: force securityLevel: strict to mitigate XSS attacks
+					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
 						container.innerHTML = svgCode;
 					});
