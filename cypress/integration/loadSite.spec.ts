@@ -1,3 +1,5 @@
+import { toBase64 } from 'js-base64';
+
 describe('Site Loads', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
@@ -31,12 +33,29 @@ describe('Site Loads', () => {
 	});
 
 	it('should prevent setting the "securityLevel" option via URL', () => {
-		const b64State = btoa(
-			`{"code":"graph TD\\nA[\\"<img src='https://via.placeholder.com/64' width=64></img>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","updateEditor":true,"autoSync":true,"updateDiagram":true}`
+		const b64State = toBase64(
+			`{"code":"graph TD\\nA[\\"<img src='https://via.placeholder.com/64' width=64/>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","updateEditor":true,"autoSync":true,"updateDiagram":true}`,
+			true
 		);
+		cy.on('window:confirm', () => true);
 		cy.visit(`/edit#${b64State}`);
 		cy.contains('Config').click();
-		cy.contains('forest').should('exist');
+		cy.contains('forest');
 		cy.contains('securityLevel').should('not.exist');
+		cy.get('#view').find('img').should('not.exist');
+		cy.get('#view').contains('<img src');
+	});
+
+	it('should allow persisting "securityLevel" using confirm dialogue', () => {
+		const b64State = toBase64(
+			`{"code":"graph TD\\nA[\\"<img src='https://via.placeholder.com/64' width=64/>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","updateEditor":true,"autoSync":true,"updateDiagram":true}`,
+			true
+		);
+		cy.on('window:confirm', () => false);
+		cy.visit(`/edit#${b64State}`);
+		cy.contains('Config').click();
+		cy.contains('forest');
+		cy.contains('securityLevel');
+		cy.get('#view').find('img').should('be.visible');
 	});
 });

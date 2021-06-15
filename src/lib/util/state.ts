@@ -37,9 +37,14 @@ export const loadState = (data: string): void => {
 		state = JSON.parse(stateStr);
 		const mermaidConfig =
 			typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
-              if(mermaidConfig.securityLevel) {
-                  alert(`securityLevel was removed from config. Please add "securityLevel":"${mermaidConfig.securityLevel}" to your config if you trust the source of this Diagram`);
-		    delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
+		if (
+			mermaidConfig.securityLevel &&
+			mermaidConfig.securityLevel !== 'strict' &&
+			confirm(
+				`Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+			)
+		) {
+			delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
 		}
 
 		state.mermaid = JSON.stringify(mermaidConfig, null, 2);
