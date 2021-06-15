@@ -5,8 +5,9 @@
 	import { onMount } from 'svelte';
 	import type { Mermaid } from 'mermaid';
 
-	const mermaid: Mermaid = (window.mermaid as unknown) as Mermaid;
+	const mermaid: Mermaid = window.mermaid as unknown as Mermaid;
 	let code = '';
+	let config = '';
 	let container: HTMLDivElement;
 	let error = false;
 	let outOfSync = false;
@@ -20,10 +21,13 @@
 					}
 					outOfSync = false;
 					manualUpdate = true;
-					// Replacing special characters '<' and '>' with encoded '&lt;' and '&gt;'
-					code = state.code; //.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+					if (code === state.code && config === state.mermaid) {
+						// Do not render if there is no change in Code/Config
+						return;
+					}
+					code = state.code;
+					config = state.mermaid;
 					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
-					container.innerHTML = code;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {

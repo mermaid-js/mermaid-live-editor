@@ -19,7 +19,7 @@ export const initEditor = (monacoEditor): void => {
 			'gitGraph',
 			'journey'
 		],
-		keywords: ['patricipant', 'as'],
+		keywords: ['participant', 'as'],
 		arrows: ['---', '===', '-->', '==>', '->>', '->'],
 		tokenizer: {
 			root: [

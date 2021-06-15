@@ -40,7 +40,7 @@ module.exports = {
 				'ts-ignore': 'allow-with-description'
 			}
 		],
-		'@typescript-eslint/no-unsafe-member-access': 'warn',
-		'@typescript-eslint/no-unsafe-assignment': 'warn'
+		'@typescript-eslint/no-unsafe-member-access': 'off',
+		'@typescript-eslint/no-unsafe-assignment': 'off'
 	}
 };
