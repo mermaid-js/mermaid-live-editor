@@ -7,6 +7,7 @@
 
 	const mermaid: Mermaid = window.mermaid as unknown as Mermaid;
 	let code = '';
+	let config = '';
 	let container: HTMLDivElement;
 	let error = false;
 	let outOfSync = false;
@@ -20,7 +21,12 @@
 					}
 					outOfSync = false;
 					manualUpdate = true;
+					if (code === state.code && config === state.mermaid) {
+						// Do not render if there is no change in Code/Config
+						return;
+					}
 					code = state.code;
+					config = state.mermaid;
 					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));

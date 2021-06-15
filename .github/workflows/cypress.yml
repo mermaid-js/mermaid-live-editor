@@ -26,6 +26,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-
 
+      - name: Lint
+        run: |
+          yarn install
+          yarn run lint
+
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
