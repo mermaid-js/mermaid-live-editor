@@ -29,6 +29,7 @@ interface GistData {
 }
 
 const getGistData = async (gistURL: string): Promise<GistData> => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, __, gistID, revisionID] = gistURL.split('github.com').pop().split('/');
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const { html_url, files, history } = await (
@@ -71,6 +72,7 @@ const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => 
 
 export const loadGistData = async (gistURL: string): Promise<State> => {
 	try {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const [_, __, gistID, revisionID] = gistURL.split('github.com').pop().split('/');
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const { history } = await (

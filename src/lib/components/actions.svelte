@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Card from '$lib/components/card/card.svelte';
 	import type { State } from '$lib/types';
 	import { codeStore } from '$lib/util/state';
