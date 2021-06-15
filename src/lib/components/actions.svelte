@@ -13,7 +13,9 @@
 		if (!svg) {
 			svg = document.querySelector('#container svg');
 		}
-		const svgString = svg.outerHTML.replaceAll('<br>', '<br/>');
+		const svgString = svg.outerHTML
+			.replaceAll('<br>', '<br/>')
+			.replaceAll(/<img([^>]*)>/g, (m, g) => `<img ${g} />`);
 		return toBase64(svgString);
 	};
 
