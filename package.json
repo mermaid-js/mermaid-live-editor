@@ -34,7 +34,7 @@
 		"lint-staged": "^11.0.0",
 		"mocha": "^9.0.0",
 		"postcss": "^8.3.2",
-		"postcss-load-config": "^3.0.1",
+		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.3.1",
 		"prettier-plugin-svelte": "^2.3.0",
 		"svelte": "^3.34.0",
