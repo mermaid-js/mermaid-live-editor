@@ -1112,10 +1112,10 @@ cypress-localstorage-commands@^1.4.5:
   resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-1.4.5.tgz#7e97f82c144314655ab7ecb4ce0e273c70d1e569"
   integrity sha512-mr86nv74GvOE4zOFwoMrksFCykNSbRh57Pg7xUGpm2ax+wfHhqwBA56Sn5dhHV73gzz7C6B1kfNpMrjMH/hgyg==
 
-cypress@^7.6.0:
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-7.6.0.tgz#80fe7496cd4165a0fa06e25fc11413dda4544463"
-  integrity sha512-tTwQExY28CKt6cY85/2V1uLExcMfpBEBWXt/EcE2ht/Onl9k4lxUS7ul1UnUO5MrYwMIHMdGVh13DxdzXj4Z5w==
+cypress@^7.7.0:
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-7.7.0.tgz#0839ae28e5520536f9667d6c9ae81496b3836e64"
+  integrity sha512-uYBYXNoI5ym0UxROwhQXWTi8JbUEjpC6l/bzoGZNxoKGsLrC1SDPgIDJMgLX/MeEdPL0UInXLDUWN/rSyZUCjQ==
   dependencies:
     "@cypress/request" "^2.88.5"
     "@cypress/xvfb" "^1.2.4"
@@ -4042,10 +4042,10 @@ svelte-hmr@^0.14.2:
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.14.3.tgz#b6a6781bc923352e3c257ccd7d87d01821ea2d95"
   integrity sha512-N56xX405zLMw2tpGHKRx5h+kmdeZwxI21pvyC6OyBHJDCF6DlwWBm9TifdQmSD4dloWSmpDPzHWYa3CSjfopUg==
 
-svelte-preprocess@^4.7.1:
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.7.3.tgz#454fa059c2400b15e7a3caeca18993cff9df0e96"
-  integrity sha512-Zx1/xLeGOIBlZMGPRCaXtlMe4ZA0faato5Dc3CosEqwu75MIEPuOstdkH6cy+RYTUYynoxzNaDxkPX4DbrPwRA==
+svelte-preprocess@^4.7.4:
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.7.4.tgz#e4d5208ab25c2aaaf19e837f7d7bbf7930e61d2b"
+  integrity sha512-mDAmaltQl6e5zU2VEtoWEf7eLTfuOTGr9zt+BpA3AGHo8MIhKiNSPE9OLTCTOMgj0vj/uL9QBbaNmpG4G1CgIA==
   dependencies:
     "@types/pug" "^2.0.4"
     "@types/sass" "^1.16.0"
