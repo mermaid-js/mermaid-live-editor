@@ -23,7 +23,7 @@
 		"cssnano": "^5.0.6",
 		"cypress": "^7.7.0",
 		"cypress-localstorage-commands": "^1.4.5",
-		"eslint": "^7.29.0",
+		"eslint": "^7.30.0",
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-cypress": "^2.11.3",
 		"eslint-plugin-mocha": "^9.0.0",
