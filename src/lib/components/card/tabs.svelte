@@ -7,7 +7,7 @@
 	export let title: string;
 	export let isOpen = false;
 
-	let activeTabID: string = tabs[0]?.id;
+	$: activeTabID = tabs[0]?.id;
 
 	const dispatch = createEventDispatcher<TabEvents>();
 	const toggleTabs = (tab: Tab) => {

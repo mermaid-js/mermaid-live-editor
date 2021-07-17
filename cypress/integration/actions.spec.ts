@@ -17,4 +17,10 @@ describe('Check actions', () => {
 					});
 			});
 	});
+
+	it('should load gists from URL', () => {
+		cy.get('#gist').type('https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a');
+		cy.contains('Load Gist').click();
+		cy.contains('Go shopping!!');
+	});
 });
