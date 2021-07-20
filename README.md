@@ -31,7 +31,7 @@ Then open http://localhost:8000
 
 [Volta](https://volta.sh) is used for managing node and yarn versions.
 
-This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started). :
+This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started):
 
 ```
 yarn install
