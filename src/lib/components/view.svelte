@@ -3,9 +3,8 @@
 
 	import { codeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
-	import type { Mermaid } from 'mermaid';
+	import * as mermaid from 'mermaid';
 
-	const mermaid: Mermaid = window.mermaid as unknown as Mermaid;
 	let code = '';
 	let config = '';
 	let container: HTMLDivElement;
