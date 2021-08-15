@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { loadingStateStore } from '$lib/util/loading';
-	import { themeStore } from '$lib/util/state';
+	import { themeStore } from '$lib/util/theme';
 	import Theme from '$lib/components/theme.svelte';
 
 	// This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.

@@ -179,7 +179,9 @@
 		<div class="w-full flex gap-2 items-center">
 			<input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
 			<label for="markdown">
-				<button class="btn text-white flex-auto" on:click={onCopyMarkdown}> Copy Markdown </button>
+				<button class="btn btn-primary btn-sm flex-auto" on:click={onCopyMarkdown}>
+					Copy Markdown
+				</button>
 			</label>
 		</div>
 
@@ -191,7 +193,7 @@
 				bind:value={gistURL}
 				placeholder="Enter Gist URL" />
 			<label for="gist">
-				<button class="btn text-white flex-auto" on:click={loadGist}> Load Gist </button>
+				<button class="btn btn-primary btn-sm  flex-auto" on:click={loadGist}> Load Gist </button>
 			</label>
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { EditorEvents } from '$lib/types';
 	import { codeStore } from '$lib/util/state';
+	import { themeStore } from '$lib/util/theme';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { initEditor } from './util';
@@ -34,6 +35,10 @@
 		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
 	}
 
+	themeStore.subscribe(({ isDark }) => {
+		editor && Monaco?.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+	});
+
 	const dispatch = createEventDispatcher<EditorEvents>();
 	const loadMonaco = async () => {
 		let i = 0;
@@ -63,7 +68,7 @@
 				text
 			});
 		});
-
+		Monaco?.editor.setTheme($themeStore.isDark ? 'vs-dark' : 'vs');
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,

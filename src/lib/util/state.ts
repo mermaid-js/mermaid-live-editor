@@ -24,7 +24,6 @@ export const defaultState: State = {
 	updateDiagram: true
 };
 
-export const themeStore = persist(writable(''), localStorage(), 'themeStore');
 export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
 export const base64State = derived([codeStore], ([code], set) => {
 	set(toBase64(JSON.stringify(code), true));
@@ -90,6 +89,17 @@ export const updateCode = (code: string, updateEditor: boolean, updateDiagram = 
 export const updateConfig = (config: string, updateEditor: boolean): void => {
 	codeStore.update((state) => {
 		return { ...state, mermaid: config, updateEditor };
+	});
+};
+
+export const toggleDarkTheme = (dark: boolean): void => {
+	codeStore.update((state) => {
+		const config = JSON.parse(state.mermaid);
+		if (!config.theme || ['dark', 'default'].includes(config.theme)) {
+			config.theme = dark ? 'dark' : 'default';
+		}
+
+		return { ...state, mermaid: JSON.stringify(config), updateEditor: true };
 	});
 };
 
