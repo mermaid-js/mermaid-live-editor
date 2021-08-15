@@ -16,16 +16,16 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.16",
-		"@sveltejs/kit": "1.0.0-next.147",
+		"@sveltejs/kit": "1.0.0-next.150",
 		"@types/mermaid": "^8.2.7",
 		"@typescript-eslint/eslint-plugin": "^4.29.1",
 		"@typescript-eslint/parser": "^4.29.1",
 		"autoprefixer": "^10.3.1",
 		"chai": "^4.3.4",
 		"cssnano": "^5.0.7",
-		"cypress": "8.1.0",
+		"cypress": "8.2.0",
 		"cypress-localstorage-commands": "^1.5.0",
-		"eslint": "^7.30.0",
+		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-cypress": "^2.11.3",
 		"eslint-plugin-mocha": "^9.0.0",
@@ -49,12 +49,12 @@
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.1.1",
-		"analytics": "^0.7.10",
+		"analytics": "^0.7.13",
 		"js-base64": "^3.6.1",
 		"mermaid": "^8.11.4",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.25.2",
-		"random-word-slugs": "^0.0.2"
+		"random-word-slugs": "^0.0.5"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [

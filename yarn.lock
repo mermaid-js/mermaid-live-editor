@@ -9,14 +9,14 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
 
-"@analytics/core@^0.10.10":
-  version "0.10.10"
-  resolved "https://registry.npmjs.org/@analytics/core/-/core-0.10.10.tgz"
-  integrity sha512-UjUbWsyCq7m0JZ5rnaejUEjiPa6FR0DrxtiknFaFsFFU5zUSAGAX4CaBF+D9ZoB6cgfJuiXCrgtQio9PK/ZMkA==
+"@analytics/core@^0.10.13":
+  version "0.10.13"
+  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.10.13.tgz#275e71d550f6e1a6f1349c497d935e737d733ba4"
+  integrity sha512-i8XH73jfPYq1e1SZYn/tbx4IEAllZl5oap3SeFC/zR17APujGggqpkP1H6mnwdyYO1RQGKxPbf5LufM5iYnoGg==
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
-    "@analytics/type-utils" "^0.1.0"
-    analytics-utils "^0.4.8"
+    "@analytics/type-utils" "^0.3.1"
+    analytics-utils "^1.0.2"
 
 "@analytics/global-storage-utils@^0.1.2":
   version "0.1.2"
@@ -37,20 +37,20 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
 
-"@analytics/storage-utils@^0.2.9":
-  version "0.2.9"
-  resolved "https://registry.npmjs.org/@analytics/storage-utils/-/storage-utils-0.2.9.tgz"
-  integrity sha512-nF/4SbISK0IRVzJwNcHS8OVXi7Bb1ImAnLxgHyCh4LVKoXQP9T/01ANDijQz7OcRE2C2PmLA3i6w8po49sFjmw==
+"@analytics/storage-utils@^0.2.12":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@analytics/storage-utils/-/storage-utils-0.2.12.tgz#cae7597934b76716d8a6a4f6696fb04cffb05861"
+  integrity sha512-cuQuV5sgk1vuIwFUFJ5VJv0EsDL84SS4enuCyY9JEcE24wJeC6iUEy6O7OJvVssYpGJsW+i1XSgwCDJTPgkZgg==
   dependencies:
     "@analytics/cookie-utils" "^0.2.6"
     "@analytics/global-storage-utils" "^0.1.2"
     "@analytics/localstorage-utils" "^0.1.5"
-    "@analytics/type-utils" "^0.1.0"
+    "@analytics/type-utils" "^0.3.1"
 
-"@analytics/type-utils@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@analytics/type-utils/-/type-utils-0.1.0.tgz"
-  integrity sha512-orrUrNAUtkMJatzpmTGSk1oKoNiukljzFhbcZC1RIZzx1NOd63lF6aUor3ITrhlruWBQ02N94ehTTb5CYtzZow==
+"@analytics/type-utils@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@analytics/type-utils/-/type-utils-0.3.1.tgz#49db3a95fd45864e30f6ad43dddf5b78fba562d6"
+  integrity sha512-9Ej6c9ulj5DNE29eFk3s49/1b89M8mbQ7BoJEQAQg/k86HOVrAEWQUScr359WVSOyGNBsSYE1qILC3XFTTtgtw==
 
 "@babel/code-frame@7.12.11":
   version "7.12.11"
@@ -619,10 +619,10 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.16.tgz#656c90666edd730ccc9bfb89e3f7ece56e7ac7c8"
   integrity sha512-xGFcg+GHF0BL1fyWx2vCzlYj4S4R+Od9cF00soo1TVp/scGOi1G9grSYYW4x5H+iDn1sscoJ65OGBGWIcOgrXg==
 
-"@sveltejs/kit@1.0.0-next.147":
-  version "1.0.0-next.147"
-  resolved "https://registry.npmjs.org/@sveltejs/kit/-/kit-1.0.0-next.147.tgz"
-  integrity sha512-rAABsKlC1K/B4VfqT2SaVO29t+OV8deseSJ9l+hV7j9zkswTwiJ7h37tZ5SfnvMgCHemcNjXg8Gzg+0U1MCfEA==
+"@sveltejs/kit@1.0.0-next.150":
+  version "1.0.0-next.150"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.150.tgz#f0c52dd71cdc936f31504be9a2009a98d16fad9e"
+  integrity sha512-crIpEgy8dyKvaMrEYmNm38lTwcwEY0wv8+L672WhgvHVx4cmiKsGAocq73I2h3f4lnlxa1mBwi7jrNTZO1lUDg==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.16"
     cheap-watch "^1.0.3"
@@ -856,21 +856,21 @@ am-i-a-dependency@1.1.2:
   resolved "https://registry.npmjs.org/am-i-a-dependency/-/am-i-a-dependency-1.1.2.tgz"
   integrity sha1-+dNCIwTW9kL4IeTEB1ZQNfYWfx8=
 
-analytics-utils@^0.4.8:
-  version "0.4.8"
-  resolved "https://registry.npmjs.org/analytics-utils/-/analytics-utils-0.4.8.tgz"
-  integrity sha512-Hx8C+tDRShkUcTXtnWMBc2Gn0pZMVouHrfZBqSjSxpndbKLj8swDJ5qrQijnHFJxZ2nsDYf9g3YY7DXBlmlAow==
+analytics-utils@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/analytics-utils/-/analytics-utils-1.0.2.tgz#dc27eefa5a5eab436d05d66324bdb1583d1657f4"
+  integrity sha512-zVehxpl3pSQH55YPnnLjE7IAIVA5ezDcHnm2pAndN1dohCb0NDpgigbY3RbhIZ5z9j2/InlpAqsSgk+NVWACVQ==
   dependencies:
-    "@analytics/storage-utils" "^0.2.9"
+    "@analytics/type-utils" "^0.3.1"
     dlv "^1.1.3"
 
-analytics@^0.7.10:
-  version "0.7.10"
-  resolved "https://registry.npmjs.org/analytics/-/analytics-0.7.10.tgz"
-  integrity sha512-7oy4T3Hyc9rptRJpZRm9K7ZtKA8ScdRFcF1o/H9Fxj/Emd8L4tlpWaPvGmTrvoT/jtmSg428ZCoM8bje1eEK4Q==
+analytics@^0.7.13:
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.7.13.tgz#18380630c2df450fb96011cd0f346d3268c73ea1"
+  integrity sha512-1WcUy0p3BbSDYXZxjH4hPlbqTf7+GYEheC+TCaCQCIQlFdPcEwzEvXfFPvmkSXY72EPg5jywHcOuLvf3KX52pg==
   dependencies:
-    "@analytics/core" "^0.10.10"
-    "@analytics/storage-utils" "^0.2.9"
+    "@analytics/core" "^0.10.13"
+    "@analytics/storage-utils" "^0.2.12"
 
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
   version "4.1.1"
@@ -1738,10 +1738,10 @@ cypress-localstorage-commands@^1.5.0:
   resolved "https://registry.npmjs.org/cypress-localstorage-commands/-/cypress-localstorage-commands-1.5.0.tgz"
   integrity sha512-gl1uKeviYdyJG4dLcZ9hfoUjLciwkkfbaQ3gvRtmipsPxC612ZBJhSjbunnJcUGwkryaM+82VrY9ij0tLSg7LA==
 
-cypress@8.1.0:
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/cypress/-/cypress-8.1.0.tgz"
-  integrity sha512-GXjlqPjY/6HPbQwAp3AvlA1Mk/NoJTAmqVSUhQsuM/1xDpd/FQHkxVuq5h6O6RrAoCXSgpZPXFsVtdqE+FwEJw==
+cypress@8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-8.2.0.tgz#1e4e9f6218324e82a95c1b9cad7f3965ba663d7f"
+  integrity sha512-jg7S5VxxslwsgEyAkCE9ZCkFADxOUY1bSWScp1cWnga88K0TZgFQ0zdxyG9Mw/4spLGuvkriIZ62am+TR6C04w==
   dependencies:
     "@cypress/request" "^2.88.5"
     "@cypress/xvfb" "^1.2.4"
@@ -2428,10 +2428,10 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-2.1.0.tgz"
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
-eslint@^7.30.0:
-  version "7.31.0"
-  resolved "https://registry.npmjs.org/eslint/-/eslint-7.31.0.tgz"
-  integrity sha512-vafgJpSh2ia8tnTkNUkwxGmnumgckLh5aAbLa1xRmIn9+owi8qBNGKL+B881kNKNTy7FFqTEkpNkUvmw0n6PkA==
+eslint@^7.32.0:
+  version "7.32.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.32.0.tgz#c6d328a14be3fb08c8d1d21e12c02fdb7a2a812d"
+  integrity sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA==
   dependencies:
     "@babel/code-frame" "7.12.11"
     "@eslint/eslintrc" "^0.4.3"
@@ -4861,10 +4861,10 @@ ramda@^0.27.1, ramda@~0.27.1:
   resolved "https://registry.npmjs.org/ramda/-/ramda-0.27.1.tgz"
   integrity sha512-PgIdVpn5y5Yns8vqb8FzBUEYn98V3xcPgawAkkgj0YJ0qDsnHCiNmZYfOGMgOvoB0eWFLpYbhxUR3mxfDIMvpw==
 
-random-word-slugs@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/random-word-slugs/-/random-word-slugs-0.0.2.tgz"
-  integrity sha512-vKwx5X94uBZqTZbCyHiYghyU1B7qbodY8dqTbaarQnT/boqD9KreKV0z7iUZqauQFuETTxdHWsm75EUOjUHC5A==
+random-word-slugs@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/random-word-slugs/-/random-word-slugs-0.0.5.tgz#6ccd6c7ea320be9fbc19507f8c3a7d4a970ff61f"
+  integrity sha512-KwelmWsWHiMl3MKauB5usAIPg2FgwAku+FVYEuf32yyhZmEh3Fq4nXBxeUAgXB2F+G/HTeDsqXsmuupmOMnjRg==
 
 randombytes@^2.1.0:
   version "2.1.0"
