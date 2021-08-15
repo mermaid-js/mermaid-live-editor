@@ -7,6 +7,8 @@
 </script>
 
 <script lang="ts">
+	import Theme from './theme.svelte';
+
 	interface Link {
 		title: string;
 		href: string;
@@ -54,6 +56,7 @@
 		></label>
 	<input class="hidden" type="checkbox" id="menu-toggle" />
 
+	<Theme />
 	<div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
 		<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
 			{#each links as { title, href, icon }}

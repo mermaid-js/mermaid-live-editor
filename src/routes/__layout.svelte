@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import { loadingStateStore } from '$lib/util/loading';
 	import { themeStore } from '$lib/util/theme';
-	import Theme from '$lib/components/theme.svelte';
 
 	// This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
 	// Then move it into src and vite will bundle it automatically.
@@ -25,7 +24,6 @@
 </script>
 
 <main class="h-screen" data-theme={$themeStore}>
-	<Theme />
 	<slot />
 </main>
 

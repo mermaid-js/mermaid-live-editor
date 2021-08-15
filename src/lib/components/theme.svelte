@@ -38,7 +38,7 @@
 </script>
 
 <select
-	class="select select-bordered w-full max-w-xs"
+	class="select select-bordered"
 	bind:value={selectedTheme}
 	on:change={() => setTheme(selectedTheme)}>
 	{#each themes as theme}
