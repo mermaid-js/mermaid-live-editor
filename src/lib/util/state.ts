@@ -2,7 +2,7 @@ import { writable, get, derived } from 'svelte/store';
 import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import type { State } from '$lib/types';
-import { saveStatistcs } from './stats';
+import { saveStatistics } from './stats';
 
 export const defaultState: State = {
 	code: `graph TD
@@ -24,6 +24,7 @@ export const defaultState: State = {
 	updateDiagram: true
 };
 
+export const themeStore = persist(writable(''), localStorage(), 'themeStore');
 export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
 export const base64State = derived([codeStore], ([code], set) => {
 	set(toBase64(JSON.stringify(code), true));
@@ -33,7 +34,7 @@ export const loadState = (data: string): void => {
 	let state: State;
 	try {
 		const stateStr = fromBase64(data);
-		console.log(`Tring to load state: ${stateStr}`);
+		console.log(`Trying to load state: ${stateStr}`);
 		state = JSON.parse(stateStr);
 		const mermaidConfig =
 			typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
@@ -66,12 +67,12 @@ export const updateCodeStore = (newState: State): void => {
 
 let prompted = false;
 export const updateCode = (code: string, updateEditor: boolean, updateDiagram = false): void => {
-	saveStatistcs(code);
+	saveStatistics(code);
 	const lines = (code.match(/\n/g) || '').length + 1;
 
 	if (lines > 50 && !prompted && get(codeStore).autoSync) {
 		const turnOff = confirm(
-			'Long diagram deteced. Turn off Auto Sync? Click the sync logo to manually sync.'
+			'Long diagram detected. Turn off Auto Sync? Click the sync logo to manually sync.'
 		);
 		prompted = true;
 		if (turnOff) {

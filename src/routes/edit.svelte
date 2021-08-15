@@ -120,7 +120,7 @@
 	});
 </script>
 
-<div class="h-full flex flex-col overflow-hidden bg-gray-100">
+<div class="h-full flex flex-col overflow-hidden">
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
@@ -128,17 +128,21 @@
 				<div slot="actions">
 					{#if !$codeStore.autoSync}
 						<button
-							class="bg-indigo-500 hover:bg-indigo-700 rounded px-4 mx-2"
+							class="btn btn-primary btn-xs"
 							title="Sync Diagram"
 							data-cy="sync"
 							on:click={syncDiagram}><i class="fas fa-sync" /></button>
 					{/if}
-					<label
-						for="autoSync"
-						style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-						<input type="checkbox" id="autoSync" bind:checked={$codeStore.autoSync} />
-						Auto sync
-					</label>
+					<div class="form-control">
+						<label class="cursor-pointer label" for="autoSync">
+							<input
+								type="checkbox"
+								class="toggle toggle-primary toggle-sm"
+								id="autoSync"
+								bind:checked={$codeStore.autoSync} />
+							<span> Auto sync</span>
+						</label>
+					</div>
 				</div>
 
 				<Editor on:update={updateHandler} {language} bind:text {errorMarkers} />
@@ -155,7 +159,7 @@
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="btn"
+					class="btn btn-primary btn-xs"
 					title="View diagram in new page"
 					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
 

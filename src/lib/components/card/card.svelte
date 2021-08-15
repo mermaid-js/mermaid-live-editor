@@ -9,17 +9,17 @@
 	$: isOpen = isCloseable ? isOpen : true;
 </script>
 
-<div class="bg-white rounded overflow-hidden shadow m-2 flex-grow flex flex-col">
-	<div class="bg-indigo-400 border-gray-400 p-2 flex-none" on:click={() => (isOpen = !isOpen)}>
+<div class="card rounded overflow-hidden m-2 flex-grow flex flex-col shadow-2xl">
+	<div class="bg-primary p-2 pb-0 flex-none" on:click={() => (isOpen = !isOpen)}>
 		<div class="flex justify-between">
 			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} />
-			<div class="flex gap-x-4 items-center text-white">
+			<div class="flex gap-x-4 items-center">
 				<slot name="actions" />
 			</div>
 		</div>
 	</div>
 	{#if isOpen}
-		<div class="flex-grow overflow-auto" transition:slide>
+		<div class="card-body p-0 flex-grow overflow-auto" transition:slide>
 			<slot />
 		</div>
 	{/if}
