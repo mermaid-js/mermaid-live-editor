@@ -17,15 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        id: yarn-and-build-cache
-        with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-node_modules-build-deploy-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-build-deploy-
-
       - name: Build & Deploy
         run: |
           npm i -g yarn
