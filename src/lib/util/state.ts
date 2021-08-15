@@ -4,7 +4,7 @@ import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import type { State } from '$lib/types';
 import { saveStatistcs } from './stats';
 
-const defaultState: State = {
+export const defaultState: State = {
 	code: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
     B --> C{Let me think}

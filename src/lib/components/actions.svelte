@@ -105,9 +105,24 @@
 		);
 	};
 
-	const onCopyMarkdown = (event: Event) => {
-		event.target.select();
+	const onCopyMarkdown = () => {
+		document.getElementById('markdown').select();
 		document.execCommand('Copy');
+	};
+
+	let gistURL = '';
+	codeStore.subscribe((state) => {
+		if (state.loader?.type === 'gist') {
+			// @ts-ignore Gist will have url
+			gistURL = state.loader.config.url;
+		}
+	});
+
+	const loadGist = () => {
+		if (!gistURL) {
+			alert('Please enter a Gist URL first');
+		}
+		window.location.href = `${window.location.pathname}?gist=${gistURL}`;
 	};
 
 	let iUrl: string;
@@ -162,8 +177,22 @@
 		</div>
 
 		<div class="w-full flex gap-2 items-center">
-			<label for="markdown">Copy Markdown</label>
-			<input class="flex-1" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+			<input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+			<label for="markdown">
+				<button class="btn text-white flex-auto" on:click={onCopyMarkdown}> Copy Markdown </button>
+			</label>
+		</div>
+
+		<div class="w-full flex gap-2 items-center">
+			<input
+				class="input"
+				id="gist"
+				type="text"
+				bind:value={gistURL}
+				placeholder="Enter Gist URL" />
+			<label for="gist">
+				<button class="btn text-white flex-auto" on:click={loadGist}> Load Gist </button>
+			</label>
 		</div>
 	</div>
 </Card>
