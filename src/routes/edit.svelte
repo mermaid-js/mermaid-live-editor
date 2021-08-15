@@ -10,12 +10,10 @@
 	import { initHandler, syncDiagram } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
+	import * as mermaid from 'mermaid';
 	import type monaco from 'monaco-editor';
-	import type { Mermaid } from 'mermaid';
 	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
 	import { base } from '$app/paths';
-
-	const mermaid: Mermaid = window.mermaid as unknown as Mermaid;
 
 	let selectedMode = 'code';
 	const languageMap = {

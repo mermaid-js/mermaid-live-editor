@@ -10,7 +10,6 @@ const config = {
 			postcss: true
 		})
 	],
-
 	kit: {
 		adapter: adapter({
 			pages: `docs${process.env['BETA'] ? '/beta' : ''}`
@@ -23,7 +22,10 @@ const config = {
 		ssr: false,
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
-		trailingSlash: 'ignore'
+		trailingSlash: 'ignore',
+		vite: {
+			optimizeDeps: { include: ['mermaid'] }
+		}
 	}
 };
 
