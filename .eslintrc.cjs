@@ -14,6 +14,7 @@ module.exports = {
 		'*.md',
 		'snapshots.js',
 		'svelte.config.js',
+		'renovate.json',
 		'package.json',
 		'tsconfig.json'
 	],
