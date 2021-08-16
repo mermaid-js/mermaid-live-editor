@@ -39,7 +39,7 @@
 	];
 </script>
 
-<div class="navbar mb-2 shadow-lg bg-primary text-neutral-content">
+<div class="navbar mb-2 shadow-lg bg-primary">
 	<div class="flex-1 px-2 mx-2">
 		<span class="text-lg font-bold">
 			<a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>

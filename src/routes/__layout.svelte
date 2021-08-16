@@ -23,7 +23,7 @@
 	});
 </script>
 
-<main class="h-screen" data-theme={$themeStore}>
+<main class="h-screen text-primary-content" data-theme={$themeStore}>
 	<slot />
 </main>
 
