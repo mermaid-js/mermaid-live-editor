@@ -7,7 +7,7 @@ module.exports = {
       "1": "{\"code\":\"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"updateEditor\":false,\"autoSync\":true,\"updateDiagram\":false}"
     }
   },
-  "__version": "8.2.0",
+  "__version": "8.1.0",
   "Auto sync tests": {
     "should dim diagram when code is edited": {
       "1": "{\"code\":\"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Test\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"updateEditor\":false,\"autoSync\":false,\"updateDiagram\":false}"

@@ -20,12 +20,15 @@ export const initEditor = (monacoEditor): void => {
 			'journey'
 		],
 		keywords: ['participant', 'as'],
-		arrows: ['---', '===', '-->', '==>', '->>', '-->>', '->', '-)', '--)', '-x', '--x'],
+		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
+			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
+			[]
+		),
 		tokenizer: {
 			root: [
 				[/[{}]/, 'delimiter.bracket'],
 				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'keyword', '@keywords': 'keyword' } }],
-				[/[-=>ox]+/, { cases: { '@arrows': 'transition' } }],
+				[/[-+=>ox]+/, { cases: { '@arrows': 'transition' } }],
 				[/[[{(}]+.+?[)\]}]+/, 'string'],
 				[/".*"/, 'string']
 			]
