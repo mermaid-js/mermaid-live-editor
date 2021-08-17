@@ -5,7 +5,7 @@
 export const initEditor = (monacoEditor): void => {
 	monacoEditor.languages.register({ id: 'mermaid' });
 
-	// Register a tokens provider for the language
+	// Register a tokens provider for the mermaid language
 	monacoEditor.languages.setMonarchTokensProvider('mermaid', {
 		typeKeywords: [
 			'graph',
@@ -20,7 +20,7 @@ export const initEditor = (monacoEditor): void => {
 			'journey',
 			'info'
 		],
-		keywords: ['participant', 'as', 'showInfo'],
+		keywords: ['participant', 'as', 'showInfo', 'autonumber'],
 		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
 			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
 			[]
@@ -52,27 +52,52 @@ export const initEditor = (monacoEditor): void => {
 		]
 	});
 
-	// Register a completion item provider for the new language
+	// Register a completion item provider for the mermaid language
 	monacoEditor.languages.registerCompletionItemProvider('mermaid', {
 		provideCompletionItems: () => {
 			const suggestions = [
 				{
-					label: 'simpleText',
-					kind: monacoEditor.languages.CompletionItemKind.Text,
-					insertText: 'simpleText'
-				},
-				{
-					label: 'testing',
-					kind: monacoEditor.languages.CompletionItemKind.Keyword,
-					insertText: 'testing(${1:condition})',
-					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet
-				},
-				{
-					label: 'ifelse',
+					label: 'loop',
 					kind: monacoEditor.languages.CompletionItemKind.Snippet,
-					insertText: ['if (${1:condition}) {', '\t$0', '} else {', '\t', '}'].join('\n'),
+					insertText: ['loop ${1:Loop text}', '\t$0', 'end'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-					documentation: 'If-Else Statement'
+					documentation: 'Sequence Diagram Loops'
+				},
+				{
+					label: 'alt',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['alt ${1:Describing text}', '\t$0', 'else', '\t', 'end'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'Alternative Path'
+				},
+				{
+					label: 'opt',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['opt ${1:Describing text}', '\t$0', 'end'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'Optional Path'
+				},
+				{
+					label: 'par',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: [
+						'par ${1:[Action 1]}',
+						'\t$0',
+						'and ${2:[Action 2]}',
+						'\t',
+						'and ${3:[Action 3]}',
+						'\t',
+						'end'
+					].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'Parallel Actions'
+				},
+				{
+					label: 'rect',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['rect ${1:rgb(0, 255, 0)}', '\t$0', 'end'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'Background Color'
 				}
 			];
 			return { suggestions: suggestions };
