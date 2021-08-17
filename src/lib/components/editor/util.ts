@@ -17,9 +17,10 @@ export const initEditor = (monacoEditor): void => {
 			'flowchart',
 			'gantt',
 			'gitGraph',
-			'journey'
+			'journey',
+			'info'
 		],
-		keywords: ['participant', 'as'],
+		keywords: ['participant', 'as', 'showInfo'],
 		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
 			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
 			[]
