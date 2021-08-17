@@ -40,7 +40,7 @@ export const initEditor = (monacoEditor): void => {
 		]
 	});
 
-	monacoEditor.editor.defineTheme('myCoolTheme', {
+	monacoEditor.editor.defineTheme('mermaidTheme', {
 		base: 'vs',
 		inherit: false,
 		rules: [
