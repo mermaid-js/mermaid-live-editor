@@ -27,10 +27,10 @@ export const initEditor = (monacoEditor): void => {
 		),
 		tokenizer: {
 			root: [
-				[/[{}]/, 'delimiter.bracket'],
 				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'keyword', '@keywords': 'keyword' } }],
+				[/[[{(}>]+.+?[)\]}]+/, 'string'],
 				[/[-+=>ox]+/, { cases: { '@arrows': 'transition' } }],
-				[/[[{(}]+.+?[)\]}]+/, 'string'],
+				[/[{}]/, 'delimiter.bracket'],
 				[/".*"/, 'string'],
 				[/#(\d|[a-zA-Z])*;/, 'html.entity']
 			]
