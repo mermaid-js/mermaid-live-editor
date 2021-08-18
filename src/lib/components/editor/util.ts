@@ -47,8 +47,8 @@ export const initEditor = (monacoEditor): void => {
 		base: 'vs',
 		inherit: false,
 		rules: [
-			{ token: 'typeKeyword', foreground: '880000', fontStyle: 'bold' },
-			{ token: 'keyword', foreground: '880000' },
+			{ token: 'typeKeyword', foreground: '9650c8', fontStyle: 'bold' },
+			{ token: 'keyword', foreground: '649696' },
 			{ token: 'custom-error', foreground: 'ff0000', fontStyle: 'bold' },
 			{ token: 'string', foreground: 'AA8500' },
 			{ token: 'transition', foreground: '008800', fontStyle: 'bold' },
