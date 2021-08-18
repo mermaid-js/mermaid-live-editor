@@ -90,13 +90,13 @@
 	<div slot="actions">
 		<button
 			id="saveHistory"
-			class="btn btn-xs btn-success"
+			class="btn btn-xs btn-success w-12"
 			on:click|stopPropagation={() => saveHistory()}
 			title="Save current state"><i class="far fa-save" /></button>
 		{#if $historyModeStore !== 'loader'}
 			<button
 				id="clearHistory"
-				class="btn btn-xs btn-error"
+				class="btn btn-xs btn-error w-12"
 				on:click|stopPropagation={() => clearHistory()}
 				title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
 		{/if}
@@ -107,7 +107,7 @@
 				<li class="rounded p-2 shadow flex-col">
 					<div class="flex">
 						<div class="flex-1">
-							<div class="flex flex-col">
+							<div class="flex flex-col text-base-content">
 								{#if url}
 									<a
 										href={url}

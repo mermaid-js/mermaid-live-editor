@@ -126,22 +126,25 @@
 		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
-					{#if !$codeStore.autoSync}
-						<button
-							class="btn btn-primary btn-xs"
-							title="Sync Diagram"
-							data-cy="sync"
-							on:click={syncDiagram}><i class="fas fa-sync" /></button>
-					{/if}
-					<div class="form-control">
-						<label class="cursor-pointer label" for="autoSync">
-							<input
-								type="checkbox"
-								class="toggle toggle-primary toggle-sm"
-								id="autoSync"
-								bind:checked={$codeStore.autoSync} />
-							<span> Auto sync</span>
-						</label>
+					<div class="flex flex-row items-center">
+						{#if !$codeStore.autoSync}
+							<button
+								class="btn btn-secondary btn-xs"
+								title="Sync Diagram"
+								data-cy="sync"
+								on:click={syncDiagram}><i class="fas fa-sync" /></button>
+						{/if}
+
+						<div class="form-control">
+							<label class="cursor-pointer label" for="autoSync">
+								<input
+									type="checkbox"
+									class="toggle toggle-primary"
+									id="autoSync"
+									bind:checked={$codeStore.autoSync} />
+								<span> Auto sync</span>
+							</label>
+						</div>
 					</div>
 				</div>
 
@@ -161,7 +164,7 @@
 					slot="actions"
 					class="btn btn-primary btn-xs shadow-lg"
 					title="View diagram in new page"
-					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
+					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-2" /> View</button>
 
 				<div class="flex-1 overflow-auto">
 					<View />

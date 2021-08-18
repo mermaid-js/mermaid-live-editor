@@ -99,7 +99,7 @@ export const toggleDarkTheme = (dark: boolean): void => {
 			config.theme = dark ? 'dark' : 'default';
 		}
 
-		return { ...state, mermaid: JSON.stringify(config), updateEditor: true };
+		return { ...state, mermaid: JSON.stringify(config, null, 2), updateEditor: true };
 	});
 };
 
