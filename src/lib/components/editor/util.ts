@@ -20,7 +20,18 @@ export const initEditor = (monacoEditor): void => {
 			'journey',
 			'info'
 		],
-		keywords: ['participant', 'as', 'showInfo', 'autonumber'],
+		keywords: [
+			'participant',
+			'as',
+			'showInfo',
+			'autonumber',
+			'rect',
+			'opt',
+			'alt',
+			'loop',
+			'else',
+			'end'
+		],
 		orientation: ['TB', 'TD', 'BT', 'RL', 'LR'],
 		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
 			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
