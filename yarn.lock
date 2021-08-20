@@ -480,13 +480,13 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@macfja/svelte-persistent-store@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.1.1.tgz"
-  integrity sha512-H7DSUJB9R0d1uxu9VUze4nl3YR93JYDWHV/jzxOPOzKLSIRxGHpa0+cc5hYrUBOgybP1+bzaHdd6PnW5z8xVCw==
+"@macfja/svelte-persistent-store@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.2.0.tgz#ccdb9f823717aa87fa520df6906a4a976007584d"
+  integrity sha512-vftMaR7vwNwJx7atDjzFagBEZpOXgnrKqeutHfTtEreprP/izjb0LfvwLKQK29cO7gT9iifHQdOoD9kGynasOw==
   dependencies:
-    idb-keyval "^5.0.4"
-    js-cookies "^1.0.4"
+    browser-cookies "^1.2.0"
+    idb-keyval "^5.1.3"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1162,6 +1162,11 @@ braces@^3.0.1, braces@~3.0.2:
   integrity sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==
   dependencies:
     fill-range "^7.0.1"
+
+browser-cookies@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/browser-cookies/-/browser-cookies-1.2.0.tgz#fca3ffb9b6a63aadc4d8c0999c6b57d0fa7d29b5"
+  integrity sha1-/KP/ubamOq3E2MCZnGtX0Pp9KbU=
 
 browser-stdout@1.3.1:
   version "1.3.1"
@@ -3135,10 +3140,12 @@ icss-utils@^4.0.0, icss-utils@^4.1.0, icss-utils@^4.1.1:
   dependencies:
     postcss "^7.0.14"
 
-idb-keyval@^5.0.4:
-  version "5.0.5"
-  resolved "https://registry.npmjs.org/idb-keyval/-/idb-keyval-5.0.5.tgz"
-  integrity sha512-cqi65rrjhgPExI9vmSU7VcYEbHCUfIBY+9YUWxyr0PyGizptFgGFnvZQ0w+tqOXk1lUcGCZGVLfabf7QnR2S0g==
+idb-keyval@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-5.1.3.tgz#6ef5dff371897c23f144322dc6374eadd6a345d9"
+  integrity sha512-N9HbCK/FaXSRVI+k6Xq4QgWxbcZRUv+SfG1y7HJ28JdV8yEJu6k+C/YLea7npGckX2DQJeEVuMc4bKOBeU/2LQ==
+  dependencies:
+    safari-14-idb-fix "^1.0.4"
 
 ieee754@^1.1.13:
   version "1.2.1"
@@ -3536,11 +3543,6 @@ js-beautify@1.10.3:
     glob "^7.1.3"
     mkdirp "~0.5.1"
     nopt "~4.0.1"
-
-js-cookies@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/js-cookies/-/js-cookies-1.0.4.tgz"
-  integrity sha1-1G5XbEIP9tVULA9SttTvfWN+dU4=
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -5093,6 +5095,11 @@ sade@^1.7.4:
   dependencies:
     mri "^1.1.0"
 
+safari-14-idb-fix@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/safari-14-idb-fix/-/safari-14-idb-fix-1.0.4.tgz#5c68ba63e2a8ae0d89a0aa1e13fe89e3aef7da19"
+  integrity sha512-4+Y2baQdgJpzu84d0QjySl70Kyygzf0pepVg8NVg4NnQEPpfC91fAn0baNvtStlCjUUxxiu0BOMiafa98fRRuA==
+
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.2, safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz"
@@ -5495,10 +5502,10 @@ svelte-preprocess@^4.7.4:
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
 
-svelte@^3.42.1:
-  version "3.42.1"
-  resolved "https://registry.npmjs.org/svelte/-/svelte-3.42.1.tgz"
-  integrity sha512-XtExLd2JAU3T7M2g/DkO3UNj/3n1WdTXrfL63OZ5nZq7nAqd9wQw+lR4Pv/wkVbrWbAIPfLDX47UjFdmnY+YtQ==
+svelte@^3.42.2:
+  version "3.42.2"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.42.2.tgz#0246c175c820c1aeca07300c48573a15aae3c1e4"
+  integrity sha512-FOyNYKXb8wdE0Ot+Ctt2/OyDLsNBP8+V6PUE9ag6ZKeLslIou0LnMu1fhtWUA+HjzKTbAM1yj+4PFLtg/3pMJA==
 
 svgo@^2.3.0:
   version "2.4.0"
