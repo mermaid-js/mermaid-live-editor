@@ -10,7 +10,16 @@ export const themeStore = persist(
 	'themeStore'
 );
 
-const darkThemes = ['dark', 'synthwave', 'halloween', 'forest', 'luxury', 'black', 'dracula'];
+const darkThemes = [
+	'dark',
+	'synthwave',
+	'halloween',
+	'aqua',
+	'forest',
+	'luxury',
+	'black',
+	'dracula'
+];
 
 export const setTheme = (theme: string): void => {
 	if (theme.includes(' ')) {
