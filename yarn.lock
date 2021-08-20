@@ -480,13 +480,13 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@macfja/svelte-persistent-store@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.1.1.tgz"
-  integrity sha512-H7DSUJB9R0d1uxu9VUze4nl3YR93JYDWHV/jzxOPOzKLSIRxGHpa0+cc5hYrUBOgybP1+bzaHdd6PnW5z8xVCw==
+"@macfja/svelte-persistent-store@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@macfja/svelte-persistent-store/-/svelte-persistent-store-1.2.0.tgz#ccdb9f823717aa87fa520df6906a4a976007584d"
+  integrity sha512-vftMaR7vwNwJx7atDjzFagBEZpOXgnrKqeutHfTtEreprP/izjb0LfvwLKQK29cO7gT9iifHQdOoD9kGynasOw==
   dependencies:
-    idb-keyval "^5.0.4"
-    js-cookies "^1.0.4"
+    browser-cookies "^1.2.0"
+    idb-keyval "^5.1.3"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1162,6 +1162,11 @@ braces@^3.0.1, braces@~3.0.2:
   integrity sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==
   dependencies:
     fill-range "^7.0.1"
+
+browser-cookies@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/browser-cookies/-/browser-cookies-1.2.0.tgz#fca3ffb9b6a63aadc4d8c0999c6b57d0fa7d29b5"
+  integrity sha1-/KP/ubamOq3E2MCZnGtX0Pp9KbU=
 
 browser-stdout@1.3.1:
   version "1.3.1"
@@ -2387,10 +2392,10 @@ eslint-plugin-svelte3@^3.2.0:
   resolved "https://registry.npmjs.org/eslint-plugin-svelte3/-/eslint-plugin-svelte3-3.2.0.tgz"
   integrity sha512-qdWB1QN21dEozsJFdR8XlEhMnsS6aKHjsXWuNmchYwxoet5I6QdCr1Xcq62++IzRBMCNCeH4waXqSOAdqrZzgA==
 
-eslint-plugin-tailwindcss@^1.14.1:
-  version "1.14.1"
-  resolved "https://registry.npmjs.org/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.14.1.tgz"
-  integrity sha512-WRfWFuaZZKfOSW6WhHj5K8husPGqs5niwRYTWFH8rKOi9tiRd/AkxquEg6+PJbiV3kLZEzZEfJSUkYXWuZerXw==
+eslint-plugin-tailwindcss@^1.14.3:
+  version "1.14.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.14.3.tgz#7150a041ba0c460b80ee092b23ad9931704ebacb"
+  integrity sha512-tADB2XcGnJdkUWDl18ZRp5O7HQ9ZGnQiCxE9/NRNEUkF2YK0VaV4OJmGAKHDrNpQcuvAJJU/IEEyb2fkWMEVXQ==
   dependencies:
     fast-glob "^3.2.5"
     postcss "^8.3.0"
@@ -2646,7 +2651,7 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@^3.1.1, fast-glob@^3.2.7:
+fast-glob@^3.1.1, fast-glob@^3.2.5, fast-glob@^3.2.7:
   version "3.2.7"
   resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.2.7.tgz"
   integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
@@ -2656,18 +2661,6 @@ fast-glob@^3.1.1, fast-glob@^3.2.7:
     glob-parent "^5.1.2"
     merge2 "^1.3.0"
     micromatch "^4.0.4"
-
-fast-glob@^3.2.5:
-  version "3.2.5"
-  resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.2.5.tgz"
-  integrity sha512-2DtFcgT68wiTTiwZ2hNdJfcHNke9XOfnwmBRWXhmeKM8rF0TGwmC/Qto3S7RoZKp5cilZbxzO5iTNTQsJ+EeDg==
-  dependencies:
-    "@nodelib/fs.stat" "^2.0.2"
-    "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.0"
-    merge2 "^1.3.0"
-    micromatch "^4.0.2"
-    picomatch "^2.2.1"
 
 fast-json-stable-stringify@^2.0.0:
   version "2.1.0"
@@ -2925,7 +2918,7 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-glob-parent@^5.1.0, glob-parent@^5.1.2, glob-parent@~5.1.2:
+glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz"
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
@@ -3135,10 +3128,12 @@ icss-utils@^4.0.0, icss-utils@^4.1.0, icss-utils@^4.1.1:
   dependencies:
     postcss "^7.0.14"
 
-idb-keyval@^5.0.4:
-  version "5.0.5"
-  resolved "https://registry.npmjs.org/idb-keyval/-/idb-keyval-5.0.5.tgz"
-  integrity sha512-cqi65rrjhgPExI9vmSU7VcYEbHCUfIBY+9YUWxyr0PyGizptFgGFnvZQ0w+tqOXk1lUcGCZGVLfabf7QnR2S0g==
+idb-keyval@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-5.1.3.tgz#6ef5dff371897c23f144322dc6374eadd6a345d9"
+  integrity sha512-N9HbCK/FaXSRVI+k6Xq4QgWxbcZRUv+SfG1y7HJ28JdV8yEJu6k+C/YLea7npGckX2DQJeEVuMc4bKOBeU/2LQ==
+  dependencies:
+    safari-14-idb-fix "^1.0.4"
 
 ieee754@^1.1.13:
   version "1.2.1"
@@ -3536,11 +3531,6 @@ js-beautify@1.10.3:
     glob "^7.1.3"
     mkdirp "~0.5.1"
     nopt "~4.0.1"
-
-js-cookies@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/js-cookies/-/js-cookies-1.0.4.tgz"
-  integrity sha1-1G5XbEIP9tVULA9SttTvfWN+dU4=
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -3945,7 +3935,7 @@ micromatch@^3.1.10:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-micromatch@^4.0.2, micromatch@^4.0.4:
+micromatch@^4.0.4:
   version "4.0.4"
   resolved "https://registry.npmjs.org/micromatch/-/micromatch-4.0.4.tgz"
   integrity sha512-pRmzw/XUcwXGpD9aI9q/0XOwLNygjETJ8y0ao0wdqprrzDa4YnxLcz7fQRZr8voh8V10kGhABbNcHVk5wHgWwg==
@@ -5092,6 +5082,11 @@ sade@^1.7.4:
   integrity sha512-y5yauMD93rX840MwUJr7C1ysLFBgMspsdTo4UVrDg3fXDvtwOyIqykhVAAm6fk/3au77773itJStObgK+LKaiA==
   dependencies:
     mri "^1.1.0"
+
+safari-14-idb-fix@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/safari-14-idb-fix/-/safari-14-idb-fix-1.0.4.tgz#5c68ba63e2a8ae0d89a0aa1e13fe89e3aef7da19"
+  integrity sha512-4+Y2baQdgJpzu84d0QjySl70Kyygzf0pepVg8NVg4NnQEPpfC91fAn0baNvtStlCjUUxxiu0BOMiafa98fRRuA==
 
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.2, safe-buffer@~5.2.0:
   version "5.2.1"
