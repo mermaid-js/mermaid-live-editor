@@ -50,7 +50,7 @@
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.1.1",
 		"analytics": "^0.7.13",
-		"daisyui": "^1.11.1",
+		"daisyui": "^1.12.1",
 		"js-base64": "^3.6.1",
 		"mermaid": "^8.11.4",
 		"moment": "^2.29.1",

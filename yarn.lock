@@ -2051,10 +2051,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@^1.11.1:
-  version "1.11.1"
-  resolved "https://registry.npmjs.org/daisyui/-/daisyui-1.11.1.tgz"
-  integrity sha512-re9r/yJ3SvoQ6MnteakFgLnie63l9hdg+X4/4/+g3Py9F1TL3yPGQrpszBYz6sM123IJsCMxQZdTPFlu85xP1Q==
+daisyui@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.12.1.tgz#acf18ce7b95432141f3b86e4dd6b5cf2388e4e9d"
+  integrity sha512-XtkCVBdp7W4HxGclr49EQksWvpQ6VHgD+q2l0ZbY4APUqNdNGZCz9KGBO+89kyvoUYVLmY6jbIHo62eXGcjrSA==
 
 dashdash@^1.12.0:
   version "1.14.1"
