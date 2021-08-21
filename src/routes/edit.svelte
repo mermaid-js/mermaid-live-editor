@@ -189,13 +189,14 @@
 		top: 0;
 		content: '';
 		position: absolute;
-		background-color: #ccc;
+		background-color: hsla(var(--b3));
 		margin-left: -1px;
+		transition-duration: 0.2s;
 	}
 
 	#resizeHandler:hover::after {
 		margin-left: -2px;
-		background-color: #818cf8;
+		background-color: hsla(var(--p));
 		width: 4px;
 	}
 
