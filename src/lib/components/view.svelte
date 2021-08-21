@@ -8,6 +8,7 @@
 	let code = '';
 	let config = '';
 	let container: HTMLDivElement;
+	let view: HTMLDivElement;
 	let error = false;
 	let outOfSync = false;
 	let manualUpdate = true;
@@ -26,13 +27,13 @@
 					}
 					code = state.code;
 					config = state.mermaid;
-					const scroll = container.parentElement.parentElement.parentElement.scrollTop;
+					const scroll = view.parentElement.scrollTop;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
 						container.innerHTML = svgCode;
 					});
-					container.parentElement.parentElement.parentElement.scrollTop = scroll;
+					view.parentElement.scrollTop = scroll;
 					error = false;
 				} else if (manualUpdate) {
 					manualUpdate = false;
@@ -55,7 +56,7 @@
 	});
 </script>
 
-<div id="view" class="p-2" class:error class:outOfSync>
+<div id="view" bind:this={view} class="p-2" class:error class:outOfSync>
 	<div id="container" bind:this={container} class="flex-1 overflow-auto" />
 </div>
 
