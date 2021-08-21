@@ -139,7 +139,7 @@
 							<label class="cursor-pointer label" for="autoSync">
 								<input
 									type="checkbox"
-									class="toggle toggle-primary"
+									class="toggle toggle-primary mr-1"
 									id="autoSync"
 									bind:checked={$codeStore.autoSync} />
 								<span> Auto sync</span>
