@@ -157,7 +157,7 @@
 				<Actions />
 			</div>
 		</div>
-		<div id="resizeHandler" />
+		<div id="resizeHandler" class="hidden md:block" />
 		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
 				<button
@@ -198,11 +198,5 @@
 		margin-left: -2px;
 		background-color: hsla(var(--p));
 		width: 4px;
-	}
-
-	@media screen and (max-width: 768px) {
-		#resizeHandler {
-			display: none;
-		}
 	}
 </style>
