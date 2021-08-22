@@ -8,6 +8,7 @@ export const initEditor = (monacoEditor): void => {
 	// Register a tokens provider for the mermaid language
 	monacoEditor.languages.setMonarchTokensProvider('mermaid', {
 		typeKeywords: [
+			'flowchart',
 			'graph',
 			'stateDiagram',
 			'sequenceDiagram',
@@ -20,17 +21,21 @@ export const initEditor = (monacoEditor): void => {
 			'journey',
 			'info'
 		],
+		blockKeywords: ['subgraph', 'rect', 'opt', 'alt', 'loop', 'else', 'end'],
 		keywords: [
 			'participant',
 			'as',
 			'showInfo',
 			'autonumber',
-			'rect',
-			'opt',
-			'alt',
-			'loop',
-			'else',
-			'end'
+			'rgba',
+			'rgb',
+			'hsla',
+			'hsl',
+			'linkStyle',
+			'style',
+			'classDef',
+			'class',
+			'direction'
 		],
 		orientation: ['TB', 'TD', 'BT', 'RL', 'LR'],
 		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
@@ -45,7 +50,8 @@ export const initEditor = (monacoEditor): void => {
 				[/[-+=>ox]+/, { cases: { '@arrows': 'transition' } }],
 				[/[{}]/, 'delimiter.bracket'],
 				[/".*"/, 'string'],
-				[/#(\d|[a-zA-Z])*;/, 'html.entity']
+				[/#(\d|[a-zA-Z])*;/, 'html.entity/hex-color-code'],
+				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code']
 			]
 		},
 		whitespace: [
@@ -64,7 +70,7 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'string', foreground: 'AA8500' },
 			{ token: 'transition', foreground: '008800', fontStyle: 'bold' },
 			{ token: 'delimiter.bracket', foreground: '000000', fontStyle: 'bold' },
-			{ token: 'html.entity', foreground: 'f5b436' }
+			{ token: 'html.entity/hex-color-code', foreground: 'f5b436' }
 		]
 	});
 
@@ -118,5 +124,27 @@ export const initEditor = (monacoEditor): void => {
 			];
 			return { suggestions: suggestions };
 		}
+	});
+
+	monacoEditor.languages.setLanguageConfiguration('mermaid', {
+		autoClosingPairs: [
+			{
+				open: '(',
+				close: ')'
+			},
+			{
+				open: '{',
+				close: '}'
+			},
+			{
+				open: '[',
+				close: ']'
+			}
+		],
+		brackets: [
+			['(', ')'],
+			['{', '}'],
+			['[', ']']
+		]
 	});
 };

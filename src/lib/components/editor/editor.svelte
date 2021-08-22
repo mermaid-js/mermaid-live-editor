@@ -19,7 +19,8 @@
 			enabled: false
 		},
 		theme: 'mermaidTheme',
-		overviewRulerLanes: 0
+		overviewRulerLanes: 0,
+		autoClosingBrackets: 'always'
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
 	let oldText = text;
