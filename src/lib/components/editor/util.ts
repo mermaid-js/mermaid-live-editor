@@ -20,7 +20,7 @@ export const initEditor = (monacoEditor): void => {
 		'journey',
 		'info'
 	];
-	const blockKeywords = ['subgraph', 'rect', 'opt', 'alt', 'loop', 'else', 'end'];
+	const blockKeywords = ['subgraph', 'rect', 'opt', 'alt', 'par', 'and', 'loop', 'else', 'end'];
 	const keywords = [
 		'participant',
 		'as',
@@ -34,7 +34,9 @@ export const initEditor = (monacoEditor): void => {
 		'style',
 		'classDef',
 		'class',
-		'direction'
+		'direction',
+		'activate',
+		'deactivate'
 	];
 
 	// Register a tokens provider for the mermaid language
@@ -43,17 +45,23 @@ export const initEditor = (monacoEditor): void => {
 		blockKeywords,
 		keywords,
 		orientation: orientations,
-		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
+		noEatingSequenceArrows: ['-)', '--)', '->>', '-->>'].reduce(
+			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
+			[]
+		),
+		eatingSequenceArrows: ['->', '-x'].reduce(
 			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
 			[]
 		),
 		tokenizer: {
 			root: [
+				[/-{1,2}\)|-{1,2}>>/, { cases: { '@noEatingSequenceArrows': 'transition' } }],
+				[/[ox<]?(-{2,}|-+\.+-+|={2,})[ox>]?/, 'transition'],
+				[/[-+>]+/, { cases: { '@eatingSequenceArrows': 'transition' } }],
 				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'typeKeyword', '@keywords': 'keyword' } }],
 				[/[A-Z$][\w$]*/, { cases: { '@orientation': 'keyword' } }],
 				[/[[{(}>]+.+?[)\]}]+/, 'string'],
-				[/[-+=>ox]+/, { cases: { '@arrows': 'transition' } }],
-				[/[{}]/, 'delimiter.bracket'],
+				[/[{}&]/, 'delimiter.bracket'],
 				[/".*"/, 'string'],
 				[/#(\d|[a-zA-Z])*;/, 'html.entity/hex-color-code'],
 				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code']
