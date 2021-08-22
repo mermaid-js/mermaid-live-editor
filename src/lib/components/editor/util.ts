@@ -20,7 +20,18 @@ export const initEditor = (monacoEditor): void => {
 		'journey',
 		'info'
 	];
-	const blockKeywords = ['subgraph', 'rect', 'opt', 'alt', 'par', 'and', 'loop', 'else', 'end'];
+	const blockKeywords = [
+		'subgraph',
+		'rect',
+		'opt',
+		'class',
+		'alt',
+		'par',
+		'and',
+		'loop',
+		'else',
+		'end'
+	];
 	const keywords = [
 		'participant',
 		'as',
@@ -33,7 +44,6 @@ export const initEditor = (monacoEditor): void => {
 		'linkStyle',
 		'style',
 		'classDef',
-		'class',
 		'direction',
 		'activate',
 		'deactivate',
@@ -145,6 +155,13 @@ export const initEditor = (monacoEditor): void => {
 					insertText: ['rect ${1:rgb(0, 255, 0)}', '\t$0', 'end'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'Background Color'
+				},
+				{
+					label: 'class',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['class ${1:className} {', '\t$0', '}'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'Class'
 				},
 				...[...orientations, ...typeKeywords, ...blockKeywords, ...keywords].map((keyword) => ({
 					label: keyword,
