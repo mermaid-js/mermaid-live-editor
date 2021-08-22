@@ -65,7 +65,13 @@ export const initEditor = (monacoEditor): void => {
 		'dateFormat',
 		'axisFormat',
 		'todayMarker',
-		'showData'
+		'showData',
+		'options',
+		'commit',
+		'branch',
+		'merge',
+		'reset',
+		'checkout'
 	];
 
 	// Register a tokens provider for the mermaid language
