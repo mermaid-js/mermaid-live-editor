@@ -5,39 +5,44 @@
 export const initEditor = (monacoEditor): void => {
 	monacoEditor.languages.register({ id: 'mermaid' });
 
+	const orientations = ['TB', 'TD', 'BT', 'RL', 'LR'];
+	const typeKeywords = [
+		'flowchart',
+		'graph',
+		'stateDiagram',
+		'sequenceDiagram',
+		'classDiagram',
+		'pie',
+		'erDiagram',
+		'flowchart',
+		'gantt',
+		'gitGraph',
+		'journey',
+		'info'
+	];
+	const blockKeywords = ['subgraph', 'rect', 'opt', 'alt', 'loop', 'else', 'end'];
+	const keywords = [
+		'participant',
+		'as',
+		'showInfo',
+		'autonumber',
+		'rgba',
+		'rgb',
+		'hsla',
+		'hsl',
+		'linkStyle',
+		'style',
+		'classDef',
+		'class',
+		'direction'
+	];
+
 	// Register a tokens provider for the mermaid language
 	monacoEditor.languages.setMonarchTokensProvider('mermaid', {
-		typeKeywords: [
-			'flowchart',
-			'graph',
-			'stateDiagram',
-			'sequenceDiagram',
-			'classDiagram',
-			'pie',
-			'erDiagram',
-			'flowchart',
-			'gantt',
-			'gitGraph',
-			'journey',
-			'info'
-		],
-		blockKeywords: ['subgraph', 'rect', 'opt', 'alt', 'loop', 'else', 'end'],
-		keywords: [
-			'participant',
-			'as',
-			'showInfo',
-			'autonumber',
-			'rgba',
-			'rgb',
-			'hsla',
-			'hsl',
-			'linkStyle',
-			'style',
-			'classDef',
-			'class',
-			'direction'
-		],
-		orientation: ['TB', 'TD', 'BT', 'RL', 'LR'],
+		typeKeywords,
+		blockKeywords,
+		keywords,
+		orientation: orientations,
 		arrows: ['---', '===', '-->>', '-->', '==>', '->>', '->', '--)', '-)', '--x', '-x'].reduce(
 			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
 			[]
@@ -120,7 +125,12 @@ export const initEditor = (monacoEditor): void => {
 					insertText: ['rect ${1:rgb(0, 255, 0)}', '\t$0', 'end'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'Background Color'
-				}
+				},
+				...[...orientations, ...typeKeywords, ...blockKeywords, ...keywords].map((keyword) => ({
+					label: keyword,
+					kind: monacoEditor.languages.CompletionItemKind.Keyword,
+					insertText: keyword
+				}))
 			];
 			return { suggestions: suggestions };
 		}
