@@ -44,7 +44,8 @@ export const initEditor = (monacoEditor): void => {
 		'end',
 		'state',
 		'section',
-		'element'
+		'element',
+		'options'
 	].concat(requirementDiagrams);
 	const keywords = [
 		'participant',
@@ -77,7 +78,6 @@ export const initEditor = (monacoEditor): void => {
 		'axisFormat',
 		'todayMarker',
 		'showData',
-		'options',
 		'commit',
 		'branch',
 		'merge',
@@ -110,6 +110,7 @@ export const initEditor = (monacoEditor): void => {
 				[/[ox<]?(-{2,}|-+\.+-+|={2,})[ox>]?/, 'transition'],
 				[/[-+>]+/, { cases: { '@eatingSequenceArrows': 'transition' } }],
 				[':::', 'transition'],
+				['option(?=s)', { token: 'typeKeyword', next: 'optionsGitGraph' }],
 				[
 					/[a-z_$][\w$]*((?<=stateDiagram)-v2)?/,
 					{
@@ -129,6 +130,10 @@ export const initEditor = (monacoEditor): void => {
 				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code'],
 				[/<<.+>>/, 'annotation'],
 				[/%%.*(?<!%%)$/, 'comment']
+			],
+			optionsGitGraph: [
+				[/s$/, { token: 'typeKeyword', nextEmbedded: 'json', matchOnlyAtLineStart: false }],
+				['end', { token: 'typeKeyword', next: '@pop', nextEmbedded: '@pop' }]
 			]
 		},
 		whitespace: [[/[ \t\r\n]+/, 'white']]
@@ -232,6 +237,13 @@ export const initEditor = (monacoEditor): void => {
 					insertText: ['element ${1:test_entity} {', '\t$0', '}'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'User-journey Section'
+				},
+				{
+					label: 'options',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['options', '{', '    $0', '}', 'end'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'Git Graph Options'
 				},
 				...requirementDiagrams.map((requirementDiagramType) => ({
 					label: requirementDiagramType,
