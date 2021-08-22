@@ -51,6 +51,7 @@ export const initEditor = (monacoEditor): void => {
 		'link',
 		'callback',
 		'click',
+		'class',
 		'href',
 		'call'
 	];
@@ -77,7 +78,16 @@ export const initEditor = (monacoEditor): void => {
 				[/[ox<]?(-{2,}|-+\.+-+|={2,})[ox>]?/, 'transition'],
 				[/[-+>]+/, { cases: { '@eatingSequenceArrows': 'transition' } }],
 				[':::', 'transition'],
-				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'typeKeyword', '@keywords': 'keyword' } }],
+				[
+					/[a-z_$][\w$]*/,
+					{
+						cases: {
+							'@typeKeywords': 'typeKeyword',
+							'@blockKeywords': 'typeKeyword',
+							'@keywords': 'keyword'
+						}
+					}
+				],
 				[/[A-Z$][\w$]*/, { cases: { '@orientation': 'keyword' } }],
 				[/\[\[(fork|join|choice)\]\]/, 'annotation'],
 				[/[[{(}>]+.+?[)\]}]+/, 'string'],
