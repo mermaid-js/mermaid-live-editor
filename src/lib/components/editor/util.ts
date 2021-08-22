@@ -5,6 +5,15 @@
 export const initEditor = (monacoEditor): void => {
 	monacoEditor.languages.register({ id: 'mermaid' });
 
+	const requirementDiagrams = [
+		'requirement',
+		'functionalRequirement',
+		'interfaceRequirement',
+		'performanceRequirement',
+		'physicalRequirement',
+		'designConstraint'
+	];
+
 	const orientations = ['TB', 'TD', 'BT', 'RL', 'LR'];
 	const typeKeywords = [
 		'flowchart',
@@ -19,7 +28,8 @@ export const initEditor = (monacoEditor): void => {
 		'gantt',
 		'gitGraph',
 		'journey',
-		'info'
+		'info',
+		'requirementDiagram'
 	];
 	const blockKeywords = [
 		'subgraph',
@@ -33,8 +43,9 @@ export const initEditor = (monacoEditor): void => {
 		'else',
 		'end',
 		'state',
-		'section'
-	];
+		'section',
+		'element'
+	].concat(requirementDiagrams);
 	const keywords = [
 		'participant',
 		'as',
@@ -212,6 +223,30 @@ export const initEditor = (monacoEditor): void => {
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'User-journey Section'
 				},
+				{
+					label: 'element',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['element ${1:test_entity} {', '\t$0', '}'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'User-journey Section'
+				},
+				...requirementDiagrams.map((requirementDiagramType) => ({
+					label: requirementDiagramType,
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: [
+						requirementDiagramType + ' ${1:test_req} {',
+						'\tid: 1',
+						'\ttext: the test text.',
+						'\trisk: high',
+						'\tverifyMethod: test',
+						'}'
+					].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: requirementDiagramType
+						.split(/(?=[A-Z])/)
+						.map((part) => part[0].toUpperCase() + part.slice(1))
+						.join(' ')
+				})),
 				...[...new Set([...orientations, ...typeKeywords, ...blockKeywords, ...keywords])].map(
 					(keyword) => ({
 						label: keyword,
