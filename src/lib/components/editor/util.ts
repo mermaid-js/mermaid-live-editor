@@ -36,7 +36,13 @@ export const initEditor = (monacoEditor): void => {
 		'class',
 		'direction',
 		'activate',
-		'deactivate'
+		'deactivate',
+		'cssClass',
+		'link',
+		'callback',
+		'click',
+		'href',
+		'call'
 	];
 
 	// Register a tokens provider for the mermaid language
@@ -56,15 +62,20 @@ export const initEditor = (monacoEditor): void => {
 		tokenizer: {
 			root: [
 				[/-{1,2}\)|-{1,2}>>/, { cases: { '@noEatingSequenceArrows': 'transition' } }],
+				[/\*--\*?|--\*/, 'transition'],
+				[/(<\|?)(\.{2}|-{2})(\|?>)?|(\.{2}|-{2})(\|?>)/, 'transition'],
 				[/[ox<]?(-{2,}|-+\.+-+|={2,})[ox>]?/, 'transition'],
 				[/[-+>]+/, { cases: { '@eatingSequenceArrows': 'transition' } }],
+				[':::', 'transition'],
 				[/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'typeKeyword', '@keywords': 'keyword' } }],
 				[/[A-Z$][\w$]*/, { cases: { '@orientation': 'keyword' } }],
+				[/\[\[(fork|join|choice)\]\]/, 'annotation'],
 				[/[[{(}>]+.+?[)\]}]+/, 'string'],
 				[/[{}&]/, 'delimiter.bracket'],
 				[/".*"/, 'string'],
 				[/#(\d|[a-zA-Z])*;/, 'html.entity/hex-color-code'],
-				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code']
+				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code'],
+				[/<<.+>>/, 'annotation']
 			]
 		},
 		whitespace: [
@@ -83,7 +94,8 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'string', foreground: 'AA8500' },
 			{ token: 'transition', foreground: '008800', fontStyle: 'bold' },
 			{ token: 'delimiter.bracket', foreground: '000000', fontStyle: 'bold' },
-			{ token: 'html.entity/hex-color-code', foreground: 'f5b436' }
+			{ token: 'html.entity/hex-color-code', foreground: 'f5b436' },
+			{ token: 'annotation', foreground: '4b4b96' }
 		]
 	});
 
