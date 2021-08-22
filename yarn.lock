@@ -619,15 +619,15 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.17.tgz#63537e4d2b8c1fabb6db96b56f69ec41e56b6334"
   integrity sha512-RKYNkQxtsMgt0wD8PhfXR1hGT1Tmq1E5eZeTr1KxIerczITRnWVT8LElfu/9Kusv44yYlyQtNc1mLoYqgloOQw==
 
-"@sveltejs/kit@1.0.0-next.155":
-  version "1.0.0-next.155"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.155.tgz#8abea1750d32f01dbe71434a2362404b28c05297"
-  integrity sha512-cAQxR0HS+ywEGPL8LvUdoWCsISYtdJ6d3fCNFhJxvDDMDUCnGxmueHNA0+jIkLaaLY6TCb0oJ54rRdqfn5gGEA==
+"@sveltejs/kit@1.0.0-next.147":
+  version "1.0.0-next.147"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.147.tgz#1dad06fd7f4365405beebdcd12b410a52c3a03b0"
+  integrity sha512-rAABsKlC1K/B4VfqT2SaVO29t+OV8deseSJ9l+hV7j9zkswTwiJ7h37tZ5SfnvMgCHemcNjXg8Gzg+0U1MCfEA==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.16"
     cheap-watch "^1.0.3"
     sade "^1.7.4"
-    vite "^2.5.0"
+    vite "^2.4.3"
 
 "@sveltejs/vite-plugin-svelte@^1.0.0-next.16":
   version "1.0.0-next.17"
@@ -5781,7 +5781,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.5.0:
+vite@^2.4.3:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/vite/-/vite-2.5.0.tgz#111ba3679432d426e44566acf480005a7914cbd6"
   integrity sha512-Dn4B+g54PJsMG5WCc4QeFy1ygMXRdTtFrUPegqfk4+vzVQcbF/DqqmI/1bxezArzbujBJg/67QeT5wz8edfJVQ==

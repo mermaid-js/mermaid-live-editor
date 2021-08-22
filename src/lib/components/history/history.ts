@@ -1,4 +1,5 @@
-import { derived, Readable, Writable, writable, get } from 'svelte/store';
+import { derived, writable, get } from 'svelte/store';
+import type { Readable, Writable } from 'svelte/store';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { generateSlug } from 'random-word-slugs';
 import type { HistoryEntry, HistoryType } from '$lib/types';
