@@ -173,11 +173,13 @@ export const initEditor = (monacoEditor): void => {
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'Class'
 				},
-				...[...orientations, ...typeKeywords, ...blockKeywords, ...keywords].map((keyword) => ({
-					label: keyword,
-					kind: monacoEditor.languages.CompletionItemKind.Keyword,
-					insertText: keyword
-				}))
+				...[...new Set([...orientations, ...typeKeywords, ...blockKeywords, ...keywords])].map(
+					(keyword) => ({
+						label: keyword,
+						kind: monacoEditor.languages.CompletionItemKind.Keyword,
+						insertText: keyword
+					})
+				)
 			];
 			return { suggestions: suggestions };
 		}
