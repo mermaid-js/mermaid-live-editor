@@ -96,7 +96,7 @@ export const initEditor = (monacoEditor): void => {
 				[/#(\d|[a-zA-Z])*;/, 'html.entity/hex-color-code'],
 				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code'],
 				[/<<.+>>/, 'annotation'],
-				[/%%.*$/, 'comment']
+				[/%%.*(?<!%%)$/, 'comment']
 			]
 		},
 		whitespace: [[/[ \t\r\n]+/, 'white']]
