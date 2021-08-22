@@ -32,7 +32,8 @@ export const initEditor = (monacoEditor): void => {
 		'loop',
 		'else',
 		'end',
-		'state'
+		'state',
+		'section'
 	];
 	const keywords = [
 		'participant',
@@ -58,7 +59,8 @@ export const initEditor = (monacoEditor): void => {
 		'call',
 		'state',
 		'note',
-		'Note'
+		'Note',
+		'title'
 	];
 
 	// Register a tokens provider for the mermaid language
@@ -191,6 +193,13 @@ export const initEditor = (monacoEditor): void => {
 					insertText: ['note ${1:right of State1}', '\t$0', 'end note'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'State'
+				},
+				{
+					label: 'section',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['section ${1:Go to work}', '\t$0'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'User-journey Section'
 				},
 				...[...new Set([...orientations, ...typeKeywords, ...blockKeywords, ...keywords])].map(
 					(keyword) => ({
