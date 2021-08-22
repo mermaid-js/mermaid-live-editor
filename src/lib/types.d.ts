@@ -29,11 +29,32 @@ export interface State {
 	updateEditor: boolean;
 	updateDiagram: boolean;
 	autoSync: boolean;
+	loader?: LoaderConfig;
 }
 
+export interface GistLoaderConfig {
+	url: string;
+}
+
+export interface LoadingState {
+	loading: boolean;
+	message?: string;
+}
+export interface FileLoaderConfig {
+	codeURL: string;
+	configURL?: string;
+}
+export interface LoaderConfig {
+	type: 'gist' | 'files';
+	config: GistLoaderConfig | FileLoaderConfig;
+}
+export type HistoryType = 'auto' | 'manual' | 'loader';
 export interface HistoryEntry {
 	state: State;
 	time: number;
 	name?: string;
-	auto: boolean;
+	type: HistoryType;
+	url?: string;
 }
+
+type Loader = (url: string) => Promise<State>;

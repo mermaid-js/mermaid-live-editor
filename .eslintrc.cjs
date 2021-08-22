@@ -8,7 +8,16 @@ module.exports = {
 		'prettier'
 	],
 	plugins: ['svelte3', 'tailwindcss', '@typescript-eslint'],
-	ignorePatterns: ['docs/*', '*.cjs', '*.md', 'snapshots.js', 'svelte.config.js', 'package.json'],
+	ignorePatterns: [
+		'docs/*',
+		'*.cjs',
+		'*.md',
+		'snapshots.js',
+		'svelte.config.js',
+		'renovate.json',
+		'package.json',
+		'tsconfig.json'
+	],
 	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
 	settings: {
 		'svelte3/typescript': () => require('typescript')

@@ -2,6 +2,7 @@
 	import '../app.postcss';
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { loadingStateStore } from '$lib/util/loading';
 	// This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
 	// Then move it into src and vite will bundle it automatically.
 	onMount(() => {
@@ -23,3 +24,44 @@
 <main class="h-screen">
 	<slot />
 </main>
+
+{#if $loadingStateStore.loading}
+	<div
+		class="w-screen h-screen z-50 absolute left-0 top-0 bg-gray-600 opacity-50 flex align-middle justify-center">
+		<div class="text-indigo-100 text-4xl font-bold my-auto">
+			<div class="loader mx-auto" />
+			<div>{$loadingStateStore.message}</div>
+		</div>
+	</div>
+{/if}
+
+<style>
+	.loader {
+		border: 0.45em solid #f3f3f3;
+		border-radius: 50%;
+		border-top: 0.45em solid #6365f1;
+		width: 3em;
+		height: 3em;
+		-webkit-animation: spin 2s linear infinite; /* Safari */
+		animation: spin 2s linear infinite;
+	}
+
+	/* Safari */
+	@-webkit-keyframes spin {
+		0% {
+			-webkit-transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+		}
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+</style>
