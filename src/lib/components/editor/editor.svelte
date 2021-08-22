@@ -14,7 +14,6 @@
 	export let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
 		value: text,
 		language: language,
-		scrollBeyondLastLine: false,
 		minimap: {
 			enabled: false
 		},
