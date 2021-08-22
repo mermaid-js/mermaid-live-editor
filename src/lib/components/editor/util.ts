@@ -101,6 +101,8 @@ export const initEditor = (monacoEditor): void => {
 		),
 		tokenizer: {
 			root: [
+				[/%%(?=.*%%$)/, { token: 'string', nextEmbedded: 'json' }],
+				[/%%$/, { token: 'string', nextEmbedded: '@pop' }],
 				[/-{1,2}\)|-{1,2}>>/, { cases: { '@noEatingSequenceArrows': 'transition' } }],
 				[/\*--\*?|--\*/, 'transition'],
 				[/(<\|?)(\.{2}|-{2})(\|?>)?|(\.{2}|-{2})(\|?>)/, 'transition'],
@@ -144,6 +146,7 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'delimiter.bracket', foreground: '000000', fontStyle: 'bold' },
 			{ token: 'html.entity/hex-color-code', foreground: 'f5b436' },
 			{ token: 'annotation', foreground: '4b4b96' },
+			{ token: 'number', foreground: '4b4b96' },
 			{ token: 'comment', foreground: '888c89' }
 		]
 	});
