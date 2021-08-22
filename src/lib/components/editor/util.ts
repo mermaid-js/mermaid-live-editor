@@ -31,7 +31,8 @@ export const initEditor = (monacoEditor): void => {
 		'and',
 		'loop',
 		'else',
-		'end'
+		'end',
+		'state'
 	];
 	const keywords = [
 		'participant',
@@ -55,7 +56,9 @@ export const initEditor = (monacoEditor): void => {
 		'class',
 		'href',
 		'call',
-		'state'
+		'state',
+		'note',
+		'Note'
 	];
 
 	// Register a tokens provider for the mermaid language
@@ -178,6 +181,13 @@ export const initEditor = (monacoEditor): void => {
 					label: 'state',
 					kind: monacoEditor.languages.CompletionItemKind.Snippet,
 					insertText: ['state ${1:stateName} {', '\t$0', '}'].join('\n'),
+					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					documentation: 'State'
+				},
+				{
+					label: 'note',
+					kind: monacoEditor.languages.CompletionItemKind.Snippet,
+					insertText: ['note ${1:right of State1}', '\t$0', 'end note'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
 					documentation: 'State'
 				},
