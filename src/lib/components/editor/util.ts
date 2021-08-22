@@ -9,6 +9,7 @@ export const initEditor = (monacoEditor): void => {
 	const typeKeywords = [
 		'flowchart',
 		'graph',
+		'stateDiagram-v2',
 		'stateDiagram',
 		'sequenceDiagram',
 		'classDiagram',
@@ -79,7 +80,7 @@ export const initEditor = (monacoEditor): void => {
 				[/[-+>]+/, { cases: { '@eatingSequenceArrows': 'transition' } }],
 				[':::', 'transition'],
 				[
-					/[a-z_$][\w$]*/,
+					/[a-z_$][\w$]*((?<=stateDiagram)-v2)?/,
 					{
 						cases: {
 							'@typeKeywords': 'typeKeyword',
