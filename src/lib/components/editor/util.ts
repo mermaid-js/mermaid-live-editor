@@ -95,13 +95,11 @@ export const initEditor = (monacoEditor): void => {
 				[/".*"/, 'string'],
 				[/#(\d|[a-zA-Z])*;/, 'html.entity/hex-color-code'],
 				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code'],
-				[/<<.+>>/, 'annotation']
+				[/<<.+>>/, 'annotation'],
+				[/%%.*$/, 'comment']
 			]
 		},
-		whitespace: [
-			[/[ \t\r\n]+/, 'white'],
-			[/%%.*$/, 'comment']
-		]
+		whitespace: [[/[ \t\r\n]+/, 'white']]
 	});
 
 	monacoEditor.editor.defineTheme('mermaidTheme', {
@@ -115,7 +113,8 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'transition', foreground: '008800', fontStyle: 'bold' },
 			{ token: 'delimiter.bracket', foreground: '000000', fontStyle: 'bold' },
 			{ token: 'html.entity/hex-color-code', foreground: 'f5b436' },
-			{ token: 'annotation', foreground: '4b4b96' }
+			{ token: 'annotation', foreground: '4b4b96' },
+			{ token: 'comment', foreground: '888c89' }
 		]
 	});
 
