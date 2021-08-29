@@ -133,14 +133,6 @@ export const initEditor = (monacoEditor): void => {
 				)
 			)
 			.reduce((overallKeywords, nextKeyword) => ({ ...overallKeywords, ...nextKeyword }), {}),
-		noEatingSequenceArrows: ['-)', '--)', '->>', '-->>'].reduce(
-			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
-			[]
-		),
-		eatingSequenceArrows: ['->', '-x'].reduce(
-			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
-			[]
-		),
 		tokenizer: {
 			root: [
 				[/%%(?=.*%%$)/, { token: 'string', nextEmbedded: 'json' }],
