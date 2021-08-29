@@ -249,7 +249,8 @@ export const initEditor = (monacoEditor): void => {
 				[/%%.*(?<!%%)$/, 'comment'],
 				[/<<.+>>/, 'annotation'],
 				[/".*?"/, 'string'],
-				[/:::/, 'transition']
+				[/:::/, 'transition'],
+				[/:/, 'delimiter.bracket']
 			],
 			journey: [
 				[/(title)(.*)/, ['keyword', 'string']],
