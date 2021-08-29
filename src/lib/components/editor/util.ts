@@ -14,83 +14,125 @@ export const initEditor = (monacoEditor): void => {
 		'designConstraint'
 	];
 
-	const orientations = ['TB', 'TD', 'BT', 'RL', 'LR'];
-	const typeKeywords = [
-		'flowchart',
-		'graph',
-		'stateDiagram-v2',
-		'stateDiagram',
-		'sequenceDiagram',
-		'classDiagram',
-		'pie',
-		'erDiagram',
-		'flowchart',
-		'gantt',
-		'gitGraph',
-		'journey',
-		'info',
-		'requirementDiagram'
-	];
-	const blockKeywords = [
-		'subgraph',
-		'rect',
-		'opt',
-		'class',
-		'alt',
-		'par',
-		'and',
-		'loop',
-		'else',
-		'end',
-		'state',
-		'section',
-		'element',
-		'options'
-	].concat(requirementDiagrams);
-	const keywords = [
-		'participant',
-		'as',
-		'showInfo',
-		'autonumber',
-		'rgba',
-		'rgb',
-		'hsla',
-		'hsl',
-		'linkStyle',
-		'style',
-		'classDef',
-		'direction',
-		'activate',
-		'deactivate',
-		'cssClass',
-		'link',
-		'callback',
-		'click',
-		'class',
-		'href',
-		'call',
-		'state',
-		'note',
-		'Note',
-		'title',
-		'excludes',
-		'dateFormat',
-		'axisFormat',
-		'todayMarker',
-		'showData',
-		'commit',
-		'branch',
-		'merge',
-		'reset',
-		'checkout'
-	];
+	const keywords: {
+		[key: string]: {
+			typeKeywords: string[];
+			blockKeywords: string[];
+			keywords: string[];
+		};
+	} = {
+		flowchart: {
+			typeKeywords: ['flowchart', 'flowchart-v2', 'graph'],
+			blockKeywords: ['subgraph', 'end'],
+			keywords: [
+				'TB',
+				'TD',
+				'BT',
+				'RL',
+				'LR',
+				'click',
+				'call',
+				'href',
+				'_self',
+				'_blank',
+				'_parent',
+				'_top',
+				'linkStyle',
+				'style',
+				'classDef',
+				'class',
+				'direction',
+				'interpolate'
+			]
+		},
+		sequenceDiagram: {
+			typeKeywords: ['sequenceDiagram'],
+			blockKeywords: ['alt', 'par', 'and', 'loop', 'else', 'end', 'rect', 'opt', 'alt', 'rect'],
+			keywords: [
+				'participant',
+				'as',
+				'Note',
+				'note',
+				'right of',
+				'left of',
+				'over',
+				'activate',
+				'deactivate',
+				'autonumber',
+				'title'
+			]
+		},
+		classDiagram: {
+			typeKeywords: ['classDiagram', 'classDiagram-v2'],
+			blockKeywords: ['class'],
+			keywords: [
+				'link',
+				'click',
+				'callback',
+				'call',
+				'href',
+				'cssClass',
+				'direction',
+				'TB',
+				'BT',
+				'RL',
+				'LR'
+			]
+		},
+		stateDiagram: {
+			typeKeywords: ['stateDiagram', 'stateDiagram-v2'],
+			blockKeywords: ['state', 'note', 'end'],
+			keywords: ['state', 'as', 'hide empty description', 'direction', 'TB', 'BT', 'RL', 'LR']
+		},
+		erDiagram: {
+			typeKeywords: ['erDiagram'],
+			blockKeywords: [],
+			keywords: []
+		},
+		journey: {
+			typeKeywords: ['journey'],
+			blockKeywords: ['section'],
+			keywords: ['title']
+		},
+		info: {
+			typeKeywords: ['info'],
+			blockKeywords: [],
+			keywords: ['showInfo']
+		},
+		gantt: {
+			typeKeywords: ['gantt'],
+			blockKeywords: [],
+			keywords: ['title', 'dateFormat', 'axisFormat', 'todayMarker', 'section']
+		},
+		requirementDiagram: {
+			typeKeywords: ['requirement', 'requirementDiagram'],
+			blockKeywords: requirementDiagrams.concat('element'),
+			keywords: []
+		},
+		gitGraph: {
+			typeKeywords: ['gitGraph'],
+			blockKeywords: [],
+			keywords: ['commit', 'branch', 'merge', 'reset', 'checkout', 'LR', 'BT']
+		},
+		pie: {
+			typeKeywords: ['pie'],
+			blockKeywords: [],
+			keywords: ['title', 'showData']
+		}
+	};
 
 	// Register a tokens provider for the mermaid language
 	monacoEditor.languages.setMonarchTokensProvider('mermaid', {
-		typeKeywords,
-		blockKeywords,
-		keywords,
-		orientation: orientations,
+		...Object.entries(keywords)
+			.map((entry) =>
+				Object.fromEntries(
+					Object.entries(entry[1]).map((deepEntry) => [
+						entry[0] + deepEntry[0][0].toUpperCase() + deepEntry[0].slice(1),
+						deepEntry[1]
+					])
+				)
+			)
+			.reduce((overallKeywords, nextKeyword) => ({ ...overallKeywords, ...nextKeyword }), {}),
 		noEatingSequenceArrows: ['-)', '--)', '->>', '-->>'].reduce(
 			(accumalator, arrow) => accumalator.concat(arrow, arrow + '+', arrow + '-'),
 			[]
@@ -103,37 +145,194 @@ export const initEditor = (monacoEditor): void => {
 			root: [
 				[/%%(?=.*%%$)/, { token: 'string', nextEmbedded: 'json' }],
 				[/%%$/, { token: 'string', nextEmbedded: '@pop' }],
-				[/-{1,2}\)|-{1,2}>>/, { cases: { '@noEatingSequenceArrows': 'transition' } }],
-				[/\*--\*?|--\*/, 'transition'],
-				[/(<\|?)(\.{2}|-{2})(\|?>)?|(\.{2}|-{2})(\|?>)/, 'transition'],
-				[/(\|o|\|\||}o|}\|)(-{2}|\.{2})(o\||\|\||o\{|\|\{)/, 'transition'],
-				[/[ox<]?(-{2,}|-+\.+-+|={2,})[ox>]?/, 'transition'],
-				[/[-+>]+/, { cases: { '@eatingSequenceArrows': 'transition' } }],
-				[':::', 'transition'],
+				[/^\s*gitGraph/m, { token: 'typeKeyword', next: 'gitGraph' }],
+				[/^\s*info/m, { token: 'typeKeyword', next: 'info' }],
+				[/^\s*pie/m, { token: 'typeKeyword', next: 'pie' }],
+				[/^\s*(flowchart|flowchart-v2|graph)/m, { token: 'typeKeyword', next: 'flowchart' }],
+				[/^\s*sequenceDiagram/, { token: 'typeKeyword', next: 'sequenceDiagram' }],
+				[/^\s*classDiagram(-v2)?/, { token: 'typeKeyword', next: 'classDiagram' }],
+				[/^\s*journey/, { token: 'typeKeyword', next: 'journey' }],
+				[/^\s*gantt/, { token: 'typeKeyword', next: 'gantt' }],
+				[/^\s*stateDiagram(-v2)?/, { token: 'typeKeyword', next: 'stateDiagram' }],
+				[/^\s*erDiagram/, { token: 'typeKeyword', next: 'erDiagram' }],
+				[/^\s*requirement(Diagram)?/, { token: 'typeKeyword', next: 'requirementDiagram' }],
+				[/%%.*(?<!%%)$/, 'comment']
+			],
+			gitGraph: [
 				['option(?=s)', { token: 'typeKeyword', next: 'optionsGitGraph' }],
 				[
-					/[a-z_$][\w$]*((?<=stateDiagram)-v2)?/,
+					/[a-zA-Z_$][\w$]*/,
 					{
 						cases: {
-							'@typeKeywords': 'typeKeyword',
-							'@blockKeywords': 'typeKeyword',
-							'@keywords': 'keyword'
+							'@gitGraphBlockKeywords': 'typeKeyword',
+							'@gitGraphKeywords': 'keyword'
 						}
 					}
 				],
-				[/[A-Z$][\w$]*/, { cases: { '@orientation': 'keyword' } }],
-				[/\[\[(fork|join|choice)\]\]/, 'annotation'],
-				[/[[{(}>|]+.+?[)\]}|]+/, 'string'],
-				[/[{}&]/, 'delimiter.bracket'],
-				[/".*"/, 'string'],
-				[/#(\d|[a-zA-Z])*;/, 'html.entity/hex-color-code'],
-				[/#(?:[0-9a-fA-F]{3}){1,2}/, 'html.entity/hex-color-code'],
-				[/<<.+>>/, 'annotation'],
-				[/%%.*(?<!%%)$/, 'comment']
+				[/%%.*(?<!%%)$/, 'comment'],
+				[/".*?"/, 'string']
 			],
 			optionsGitGraph: [
 				[/s$/, { token: 'typeKeyword', nextEmbedded: 'json', matchOnlyAtLineStart: false }],
 				['end', { token: 'typeKeyword', next: '@pop', nextEmbedded: '@pop' }]
+			],
+			info: [
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@infoBlockKeywords': 'typeKeyword',
+							'@infoKeywords': 'keyword'
+						}
+					}
+				]
+			],
+			pie: [
+				[/(title)(.*$)/, ['keyword', 'string']],
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@pieBlockKeywords': 'typeKeyword',
+							'@pieKeywords': 'keyword'
+						}
+					}
+				],
+				[/".*?"/, 'string'],
+				[/\s*\d+/, 'number'],
+				[/:/, 'delimiter.bracket'],
+				[/%%.*(?<!%%)$/, 'comment']
+			],
+			flowchart: [
+				[/[ox]?(--+|==+)[ox]/, 'transition'],
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@flowchartBlockKeywords': 'typeKeyword',
+							'@flowchartKeywords': 'keyword'
+						}
+					}
+				],
+				[/\|+.+?\|+/, 'string'],
+				[/\[+(\\.+?[\\/]|\/.+?[/\\])\]+/, 'string'],
+				[/[[>]+[^\]|[]+?\]+/, 'string'],
+				[/{+.+?}+/, 'string'],
+				[/\(+.+?\)+/, 'string'],
+				[/-\.+->?/, 'transition'],
+				[/(-[-.])([^-]+?)(-{3,}|-{2,}>|\.-+>)/, ['transition', 'string', 'transition']],
+				[/(==+)([^=]+?)(={3,}|={2,}>)/, ['transition', 'string', 'transition']],
+				[/<?(--+|==+)>|===+|---+/, 'transition'],
+				[/:::/, 'transition'],
+				[/[;&]/, 'delimiter.bracket'],
+				[/".*?"/, 'string'],
+				[/%%.*(?<!%%)$/, 'comment']
+			],
+			sequenceDiagram: [
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@sequenceDiagramBlockKeywords': 'typeKeyword',
+							'@sequenceDiagramKeywords': 'keyword'
+						}
+					}
+				],
+				[/(--?>?>|--?[)x])[+-]?/, 'transition'],
+				[/(:)([^:\n]*?$)/, ['delimiter.bracket', 'string']],
+				[/%%.*(?<!%%)$/, 'comment']
+			],
+			classDiagram: [
+				[/(\*|<\|?|o)?(--|\.\.)(\*|\|?>|o)?/, 'transition'],
+				[/^\s*class\s(?!.*\{)/, 'keyword'],
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@classDiagramBlockKeywords': 'typeKeyword',
+							'@classDiagramKeywords': 'keyword'
+						}
+					}
+				],
+				[/%%.*(?<!%%)$/, 'comment'],
+				[/<<.+>>/, 'annotation'],
+				[/".*?"/, 'string'],
+				[/:::/, 'transition']
+			],
+			journey: [
+				[/(title)(.*)/, ['keyword', 'string']],
+				[/(section)(.*)/, ['typeKeyword', 'string']],
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@journeyBlockKeywords': 'typeKeyword',
+							'@journeyKeywords': 'keyword'
+						}
+					}
+				],
+				[
+					/(^\s*.+?)(:)(.*?)(:)(.*?)$/,
+					['string', 'delimiter.bracket', 'number', 'delimiter.bracket', null]
+				],
+				[/(^\s*.+?)(:)([^:]*?)$/, ['string', 'delimiter.bracket', null]],
+				[/%%.*(?<!%%)$/, 'comment']
+			],
+			gantt: [
+				[/(title)(.*)/, ['keyword', 'string']],
+				[/(section)(.*)/, ['typeKeyword', 'string']],
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@ganttBlockKeywords': 'typeKeyword',
+							'@ganttKeywords': 'keyword'
+						}
+					}
+				],
+				[/(^\s*.*?)(:)/, ['string', 'delimiter.bracket']],
+				[/%%.*(?<!%%)$/, 'comment']
+			],
+			stateDiagram: [
+				[/note[^:]*$/, { token: 'typeKeyword', next: 'stateDiagramNote' }],
+				[/^\s*state\s(?!.*\{)/, 'keyword'],
+				[/<<(fork|join|choice)>>/, 'annotation'],
+				[/\[\[(fork|join|choice)]]/, 'annotation'],
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@stateDiagramBlockKeywords': 'typeKeyword',
+							'@stateDiagramKeywords': 'keyword'
+						}
+					}
+				],
+				[/".*?"/, 'string'],
+				[/(:)([^:\n]*?$)/, ['delimiter.bracket', 'string']],
+				[/%%.*(?<!%%)$/, 'comment'],
+				[/-->/, 'transition']
+			],
+			stateDiagramNote: [
+				[/^\s*end note$/, { token: 'typeKeyword', next: '@pop' }],
+				[/.*/, 'string']
+			],
+			erDiagram: [
+				[/(\|o|\|\||\}o|\}\|)(--|\.\.)(o\||\|\||o\{|\|\{)/, 'transition'],
+				[/".*?"/, 'string'],
+				[/:/, 'delimiter.bracket']
+			],
+			requirementDiagram: [
+				[
+					/[a-zA-Z_$][\w$]*/,
+					{
+						cases: {
+							'@requirementDiagramBlockKeywords': 'typeKeyword'
+						}
+					}
+				],
+				[/{|}/, 'delimiter.bracket'],
+				[/->|<-|-/, 'transition'],
+				[/".*?"/, 'string']
 			]
 		},
 		whitespace: [[/[ \t\r\n]+/, 'white']]
@@ -149,7 +348,6 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'string', foreground: 'AA8500' },
 			{ token: 'transition', foreground: '008800', fontStyle: 'bold' },
 			{ token: 'delimiter.bracket', foreground: '000000', fontStyle: 'bold' },
-			{ token: 'html.entity/hex-color-code', foreground: 'f5b436' },
 			{ token: 'annotation', foreground: '4b4b96' },
 			{ token: 'number', foreground: '4b4b96' },
 			{ token: 'comment', foreground: '888c89' }
@@ -262,13 +460,21 @@ export const initEditor = (monacoEditor): void => {
 						.map((part) => part[0].toUpperCase() + part.slice(1))
 						.join(' ')
 				})),
-				...[...new Set([...orientations, ...typeKeywords, ...blockKeywords, ...keywords])].map(
-					(keyword) => ({
-						label: keyword,
-						kind: monacoEditor.languages.CompletionItemKind.Keyword,
-						insertText: keyword
-					})
-				)
+				...[
+					...new Set(
+						Object.values(keywords)
+							.map((diagramKeywords) =>
+								Object.entries(diagramKeywords)
+									.filter((keywordType) => keywordType[0] !== 'annotations')
+									.map((entry) => entry[1])
+							)
+							.flat(2)
+					)
+				].map((keyword) => ({
+					label: keyword,
+					kind: monacoEditor.languages.CompletionItemKind.Keyword,
+					insertText: keyword
+				}))
 			];
 			return { suggestions: suggestions };
 		}
