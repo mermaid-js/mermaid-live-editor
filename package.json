@@ -20,7 +20,7 @@
 		"@types/mermaid": "^8.2.7",
 		"@typescript-eslint/eslint-plugin": "^4.29.2",
 		"@typescript-eslint/parser": "^4.29.2",
-		"autoprefixer": "^10.3.1",
+		"autoprefixer": "^10.3.3",
 		"chai": "^4.3.4",
 		"cssnano": "^5.0.8",
 		"cypress": "8.3.0",
@@ -39,11 +39,11 @@
 		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.3.2",
 		"prettier-plugin-svelte": "^2.3.1",
-		"svelte": "^3.42.2",
+		"svelte": "^3.42.3",
 		"svelte-preprocess": "^4.7.4",
 		"tailwindcss": "^2.2.7",
 		"tslib": "^2.3.1",
-		"typescript": "^4.3.5"
+		"typescript": "^4.4.2"
 	},
 	"type": "module",
 	"dependencies": {
