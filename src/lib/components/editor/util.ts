@@ -343,6 +343,7 @@ export const initEditor = (monacoEditor): void => {
 				[/(:)(.*?$)/, ['delimiter.bracket', 'string']],
 				[/:|{|}/, 'delimiter.bracket'],
 				[/([a-zA-Z]+)(\s+[a-zA-Z]+)/, ['type', 'variable']],
+				[/%%.*(?<!%%)$/, 'comment'],
 				[/[a-zA-Z_-][\w$]*/, 'variable']
 			],
 			requirementDiagram: [
@@ -358,6 +359,7 @@ export const initEditor = (monacoEditor): void => {
 					}
 				],
 				[/:|{|}|\//, 'delimiter.bracket'],
+				[/%%.*(?<!%%)$/, 'comment'],
 				[/".*?"/, 'string']
 			]
 		}
