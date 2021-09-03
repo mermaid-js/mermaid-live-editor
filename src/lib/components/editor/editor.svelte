@@ -15,11 +15,10 @@
 	export let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
 		value: text,
 		language: language,
-		scrollBeyondLastLine: false,
 		minimap: {
 			enabled: false
 		},
-		theme: 'myCoolTheme',
+		theme: 'mermaidTheme',
 		overviewRulerLanes: 0
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
@@ -44,7 +43,7 @@
 		let i = 0;
 		while (i++ < 10) {
 			try {
-				//@ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+				// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
 				Monaco = monaco;
 				return;
 			} catch {
@@ -55,7 +54,7 @@
 	};
 	onMount(async () => {
 		try {
-			//@ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+			// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
 			Monaco = monaco;
 		} catch {
 			await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
