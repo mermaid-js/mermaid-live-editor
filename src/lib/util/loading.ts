@@ -1,4 +1,5 @@
-import { writable, Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
+import type { Writable } from 'svelte/store';
 import type { LoadingState } from '$lib/types';
 
 const defaultLoading: LoadingState = {
