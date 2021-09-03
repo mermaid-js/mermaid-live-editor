@@ -9,14 +9,14 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
 
-"@analytics/core@^0.10.13":
-  version "0.10.13"
-  resolved "https://registry.npmjs.org/@analytics/core/-/core-0.10.13.tgz"
-  integrity sha512-i8XH73jfPYq1e1SZYn/tbx4IEAllZl5oap3SeFC/zR17APujGggqpkP1H6mnwdyYO1RQGKxPbf5LufM5iYnoGg==
+"@analytics/core@^0.10.14":
+  version "0.10.14"
+  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.10.14.tgz#9dbf2e6e2fb1ccdf32827c3d95b0ceba88129a84"
+  integrity sha512-VHQijAx7vOsYtYSIIlaQwvbnntIL/VoNAEgkqSOic6RvFoZUcIQL5tndPCqzL1kzOunNf/rXMkb+BOj4t3mYbg==
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
     "@analytics/type-utils" "^0.3.1"
-    analytics-utils "^1.0.2"
+    analytics-utils "^1.0.3"
 
 "@analytics/global-storage-utils@^0.1.2":
   version "0.1.2"
@@ -855,20 +855,20 @@ am-i-a-dependency@1.1.2:
   resolved "https://registry.npmjs.org/am-i-a-dependency/-/am-i-a-dependency-1.1.2.tgz"
   integrity sha1-+dNCIwTW9kL4IeTEB1ZQNfYWfx8=
 
-analytics-utils@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/analytics-utils/-/analytics-utils-1.0.2.tgz"
-  integrity sha512-zVehxpl3pSQH55YPnnLjE7IAIVA5ezDcHnm2pAndN1dohCb0NDpgigbY3RbhIZ5z9j2/InlpAqsSgk+NVWACVQ==
+analytics-utils@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/analytics-utils/-/analytics-utils-1.0.3.tgz#fcbf2f03720b6b1be12ea9fa7843e08c57a11ec5"
+  integrity sha512-zEKtwLa62kdI7+HQ4lsDorBKEI+PIdy1SAaIqLauIZgUISxfkuFLWwabdUkKMdxGPyrDyiuDVbZT9gZFMiicdg==
   dependencies:
     "@analytics/type-utils" "^0.3.1"
     dlv "^1.1.3"
 
-analytics@^0.7.13:
-  version "0.7.13"
-  resolved "https://registry.npmjs.org/analytics/-/analytics-0.7.13.tgz"
-  integrity sha512-1WcUy0p3BbSDYXZxjH4hPlbqTf7+GYEheC+TCaCQCIQlFdPcEwzEvXfFPvmkSXY72EPg5jywHcOuLvf3KX52pg==
+analytics@^0.7.14:
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.7.14.tgz#0245fd8c62a5db2911f649f181f99d3d2c534a82"
+  integrity sha512-XWJ7VWSwnUfO0+v4Si94DjWV0a5omWNYMgbNsOFjyJcBcUl2bq/Fit3GfcIT0bQ1ZfSzAI2vQ4DxDu69wnwlFQ==
   dependencies:
-    "@analytics/core" "^0.10.13"
+    "@analytics/core" "^0.10.14"
     "@analytics/storage-utils" "^0.2.12"
 
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
@@ -5436,10 +5436,10 @@ svelte-preprocess@^4.8.0:
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
 
-svelte@^3.42.3:
-  version "3.42.3"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.42.3.tgz#a7687a43ff6aa12263e03cf56219cd21eff5372d"
-  integrity sha512-pbdtdNZEx2GBqSM6XEgPoHbwtvWBwFLt/1bRmzsyXZO+i424wFnPe7O5B3GOJDPFSxPRztumAW3mL5LPzecWUg==
+svelte@^3.42.4:
+  version "3.42.4"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.42.4.tgz#838ed98fa7b26fc5fffe4df0d7ba345f1c54cf4f"
+  integrity sha512-DqC0AmDdBrrbIA+Kzl3yhBb6qCn4vZOAfxye2pTnIpinLegyagC5sLI8Pe9GPlXu9VpHBXIwpDDedpMfu++epA==
 
 svgo@^2.3.0:
   version "2.4.0"

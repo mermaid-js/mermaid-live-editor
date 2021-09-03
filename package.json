@@ -39,7 +39,7 @@
 		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.3.2",
 		"prettier-plugin-svelte": "^2.4.0",
-		"svelte": "^3.42.3",
+		"svelte": "^3.42.4",
 		"svelte-preprocess": "^4.8.0",
 		"tailwindcss": "^2.2.9",
 		"tslib": "^2.3.1",
@@ -49,8 +49,8 @@
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.2.0",
-		"analytics": "^0.7.13",
 		"daisyui": "^1.12.1",
+		"analytics": "^0.7.14",
 		"js-base64": "^3.6.1",
 		"mermaid": "^8.11.4",
 		"moment": "^2.29.1",
