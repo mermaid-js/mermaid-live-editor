@@ -51,7 +51,7 @@
 		"@macfja/svelte-persistent-store": "^1.2.0",
 		"analytics": "^0.7.14",
 		"js-base64": "^3.6.1",
-		"mermaid": "^8.11.4",
+		"mermaid": "^8.12.0",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.27.0",
 		"random-word-slugs": "^0.0.5"
