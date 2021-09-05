@@ -2,6 +2,7 @@ describe('Save History', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/edit');
+		cy.contains('History').click();
 	});
 	it('should save when clicked', () => {
 		cy.get('#historyList').find('li').should('have.length', 0);
