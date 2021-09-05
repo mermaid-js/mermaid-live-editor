@@ -143,7 +143,7 @@
 	});
 </script>
 
-<Card title="Actions" isOpen={false}>
+<Card title="Actions" isOpen={true}>
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
 			<button class="action-btn w-full" on:click={onCopyClipboard}
@@ -207,6 +207,9 @@
 			<label for="gist">
 				<button class="btn btn-primary btn-md flex-auto" on:click={loadGist}> Load Gist </button>
 			</label>
+		</div>
+		<div class="w-full flex items-center">
+			<a class="link" href="https://netlify.com">This site is powered by Netlify</a>
 		</div>
 	</div>
 </Card>

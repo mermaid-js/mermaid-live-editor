@@ -83,7 +83,7 @@
 		}
 	});
 
-	let isOpen = true;
+	let isOpen = false;
 </script>
 
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
