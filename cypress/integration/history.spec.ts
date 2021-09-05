@@ -1,10 +1,15 @@
 describe('Save History', () => {
+	before(() => {
+		cy.clock();
+	});
+
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/edit');
-		cy.contains('History').click();
 		cy.contains('Actions').click();
+		cy.contains('History').click();
 	});
+
 	it('should save when clicked', () => {
 		cy.get('#historyList').find('li').should('have.length', 0);
 		cy.get('#historyList').contains('No items in History');
@@ -45,7 +50,6 @@ describe('Save History', () => {
 	});
 
 	it('should auto save history', () => {
-		cy.clock();
 		cy.get('#editor').type('  C --> HistoryTest');
 		cy.tick(70000);
 		cy.contains('Timeline').click();
