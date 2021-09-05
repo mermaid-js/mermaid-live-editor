@@ -134,7 +134,7 @@
 	let userimagesize = 1080;
 
 	let isNetlify = false;
-	if (browser && window.location.host.includes('mermaid.live')) {
+	if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
 		isNetlify = true;
 	}
 	codeStore.subscribe((state: State) => {
