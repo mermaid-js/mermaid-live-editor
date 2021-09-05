@@ -17,7 +17,7 @@ Edit, preview and share mermaid charts/diagrams.
 
 ## Live demo
 
-You can try out a live version [here](https://mermaid-js.github.io/mermaid-live-editor/).
+You can try out a live version [here](https://mermaid.live/).
 
 ## Docker
 
