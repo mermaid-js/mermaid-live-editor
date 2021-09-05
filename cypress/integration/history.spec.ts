@@ -1,9 +1,6 @@
 describe('Save History', () => {
-	before(() => {
-		cy.clock();
-	});
-
 	beforeEach(() => {
+		cy.clock();
 		cy.clearLocalStorage();
 		cy.visit('/edit');
 		cy.contains('Actions').click();
