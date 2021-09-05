@@ -201,8 +201,10 @@
 			</label>
 		</div>
 		{#if isNetlify}
-			<div class="w-full flex items-center">
-				<a class="link" href="https://netlify.com">This site is powered by Netlify</a>
+			<div class="w-full flex items-center justify-center">
+				<a class="link underline text-gray-500 text-sm" href="https://netlify.com">
+					This site is powered by Netlify
+				</a>
 			</div>
 		{/if}
 	</div>
