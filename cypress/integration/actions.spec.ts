@@ -1,9 +1,7 @@
 describe('Check actions', () => {
-	// eslint-disable-next-line mocha/no-hooks-for-single-case
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/edit');
-		cy.contains('Actions').click();
 	});
 	it('should update markdown code', () => {
 		cy.get('#markdown')

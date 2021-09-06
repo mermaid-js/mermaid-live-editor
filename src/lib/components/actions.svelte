@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { browser } from '$app/env';
+
 	import Card from '$lib/components/card/card.svelte';
 	import type { State } from '$lib/types';
 	import { codeStore } from '$lib/util/state';
@@ -131,6 +133,10 @@
 	let imagemodeselected = 'auto';
 	let userimagesize = 1080;
 
+	let isNetlify = false;
+	if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
+		isNetlify = true;
+	}
 	codeStore.subscribe((state: State) => {
 		const stateCopy = JSON.parse(JSON.stringify(state));
 		if (typeof stateCopy.mermaid === 'string') {
@@ -208,8 +214,12 @@
 				<button class="btn btn-primary btn-md flex-auto" on:click={loadGist}> Load Gist </button>
 			</label>
 		</div>
-		<div class="w-full flex items-center">
-			<a class="link" href="https://netlify.com">This site is powered by Netlify</a>
-		</div>
+		{#if isNetlify}
+			<div class="w-full flex items-center justify-center">
+				<a class="link underline text-gray-500 text-sm" href="https://netlify.com">
+					This site is powered by Netlify
+				</a>
+			</div>
+		{/if}
 	</div>
 </Card>
