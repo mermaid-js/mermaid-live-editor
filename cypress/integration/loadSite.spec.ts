@@ -34,6 +34,7 @@ describe('Site Loads', () => {
 
 	it('should load diagram from gist', () => {
 		cy.visit(`/edit?gist=https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a`);
+		cy.contains('History').click();
 		cy.contains('Go shopping!!');
 		cy.contains('Revisions');
 		cy.contains('sidharthv96 v8f8f1e2');
@@ -45,6 +46,7 @@ describe('Site Loads', () => {
 		cy.visit(
 			'/edit?gist=https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/ec9b4ab0e41e4ff6287326cd3cb47affd7851e19'
 		);
+		cy.contains('History').click();
 		cy.contains('Party');
 		cy.contains('Revisions');
 		cy.contains('sidharthv96 v7851e19');
