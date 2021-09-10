@@ -9,6 +9,7 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    # Update after https://github.com/cypress-io/cypress-docker-images/issues/487
     container: cypress/browsers:node14.16.0-chrome90-ff88
 
     steps:
