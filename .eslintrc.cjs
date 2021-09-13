@@ -7,7 +7,7 @@ module.exports = {
 		// 'plugin:@typescript-eslint/recommended-requiring-type-checking',
 		'prettier'
 	],
-	plugins: ['svelte3', 'tailwindcss', '@typescript-eslint'],
+	plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es'],
 	ignorePatterns: [
 		'docs/*',
 		'*.cjs',
@@ -42,6 +42,7 @@ module.exports = {
 			}
 		],
 		'@typescript-eslint/no-unsafe-member-access': 'off',
-		'@typescript-eslint/no-unsafe-assignment': 'off'
+		'@typescript-eslint/no-unsafe-assignment': 'off',
+		'es/no-regexp-lookbehind-assertions': 'error'
 	}
 };
