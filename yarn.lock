@@ -2545,10 +2545,10 @@ its-name@1.0.0:
   resolved "https://registry.npmjs.org/its-name/-/its-name-1.0.0.tgz"
   integrity sha1-IGXxiD7LVoxl9xEt2/EjQB+uSvA=
 
-js-base64@^3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.6.2.tgz#f7585bc038e933a0a3fae9ab4b1cc2faa1374edd"
-  integrity sha512-9xRCVqFwEuPH1SmwknrCRfGjcaUCt+boLjGZt5g/aAr98K8OtR9cI8K89U3cPT8xatgmzWQnJwgRQTd5tq2EOg==
+js-base64@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.0.tgz#74979859ac07f999d28280b0697e82715f7e36ab"
+  integrity sha512-hJiXqoqZKdNx7PNuqHx3ZOgwcvgCprV0cs9ZMeqERshhVZ3cmXc3HGR60mKsHHqVK18PCwGXnmPiPDbao7SOMQ==
   dependencies:
     mocha "^8.4.0"
 
@@ -3545,10 +3545,10 @@ prettier-plugin-svelte@^2.4.0:
   resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-2.4.0.tgz#482bb6003bf1d5bd7ff002261a42a32b87d42d00"
   integrity sha512-JwJ9bOz4XHLQtiLnX4mTSSDUdhu12WH8sTwy/XTDCSyPlah6IcV7NWeYBZscPEcceu2YnW8Y9sJCP40Z2UH9GA==
 
-prettier@~2.3.2:
-  version "2.3.2"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-2.3.2.tgz"
-  integrity sha512-lnJzDfJ66zkMy58OL5/NY5zp70S7Nz6KqcKkXYzn2tMVrNxvbqaBpg7H3qHaLxCJ5lNMsGuM8+ohS7cZrthdLQ==
+prettier@~2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.4.0.tgz#85bdfe0f70c3e777cf13a4ffff39713ca6f64cba"
+  integrity sha512-DsEPLY1dE5HF3BxCRBmD4uYZ+5DCbvatnolqTqcxEgKVZnL2kUfyu7b8pPQ5+hTBkdhU9SLUmK0/pHb07RE4WQ==
 
 pretty-bytes@^5.6.0:
   version "5.6.0"
