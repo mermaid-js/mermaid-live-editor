@@ -155,8 +155,8 @@ export const initEditor = (monacoEditor): void => {
 				[/^\s*gantt/, 'typeKeyword', 'gantt'],
 				[/^\s*stateDiagram(-v2)?/, 'typeKeyword', 'stateDiagram'],
 				[/^\s*erDiagram/, 'typeKeyword', 'erDiagram'],
-				[/^\s*requirement(Diagram)?/, 'typeKeyword', 'requirementDiagram']
-				// [/%%.*(?<!%%)$/, 'comment']
+				[/^\s*requirement(Diagram)?/, 'typeKeyword', 'requirementDiagram'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
 			],
 			gitGraph: [
 				[/option(?=s)/, { token: 'typeKeyword', next: 'optionsGitGraph' }],
@@ -170,7 +170,7 @@ export const initEditor = (monacoEditor): void => {
 						}
 					}
 				],
-				// [/%%.*(?<!%%)$/, 'comment'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
 				[/".*?"/, 'string'],
 				[/\^/, 'delimiter.bracket']
 			],
@@ -202,8 +202,8 @@ export const initEditor = (monacoEditor): void => {
 				],
 				[/".*?"/, 'string'],
 				[/\s*\d+/, 'number'],
-				[/:/, 'delimiter.bracket']
-				// [/%%.*(?<!%%)$/, 'comment']
+				[/:/, 'delimiter.bracket'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
 			],
 			flowchart: [
 				[/[ox]?(--+|==+)[ox]/, 'transition'],
@@ -228,8 +228,8 @@ export const initEditor = (monacoEditor): void => {
 				[/<?(--+|==+)>|===+|---+/, 'transition'],
 				[/:::/, 'transition'],
 				[/[;&]/, 'delimiter.bracket'],
-				[/".*?"/, 'string']
-				// [/%%.*(?<!%%)$/, 'comment']
+				[/".*?"/, 'string'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
 			],
 			sequenceDiagram: [
 				[
@@ -243,8 +243,8 @@ export const initEditor = (monacoEditor): void => {
 					}
 				],
 				[/(--?>?>|--?[)x])[+-]?/, 'transition'],
-				[/(:)([^:\n]*?$)/, ['delimiter.bracket', 'string']]
-				// [/%%.*(?<!%%)$/, 'comment']
+				[/(:)([^:\n]*?$)/, ['delimiter.bracket', 'string']],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
 			],
 			classDiagram: [
 				[/(?!class\s)([a-zA-Z]+)(\s+[a-zA-Z]+)/, ['type', 'variable']],
@@ -260,7 +260,7 @@ export const initEditor = (monacoEditor): void => {
 						}
 					}
 				],
-				// [/%%.*(?<!%%)$/, 'comment'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
 				[/(<<)(.+?)(>>)/, ['delimiter.bracket', 'annotation', 'delimiter.bracket']],
 				[/".*?"/, 'string'],
 				[/:::/, 'transition'],
@@ -291,8 +291,8 @@ export const initEditor = (monacoEditor): void => {
 					]
 				],
 				[/,/, 'delimiter.bracket'],
-				[/(^\s*.+?)(:)([^:]*?)$/, ['string', 'delimiter.bracket', 'variable']]
-				// [/%%.*(?<!%%)$/, 'comment']
+				[/(^\s*.+?)(:)([^:]*?)$/, ['string', 'delimiter.bracket', 'variable']],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
 			],
 			gantt: [
 				[/(title)(.*)/, ['keyword', 'string']],
@@ -307,7 +307,7 @@ export const initEditor = (monacoEditor): void => {
 					}
 				],
 				[/(^\s*.*?)(:)/, ['string', 'delimiter.bracket']],
-				// [/%%.*(?<!%%)$/, 'comment'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
 				[/:/, 'delimiter.bracket']
 			],
 			stateDiagram: [
@@ -329,7 +329,7 @@ export const initEditor = (monacoEditor): void => {
 				[/".*?"/, 'string'],
 				[/(:)([^:\n]*?$)/, ['delimiter.bracket', 'string']],
 				[/{|}/, 'delimiter.bracket'],
-				// [/%%.*(?<!%%)$/, 'comment'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
 				[/-->/, 'transition'],
 				[/\[.*?]/, 'string']
 			],
@@ -343,7 +343,7 @@ export const initEditor = (monacoEditor): void => {
 				[/(:)(.*?$)/, ['delimiter.bracket', 'string']],
 				[/:|{|}/, 'delimiter.bracket'],
 				[/([a-zA-Z]+)(\s+[a-zA-Z]+)/, ['type', 'variable']],
-				// [/%%.*(?<!%%)$/, 'comment'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
 				[/[a-zA-Z_-][\w$]*/, 'variable']
 			],
 			requirementDiagram: [
@@ -359,7 +359,7 @@ export const initEditor = (monacoEditor): void => {
 					}
 				],
 				[/:|{|}|\//, 'delimiter.bracket'],
-				// [/%%.*(?<!%%)$/, 'comment'],
+				[/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
 				[/".*?"/, 'string']
 			]
 		}
