@@ -365,7 +365,7 @@ export const initEditor = (monacoEditor): void => {
 		}
 	});
 
-	monacoEditor.editor.defineTheme('mermaidTheme-dark', {
+	monacoEditor.editor.defineTheme('mermaid-dark', {
 		base: 'vs-dark',
 		inherit: true,
 		rules: [
@@ -374,7 +374,7 @@ export const initEditor = (monacoEditor): void => {
 		]
 	});
 
-	monacoEditor.editor.defineTheme('mermaidTheme', {
+	monacoEditor.editor.defineTheme('mermaid', {
 		base: 'vs',
 		inherit: true,
 		rules: [

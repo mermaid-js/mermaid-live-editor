@@ -18,7 +18,7 @@
 		minimap: {
 			enabled: false
 		},
-		theme: 'mermaidTheme',
+		theme: 'mermaid',
 		overviewRulerLanes: 0
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
@@ -35,7 +35,7 @@
 	}
 
 	themeStore.subscribe(({ isDark }) => {
-		editor && Monaco?.editor.setTheme(isDark ? 'mermaidTheme-dark' : 'mermaidTheme');
+		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
 	});
 
 	const dispatch = createEventDispatcher<EditorEvents>();
@@ -67,7 +67,7 @@
 				text
 			});
 		});
-		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaidTheme-dark' : 'mermaidTheme');
+		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,
