@@ -35,7 +35,7 @@
 	}
 
 	themeStore.subscribe(({ isDark }) => {
-		editor && Monaco?.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+		editor && Monaco?.editor.setTheme(isDark ? 'mermaidTheme-dark' : 'mermaidTheme');
 	});
 
 	const dispatch = createEventDispatcher<EditorEvents>();
@@ -67,7 +67,7 @@
 				text
 			});
 		});
-		Monaco?.editor.setTheme($themeStore.isDark ? 'vs-dark' : 'vs');
+		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaidTheme-dark' : 'mermaidTheme');
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,

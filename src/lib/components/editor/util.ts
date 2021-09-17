@@ -365,9 +365,18 @@ export const initEditor = (monacoEditor): void => {
 		}
 	});
 
+	monacoEditor.editor.defineTheme('mermaidTheme-dark', {
+		base: 'vs-dark',
+		inherit: true,
+		rules: [
+			{ token: 'typeKeyword', foreground: '9650c8', fontStyle: 'bold' },
+			{ token: 'transition', foreground: '008800', fontStyle: 'bold' }
+		]
+	});
+
 	monacoEditor.editor.defineTheme('mermaidTheme', {
 		base: 'vs',
-		inherit: false,
+		inherit: true,
 		rules: [
 			{ token: 'typeKeyword', foreground: '9650c8', fontStyle: 'bold' },
 			{ token: 'keyword', foreground: '649696' },
