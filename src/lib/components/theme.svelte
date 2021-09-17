@@ -51,7 +51,7 @@
 		<ul tabindex="0" class="p-4 menu compact">
 			{#each themes as theme}
 				<li class={theme.includes($themeStore.theme) ? 'bordered' : ''}>
-					<a on:click={() => setTheme(theme)}>{theme}</a>
+					<span class="btn btn-ghost justify-start" on:click={() => setTheme(theme)}>{theme}</span>
 				</li>
 			{/each}
 		</ul>

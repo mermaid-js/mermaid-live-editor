@@ -1410,10 +1410,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@^1.12.1:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.12.1.tgz#acf18ce7b95432141f3b86e4dd6b5cf2388e4e9d"
-  integrity sha512-XtkCVBdp7W4HxGclr49EQksWvpQ6VHgD+q2l0ZbY4APUqNdNGZCz9KGBO+89kyvoUYVLmY6jbIHo62eXGcjrSA==
+daisyui@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.14.0.tgz#1d63658c0dd87f9795d333e7068cedbb0b0a52a6"
+  integrity sha512-50ccXdJMi0TS7raItKfUOJppPRvluOUCO4m6i7QPOVOdDZVP6awjqUoGmLzqFepO6b6QpVotswDvaXIKSZ/2aw==
 
 dashdash@^1.12.0:
   version "1.14.1"
