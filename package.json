@@ -51,7 +51,7 @@
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.2.0",
 		"analytics": "^0.7.14",
-		"js-base64": "^3.7.0",
+		"js-base64": "^3.7.1",
 		"mermaid": "^8.12.1",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.27.0",
