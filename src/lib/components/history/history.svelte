@@ -122,10 +122,10 @@
 						</div>
 						<div class="flex gap-2 content-center">
 							<button class="btn btn-success" on:click={() => restoreHistory(state)}
-								><i class="fas fa-undo mr-1" /> Restore</button>
+								><i class="fas fa-undo mr-1" />Restore</button>
 							{#if type !== 'loader'}
 								<button class="btn btn-error" on:click={() => clearHistory(time)}
-									><i class="fas fa-trash-alt mr-1" /> Delete</button>
+									><i class="fas fa-trash-alt mr-1" />Delete</button>
 							{/if}
 						</div>
 					</div>
