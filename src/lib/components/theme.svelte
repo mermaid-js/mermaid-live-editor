@@ -47,7 +47,7 @@
 				d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" /></svg>
 	</div>
 	<div
-		class="mt-14 overflow-y-auto shadow-2xl top-px dropdown-content h-96 w-52 bg-base-200 text-base-content">
+		class="mt-14 overflow-y-auto shadow-2xl top-px dropdown-content h-96 w-56 bg-base-200 text-base-content">
 		<ul tabindex="0" class="p-4 menu compact">
 			{#each themes as theme}
 				<li class={theme.includes($themeStore.theme) ? 'bordered' : ''}>
