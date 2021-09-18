@@ -24,8 +24,8 @@
 
 		const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-		if (isDarkMode && $themeStore.theme === '') {
-			setTheme('dark');
+		if ($themeStore.theme === undefined) {
+			setTheme(isDarkMode ? 'dark' : 'light');
 		}
 
 		themeStore.subscribe(({ theme, isDark }) => {

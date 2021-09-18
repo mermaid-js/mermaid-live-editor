@@ -1,10 +1,15 @@
 import { writable } from 'svelte/store';
+import type { Writable } from 'svelte/store';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 
-export const themeStore = persist(
+export interface ThemeConfig {
+	isDark: boolean;
+	theme?: string;
+}
+
+export const themeStore: Writable<ThemeConfig> = persist(
 	writable({
-		isDark: false,
-		theme: ''
+		isDark: false
 	}),
 	localStorage(),
 	'themeStore'
