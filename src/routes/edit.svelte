@@ -10,11 +10,12 @@
 	import { initHandler, syncDiagram } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
-	import * as mermaid from 'mermaid';
+	import mermaid from 'mermaid';
 	import type monaco from 'monaco-editor';
 	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
 	import { base } from '$app/paths';
 
+	base64State; // Weird fix for error > base64State is not defined. Treeshaking?
 	let selectedMode = 'code';
 	const languageMap = {
 		code: 'mermaid',
