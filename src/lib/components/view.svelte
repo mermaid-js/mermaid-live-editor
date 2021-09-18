@@ -3,7 +3,7 @@
 
 	import { codeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
-	import * as mermaid from 'mermaid';
+	import mermaid from 'mermaid';
 
 	let code = '';
 	let config = '';
