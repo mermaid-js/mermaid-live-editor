@@ -3,6 +3,9 @@
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { loadingStateStore } from '$lib/util/loading';
+	import { setTheme, themeStore } from '$lib/util/theme';
+	import { toggleDarkTheme } from '$lib/util/state';
+
 	// This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
 	// Then move it into src and vite will bundle it automatically.
 	onMount(() => {
@@ -18,10 +21,23 @@
 					console.log('Service worker registration failed, error:', error);
 				});
 		}
+
+		const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+		if ($themeStore.theme === undefined) {
+			setTheme(isDarkMode ? 'dark' : 'light');
+		}
+
+		themeStore.subscribe(({ theme, isDark }) => {
+			if (theme) {
+				document.getElementsByTagName('html')[0].setAttribute('data-theme', theme);
+				toggleDarkTheme(isDark);
+			}
+		});
 	});
 </script>
 
-<main class="h-screen">
+<main class="h-screen text-primary-content">
 	<slot />
 </main>
 

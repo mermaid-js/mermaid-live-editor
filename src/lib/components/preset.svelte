@@ -108,7 +108,8 @@ merge newbranch
 <Card title="Sample Diagrams" isOpen={false}>
 	<div class="flex gap-2 flex-wrap p-2">
 		{#each Object.keys(samples) as sample}
-			<button class="action-btn" on:click={() => loadSampleDiagram(sample)}>{sample}</button>
+			<button class="btn btn-primary normal-case btn-sm" on:click={() => loadSampleDiagram(sample)}
+				>{sample}</button>
 		{/each}
 	</div>
 </Card>

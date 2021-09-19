@@ -7,21 +7,22 @@
 	export let tabs: Tab[] = [];
 	export let title: string;
 	$: isOpen = isCloseable ? isOpen : true;
+	$: isTabsShown = isOpen && tabs.length > 0;
 </script>
 
-<div class="bg-white rounded overflow-hidden shadow m-2 flex-grow flex flex-col">
+<div class="card rounded overflow-hidden m-2 flex-grow flex flex-col shadow-2xl">
 	<div
-		class="bg-indigo-400 border-gray-400 p-2 flex-none cursor-pointer"
+		class="bg-primary p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
 		on:click={() => (isOpen = !isOpen)}>
 		<div class="flex justify-between">
 			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} />
-			<div class="flex gap-x-4 items-center text-white">
+			<div class="flex gap-x-4 items-center {isTabsShown ? '-mt-2' : ''}">
 				<slot name="actions" />
 			</div>
 		</div>
 	</div>
 	{#if isOpen}
-		<div class="flex-grow overflow-auto" transition:slide>
+		<div class="card-body p-0 flex-grow overflow-auto text-base-content" transition:slide>
 			<slot />
 		</div>
 	{/if}

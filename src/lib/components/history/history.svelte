@@ -90,13 +90,13 @@
 	<div slot="actions">
 		<button
 			id="saveHistory"
-			class="btn"
+			class="btn btn-xs btn-success w-12"
 			on:click|stopPropagation={() => saveHistory()}
 			title="Save current state"><i class="far fa-save" /></button>
 		{#if $historyModeStore !== 'loader'}
 			<button
 				id="clearHistory"
-				class="btn text-red-400"
+				class="btn btn-xs btn-error w-12"
 				on:click|stopPropagation={() => clearHistory()}
 				title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
 		{/if}
@@ -107,7 +107,7 @@
 				<li class="rounded p-2 shadow flex-col">
 					<div class="flex">
 						<div class="flex-1">
-							<div class="flex flex-col">
+							<div class="flex flex-col text-base-content">
 								{#if url}
 									<a
 										href={url}
@@ -121,20 +121,18 @@
 							</div>
 						</div>
 						<div class="flex gap-2 content-center">
-							<button
-								class="rounded px-2 w-24 bg-green-200 hover:bg-green-300"
-								on:click={() => restoreHistory(state)}><i class="fas fa-undo" /> Restore</button>
+							<button class="btn btn-success" on:click={() => restoreHistory(state)}
+								><i class="fas fa-undo mr-1" />Restore</button>
 							{#if type !== 'loader'}
-								<button
-									class="rounded px-2 w-24 bg-red-200 hover:bg-red-300"
-									on:click={() => clearHistory(time)}><i class="fas fa-trash-alt" /> Delete</button>
+								<button class="btn btn-error" on:click={() => clearHistory(time)}
+									><i class="fas fa-trash-alt mr-1" />Delete</button>
 							{/if}
 						</div>
 					</div>
 				</li>
 			{/each}
 		{:else}
-			<div class="m-2 text-gray-600">
+			<div class="m-2">
 				No items in History<br />
 				Click the Save button to save current state and restore it later.<br />
 				Timeline will automatically be saved every minute.

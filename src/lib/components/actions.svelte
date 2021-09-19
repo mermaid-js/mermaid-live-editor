@@ -153,39 +153,53 @@
 	<div class="flex flex-wrap gap-2 m-2">
 		{#if isClipboardAvailable()}
 			<button class="action-btn w-full" on:click={onCopyClipboard}
-				><i class="far fa-copy" /> Copy Image to clipboard
+				><i class="far fa-copy mr-2" /> Copy Image to clipboard
 			</button>
 		{/if}
 		<button class="action-btn flex-auto" on:click={onDownloadPNG}>
-			<i class="fas fa-download" /> PNG
+			<i class="fas fa-download mr-2" /> PNG
 		</button>
 		<button class="action-btn flex-auto" on:click={onDownloadSVG}>
-			<i class="fas fa-download" /> SVG
+			<i class="fas fa-download mr-2" /> SVG
 		</button>
 		<button class="action-btn flex-auto">
-			<a target="_blank" href={iUrl}><i class="fas fa-external-link-alt" /> PNG</a>
+			<a target="_blank" href={iUrl}><i class="fas fa-external-link-alt mr-2" /> PNG</a>
 		</button>
 		<button class="action-btn flex-auto">
-			<a target="_blank" href={svgUrl}><i class="fas fa-external-link-alt" /> SVG</a>
+			<a target="_blank" href={svgUrl}><i class="fas fa-external-link-alt mr-2" /> SVG</a>
 		</button>
 
 		<div class="flex gap-2 items-center">
 			PNG size
-			<input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} />
-			<label for="autosize">Auto</label>
-			<input type="radio" value="width" id="width-active" bind:group={imagemodeselected} />
-			<label for="width">Width</label>
-			<input type="radio" value="height" id="height-active" bind:group={imagemodeselected} />
-			<label for="height">Height</label>
+			<label for="autosize">
+				<input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} /> Auto
+			</label>
+
+			<label for="width">
+				<input type="radio" value="width" id="width" bind:group={imagemodeselected} /> Width
+			</label>
+
+			<label for="height">
+				<input type="radio" value="height" id="height" bind:group={imagemodeselected} /> Height
+			</label>
+
 			{#if imagemodeselected !== 'auto'}
-				<input id="height" type="number" min="3" max="10000" bind:value={userimagesize} />
+				<input
+					id="height"
+					class="input"
+					type="number"
+					min="3"
+					max="10000"
+					bind:value={userimagesize} />
 			{/if}
 		</div>
 
 		<div class="w-full flex gap-2 items-center">
 			<input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
 			<label for="markdown">
-				<button class="btn text-white flex-auto" on:click={onCopyMarkdown}> Copy Markdown </button>
+				<button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
+					Copy Markdown
+				</button>
 			</label>
 		</div>
 
@@ -197,7 +211,7 @@
 				bind:value={gistURL}
 				placeholder="Enter Gist URL" />
 			<label for="gist">
-				<button class="btn text-white flex-auto" on:click={loadGist}> Load Gist </button>
+				<button class="btn btn-primary btn-md flex-auto" on:click={loadGist}> Load Gist </button>
 			</label>
 		</div>
 		{#if isNetlify}
