@@ -1,0 +1,1 @@
+import{J as e,K as s,C as t}from"./vendor-58c10135.js";const a=e(t({isDark:!1}),s(),"themeStore"),o=["dark","synthwave","halloween","aqua","forest","luxury","black","dracula"],r=e=>{e.includes(" ")&&(e=e.split(" ")[1].trim());const s=o.includes(e);console.log("Setting theme",e),a.set({theme:e,isDark:s})};export{r as s,a as t};
