@@ -7,6 +7,8 @@
 </script>
 
 <script lang="ts">
+	import Theme from './theme.svelte';
+
 	interface Link {
 		title: string;
 		href: string;
@@ -37,11 +39,12 @@
 	];
 </script>
 
-<header class="p-2 bg-indigo-400 text-white font-bold flex flex-wrap items-center">
-	<div class="flex-1 flex justify-between items-center">
-		<a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
+<div class="navbar mb-2 shadow-lg bg-primary">
+	<div class="flex-1 px-2 mx-2">
+		<span class="text-lg font-bold">
+			<a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
+		</span>
 	</div>
-
 	<label for="menu-toggle" class="pointer-cursor lg:hidden block"
 		><svg
 			class="fill-current "
@@ -53,28 +56,27 @@
 		></label>
 	<input class="hidden" type="checkbox" id="menu-toggle" />
 
+	<Theme />
 	<div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
-		<nav>
-			<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
-				{#each links as { title, href, icon }}
-					<li>
-						<a class="nav-btn" target="_blank" {href}>
-							{#if icon}
-								<i class={icon} />
-							{/if}
-							{title}</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+		<ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
+			{#each links as { title, href, icon }}
+				<li>
+					<a class="btn btn-ghost" target="_blank" {href}>
+						{#if icon}
+							<i class={icon} />
+						{/if}
+						{title}</a>
+				</li>
+			{/each}
+		</ul>
 	</div>
-</header>
+</div>
 
 <style>
 	#menu-toggle:checked + #menu {
 		display: block;
 	}
-	header {
+	.navbar {
 		z-index: 10000;
 	}
 </style>

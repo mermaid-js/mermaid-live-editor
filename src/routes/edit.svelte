@@ -121,25 +121,32 @@
 	});
 </script>
 
-<div class="h-full flex flex-col overflow-hidden bg-gray-100">
+<div class="h-full flex flex-col overflow-hidden">
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
-					{#if !$codeStore.autoSync}
-						<button
-							class="bg-indigo-500 hover:bg-indigo-700 rounded px-4 mx-2"
-							title="Sync Diagram"
-							data-cy="sync"
-							on:click={syncDiagram}><i class="fas fa-sync" /></button>
-					{/if}
-					<label
-						for="autoSync"
-						style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-						<input type="checkbox" id="autoSync" bind:checked={$codeStore.autoSync} />
-						Auto sync
-					</label>
+					<div class="flex flex-row items-center">
+						{#if !$codeStore.autoSync}
+							<button
+								class="btn btn-secondary btn-xs"
+								title="Sync Diagram"
+								data-cy="sync"
+								on:click={syncDiagram}><i class="fas fa-sync" /></button>
+						{/if}
+
+						<div class="form-control">
+							<label class="cursor-pointer label" for="autoSync">
+								<input
+									type="checkbox"
+									class="toggle toggle-primary mr-1"
+									id="autoSync"
+									bind:checked={$codeStore.autoSync} />
+								<span> Auto sync</span>
+							</label>
+						</div>
+					</div>
 				</div>
 
 				<Editor on:update={updateHandler} {language} bind:text {errorMarkers} />
@@ -151,20 +158,20 @@
 				<Actions />
 			</div>
 		</div>
-		<div id="resizeHandler" />
+		<div id="resizeHandler" class="hidden md:block" />
 		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="btn"
+					class="btn btn-primary btn-xs shadow-lg"
 					title="View diagram in new page"
-					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye" /> View</button>
+					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-2" /> View</button>
 
 				<div class="flex-1 overflow-auto">
 					<View />
 				</div>
 			</Card>
-			<div class="md:hidden bg-white rounded shadow p-2 mx-2">
+			<div class="md:hidden rounded shadow p-2 mx-2">
 				Code editing not supported on mobile. Please use a desktop browser.
 			</div>
 		</div>
@@ -183,19 +190,14 @@
 		top: 0;
 		content: '';
 		position: absolute;
-		background-color: #ccc;
+		background-color: hsla(var(--b3));
 		margin-left: -1px;
+		transition-duration: 0.2s;
 	}
 
 	#resizeHandler:hover::after {
 		margin-left: -2px;
-		background-color: #818cf8;
+		background-color: hsla(var(--p));
 		width: 4px;
-	}
-
-	@media screen and (max-width: 768px) {
-		#resizeHandler {
-			display: none;
-		}
 	}
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { EditorEvents } from '$lib/types';
 	import { codeStore } from '$lib/util/state';
+	import { themeStore } from '$lib/util/theme';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { initEditor } from './util';
@@ -17,7 +18,7 @@
 		minimap: {
 			enabled: false
 		},
-		theme: 'mermaidTheme',
+		theme: 'mermaid',
 		overviewRulerLanes: 0
 	};
 	export let errorMarkers: monaco.editor.IMarkerData[] = [];
@@ -32,6 +33,10 @@
 		}
 		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
 	}
+
+	themeStore.subscribe(({ isDark }) => {
+		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
+	});
 
 	const dispatch = createEventDispatcher<EditorEvents>();
 	const loadMonaco = async () => {
@@ -62,7 +67,7 @@
 				text
 			});
 		});
-
+		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,

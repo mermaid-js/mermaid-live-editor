@@ -34,10 +34,10 @@ const detectType = (text: string): string => {
 
 // manual debounce
 let timeout;
-export const saveStatistcs = (graph: string): void => {
+export const saveStatistics = (graph: string): void => {
 	if (analytics) {
 		clearTimeout(timeout);
-		// Only save statistcs after a 5 sec delay
+		// Only save statistics after a 5 sec delay
 		timeout = setTimeout(function () {
 			const graphType = detectType(graph);
 			console.debug('ga:', 'send', 'event', 'render', graphType);

@@ -16,13 +16,37 @@ module.exports = {
       "1": "{\"code\":\"graph TD\\n    A[Party] -->|Get money| B(Go shopping!!)\\n    \",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"forest\\\",\\n  \\\"test\\\": \\\"hello world\\\"\\n}\",\"updateEditor\":false,\"autoSync\":true,\"updateDiagram\":true,\"loader\":{\"type\":\"files\",\"config\":{\"codeURL\":\"https://gist.githubusercontent.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/raw/4eb03887e6a41397e80bdcdbf94017c498f8f1e2/code.mmd\",\"configURL\":\"https://gist.githubusercontent.com/sidharthv96/6268a23e673a533dcb198f241fd7012a/raw/4eb03887e6a41397e80bdcdbf94017c498f8f1e2/config.json\"}}}"
     }
   },
-  "__version": "8.3.1",
+  "__version": "8.4.0",
   "Auto sync tests": {
     "should dim diagram when code is edited": {
       "1": "{\"code\":\"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Test\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"updateEditor\":false,\"autoSync\":false,\"updateDiagram\":false}"
     },
     "should not dim diagram when code is in sync": {
       "1": "{\"code\":\"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Testing\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"updateEditor\":false,\"autoSync\":true,\"updateDiagram\":false}"
+    }
+  },
+  "Test themes": {
+    "should set light theme as default": {
+      "1": "{\"theme\":\"light\",\"isDark\":false}"
+    },
+    "should change themes when clicked": {
+      "1": "{\"theme\":\"cupcake\",\"isDark\":false}"
+    },
+    "should set dark theme as default": {
+      "1": "{\"theme\":\"dark\",\"isDark\":true}"
+    },
+    "Test light themes": {
+      "should set light theme as default": {
+        "1": "{\"theme\":\"light\",\"isDark\":false}"
+      },
+      "should change themes when clicked": {
+        "1": "{\"theme\":\"cupcake\",\"isDark\":false}"
+      }
+    },
+    "Test dark mode": {
+      "should set dark theme as default": {
+        "1": "{\"theme\":\"dark\",\"isDark\":true}"
+      }
     }
   }
 }

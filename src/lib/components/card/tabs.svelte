@@ -17,25 +17,20 @@
 </script>
 
 <div class="flex cursor-default">
-	<span class="text-white mr-2 font-semibold" on:click|stopPropagation={() => (isOpen = !isOpen)}>
+	<span class="mr-2 font-semibold" on:click|stopPropagation={() => (isOpen = !isOpen)}>
 		{#if isCloseable}
 			<i class="fas fa-chevron-right icon" class:isOpen />
 		{/if}
 		{title}</span>
 	{#if isOpen && tabs}
-		<ul class="flex flex-wrap flex-row" transition:fade>
+		<ul class="tabs" transition:fade>
 			{#each tabs as tab}
-				<li class="mr-2 last:mr-0 w-28 h-6 flex-auto text-center">
-					<div
-						class="text cursor-pointer font-semibold min-w-16 w-auto px-2 py-1 -mb-4 rounded-t flex justify-center items-center leading-normal {activeTabID ===
-						tab.id
-							? 'text-indigo-500 bg-white border-white'
-							: 'text-white bg-indigo-500 border-indigo-500 hover:bg-indigo-600'}"
-						on:click|stopPropagation={() => toggleTabs(tab)}>
-						<i class="{tab.icon} mr-1" />
-						{tab.title}
-					</div>
-				</li>
+				<div
+					class="tab tab-lifted text-primary-content {activeTabID === tab.id ? 'tab-active' : ''}"
+					on:click|stopPropagation={() => toggleTabs(tab)}>
+					<i class="mr-1 {tab.icon}" />
+					{tab.title}
+				</div>
 			{/each}
 		</ul>
 	{/if}
