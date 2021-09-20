@@ -203,20 +203,20 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.19.tgz#28f38b021ed5349be14dbd1b29d5f238b3fe6d7e"
   integrity sha512-uZNJNVGCdiLo1XnMbezlAUsNSzB36oqtXvaUiDmy+Lv0jKU7ZukDQnJ0zWAatdqXl9ETlG4YyTWI/i7E8nmLpQ==
 
-"@sveltejs/kit@1.0.0-next.147":
-  version "1.0.0-next.147"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.147.tgz#1dad06fd7f4365405beebdcd12b410a52c3a03b0"
-  integrity sha512-rAABsKlC1K/B4VfqT2SaVO29t+OV8deseSJ9l+hV7j9zkswTwiJ7h37tZ5SfnvMgCHemcNjXg8Gzg+0U1MCfEA==
+"@sveltejs/kit@1.0.0-next.170":
+  version "1.0.0-next.170"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.170.tgz#a8f7766fc237ebc27939a6f7e70d70bcfbd2ad40"
+  integrity sha512-1Zfl0qC6qOFI3Q/Q33Lnt7HBusNcCDryJFyzIXmICxNmmeJ6qn7K6vF80uZ+uX4XoByjdYs7Iu54D3OGUOF0EA==
   dependencies:
-    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.16"
-    cheap-watch "^1.0.3"
+    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.24"
+    cheap-watch "^1.0.4"
     sade "^1.7.4"
-    vite "^2.4.3"
+    vite "^2.5.7"
 
-"@sveltejs/vite-plugin-svelte@^1.0.0-next.16":
-  version "1.0.0-next.17"
-  resolved "https://registry.npmjs.org/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.17.tgz"
-  integrity sha512-Xh/YYqBMDJnDheutnGHk/I5TO6w9gZ2GMgvG+qQm/gpIRkaTLts6Mw5xDe6cac/nH/aVPPVPibhq2pf26d44fA==
+"@sveltejs/vite-plugin-svelte@^1.0.0-next.24":
+  version "1.0.0-next.24"
+  resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.24.tgz#55033c27b5f428e804ff64f410a640baacff0333"
+  integrity sha512-b+n3jcLpk2j/25APQbk5ejCyd0faYTB2bOxR3gY0LX3MFGgdiL8zdf3/aawcPSxLdbL73YVlxNBIATGuvq03uQ==
   dependencies:
     "@rollup/pluginutils" "^4.1.1"
     debug "^4.3.2"
@@ -775,10 +775,10 @@ chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-cheap-watch@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/cheap-watch/-/cheap-watch-1.0.3.tgz"
-  integrity sha512-xC5CruMhLzjPwJ5ecUxGu1uGmwJQykUhqd2QrCrYbwvsFYdRyviu6jG9+pccwDXJR/OpmOTOJ9yLFunVgQu9wg==
+cheap-watch@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/cheap-watch/-/cheap-watch-1.0.4.tgz#0bcb4a3a8fbd9d5327936493f6b56baa668d8fef"
+  integrity sha512-QR/9FrtRL5fjfUJBhAKCdi0lSRQ3rVRRum3GF9wDKp2TJbEIMGhUEr2yU8lORzm9Isdjx7/k9S0DFDx+z5VGtw==
 
 check-error@^1.0.2:
   version "1.0.2"
@@ -4311,10 +4311,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.4.3:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.5.0.tgz#111ba3679432d426e44566acf480005a7914cbd6"
-  integrity sha512-Dn4B+g54PJsMG5WCc4QeFy1ygMXRdTtFrUPegqfk4+vzVQcbF/DqqmI/1bxezArzbujBJg/67QeT5wz8edfJVQ==
+vite@^2.5.7:
+  version "2.5.10"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.5.10.tgz#c598e3b5a7e1956ffc52eb3b3420d177fc2ed2a5"
+  integrity sha512-0ObiHTi5AHyXdJcvZ67HMsDgVpjT5RehvVKv6+Q0jFZ7zDI28PF5zK9mYz2avxdA+4iJMdwCz6wnGNnn4WX5Gg==
   dependencies:
     esbuild "^0.12.17"
     postcss "^8.3.6"
