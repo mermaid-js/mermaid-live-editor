@@ -2,8 +2,7 @@
 	import { browser } from '$app/env';
 
 	import Card from '$lib/components/card/card.svelte';
-	import type { State } from '$lib/types';
-	import { codeStore } from '$lib/util/state';
+	import { base64State, codeStore } from '$lib/util/state';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
@@ -137,15 +136,15 @@
 	if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
 		isNetlify = true;
 	}
-	codeStore.subscribe((state: State) => {
-		const stateCopy = JSON.parse(JSON.stringify(state));
+	base64State.subscribe((encodedState: string) => {
+		const stateCopy = JSON.parse(JSON.stringify($codeStore));
 		if (typeof stateCopy.mermaid === 'string') {
 			stateCopy.mermaid = JSON.parse(stateCopy.mermaid);
 		}
 		const b64Code = toBase64(JSON.stringify(stateCopy), true);
 		iUrl = `https://mermaid.ink/img/${b64Code}`;
 		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
-		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${window.location.hash})`;
+		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${encodedState})`;
 	});
 </script>
 
