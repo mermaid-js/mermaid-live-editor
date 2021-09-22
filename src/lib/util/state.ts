@@ -1,4 +1,5 @@
 import { writable, get, derived } from 'svelte/store';
+import type { Readable } from 'svelte/store';
 import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import type { State } from '$lib/types';
@@ -25,7 +26,7 @@ export const defaultState: State = {
 };
 
 export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
-export const base64State = derived([codeStore], ([code], set) => {
+export const base64State: Readable<string> = derived([codeStore], ([code], set) => {
 	set(toBase64(JSON.stringify(code), true));
 });
 
