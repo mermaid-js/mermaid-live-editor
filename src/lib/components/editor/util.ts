@@ -59,7 +59,8 @@ export const initEditor = (monacoEditor): void => {
 				'activate',
 				'deactivate',
 				'autonumber',
-				'title'
+				'title',
+				'actor'
 			]
 		},
 		classDiagram: {
