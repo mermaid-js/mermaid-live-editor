@@ -55,7 +55,7 @@
 		"js-base64": "^3.7.1",
 		"mermaid": "^8.12.1",
 		"moment": "^2.29.1",
-		"monaco-editor": "^0.27.0",
+		"monaco-editor": "^0.28.1",
 		"random-word-slugs": "^0.0.5"
 	},
 	"lint-staged": {
