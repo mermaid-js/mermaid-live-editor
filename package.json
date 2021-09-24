@@ -36,7 +36,7 @@
 		"husky": "^7.0.2",
 		"lint-staged": "^11.1.2",
 		"mocha": "^9.1.1",
-		"postcss": "^8.3.6",
+		"postcss": "^8.3.7",
 		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
