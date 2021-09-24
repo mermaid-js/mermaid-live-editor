@@ -16,7 +16,7 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.19",
-		"@sveltejs/kit": "1.0.0-next.170",
+		"@sveltejs/kit": "1.0.0-next.171",
 		"@types/mermaid": "^8.2.7",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
@@ -36,12 +36,12 @@
 		"husky": "^7.0.2",
 		"lint-staged": "^11.1.2",
 		"mocha": "^9.1.1",
-		"postcss": "^8.3.6",
+		"postcss": "^8.3.7",
 		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
 		"svelte": "^3.42.6",
-		"svelte-preprocess": "^4.9.4",
+		"svelte-preprocess": "^4.9.5",
 		"tailwindcss": "^2.2.15",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.3"
