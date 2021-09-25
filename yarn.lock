@@ -1102,10 +1102,10 @@ cypress-localstorage-commands@^1.5.0:
   resolved "https://registry.npmjs.org/cypress-localstorage-commands/-/cypress-localstorage-commands-1.5.0.tgz"
   integrity sha512-gl1uKeviYdyJG4dLcZ9hfoUjLciwkkfbaQ3gvRtmipsPxC612ZBJhSjbunnJcUGwkryaM+82VrY9ij0tLSg7LA==
 
-cypress@8.4.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-8.4.0.tgz#09ec06a73f1cb10121c103cba15076e659e24876"
-  integrity sha512-RtVgGFR06ikyMaq/VqapeqOjGaIA42PpK7F0qe1MCiFArfUuJECsLmeYaOA+1TlmNUgJNMSF5fWKkZIJr5Uc7w==
+cypress@8.4.1:
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-8.4.1.tgz#8b5898bf49359cadc28f02ba05d51f63b8e3a717"
+  integrity sha512-itJXq0Vx3sXCUrDyBi2IUrkxVu/gTTp1VhjB5tzGgkeCR8Ae+/T8WV63rsZ7fS8Tpq7LPPXiyoM/sEdOX7cR6A==
   dependencies:
     "@cypress/request" "^2.88.6"
     "@cypress/xvfb" "^1.2.4"
@@ -1415,10 +1415,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.14.0.tgz#1d63658c0dd87f9795d333e7068cedbb0b0a52a6"
-  integrity sha512-50ccXdJMi0TS7raItKfUOJppPRvluOUCO4m6i7QPOVOdDZVP6awjqUoGmLzqFepO6b6QpVotswDvaXIKSZ/2aw==
+daisyui@^1.14.1:
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.14.1.tgz#8f67bf72034e2c4f56a170c072ca23810ecb3d52"
+  integrity sha512-Ou+rAJAcDByUDIcHfBWCv6o9dBUVAyZBJUIoBXR/c+o7kZIkGcR15JPIw6LJmyojhJP594xnuXNIe0I+fcQ+3A==
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -1721,10 +1721,10 @@ eslint-plugin-svelte3@^3.2.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-3.2.1.tgz#f0f24150ecea3061c38c69e282bea26dc3e660c6"
   integrity sha512-YoBR9mLoKCjGghJ/gvpnFZKaMEu/VRcuxpSRS8KuozuEo7CdBH7bmBHa6FmMm0i4kJnOyx+PVsaptz96K6H/4Q==
 
-eslint-plugin-tailwindcss@^1.14.3:
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.14.3.tgz#7150a041ba0c460b80ee092b23ad9931704ebacb"
-  integrity sha512-tADB2XcGnJdkUWDl18ZRp5O7HQ9ZGnQiCxE9/NRNEUkF2YK0VaV4OJmGAKHDrNpQcuvAJJU/IEEyb2fkWMEVXQ==
+eslint-plugin-tailwindcss@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.15.0.tgz#dc72d4aac9e3dc352ed8c6cb406cff3bb32b9274"
+  integrity sha512-rmStwf6wqAJ/TaIoVKbl1GtmWE3ssxzPXH+9cO0PRalkFtHHNmGCGUUsyeWanoe5+qQywLY/3DmlX2oUHpRBDg==
   dependencies:
     fast-glob "^3.2.5"
     postcss "^8.3.0"
@@ -2939,10 +2939,10 @@ ms@2.1.3, ms@^2.1.1:
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-nanocolors@^0.1.5:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.1.12.tgz#8577482c58cbd7b5bb1681db4cf48f11a87fd5f6"
-  integrity sha512-2nMHqg1x5PU+unxX7PGY7AuYxl2qDx7PSrTRjizr8sxdd3l/3hBuWWaki62qmtYm2U5i4Z5E7GbjlyDFhs9/EQ==
+nanocolors@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.2.3.tgz#3be3717544da25edf04931fc77ea103624a5f0f3"
+  integrity sha512-RxGTOApG8prHMA08UBMOT6qYzcBBW2EMBv7SRBqoXg/Dqp6G3yT7kLy1tpFuYLO+5h7eajmdiIHJA8oewN58XQ==
 
 nanoid@3.1.23:
   version "3.1.23"
@@ -3488,12 +3488,12 @@ postcss@^7.0.0, postcss@^7.0.14, postcss@^7.0.32, postcss@^7.0.5, postcss@^7.0.6
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^8.1.6, postcss@^8.2.1, postcss@^8.3.0, postcss@^8.3.6, postcss@^8.3.7:
-  version "8.3.7"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.3.7.tgz#ec88563588c8da8e58e7226f7633b51ae221eeda"
-  integrity sha512-9SaY7nnyQ63/WittqZYAvkkYPyKxchMKH71UDzeTmWuLSvxTRpeEeABZAzlCi55cuGcoFyoV/amX2BdsafQidQ==
+postcss@^8.1.6, postcss@^8.2.1, postcss@^8.3.0, postcss@^8.3.6, postcss@^8.3.8:
+  version "8.3.8"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.3.8.tgz#9ebe2a127396b4b4570ae9f7770e7fb83db2bac1"
+  integrity sha512-GT5bTjjZnwDifajzczOC+r3FI3Cu+PgPvrsjhQdRqa2kTJ4968/X9CUce9xttIB0xOs5c6xf0TCWZo/y9lF6bA==
   dependencies:
-    nanocolors "^0.1.5"
+    nanocolors "^0.2.2"
     nanoid "^3.1.25"
     source-map-js "^0.6.2"
 
