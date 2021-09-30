@@ -479,7 +479,7 @@ export const initEditor = (monacoEditor): void => {
 					kind: monacoEditor.languages.CompletionItemKind.Snippet,
 					insertText: ['element ${1:test_entity} {', '\t$0', '}'].join('\n'),
 					insertTextRules: monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-					documentation: 'User-journey Section'
+					documentation: 'Requirement Diagram Element'
 				},
 				{
 					label: 'options',
