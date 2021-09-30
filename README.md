@@ -21,8 +21,16 @@ You can try out a live version [here](https://mermaid.live/).
 
 ## Docker
 
+### Run published image
+
 ```bash
 docker run --publish 8000:80 ghcr.io/mermaid-js/mermaid-live-editor
+```
+
+### Development
+
+```bash
+docker compose up --build
 ```
 
 Then open http://localhost:8000

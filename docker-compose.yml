@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  mermaid:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 8080:8080
+      - 24678:24678
