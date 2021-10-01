@@ -9,10 +9,10 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
 
-"@analytics/core@^0.10.14":
-  version "0.10.14"
-  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.10.14.tgz#9dbf2e6e2fb1ccdf32827c3d95b0ceba88129a84"
-  integrity sha512-VHQijAx7vOsYtYSIIlaQwvbnntIL/VoNAEgkqSOic6RvFoZUcIQL5tndPCqzL1kzOunNf/rXMkb+BOj4t3mYbg==
+"@analytics/core@^0.10.15":
+  version "0.10.15"
+  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.10.15.tgz#1900c9679fe0bdca386ea787b74b5ad41194a486"
+  integrity sha512-ISZcFXMvPVTZlU84ZkAM7z80hwdf3r5xLH5809qiQwn55SVEesxfMdwvxJ8CnPLFpymDywNDj1y8KmyJJ7ugsg==
   dependencies:
     "@analytics/global-storage-utils" "^0.1.2"
     "@analytics/type-utils" "^0.3.1"
@@ -438,12 +438,12 @@ analytics-utils@^1.0.3:
     "@analytics/type-utils" "^0.3.1"
     dlv "^1.1.3"
 
-analytics@^0.7.14:
-  version "0.7.14"
-  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.7.14.tgz#0245fd8c62a5db2911f649f181f99d3d2c534a82"
-  integrity sha512-XWJ7VWSwnUfO0+v4Si94DjWV0a5omWNYMgbNsOFjyJcBcUl2bq/Fit3GfcIT0bQ1ZfSzAI2vQ4DxDu69wnwlFQ==
+analytics@^0.7.15:
+  version "0.7.15"
+  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.7.15.tgz#81a55bbae0a4856a64579f34ef49b942ff0dd0ef"
+  integrity sha512-4CNgfGUCgjfSTszAf9LsOgfZzkELXvHXJp/qQnK4nuGm7nq2kHh/3jOltsSTaWxzipzna6lT2qP823vAuttong==
   dependencies:
-    "@analytics/core" "^0.10.14"
+    "@analytics/core" "^0.10.15"
     "@analytics/storage-utils" "^0.2.12"
 
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
@@ -1104,10 +1104,10 @@ cypress-localstorage-commands@^1.5.0:
   resolved "https://registry.npmjs.org/cypress-localstorage-commands/-/cypress-localstorage-commands-1.5.0.tgz"
   integrity sha512-gl1uKeviYdyJG4dLcZ9hfoUjLciwkkfbaQ3gvRtmipsPxC612ZBJhSjbunnJcUGwkryaM+82VrY9ij0tLSg7LA==
 
-cypress@8.4.1:
-  version "8.4.1"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-8.4.1.tgz#8b5898bf49359cadc28f02ba05d51f63b8e3a717"
-  integrity sha512-itJXq0Vx3sXCUrDyBi2IUrkxVu/gTTp1VhjB5tzGgkeCR8Ae+/T8WV63rsZ7fS8Tpq7LPPXiyoM/sEdOX7cR6A==
+cypress@8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-8.5.0.tgz#5712ca170913f8344bf167301205c4217c1eb9bd"
+  integrity sha512-MMkXIS+Ro2KETn4gAlG3tIc/7FiljuuCZP0zpd9QsRG6MZSyZW/l1J3D4iQM6WHsVxuX4rFChn5jPFlC2tNSvQ==
   dependencies:
     "@cypress/request" "^2.88.6"
     "@cypress/xvfb" "^1.2.4"
@@ -1143,6 +1143,7 @@ cypress@8.4.1:
     minimist "^1.2.5"
     ospath "^1.2.2"
     pretty-bytes "^5.6.0"
+    proxy-from-env "1.0.0"
     ramda "~0.27.1"
     request-progress "^3.0.0"
     supports-color "^8.1.1"
@@ -3538,6 +3539,11 @@ proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz"
   integrity sha1-IS1b/hMYMGpCD2QCuOJv85ZHqEk=
+
+proxy-from-env@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.0.0.tgz#33c50398f70ea7eb96d21f7b817630a55791c7ee"
+  integrity sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=
 
 pseudomap@^1.0.2:
   version "1.0.2"

@@ -23,7 +23,7 @@
 		"autoprefixer": "^10.3.5",
 		"chai": "^4.3.4",
 		"cssnano": "^5.0.8",
-		"cypress": "8.4.1",
+		"cypress": "8.5.0",
 		"cypress-localstorage-commands": "^1.5.0",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.1.0",
@@ -51,7 +51,7 @@
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.2.0",
-		"analytics": "^0.7.14",
+		"analytics": "^0.7.15",
 		"daisyui": "^1.14.2",
 		"js-base64": "^3.7.2",
 		"mermaid": "^8.12.1",
