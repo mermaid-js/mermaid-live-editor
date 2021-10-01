@@ -16,7 +16,7 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.20",
-		"@sveltejs/kit": "1.0.0-next.173",
+		"@sveltejs/kit": "1.0.0-next.178",
 		"@types/mermaid": "^8.2.7",
 		"@typescript-eslint/eslint-plugin": "^4.31.2",
 		"@typescript-eslint/parser": "^4.31.2",
@@ -51,7 +51,7 @@
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.2.0",
-		"analytics": "^0.7.14",
+		"analytics": "^0.7.15",
 		"daisyui": "^1.14.2",
 		"js-base64": "^3.7.2",
 		"mermaid": "^8.12.1",
