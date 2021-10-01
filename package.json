@@ -54,7 +54,7 @@
 		"analytics": "^0.7.14",
 		"daisyui": "^1.14.1",
 		"js-base64": "^3.7.2",
-		"mermaid": "https://github.com/sidharthv96/mermaid.git#fix/2371",
+		"mermaid": "git+https://github.com/sidharthv96/mermaid.git#fix/2371",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.28.1",
 		"random-word-slugs": "^0.0.5"
