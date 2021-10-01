@@ -3069,9 +3069,9 @@ merge2@^1.3.0:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-"mermaid@https://github.com/sidharthv96/mermaid.git#fix/2371":
+mermaid@sidharthv96/mermaid#esm:
   version "8.13.2"
-  resolved "https://github.com/sidharthv96/mermaid.git#8da0682d11f88427c81ab189f28d20c0b20a92af"
+  resolved "https://codeload.github.com/sidharthv96/mermaid/tar.gz/03b3be6d6685346f76eb22143dfb6827c90337b2"
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     d3 "^7.0.0"
