@@ -73,7 +73,7 @@ describe('Site Loads', () => {
 		cy.contains('securityLevel').should('not.exist');
 		cy.get('#view').find('img').should('not.exist');
 		cy.get('#view').contains('<img');
-		cy.get('#view').contains('src="https://via.placeholder.com/64"');
+		cy.get('#view').contains(`src='https://via.placeholder.com/64'`);
 	});
 
 	it('should allow persisting "securityLevel" using confirm dialogue', () => {
