@@ -464,11 +464,6 @@ ansi-regex@^2.0.0:
   resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-2.1.1.tgz"
   integrity sha1-w7M6te42DYbg5ijwRorn7yfWVN8=
 
-ansi-regex@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.0.0.tgz"
-  integrity sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
-
 ansi-regex@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-4.1.0.tgz"
@@ -1702,10 +1697,10 @@ debug@4.1.1:
   dependencies:
     ms "^2.1.1"
 
-debug@4.3.1:
-  version "4.3.1"
-  resolved "https://registry.npmjs.org/debug/-/debug-4.3.1.tgz"
-  integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
+debug@4.3.2, debug@^4.0.1, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.npmjs.org/debug/-/debug-4.3.2.tgz"
+  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
   dependencies:
     ms "2.1.2"
 
@@ -1715,13 +1710,6 @@ debug@^3.1.0:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
-
-debug@^4.0.1, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
-  version "4.3.2"
-  resolved "https://registry.npmjs.org/debug/-/debug-4.3.2.tgz"
-  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
-  dependencies:
-    ms "2.1.2"
 
 decamelize@^4.0.0:
   version "4.0.0"
@@ -2820,11 +2808,6 @@ is-extglob@^2.1.1:
   resolved "https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz"
   integrity sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=
 
-is-fullwidth-code-point@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz"
-  integrity sha1-o7MKXE8ZkYMWeqq5O+764937ZU8=
-
 is-fullwidth-code-point@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz"
@@ -3231,16 +3214,16 @@ mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mocha@^9.1.1:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-9.1.1.tgz#33df2eb9c6262434630510c5f4283b36efda9b61"
-  integrity sha512-0wE74YMgOkCgBUj8VyIDwmLUjTsS13WV1Pg7l0SHea2qzZzlq7MDnfbPsHKcELBRk3+izEVkRofjmClpycudCA==
+mocha@^9.1.2:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-9.1.2.tgz#93f53175b0f0dc4014bd2d612218fccfcf3534d3"
+  integrity sha512-ta3LtJ+63RIBP03VBjMGtSqbe6cWXRejF9SyM9Zyli1CKZJZ+vfCTj3oW24V7wAphMJdpOFLoMI3hjJ1LWbs0w==
   dependencies:
     "@ungap/promise-all-settled" "1.1.2"
     ansi-colors "4.1.1"
     browser-stdout "1.3.1"
     chokidar "3.5.2"
-    debug "4.3.1"
+    debug "4.3.2"
     diff "5.0.0"
     escape-string-regexp "4.0.0"
     find-up "5.0.0"
@@ -3251,12 +3234,11 @@ mocha@^9.1.1:
     log-symbols "4.1.0"
     minimatch "3.0.4"
     ms "2.1.3"
-    nanoid "3.1.23"
+    nanoid "3.1.25"
     serialize-javascript "6.0.0"
     strip-json-comments "3.1.1"
     supports-color "8.1.1"
     which "2.0.2"
-    wide-align "1.1.3"
     workerpool "6.1.5"
     yargs "16.2.0"
     yargs-parser "20.2.4"
@@ -3312,12 +3294,7 @@ nanocolors@^0.2.2:
   resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.2.3.tgz#3be3717544da25edf04931fc77ea103624a5f0f3"
   integrity sha512-RxGTOApG8prHMA08UBMOT6qYzcBBW2EMBv7SRBqoXg/Dqp6G3yT7kLy1tpFuYLO+5h7eajmdiIHJA8oewN58XQ==
 
-nanoid@3.1.23:
-  version "3.1.23"
-  resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.1.23.tgz"
-  integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
-
-nanoid@^3.1.25:
+nanoid@3.1.25, nanoid@^3.1.25:
   version "3.1.25"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
   integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
@@ -4331,14 +4308,6 @@ string-argv@0.3.1:
   resolved "https://registry.npmjs.org/string-argv/-/string-argv-0.3.1.tgz"
   integrity sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg==
 
-"string-width@^1.0.2 || 2":
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/string-width/-/string-width-2.1.1.tgz"
-  integrity sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==
-  dependencies:
-    is-fullwidth-code-point "^2.0.0"
-    strip-ansi "^4.0.0"
-
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.2"
   resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.2.tgz"
@@ -4370,13 +4339,6 @@ strip-ansi@^3.0.0:
   integrity sha1-ajhfuIU9lS1f8F0Oiq+UJ43GPc8=
   dependencies:
     ansi-regex "^2.0.0"
-
-strip-ansi@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-4.0.0.tgz"
-  integrity sha1-qEeQIusaw2iocTibY1JixQXuNo8=
-  dependencies:
-    ansi-regex "^3.0.0"
 
 strip-ansi@^6.0.0:
   version "6.0.0"
@@ -4730,13 +4692,6 @@ which@2.0.2, which@^2.0.1:
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   dependencies:
     isexe "^2.0.0"
-
-wide-align@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/wide-align/-/wide-align-1.1.3.tgz"
-  integrity sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
-  dependencies:
-    string-width "^1.0.2 || 2"
 
 word-wrap@^1.2.3:
   version "1.2.3"
