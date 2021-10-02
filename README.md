@@ -29,7 +29,7 @@ docker run --publish 8000:80 ghcr.io/mermaid-js/mermaid-live-editor
 
 ### To configure renderer URL
 
-Set the Environment variable MERMAID_RENDERER_URL to the rendering service.
+When building, Set the Environment variable MERMAID_RENDERER_URL to the rendering service.
 Default is `https://mermaid.ink`
 
 ### Development
