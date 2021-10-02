@@ -1,1 +1,1 @@
-let s="";function a(a){s=a.base,a.assets}export{s as b,a as s};
+let e="";function a(s){e=s.base,s.assets}export{e as b,a as s};
