@@ -2,6 +2,7 @@
 	import { browser } from '$app/env';
 
 	import Card from '$lib/components/card/card.svelte';
+	import { rendererUrl } from '$lib/util/env';
 	import { base64State, codeStore } from '$lib/util/state';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
@@ -142,8 +143,8 @@
 			stateCopy.mermaid = JSON.parse(stateCopy.mermaid);
 		}
 		const b64Code = toBase64(JSON.stringify(stateCopy), true);
-		iUrl = `https://mermaid.ink/img/${b64Code}`;
-		svgUrl = `https://mermaid.ink/svg/${b64Code}`;
+		iUrl = `${rendererUrl}/img/${b64Code}`;
+		svgUrl = `${rendererUrl}/svg/${b64Code}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${encodedState})`;
 	});
 </script>
