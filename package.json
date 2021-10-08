@@ -16,11 +16,11 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.20",
-		"@sveltejs/kit": "1.0.0-next.178",
+		"@sveltejs/kit": "1.0.0-next.180",
 		"@types/mermaid": "^8.2.7",
-		"@typescript-eslint/eslint-plugin": "^4.32.0",
-		"@typescript-eslint/parser": "^4.32.0",
-		"autoprefixer": "^10.3.6",
+		"@typescript-eslint/eslint-plugin": "^4.33.0",
+		"@typescript-eslint/parser": "^4.33.0",
+		"autoprefixer": "^10.3.7",
 		"chai": "^4.3.4",
 		"cssnano": "^5.0.8",
 		"cypress": "8.5.0",
@@ -32,17 +32,17 @@
 		"eslint-plugin-mocha": "^9.0.0",
 		"eslint-plugin-postcss-modules": "^1.2.1",
 		"eslint-plugin-svelte3": "^3.2.1",
-		"eslint-plugin-tailwindcss": "^1.16.0",
+		"eslint-plugin-tailwindcss": "^1.17.0",
 		"husky": "^7.0.2",
-		"lint-staged": "^11.1.2",
+		"lint-staged": "^11.2.0",
 		"mocha": "^9.1.2",
 		"node-html-parser": "^4.1.5",
-		"postcss": "^8.3.8",
+		"postcss": "^8.3.9",
 		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
 		"svelte": "^3.43.1",
-		"svelte-preprocess": "^4.9.7",
+		"svelte-preprocess": "^4.9.8",
 		"tailwindcss": "^2.2.16",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.3"
@@ -57,7 +57,7 @@
 		"mermaid": "git+https://github.com/sidharthv96/mermaid.git#esm",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.28.1",
-		"random-word-slugs": "^0.0.5"
+		"random-word-slugs": "^0.1.5"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [
