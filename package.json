@@ -20,7 +20,7 @@
 		"@types/mermaid": "^8.2.7",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
 		"@typescript-eslint/parser": "^4.32.0",
-		"autoprefixer": "^10.3.6",
+		"autoprefixer": "^10.3.7",
 		"chai": "^4.3.4",
 		"cssnano": "^5.0.8",
 		"cypress": "8.5.0",
@@ -32,7 +32,7 @@
 		"eslint-plugin-mocha": "^9.0.0",
 		"eslint-plugin-postcss-modules": "^1.2.1",
 		"eslint-plugin-svelte3": "^3.2.1",
-		"eslint-plugin-tailwindcss": "^1.16.0",
+		"eslint-plugin-tailwindcss": "^1.17.0",
 		"husky": "^7.0.2",
 		"lint-staged": "^11.2.0",
 		"mocha": "^9.1.2",
@@ -57,7 +57,7 @@
 		"mermaid": "git+https://github.com/sidharthv96/mermaid.git#esm",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.28.1",
-		"random-word-slugs": "^0.0.5"
+		"random-word-slugs": "^0.1.5"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [
