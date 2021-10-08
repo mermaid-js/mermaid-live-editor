@@ -57,7 +57,7 @@
 		"mermaid": "git+https://github.com/sidharthv96/mermaid.git#esm",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.28.1",
-		"random-word-slugs": "^0.0.5"
+		"random-word-slugs": "^0.1.5"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [
