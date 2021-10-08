@@ -3156,7 +3156,8 @@ merge2@^1.3.0:
 
 "mermaid@git+https://github.com/sidharthv96/mermaid.git#esm":
   version "8.13.2"
-  resolved "git+https://github.com/sidharthv96/mermaid.git#56fe850a792837d4ac50ee3ac9c1223321d9ef30"
+  uid c44b2e49f871c57fa8eb24bebf580088b50b91f1
+  resolved "git+https://github.com/sidharthv96/mermaid.git#c44b2e49f871c57fa8eb24bebf580088b50b91f1"
   dependencies:
     "@braintree/sanitize-url" "^3.1.0"
     d3 "^7.0.0"
