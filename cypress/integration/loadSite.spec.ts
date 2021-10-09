@@ -87,4 +87,9 @@ describe('Site Loads', () => {
 		cy.contains('securityLevel');
 		cy.get('#view').find('img').should('be.visible');
 	});
+
+	it('should show troubleshooting steps if loading fails', () => {
+		cy.visit('/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAg');
+		cy.contains('Please Click here to Raise an issue in github.');
+	});
 });
