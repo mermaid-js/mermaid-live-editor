@@ -27,6 +27,11 @@ You can try out a live version [here](https://mermaid.live/).
 docker run --publish 8000:80 ghcr.io/mermaid-js/mermaid-live-editor
 ```
 
+### To configure renderer URL
+
+When building, Set the Environment variable MERMAID_RENDERER_URL to the rendering service.
+Default is `https://mermaid.ink`
+
 ### Development
 
 ```bash

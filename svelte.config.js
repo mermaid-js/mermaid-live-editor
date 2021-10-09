@@ -24,6 +24,7 @@ const config = {
 		target: '#svelte',
 		trailingSlash: 'ignore',
 		vite: {
+			envPrefix: 'MERMAID_',
 			optimizeDeps: { include: ['mermaid'] }
 		}
 	}
