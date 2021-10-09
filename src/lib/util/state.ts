@@ -43,9 +43,8 @@ export const base64State: Readable<string> = derived([codeStore], ([code], set) 
 
 export const loadState = (data: string): void => {
 	let state: State;
-	let stateStr: string;
 	try {
-		stateStr = fromBase64(data);
+		const stateStr = fromBase64(data);
 		console.log(`Trying to load state: ${stateStr}`);
 		state = JSON.parse(stateStr);
 		const mermaidConfig =
