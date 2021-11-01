@@ -6,7 +6,7 @@
 # Stop               : press ctrl + c 
 #                                     or 
 #                                        docker stop mermaid-live-editor
-FROM node:16.12.0 as mermaid-live-editor-builder 
+FROM node:17.0.1 as mermaid-live-editor-builder 
 COPY --chown=node:node . /home
 WORKDIR /home
 RUN yarn install
