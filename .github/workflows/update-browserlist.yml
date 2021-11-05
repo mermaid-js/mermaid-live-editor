@@ -1,7 +1,7 @@
 name: Update Browserslist
 on:
   workflow_dispatch:
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,4 +13,4 @@ jobs:
         with:
           author_name: ${{ github.actor }}
           author_email: ${{ github.actor }}@users.noreply.github.com
-          message: 'Update Browserslist'
+          message: 'Update Browserslist' 
