@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened]
     branches:
-      - 'dependabot/npm_and_yarn/develop/monaco-editor**'
+      - 'dependabot/npm_and_yarn/develop/monaco-editor-**'
 
 jobs:
   build:
