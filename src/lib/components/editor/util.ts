@@ -373,7 +373,7 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'typeKeyword', foreground: '9650c8', fontStyle: 'bold' },
 			{ token: 'transition', foreground: '008800', fontStyle: 'bold' }
 		],
-		color: {}
+		colors: {}
 	});
 
 	monacoEditor.editor.defineTheme('mermaid', {
@@ -392,7 +392,7 @@ export const initEditor = (monacoEditor): void => {
 			{ token: 'variable', foreground: 'A22889' },
 			{ token: 'type', foreground: '2BDEA8' }
 		],
-		color: {}
+		colors: {}
 	});
 
 	// Register a completion item provider for the mermaid language
