@@ -3949,10 +3949,10 @@ ramda@^0.27.1, ramda@~0.27.1:
   resolved "https://registry.npmjs.org/ramda/-/ramda-0.27.1.tgz"
   integrity sha512-PgIdVpn5y5Yns8vqb8FzBUEYn98V3xcPgawAkkgj0YJ0qDsnHCiNmZYfOGMgOvoB0eWFLpYbhxUR3mxfDIMvpw==
 
-random-word-slugs@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/random-word-slugs/-/random-word-slugs-0.1.5.tgz#38d171cade5c7d0329af661f2015ef9411fc36e1"
-  integrity sha512-mzMx+sCOHf0UauODKJ/Q5t3IT8zWdSDg2JPhNRf2is9gurN8vvsv7uB85XwO5E5A3HdKCB9VCym0bF6w3KAb+Q==
+random-word-slugs@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/random-word-slugs/-/random-word-slugs-0.1.6.tgz#1822f059e0e9a91e967a3eaed1e33580df0598cf"
+  integrity sha512-EVPGKyhXTdnBlMCrqBvby3nf9Jz+W/rVuP2nOi68aDZa6VJ2OXvz+VDCwl8jULBLZ1Ht8wscRA+/SogeI9NYGw==
 
 randombytes@^2.1.0:
   version "2.1.0"
