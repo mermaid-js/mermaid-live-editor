@@ -203,10 +203,10 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.21.tgz#b2819478e1cc7344491e6ebb6d2a49cef5f92fc9"
   integrity sha512-B4+QoUVAaANKx+mHntG8SqF45zbj3Ct4Akg/cGauo6COyfKZRhO5OsMa+wPuT2TKJBZC4eEDK0p+p9nyQBkxKQ==
 
-"@sveltejs/kit@1.0.0-next.194":
-  version "1.0.0-next.194"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.194.tgz#dc4ee7e9402598085fda570bb3a762689c2cc7bf"
-  integrity sha512-xM6BKLZkfYUEy0JXwglhCqBF58S8K4Lt7K7TdLMirrO4gtnZlhg8yhMsG+dYM257Fq0ucS7d/72QgXJfnfURZA==
+"@sveltejs/kit@1.0.0-next.196":
+  version "1.0.0-next.196"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.196.tgz#a0f93829e50032aa1155af885752933cedc157e5"
+  integrity sha512-z7sA/2/3Il5biibjPXCYXJC11TyFhgCvMaJvvbtMnu2l3EmOmJBMS+r2djGptzfFsugSVNwGQFn8+ldWQWq3jA==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.30"
     cheap-watch "^1.0.4"
@@ -2059,10 +2059,10 @@ eslint-plugin-svelte3@^3.2.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-3.2.1.tgz#f0f24150ecea3061c38c69e282bea26dc3e660c6"
   integrity sha512-YoBR9mLoKCjGghJ/gvpnFZKaMEu/VRcuxpSRS8KuozuEo7CdBH7bmBHa6FmMm0i4kJnOyx+PVsaptz96K6H/4Q==
 
-eslint-plugin-tailwindcss@^1.17.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.17.0.tgz#ef618a7da3537cc105f49ea28302582ae8689211"
-  integrity sha512-IoaC0s2j0Cb+fXBZVxtFZe+0PQ3SaFJ2PK/mYvG2uGvIGKaU9AaLOVotCwMZIYv9oWVssyFTIehPqwJQWY2fAQ==
+eslint-plugin-tailwindcss@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.17.1.tgz#6a28d2dd9caef547bb6c91c84e69cb0741eeb9ad"
+  integrity sha512-WcGxGZUpUoWsopkvDsgc7OZZJm+wbklen2iT8zE+kuhsNMw5aCmbvvrw+ylwmPugityZCby2DTyMYmzwgtrj+Q==
   dependencies:
     fast-glob "^3.2.5"
     postcss "^8.3.0"
