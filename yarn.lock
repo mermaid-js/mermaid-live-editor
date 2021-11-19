@@ -2082,10 +2082,10 @@ eslint-plugin-svelte3@^3.2.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-3.2.1.tgz#f0f24150ecea3061c38c69e282bea26dc3e660c6"
   integrity sha512-YoBR9mLoKCjGghJ/gvpnFZKaMEu/VRcuxpSRS8KuozuEo7CdBH7bmBHa6FmMm0i4kJnOyx+PVsaptz96K6H/4Q==
 
-eslint-plugin-tailwindcss@^1.17.1:
-  version "1.17.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.17.1.tgz#6a28d2dd9caef547bb6c91c84e69cb0741eeb9ad"
-  integrity sha512-WcGxGZUpUoWsopkvDsgc7OZZJm+wbklen2iT8zE+kuhsNMw5aCmbvvrw+ylwmPugityZCby2DTyMYmzwgtrj+Q==
+eslint-plugin-tailwindcss@^1.17.2:
+  version "1.17.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.17.2.tgz#974303fdeb99894501b3a7d8eb88cb57034c5a89"
+  integrity sha512-cQWP7bSdJHcnBIv/eCXqerMYiwn7qfpyRvqzCiGhttWBhjr+h5q6XsAgg967mdUeJzzQr+68ETXNHLkCK7KJQA==
   dependencies:
     fast-glob "^3.2.5"
     postcss "^8.3.0"
