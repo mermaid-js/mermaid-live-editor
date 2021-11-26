@@ -30,7 +30,7 @@
 		"eslint-plugin-cypress": "^2.12.1",
 		"eslint-plugin-es": "^4.1.0",
 		"eslint-plugin-mocha": "^9.0.0",
-		"eslint-plugin-postcss-modules": "^1.2.1",
+		"eslint-plugin-postcss-modules": "^2.0.0",
 		"eslint-plugin-svelte3": "^3.2.1",
 		"eslint-plugin-tailwindcss": "^1.17.2",
 		"husky": "^7.0.4",
