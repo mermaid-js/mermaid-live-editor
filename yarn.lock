@@ -2,26 +2,26 @@
 # yarn lockfile v1
 
 
-"@analytics/cookie-utils@^0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@analytics/cookie-utils/-/cookie-utils-0.2.7.tgz#10eec7e54f0adb7e07e1232c349da07bdf6d79c7"
-  integrity sha512-PgrcemqWDfVgk1itFo8phUsWJlOsTp2088NV89/p1utwbySkS2FcCX4Xz7ZezsBqK7wZdgzHosg6LKyzDkUxrg==
+"@analytics/cookie-utils@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@analytics/cookie-utils/-/cookie-utils-0.2.8.tgz#271ab9142352f104497e9fd1e9cf1577f4cede7a"
+  integrity sha512-m6AaitiTKxiUgsux9/g0sD4MfDpzWbYnCb3dYos4mBMzlN1WFzQo0Ox1QmGFvtydl8Nb5Zwj5uIdVPUbFNSWXw==
   dependencies:
-    "@analytics/global-storage-utils" "^0.1.2"
+    "@analytics/global-storage-utils" "^0.1.3"
 
-"@analytics/core@^0.10.18":
-  version "0.10.18"
-  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.10.18.tgz#6b90a53de50c49beabcc8b24cf7264b0c14c661b"
-  integrity sha512-0bbhXDRdDrqjLOY+AoFYlh947yxvzn5T4jplZ7pUFCGG+P/rJQ+0SkmlchK9Z5evFWnMR6qXx2dllk5yIUKzew==
+"@analytics/core@^0.10.19":
+  version "0.10.19"
+  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.10.19.tgz#8de2681087dacbb60422f74a7e91670c42689d2f"
+  integrity sha512-R3taIG3EbLNPQlf4FLaa6tfY24KfmRZXDILuzNz5Oi+nT/SrtbJjV9nICS7SVjJrD37QW0KMZSZiBgrkehdGog==
   dependencies:
-    "@analytics/global-storage-utils" "^0.1.2"
-    "@analytics/type-utils" "^0.5.0"
-    analytics-utils "^1.0.5"
+    "@analytics/global-storage-utils" "^0.1.3"
+    "@analytics/type-utils" "^0.5.1"
+    analytics-utils "^1.0.6"
 
-"@analytics/global-storage-utils@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@analytics/global-storage-utils/-/global-storage-utils-0.1.2.tgz"
-  integrity sha512-y4AXZAB+ZKmg1eEu8jLT/tuLG9Owl7uVU0uvI18mlRUd1fGS+DQ8x84ZKmkS5wSdrBIUjGX5Lqkg5o7EjQ5lDA==
+"@analytics/global-storage-utils@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@analytics/global-storage-utils/-/global-storage-utils-0.1.3.tgz#f4b9ea4efb77c4d8481046df6948409b1ce16e0c"
+  integrity sha512-0XXWFxguiU0S4MyLScbgIRjXlrw6XpzhTFaTd5NCxOP1ZzUEONbiDEbFCtoUIqIQXaeXDvKBF9Aro3M/ITN75Q==
 
 "@analytics/google-analytics@^0.5.3":
   version "0.5.3"
@@ -30,27 +30,27 @@
   dependencies:
     universal-analytics "^0.4.20"
 
-"@analytics/localstorage-utils@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@analytics/localstorage-utils/-/localstorage-utils-0.1.5.tgz"
-  integrity sha512-hEZYoZuO9GbLNCAdWAgsd7afteKOAAa7X8LKEW4CgkGGyEgonmL1MyYK0XJNvrINdCfdIwBDCWsK8vFk1vL4lg==
+"@analytics/localstorage-utils@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@analytics/localstorage-utils/-/localstorage-utils-0.1.6.tgz#2bb707ff9cb90936b2b5ebaf77da74be559735cf"
+  integrity sha512-SdlXnqmaF6FRMeuLnuHqxGjl5AcHez/ORvIrYN0v2kdDVik/oWlnwlZYexBCk8pCZReLnL21KJ6zz9bfQ7fPKw==
   dependencies:
-    "@analytics/global-storage-utils" "^0.1.2"
+    "@analytics/global-storage-utils" "^0.1.3"
 
-"@analytics/storage-utils@^0.2.14":
-  version "0.2.14"
-  resolved "https://registry.yarnpkg.com/@analytics/storage-utils/-/storage-utils-0.2.14.tgz#7af47c8e6320726433275b35bf16cf289f0ff061"
-  integrity sha512-Uf5JpDxj9XwOBDeIReCA8rq7qLW0E8bTxZGSCgt1LRxl9LYdU8haOSO6RZ54jZPHriayGlDAZdn8bJxXHMHUzw==
+"@analytics/storage-utils@^0.2.15":
+  version "0.2.15"
+  resolved "https://registry.yarnpkg.com/@analytics/storage-utils/-/storage-utils-0.2.15.tgz#e1bb9751439ab4ba4250beea51b3ce7d72fb4fc3"
+  integrity sha512-NlMtE8hk6cp6w0rK0chTZOLya4988tgahuPBTq9QiYvkQ7Tf+WusKFWkpq6omVCkWO0O4drM6FSCQ0zfajuf9w==
   dependencies:
-    "@analytics/cookie-utils" "^0.2.7"
-    "@analytics/global-storage-utils" "^0.1.2"
-    "@analytics/localstorage-utils" "^0.1.5"
-    "@analytics/type-utils" "^0.5.0"
+    "@analytics/cookie-utils" "^0.2.8"
+    "@analytics/global-storage-utils" "^0.1.3"
+    "@analytics/localstorage-utils" "^0.1.6"
+    "@analytics/type-utils" "^0.5.1"
 
-"@analytics/type-utils@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@analytics/type-utils/-/type-utils-0.5.0.tgz#1322273df48f63c75ff73e5ad77056e6b5720ee0"
-  integrity sha512-y7fM2Wkia5Y2xv0zctdNOlqv8Co70kt4WxmuqJi4Y/ZySZjZEDrF/toUESicIQsNfaMsKDdTzCgbO1ioPL6mXw==
+"@analytics/type-utils@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@analytics/type-utils/-/type-utils-0.5.1.tgz#babf25e66bbb8848dffbac34dfd159de9345995d"
+  integrity sha512-dyuyZQhIacRW+QP7iTBZT+R9SlkFNr+AsgYZDce6PMAUo6cgDKBrxxWtkMPKCqyzvCUwCbR92sILOvUUtQoieA==
 
 "@babel/code-frame@7.12.11":
   version "7.12.11"
@@ -430,21 +430,21 @@ am-i-a-dependency@1.1.2:
   resolved "https://registry.npmjs.org/am-i-a-dependency/-/am-i-a-dependency-1.1.2.tgz"
   integrity sha1-+dNCIwTW9kL4IeTEB1ZQNfYWfx8=
 
-analytics-utils@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/analytics-utils/-/analytics-utils-1.0.5.tgz#b99c1581794a00fee2072fd5530f4127468348e6"
-  integrity sha512-iKqEbSFQ/Pb3Mbl2B6F6YkiRcQdEyxoO87wHy/s5jsKyxywMreWZEDkPlS+xcOU0ep5pgjRrt7vKr3KmF8O8PQ==
+analytics-utils@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/analytics-utils/-/analytics-utils-1.0.6.tgz#75a38a6cd5397c90f3f2536c57327d78e45844e7"
+  integrity sha512-+/657Pvhj2WR21MniC+zz0CQIQ5XdxckHLP5MYwP8gBLsOthr6w/yKm/LgEbFo+TbSoT95wJBk1vWtK25e58iA==
   dependencies:
-    "@analytics/type-utils" "^0.5.0"
+    "@analytics/type-utils" "^0.5.1"
     dlv "^1.1.3"
 
-analytics@^0.7.18:
-  version "0.7.18"
-  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.7.18.tgz#13eae10a4949a507997d2aac954e837b28c054b8"
-  integrity sha512-6Ff16HjBpG8D7MLvzmiqzAxSixrPPi6cR+q94YaSfmC/tOKQFxMm6lUUF5XiksGLsvYbFbVSYS5I3Od5EPtk9A==
+analytics@^0.7.19:
+  version "0.7.19"
+  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.7.19.tgz#a2750afb848d72905d4baef8aeed0571cccb8e85"
+  integrity sha512-xxu5cTsuRm2QsaILIUz5Un62zaJklGAywhI/LLkAoBBCCGtF1RfS9SBUpexh1PPgDuTj4144X6F0hjJ3MYj9dA==
   dependencies:
-    "@analytics/core" "^0.10.18"
-    "@analytics/storage-utils" "^0.2.14"
+    "@analytics/core" "^0.10.19"
+    "@analytics/storage-utils" "^0.2.15"
 
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
   version "4.1.1"
