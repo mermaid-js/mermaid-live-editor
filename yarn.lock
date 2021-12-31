@@ -189,10 +189,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@rollup/pluginutils@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-4.1.1.tgz"
-  integrity sha512-clDjivHqWGXi7u+0d2r2sBi4Ie6VLEAzWMIkvJLnDmxoOhBYOTfzGbOQBA32THHm11/LiJbd01tJUpJsbshSWQ==
+"@rollup/pluginutils@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-4.1.2.tgz#ed5821c15e5e05e32816f5fb9ec607cdf5a75751"
+  integrity sha512-ROn4qvkxP9SyPeHaf7uQC/GPFY6L/OWy9+bd9AwcjOAWQwxRscoEyAUD8qCY5o5iL4jqQwoLk2kaTKJPb/HwzQ==
   dependencies:
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
@@ -202,27 +202,27 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.22.tgz#d615cf419c902aba8383c18fd839c7679437bf06"
   integrity sha512-Dc1V9Z72dA7caVwNxxzl9Jhcq4uN9N1udA2GKNTLMu3aWX3Cq+v6C2CddY9Aazr+F9h6J0vi9AienuH+ySRXzQ==
 
-"@sveltejs/kit@1.0.0-next.202":
-  version "1.0.0-next.202"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.202.tgz#7438bc1b20c1acdd611588c3c1c1470959b2a251"
-  integrity sha512-rXmJ0FplkWvD1CaeCfejRYhOJYrlmeUm5Fkw7gIKDdWPQev5rqOhd9B9ZvRpq35oMqCAwaOfK+e5S6k+83feEQ==
+"@sveltejs/kit@1.0.0-next.210":
+  version "1.0.0-next.210"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.210.tgz#c75bba50f9f85dca8e07ae929733f109b984bcd5"
+  integrity sha512-Lf0Kb076njOCy9OU1/BPR1gLKTJ9auSGEjaKpgmueLcuRHmnsCh5tNX738uVPQJyJBdRkCVdCdurpFKSkuSyew==
   dependencies:
-    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.30"
+    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.32"
     cheap-watch "^1.0.4"
     sade "^1.7.4"
     vite "^2.7.2"
 
-"@sveltejs/vite-plugin-svelte@^1.0.0-next.30":
-  version "1.0.0-next.30"
-  resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.30.tgz#a6cd181bb406d590c1fa8d480c55950d567689f9"
-  integrity sha512-YQqdMxjL1VgSFk4/+IY3yLwuRRapPafPiZTiaGEq1psbJYSNYUWx9F1zMm32GMsnogg3zn99mGJOqe3ld3HZSg==
+"@sveltejs/vite-plugin-svelte@^1.0.0-next.32":
+  version "1.0.0-next.33"
+  resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.33.tgz#99ecda078709929a2323e40f66801f5aa329c5b8"
+  integrity sha512-aj0h2+ZixgT+yoJFIs8dRRw/Cj9tgNu3+hY4CJikpa04mfhR61wXqJFfi2ZEFMUvFda5nCxKYIChFkc6wq5fJA==
   dependencies:
-    "@rollup/pluginutils" "^4.1.1"
-    debug "^4.3.2"
+    "@rollup/pluginutils" "^4.1.2"
+    debug "^4.3.3"
     kleur "^4.1.4"
     magic-string "^0.25.7"
     require-relative "^0.8.7"
-    svelte-hmr "^0.14.7"
+    svelte-hmr "^0.14.9"
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
@@ -4349,10 +4349,10 @@ supports-color@^9.2.1:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-9.2.1.tgz#599dc9d45acf74c6176e0d880bab1d7d718fe891"
   integrity sha512-Obv7ycoCTG51N7y175StI9BlAXrmgZrFhZOb0/PyjHBher/NmsdBgbbQ1Inhq+gIhz6+7Gb+jWF2Vqi7Mf1xnQ==
 
-svelte-hmr@^0.14.7:
-  version "0.14.7"
-  resolved "https://registry.npmjs.org/svelte-hmr/-/svelte-hmr-0.14.7.tgz"
-  integrity sha512-pDrzgcWSoMaK6AJkBWkmgIsecW0GChxYZSZieIYfCP0v2oPyx2CYU/zm7TBIcjLVUPP714WxmViE9Thht4etog==
+svelte-hmr@^0.14.9:
+  version "0.14.9"
+  resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.14.9.tgz#35f277efc789e1a6230185717347cddb2f8e9833"
+  integrity sha512-bKE9+4qb4sAnA+TKHiYurUl970rjA0XmlP9TEP7K/ncyWz3m81kA4HOgmlZK/7irGK7gzZlaPDI3cmf8fp/+tg==
 
 svelte-preprocess@^4.10.1:
   version "4.10.1"
