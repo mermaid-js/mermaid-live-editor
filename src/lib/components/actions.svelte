@@ -14,6 +14,7 @@
 		svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
 		if (!svg) {
 			svg = document.querySelector('#container svg');
+			svg.removeAttribute('height');
 		}
 		const svgString = svg.outerHTML
 			.replaceAll('<br>', '<br/>')
@@ -24,6 +25,7 @@
 	const exportImage = (event: Event, exporter: Exporter) => {
 		const canvas: HTMLCanvasElement = document.createElement('canvas');
 		const svg: HTMLElement = document.querySelector('#container svg');
+		svg.removeAttribute('height');
 		const box: DOMRect = svg.getBoundingClientRect();
 		canvas.width = box.width;
 		canvas.height = box.height;
