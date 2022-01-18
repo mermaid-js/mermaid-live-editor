@@ -140,6 +140,13 @@
 		return result;
 	};
 
+	const onKrokiClick = () => {
+		const stateCopy = JSON.parse(JSON.stringify($codeStore));
+		const krokiCode = getKrokiCode(stateCopy.code);
+		const krokiUrl = `${krokiRendererUrl}/mermaid/svg/${krokiCode}`;
+		return window.open(krokiUrl, '_blank');
+	};
+
 	const getKrokiCode = (source) => {
 		const data = textEncode(source);
 		const compressed = pako.deflate(data, { level: 9, to: 'string' });
@@ -149,7 +156,6 @@
 
 	let iUrl: string;
 	let svgUrl: string;
-	let krokiUrl: string;
 	let mdCode: string;
 	let imagemodeselected = 'auto';
 	let userimagesize = 1080;
@@ -164,10 +170,8 @@
 			stateCopy.mermaid = JSON.parse(stateCopy.mermaid);
 		}
 		const b64Code = toBase64(JSON.stringify(stateCopy), true);
-		const krokiCode = getKrokiCode(stateCopy.code);
 		iUrl = `${rendererUrl}/img/${b64Code}`;
 		svgUrl = `${rendererUrl}/svg/${b64Code}`;
-		krokiUrl = `${krokiRendererUrl}/mermaid/svg/${krokiCode}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${encodedState})`;
 	});
 </script>
@@ -191,8 +195,8 @@
 		<button class="action-btn flex-auto">
 			<a target="_blank" href={svgUrl}><i class="fas fa-external-link-alt mr-2" /> SVG</a>
 		</button>
-		<button class="action-btn flex-auto">
-			<a target="_blank" href={krokiUrl}><i class="fas fa-external-link-alt mr-2" /> Kroki</a>
+		<button class="action-btn flex-auto" on:click={onKrokiClick}>
+			<i class="fas fa-external-link-alt mr-2" /> Kroki
 		</button>
 
 		<div class="flex gap-2 items-center">
