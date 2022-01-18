@@ -4,7 +4,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import { rendererUrl, krokiRendererUrl } from '$lib/util/env';
 	import { base64State, codeStore } from '$lib/util/state';
-	import { toBase64 } from 'js-base64';
+	import { toBase64, btoa as jsbtoa } from 'js-base64';
 	import moment from 'moment';
 	import pako from 'pako';
 
@@ -150,7 +150,7 @@
 	const getKrokiCode = (source) => {
 		const data = textEncode(source);
 		const compressed = pako.deflate(data, { level: 9, to: 'string' });
-		let result = btoa(compressed).replace(/\+/g, '-').replace(/\//g, '_');
+		let result = jsbtoa(compressed).replace(/\+/g, '-').replace(/\//g, '_');
 		return result;
 	};
 
