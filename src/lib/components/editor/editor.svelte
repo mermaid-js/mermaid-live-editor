@@ -4,7 +4,7 @@
 	import { themeStore } from '$lib/util/theme';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import initEditor from 'monaco-mermaid';
+	import { initEditor } from './util';
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
