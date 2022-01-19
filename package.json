@@ -57,6 +57,7 @@
 		"mermaid": "8.13.8",
 		"moment": "^2.29.1",
 		"monaco-editor": "^0.31.1",
+		"pako": "1.0.10",
 		"random-word-slugs": "^0.1.6"
 	},
 	"lint-staged": {
