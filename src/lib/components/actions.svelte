@@ -141,8 +141,7 @@
 	};
 
 	const onKrokiClick = () => {
-		const stateCopy = JSON.parse(JSON.stringify($codeStore));
-		const krokiCode = getKrokiCode(stateCopy.code);
+		const krokiCode = getKrokiCode($codeStore.code);
 		const krokiUrl = `${krokiRendererUrl}/mermaid/svg/${krokiCode}`;
 		return window.open(krokiUrl, '_blank');
 	};
