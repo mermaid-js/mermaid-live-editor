@@ -51,7 +51,7 @@
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.2.0",
-		"analytics": "^0.7.19",
+		"analytics": "^0.7.21",
 		"daisyui": "1.21.0",
 		"js-base64": "^3.7.2",
 		"mermaid": "8.13.8",
