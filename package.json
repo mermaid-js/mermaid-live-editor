@@ -20,7 +20,7 @@
 		"@types/mermaid": "^8.2.7",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
 		"@typescript-eslint/parser": "^4.33.0",
-		"autoprefixer": "^10.4.0",
+		"autoprefixer": "^10.4.2",
 		"chai": "^4.3.4",
 		"cssnano": "^5.0.14",
 		"cypress": "9.3.1",
