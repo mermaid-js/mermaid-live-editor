@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"moduleResolution": "node",
 		"module": "es2020",
-		"lib": ["es2020", "ESNext", "DOM.Iterable"],
+		"lib": ["es2020", "ESNext", "DOM.Iterable", "DOM"],
 		"target": "es2019",
 		/**
 			svelte-preprocess cannot figure out whether you have a value or a type, so tell TypeScript
@@ -33,6 +33,7 @@
 		"src/**/*.svelte",
 		"cypress/**/*.ts",
 		"cypress/**/*.js",
-		"static/**/*.js"
+		"static/**/*.js",
+		"src/pako.mts"
 	]
 }

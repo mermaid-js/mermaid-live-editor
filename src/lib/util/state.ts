@@ -1,9 +1,10 @@
 import { writable, get, derived } from 'svelte/store';
 import type { Readable } from 'svelte/store';
-import { toBase64, fromBase64 } from 'js-base64';
+import { fromBase64, toUint8Array, fromUint8Array } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import type { State } from '$lib/types';
 import { saveStatistics } from './stats';
+import pako from 'pako';
 
 export const defaultState: State = {
 	code: `graph TD
@@ -36,15 +37,38 @@ const urlParseFailedState = `graph TD
     G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
+const textEncode = (str: string) => {
+	return new TextEncoder().encode(str);
+};
+
+export const compressString = (source: string): string => {
+	const data = textEncode(source);
+	const compressed = pako.deflate(data, { level: 9 });
+	const result = fromUint8Array(compressed, true);
+	return result;
+};
+
+const decompressString = (source: string): string => {
+	const data = toUint8Array(source);
+	const decompressed = pako.inflate(data, { to: 'string' });
+	return decompressed;
+};
+
 export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
-export const base64State: Readable<string> = derived([codeStore], ([code], set) => {
-	set(toBase64(JSON.stringify(code), true));
+export const compressedState: Readable<string> = derived([codeStore], ([code], set) => {
+	set(compressString(JSON.stringify(code)));
 });
 
 export const loadState = (data: string): void => {
 	let state: State;
+	console.log('Loading', data);
 	try {
-		const stateStr = fromBase64(data);
+		let stateStr: string;
+		if (data.startsWith('eyJ')) {
+			stateStr = fromBase64(data);
+		} else {
+			stateStr = decompressString(data);
+		}
 		console.log(`Trying to load state: ${stateStr}`);
 		state = JSON.parse(stateStr);
 		const mermaidConfig =
@@ -116,7 +140,7 @@ export const toggleDarkTheme = (dark: boolean): void => {
 };
 
 export const initURLSubscription = (): void => {
-	base64State.subscribe((state: string) => {
+	compressedState.subscribe((state: string) => {
 		history.replaceState(undefined, undefined, `#${state}`);
 	});
 };

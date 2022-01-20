@@ -6,7 +6,7 @@
 	import View from '$lib/components/view.svelte';
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
-	import { updateCode, updateConfig, codeStore, base64State } from '$lib/util/state';
+	import { updateCode, updateConfig, codeStore, compressedState } from '$lib/util/state';
 	import { initHandler, syncDiagram } from '$lib/util/util';
 	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
@@ -15,7 +15,7 @@
 	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
 	import { base } from '$app/paths';
 
-	base64State; // Weird fix for error > base64State is not defined. Treeshaking?
+	compressedState; // Weird fix for error > compressedState is not defined. Treeshaking?
 	let selectedMode = 'code';
 	const languageMap = {
 		code: 'mermaid',
@@ -96,7 +96,7 @@
 	};
 
 	const viewDiagram = () => {
-		window.open(`${base}/view#${$base64State}`, '_blank').focus();
+		window.open(`${base}/view#${$compressedState}`, '_blank').focus();
 	};
 
 	onMount(async () => {
