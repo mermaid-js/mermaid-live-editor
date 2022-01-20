@@ -82,7 +82,7 @@
 					startLineNumber: e.hash.loc.first_line,
 					startColumn: e.hash.loc.first_column,
 					endLineNumber: e.hash.loc.last_line,
-					endColumn: e.hash.loc.last_column + 1,
+					endColumn: (e.hash.loc.last_column as number) + 1,
 					message: e.str
 				};
 				errorMarkers.push(marker);

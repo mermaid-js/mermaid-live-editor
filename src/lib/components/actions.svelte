@@ -18,7 +18,7 @@
 		}
 		const svgString = svg.outerHTML
 			.replaceAll('<br>', '<br/>')
-			.replaceAll(/<img([^>]*)>/g, (m, g) => `<img ${g} />`);
+			.replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
 		return toBase64(svgString);
 	};
 
@@ -79,7 +79,7 @@
 			canvas.toBlob((blob) => {
 				try {
 					// @ts-ignore: https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1004/files
-					navigator.clipboard.write([
+					void navigator.clipboard.write([
 						/* eslint-disable no-undef */
 						// @ts-ignore: https://github.com/microsoft/TypeScript/issues/43821
 						new ClipboardItem({

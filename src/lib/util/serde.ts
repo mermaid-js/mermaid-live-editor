@@ -7,11 +7,6 @@ interface Serde {
 	deserialize: (state: string) => string;
 }
 
-enum SerdeType {
-	Base64 = 'base64',
-	Pako = 'pako'
-}
-
 const base64Serde: Serde = {
 	serialize: (state: string): string => {
 		return toBase64(state, true);
@@ -32,26 +27,35 @@ export const pakoSerde: Serde = {
 		return inflate(data, { to: 'string' });
 	}
 };
-const serdes: Map<string, Serde> = new Map([
-	[SerdeType.Base64, base64Serde],
-	[SerdeType.Pako, pakoSerde]
-]);
+
+const serdes: { [key: string]: Serde } = {
+	base64: base64Serde,
+	pako: pakoSerde
+};
+
+type SerdeType = keyof typeof serdes;
 
 export const serializeState = (state: State): string => {
 	const json = JSON.stringify(state);
-	const defaultSerde = SerdeType.Pako;
-	const serialized = serdes.get(defaultSerde).serialize(json);
+	const defaultSerde: SerdeType = 'pako';
+	const serialized = serdes[defaultSerde].serialize(json);
 	return `${defaultSerde}:${serialized}`;
 };
 
 export const deserializeState = (state: string): State => {
-	let type: string, serialized: string;
+	let type: SerdeType, serialized: string;
 	if (state.includes(':')) {
-		[type, serialized] = state.split(':');
+		let tempType: string;
+		[tempType, serialized] = state.split(':');
+		if (tempType in serdes) {
+			type = tempType;
+		} else {
+			throw new Error(`Unknown serde type: ${tempType}`);
+		}
 	} else {
-		type = SerdeType.Base64;
+		type = 'base64';
 		serialized = state;
 	}
-	const json = serdes.get(type).deserialize(serialized);
+	const json = serdes[type].deserialize(serialized);
 	return JSON.parse(json) as State;
 };
