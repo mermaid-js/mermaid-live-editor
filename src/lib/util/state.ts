@@ -46,7 +46,7 @@ export const loadState = (data: string): void => {
 	console.log('Loading', data);
 	try {
 		state = deserializeState(data);
-		const mermaidConfig =
+		const mermaidConfig: { [key: string]: string } =
 			typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
 		if (
 			mermaidConfig.securityLevel &&

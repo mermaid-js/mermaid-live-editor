@@ -32,15 +32,15 @@ export const pakoSerde: Serde = {
 		return inflate(data, { to: 'string' });
 	}
 };
-const serdes: Record<SerdeType, Serde> = {
-	[SerdeType.Base64]: base64Serde,
-	[SerdeType.Pako]: pakoSerde
-};
+const serdes: Map<string, Serde> = new Map([
+	[SerdeType.Base64, base64Serde],
+	[SerdeType.Pako, pakoSerde]
+]);
 
 export const serializeState = (state: State): string => {
 	const json = JSON.stringify(state);
 	const defaultSerde = SerdeType.Pako;
-	const serialized = serdes[defaultSerde].serialize(json);
+	const serialized = serdes.get(defaultSerde).serialize(json);
 	return `${defaultSerde}:${serialized}`;
 };
 
@@ -52,6 +52,6 @@ export const deserializeState = (state: string): State => {
 		type = SerdeType.Base64;
 		serialized = state;
 	}
-	const json = serdes[type].deserialize(serialized);
-	return JSON.parse(json);
+	const json = serdes.get(type).deserialize(serialized);
+	return JSON.parse(json) as State;
 };
