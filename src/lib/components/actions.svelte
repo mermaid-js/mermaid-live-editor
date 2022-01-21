@@ -2,11 +2,11 @@
 	import { browser } from '$app/env';
 
 	import Card from '$lib/components/card/card.svelte';
-	import { rendererUrl, krokiRendererUrl } from '$lib/util/env';
-	import { base64State, codeStore } from '$lib/util/state';
-	import { toBase64, btoa as jsbtoa } from 'js-base64';
+	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
+	import { pakoSerde } from '$lib/util/serde';
+	import { serializedState, codeStore } from '$lib/util/state';
+	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
-	import pako from 'pako';
 
 	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
@@ -18,7 +18,7 @@
 		}
 		const svgString = svg.outerHTML
 			.replaceAll('<br>', '<br/>')
-			.replaceAll(/<img([^>]*)>/g, (m, g) => `<img ${g} />`);
+			.replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
 		return toBase64(svgString);
 	};
 
@@ -79,7 +79,7 @@
 			canvas.toBlob((blob) => {
 				try {
 					// @ts-ignore: https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1004/files
-					navigator.clipboard.write([
+					void navigator.clipboard.write([
 						/* eslint-disable no-undef */
 						// @ts-ignore: https://github.com/microsoft/TypeScript/issues/43821
 						new ClipboardItem({
@@ -109,7 +109,7 @@
 	};
 
 	const onCopyMarkdown = () => {
-		document.getElementById('markdown').select();
+		(document.getElementById('markdown') as HTMLInputElement).select();
 		document.execCommand('Copy');
 	};
 
@@ -128,33 +128,9 @@
 		window.location.href = `${window.location.pathname}?gist=${gistURL}`;
 	};
 
-	const textEncode = (str) => {
-		if (window.TextEncoder) {
-			return new TextEncoder('utf-8').encode(str);
-		}
-		let utf8 = unescape(encodeURIComponent(str));
-		let result = new Uint8Array(utf8.length);
-		for (let i = 0; i < utf8.length; i++) {
-			result[i] = utf8.charCodeAt(i);
-		}
-		return result;
-	};
-
-	const onKrokiClick = () => {
-		const krokiCode = getKrokiCode($codeStore.code);
-		const krokiUrl = `${krokiRendererUrl}/mermaid/svg/${krokiCode}`;
-		return window.open(krokiUrl, '_blank');
-	};
-
-	const getKrokiCode = (source) => {
-		const data = textEncode(source);
-		const compressed = pako.deflate(data, { level: 9, to: 'string' });
-		let result = jsbtoa(compressed).replace(/\+/g, '-').replace(/\//g, '_');
-		return result;
-	};
-
 	let iUrl: string;
 	let svgUrl: string;
+	let krokiUrl: string;
 	let mdCode: string;
 	let imagemodeselected = 'auto';
 	let userimagesize = 1080;
@@ -163,14 +139,10 @@
 	if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
 		isNetlify = true;
 	}
-	base64State.subscribe((encodedState: string) => {
-		const stateCopy = JSON.parse(JSON.stringify($codeStore));
-		if (typeof stateCopy.mermaid === 'string') {
-			stateCopy.mermaid = JSON.parse(stateCopy.mermaid);
-		}
-		const b64Code = toBase64(JSON.stringify(stateCopy), true);
-		iUrl = `${rendererUrl}/img/${b64Code}`;
-		svgUrl = `${rendererUrl}/svg/${b64Code}`;
+	serializedState.subscribe((encodedState: string) => {
+		iUrl = `${rendererUrl}/img/${encodedState}`;
+		svgUrl = `${rendererUrl}/svg/${encodedState}`;
+		krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize($codeStore.code)}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${encodedState})`;
 	});
 </script>
@@ -194,8 +166,8 @@
 		<button class="action-btn flex-auto">
 			<a target="_blank" href={svgUrl}><i class="fas fa-external-link-alt mr-2" /> SVG</a>
 		</button>
-		<button class="action-btn flex-auto" on:click={onKrokiClick}>
-			<i class="fas fa-external-link-alt mr-2" /> Kroki
+		<button class="action-btn flex-auto">
+			<a target="_blank" href={krokiUrl}><i class="fas fa-external-link-alt mr-2" /> Kroki</a>
 		</button>
 
 		<div class="flex gap-2 items-center">
