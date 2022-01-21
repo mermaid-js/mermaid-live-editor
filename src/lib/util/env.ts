@@ -1,2 +1,4 @@
-export const rendererUrl = import.meta.env.MERMAID_RENDERER_URL ?? 'https://mermaid.ink';
-export const krokiRendererUrl = import.meta.env.MERMAID_KROKI_RENDERER_URL ?? 'https://kroki.io';
+export const rendererUrl: string =
+	(import.meta.env.MERMAID_RENDERER_URL as string) ?? 'https://mermaid.ink';
+export const krokiRendererUrl: string =
+	(import.meta.env.MERMAID_KROKI_RENDERER_URL as string) ?? 'https://kroki.io';

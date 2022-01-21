@@ -1,9 +1,9 @@
 import { writable, get, derived } from 'svelte/store';
 import type { Readable } from 'svelte/store';
-import { toBase64, fromBase64 } from 'js-base64';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import type { State } from '$lib/types';
 import { saveStatistics } from './stats';
+import { serializeState, deserializeState } from './serde';
 
 export const defaultState: State = {
 	code: `graph TD
@@ -37,17 +37,16 @@ const urlParseFailedState = `graph TD
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
 export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
-export const base64State: Readable<string> = derived([codeStore], ([code], set) => {
-	set(toBase64(JSON.stringify(code), true));
+export const serializedState: Readable<string> = derived([codeStore], ([code], set) => {
+	set(serializeState(code));
 });
 
 export const loadState = (data: string): void => {
 	let state: State;
+	console.log('Loading', data);
 	try {
-		const stateStr = fromBase64(data);
-		console.log(`Trying to load state: ${stateStr}`);
-		state = JSON.parse(stateStr);
-		const mermaidConfig =
+		state = deserializeState(data);
+		const mermaidConfig: { [key: string]: string } =
 			typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
 		if (
 			mermaidConfig.securityLevel &&
@@ -116,7 +115,7 @@ export const toggleDarkTheme = (dark: boolean): void => {
 };
 
 export const initURLSubscription = (): void => {
-	base64State.subscribe((state: string) => {
+	serializedState.subscribe((state: string) => {
 		history.replaceState(undefined, undefined, `#${state}`);
 	});
 };

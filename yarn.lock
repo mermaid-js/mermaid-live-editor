@@ -204,10 +204,10 @@
   dependencies:
     tiny-glob "^0.2.9"
 
-"@sveltejs/kit@1.0.0-next.232":
-  version "1.0.0-next.232"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.232.tgz#a8879e331d37259d99f72cbcffa00d177106b896"
-  integrity sha512-STQ0hnJozIop8k9I313nwVasBIQ45Z2K1pUOkDVjCSOGijgsj+De5q0prQBtL1ZlqqisfkYlOf8W9gvDSyTLEA==
+"@sveltejs/kit@1.0.0-next.236":
+  version "1.0.0-next.236"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.236.tgz#d0742b68cf2441a241732e461d64a4ae11e9dbb2"
+  integrity sha512-V/K6KZwZlfM2jDiL7luisRkPujf/pAT2SUpgOEONk44WwUwYwd928qN2u0Z6SAfQFCDAxUI8pMHP2OC1bm352Q==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.32"
     sade "^1.7.4"
@@ -249,6 +249,11 @@
   version "14.17.0"
   resolved "https://registry.npmjs.org/@types/node/-/node-14.17.0.tgz"
   integrity sha512-w8VZUN/f7SSbvVReb9SWp6cJFevxb4/nkG65yLAya//98WgocKm5PLDAtSs5CtJJJM+kHmJjO/6mmYW4MHShZA==
+
+"@types/pako@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/pako/-/pako-1.0.3.tgz#2e61c2b02020b5f44e2e5e946dfac74f4ec33c58"
+  integrity sha512-EDxOsHAD5dqjbjEUM1xwa7rpKPFb8ECBE5irONTQU7/OsO3thI5YrNEWSPNMvYmvFM0l/OLQJ6Mgw7PEdXSjhg==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -2911,10 +2916,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.1.6.tgz"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@^12.2.1:
-  version "12.2.1"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-12.2.1.tgz#e37b5a81deaabf5823f43b3aa903a70c15c9d0b3"
-  integrity sha512-VCVcA9C2Vt5HHxSR4EZVZFJcQRJH984CGBeY+cJ/xed4mBd+JidbM/xbKcCq5ASaygAV0iITtdsCTnID7h/1OQ==
+lint-staged@^12.2.2:
+  version "12.2.2"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-12.2.2.tgz#e03d93b41092316e0f38b37c9630da807aae3cca"
+  integrity sha512-bcHEoM1M/f+K1BYdHcEuIn8K+zMOSJR3mkny6PAuQiTgcSUcRbUWaUD6porAYypxF4k1vYZZ2HutZt1p94Z1jQ==
   dependencies:
     cli-truncate "^3.1.0"
     colorette "^2.0.16"
@@ -3149,6 +3154,11 @@ monaco-editor@^0.31.1:
   version "0.31.1"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.31.1.tgz#67f597b3e45679d1f551237e12a3a42c4438b97b"
   integrity sha512-FYPwxGZAeP6mRRyrr5XTGHD9gRXVjy7GUzF4IPChnyt3fS5WrNxIkS8DNujWf6EQy0Zlzpxw8oTVE+mWI2/D1Q==
+
+monaco-mermaid@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.2.tgz#a96d2c5dfbf9fc591cb7c61dff40a3d188021337"
+  integrity sha512-H0waK3QyTklsE3hKW4bvDFt+8Wcfghszi125wQVS89gzlHZMxZh5w1RqQe85d4FSmjwc3t1o71pCkyEYiZJiXg==
 
 mri@^1.1.0:
   version "1.1.6"
@@ -4394,10 +4404,10 @@ type-fest@^0.21.3:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
-typescript@^4.5.4:
-  version "4.5.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.4.tgz#a17d3a0263bf5c8723b9c52f43c5084edf13c2e8"
-  integrity sha512-VgYs2A2QIRuGphtzFV7aQJduJ2gyfTljngLzjpfW9FoYZF6xuw1W0vW9ghCKLfcWrCFxK81CSGRAvS1pn4fIUg==
+typescript@^4.5.5:
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
+  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
 
 universal-analytics@^0.4.20:
   version "0.4.23"
