@@ -32,6 +32,11 @@ docker run --publish 8000:80 ghcr.io/mermaid-js/mermaid-live-editor
 When building, Set the Environment variable MERMAID_RENDERER_URL to the rendering service.
 Default is `https://mermaid.ink`
 
+### To configure Kroki Instance URL
+
+When building, Set the Environment variable MERMAID_KROKI_RENDERER_URL to your Kroki instance.
+Default is `https://kroki.io`
+
 ### Development
 
 ```bash
