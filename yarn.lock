@@ -3155,10 +3155,10 @@ monaco-editor@^0.31.1:
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.31.1.tgz#67f597b3e45679d1f551237e12a3a42c4438b97b"
   integrity sha512-FYPwxGZAeP6mRRyrr5XTGHD9gRXVjy7GUzF4IPChnyt3fS5WrNxIkS8DNujWf6EQy0Zlzpxw8oTVE+mWI2/D1Q==
 
-monaco-mermaid@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.1.tgz#1dc8b2f4bb96f84358b42e2c04099378450594eb"
-  integrity sha512-S+6VM0LcfcZJfacunK1r/4bQS9QL0TSc+lMG2yyQpaJo7LCk77k12E3MO2iOs560KkGIoOru5nOjNIe5CYCrTQ==
+monaco-mermaid@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.2.tgz#a96d2c5dfbf9fc591cb7c61dff40a3d188021337"
+  integrity sha512-H0waK3QyTklsE3hKW4bvDFt+8Wcfghszi125wQVS89gzlHZMxZh5w1RqQe85d4FSmjwc3t1o71pCkyEYiZJiXg==
 
 mri@^1.1.0:
   version "1.1.6"
@@ -4404,10 +4404,10 @@ type-fest@^0.21.3:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
-typescript@^4.5.4:
-  version "4.5.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.4.tgz#a17d3a0263bf5c8723b9c52f43c5084edf13c2e8"
-  integrity sha512-VgYs2A2QIRuGphtzFV7aQJduJ2gyfTljngLzjpfW9FoYZF6xuw1W0vW9ghCKLfcWrCFxK81CSGRAvS1pn4fIUg==
+typescript@^4.5.5:
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
+  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
 
 universal-analytics@^0.4.20:
   version "0.4.23"
