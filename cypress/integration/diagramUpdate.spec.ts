@@ -30,4 +30,14 @@ describe('Auto sync tests', () => {
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		cy.getLocalStorage('codeStore').snapshot();
 	});
+
+	it('supports commenting code out/in', () => {
+		const cmd = Cypress.platform === 'darwin' ? 'meta' : 'ctrl';
+
+		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
+		cy.get('#view').contains('Car').should('not.exist');
+
+		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
+		cy.get('#view').contains('Car').should('exist');
+	});
 });
