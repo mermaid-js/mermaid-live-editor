@@ -32,10 +32,12 @@ describe('Auto sync tests', () => {
 	});
 
 	it('supports commenting code out/in', () => {
-		cy.get('#editor').type('{uparrow} {cmd}/');
+		const cmd = Cypress.platform === 'darwin' ? 'meta' : 'ctrl';
+
+		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
 		cy.get('#view').contains('Car').should('not.exist');
 
-		cy.get('#editor').type('{uparrow} {cmd}/');
+		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
 		cy.get('#view').contains('Car').should('exist');
 	});
 });
