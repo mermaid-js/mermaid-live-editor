@@ -19,8 +19,6 @@ const config = {
 					base: `/mermaid-live-editor${process.env['BETA'] ? '/beta' : ''}`
 			  }
 			: {},
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
 		trailingSlash: 'ignore',
 		vite: {
 			envPrefix: 'MERMAID_',
