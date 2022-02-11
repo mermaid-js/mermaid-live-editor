@@ -23,7 +23,7 @@
 		"@typescript-eslint/parser": "^4.33.0",
 		"autoprefixer": "^10.4.2",
 		"chai": "^4.3.6",
-		"cssnano": "^5.0.16",
+		"cssnano": "^5.0.17",
 		"cypress": "9.4.1",
 		"cypress-localstorage-commands": "^1.6.1",
 		"eslint": "^7.32.0",
