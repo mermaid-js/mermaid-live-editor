@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
-		"@sveltejs/adapter-static": "1.0.0-next.26",
+		"@sveltejs/adapter-static": "1.0.0-next.28",
 		"@sveltejs/kit": "1.0.0-next.260",
 		"@types/mermaid": "^8.2.7",
 		"@types/pako": "^1.0.3",
@@ -57,7 +57,7 @@
 		"js-base64": "^3.7.2",
 		"mermaid": "8.13.10",
 		"moment": "^2.29.1",
-		"monaco-editor": "^0.32.0",
+		"monaco-editor": "^0.32.1",
 		"monaco-mermaid": "^1.0.3",
 		"pako": "2.0.4",
 		"random-word-slugs": "^0.1.6"
