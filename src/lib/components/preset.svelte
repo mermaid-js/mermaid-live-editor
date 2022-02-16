@@ -3,7 +3,7 @@
 	import Card from '$lib/components/card/card.svelte';
 
 	const samples = {
-		'Flow Chart': `graph TD
+		'Flow Chart': `flowchart TD
     A[Christmas] -->|Get money| B(Go shopping)
     B --> C{Let me think}
     C -->|One| D[Laptop]
