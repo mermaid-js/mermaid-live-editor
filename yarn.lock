@@ -1637,10 +1637,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@2.0.9:
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.0.9.tgz#c8221f188f6fa72f109a36ecf5bbe05d629a7449"
-  integrity sha512-u1BPV5j4Jt+LIBaF3BFgCh2lYSWId/ReR2pD6WuVuDe03hoV2L4NMKk7HLca+PR8hKi4MWoJpAPDXmAzzgCagw==
+daisyui@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.2.2.tgz#ef0a043a835239b587a503e68be7b78e1c157870"
+  integrity sha512-QmM4rVsZvq/r4i9oWGe7UkeM9J25hbO+ZUXoT4u3QWsnb6nGe6R1KlPPqivd9xL/Za+YFspiwd3lpOG9ojW+cQ==
   dependencies:
     color "^4.2"
     tailwindcss "^3.0"
@@ -3166,10 +3166,10 @@ mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mocha@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-9.2.0.tgz#2bfba73d46e392901f877ab9a47b7c9c5d0275cc"
-  integrity sha512-kNn7E8g2SzVcq0a77dkphPsDSN7P+iYkqE0ZsGCYWRsoiKjOt+NvXfaagik8vuDa6W5Zw3qxe8Jfpt5qKf+6/Q==
+mocha@^9.2.1:
+  version "9.2.1"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-9.2.1.tgz#a1abb675aa9a8490798503af57e8782a78f1338e"
+  integrity sha512-T7uscqjJVS46Pq1XDXyo9Uvey9gd3huT/DD9cYBb4K2Xc/vbKRPUWK067bxDQRK0yIz6Jxk73IrnimvASzBNAQ==
   dependencies:
     "@ungap/promise-all-settled" "1.1.2"
     ansi-colors "4.1.1"
