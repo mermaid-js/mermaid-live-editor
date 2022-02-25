@@ -32,7 +32,7 @@
 		"eslint-plugin-es": "^4.1.0",
 		"eslint-plugin-mocha": "^10.0.3",
 		"eslint-plugin-postcss-modules": "^2.0.0",
-		"eslint-plugin-svelte3": "^3.4.0",
+		"eslint-plugin-svelte3": "^3.4.1",
 		"eslint-plugin-tailwindcss": "^3.5.0",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.4",
