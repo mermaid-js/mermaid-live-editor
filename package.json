@@ -36,7 +36,7 @@
 		"eslint-plugin-tailwindcss": "^3.5.0",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.4",
-		"mocha": "^9.2.0",
+		"mocha": "^9.2.1",
 		"node-html-parser": "^5.2.0",
 		"postcss": "^8.4.6",
 		"postcss-load-config": "^3.1.3",
