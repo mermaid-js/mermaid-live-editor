@@ -245,10 +245,10 @@
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.8.tgz"
   integrity sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==
 
-"@types/mermaid@^8.2.7":
-  version "8.2.7"
-  resolved "https://registry.npmjs.org/@types/mermaid/-/mermaid-8.2.7.tgz"
-  integrity sha512-fHgKYloGociOIEftp1IXWEktRZOw4qhEWWZe4a8RKd0AIuhj70its8VV3+sM1DmaWRLPW9rbVD83JR0XJzEh8g==
+"@types/mermaid@^8.2.8":
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/@types/mermaid/-/mermaid-8.2.8.tgz#06752a3abbddda59d6a3852147bba9d091665404"
+  integrity sha512-Xk6OxTQuK7Us6bom64mCr19ualLgk/kRPm/1hz8Bqu/tQnYURO9/DNYOhWaT6e94BypF8qgImC6bsgBTGBJIJA==
 
 "@types/node@*":
   version "15.0.2"
