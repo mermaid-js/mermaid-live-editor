@@ -1000,6 +1000,14 @@ css-select@^4.1.3:
     domutils "^2.6.0"
     nth-check "^2.0.0"
 
+css-selector-tokenizer@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/css-selector-tokenizer/-/css-selector-tokenizer-0.8.0.tgz#88267ef6238e64f2215ea2764b3e2cf498b845dd"
+  integrity sha512-Jd6Ig3/pe62/qe5SBPTN8h8LeUg/pT4lLgtavPf7updwwHpvFzxvOQBHYj2LZDMjUnBzgvIUSjRcf6oT5HzHFg==
+  dependencies:
+    cssesc "^3.0.0"
+    fastparse "^1.1.2"
+
 css-tree@^1.1.2, css-tree@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/css-tree/-/css-tree-1.1.3.tgz"
@@ -1637,12 +1645,14 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.2.2.tgz#ef0a043a835239b587a503e68be7b78e1c157870"
-  integrity sha512-QmM4rVsZvq/r4i9oWGe7UkeM9J25hbO+ZUXoT4u3QWsnb6nGe6R1KlPPqivd9xL/Za+YFspiwd3lpOG9ojW+cQ==
+daisyui@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.6.0.tgz#083684710db8f45ada7d5a2e7bd2139ad8c2bf7a"
+  integrity sha512-A728FOsenR+Zgqj8ORprphrP2qI+i9EfSWrfVzlPcSLsyd0jsvgl32jndDYklUk2d/QGG0jxcWJWtRTa0SFL5w==
   dependencies:
     color "^4.2"
+    css-selector-tokenizer "^0.8.0"
+    postcss-js "^4.0.0"
     tailwindcss "^3.0"
 
 dashdash@^1.12.0:
@@ -2294,6 +2304,11 @@ fast-levenshtein@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fastparse@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
+  integrity sha512-483XLLxTVIwWK3QTrMGRqUfUpoOs/0hbQrl2oz4J0pAcm3A3bu84wxTFqGqkJzewCLdME38xJLJAxBABfQT8sQ==
 
 fastq@^1.6.0:
   version "1.11.1"
