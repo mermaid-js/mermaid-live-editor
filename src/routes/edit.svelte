@@ -21,7 +21,23 @@
 		code: 'mermaid',
 		config: 'json'
 	};
+	const docMap = {
+		graph: '/#/flowchart',
+		graph_config: '/#/flowchart?id=configuration',
+		sequenceDiagram: '/#/sequenceDiagram',
+		sequenceDiagram_config: '/#/sequenceDiagram?id=configuration',
+		classDiagram: '/#/classDiagram',
+		classDiagram_config: '/#/classDiagram?id=configuration',
+		'stateDiagram-v2': '/#/stateDiagram',
+		gantt: '/#/gantt',
+		gantt_config: '/#/gantt?id=configuration',
+		pie: '/#/pie',
+		erDiagram: '/#/entityRelationshipDiagram',
+		erDiagram_config: '/#/entityRelationshipDiagram?id=styling',
+		journey: '/#/user-journey'
+	};
 	let text = '';
+	let docKey = '';
 	let language: 'mermaid' | 'json' = 'mermaid';
 	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
@@ -37,6 +53,9 @@
 		if (state.updateEditor) {
 			text = selectedMode === 'code' ? state.code : state.mermaid;
 		}
+		let codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
+		docKey = codeTypeMatch && codeTypeMatch.length > 1 ? codeTypeMatch[1] : null;
+		docKey = docKey ? docKey + (selectedMode !== 'code' ? '_config' : '') : null;
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		$codeStore.updateEditor = true;
@@ -136,7 +155,7 @@
 								on:click={syncDiagram}><i class="fas fa-sync" /></button>
 						{/if}
 
-						<div class="form-control">
+						<div class="form-control flex-row items-center">
 							<label class="cursor-pointer label" for="autoSync">
 								<input
 									type="checkbox"
@@ -145,6 +164,11 @@
 									bind:checked={$codeStore.autoSync} />
 								<span> Auto sync</span>
 							</label>
+							<a
+								target="_blank"
+								class="btn btn-primary btn-xs shadow-lg"
+								href="https://mermaid-js.github.io/mermaid/{docMap[docKey] || ''}"
+								><i class="far fa-eye mr-2" /> DOC</a>
 						</div>
 					</div>
 				</div>
