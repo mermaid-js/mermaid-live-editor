@@ -22,22 +22,38 @@
 		config: 'json'
 	};
 	const docMap = {
-		graph: '/#/flowchart',
-		graph_config: '/#/flowchart?id=configuration',
-		sequenceDiagram: '/#/sequenceDiagram',
-		sequenceDiagram_config: '/#/sequenceDiagram?id=configuration',
-		classDiagram: '/#/classDiagram',
-		classDiagram_config: '/#/classDiagram?id=configuration',
-		'stateDiagram-v2': '/#/stateDiagram',
-		gantt: '/#/gantt',
-		gantt_config: '/#/gantt?id=configuration',
-		pie: '/#/pie',
-		erDiagram: '/#/entityRelationshipDiagram',
-		erDiagram_config: '/#/entityRelationshipDiagram?id=styling',
-		journey: '/#/user-journey'
+		graph: {
+			code: '/#/flowchart',
+			config: '/#/flowchart?id=configuration'
+		},
+		sequenceDiagram: {
+			code: '/#/sequenceDiagram',
+			config: '/#/sequenceDiagram?id=configuration'
+		},
+		classDiagram: {
+			code: '/#/classDiagram',
+			config: '/#/classDiagram?id=configuration'
+		},
+		'stateDiagram-v2': {
+			code: '/#/stateDiagram'
+		},
+		gantt: {
+			code: '/#/gantt',
+			config: '/#/gantt?id=configuration'
+		},
+		pie: {
+			code: '/#/pie'
+		},
+		erDiagram: {
+			code: '/#/entityRelationshipDiagram',
+			config: '/#/entityRelationshipDiagram?id=styling'
+		},
+		journey: {
+			code: '/#/user-journey'
+		}
 	};
 	let text = '';
-	let docKey = '';
+	let docURL = '';
 	let language: 'mermaid' | 'json' = 'mermaid';
 	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
@@ -54,8 +70,11 @@
 			text = selectedMode === 'code' ? state.code : state.mermaid;
 		}
 		let codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
-		docKey = codeTypeMatch && codeTypeMatch.length > 1 ? codeTypeMatch[1] : null;
-		docKey = docKey ? docKey + (selectedMode !== 'code' ? '_config' : '') : null;
+		let docKey = codeTypeMatch && codeTypeMatch.length > 1 ? codeTypeMatch[1] : null;
+		docURL =
+			((docKey && docMap[docKey]) || {})[selectedMode] ||
+			((docKey && docMap[docKey]) || {})['code'] ||
+			'';
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		$codeStore.updateEditor = true;
@@ -147,29 +166,29 @@
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
 					<div class="flex flex-row items-center">
+						<div class="form-control flex-row items-center">
+							<label class="cursor-pointer label" for="autoSync">
+								<span> Auto sync</span>
+								<input
+									type="checkbox"
+									class="toggle {$codeStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
+									id="autoSync"
+									bind:checked={$codeStore.autoSync} />
+							</label>
+						</div>
+
 						{#if !$codeStore.autoSync}
 							<button
-								class="btn btn-secondary btn-xs"
+								class="btn btn-secondary btn-xs mr-1"
 								title="Sync Diagram"
 								data-cy="sync"
 								on:click={syncDiagram}><i class="fas fa-sync" /></button>
 						{/if}
 
-						<div class="form-control flex-row items-center">
-							<label class="cursor-pointer label" for="autoSync">
-								<input
-									type="checkbox"
-									class="toggle toggle-primary mr-1"
-									id="autoSync"
-									bind:checked={$codeStore.autoSync} />
-								<span> Auto sync</span>
-							</label>
-							<a
-								target="_blank"
-								class="btn btn-primary btn-xs shadow-lg"
-								href="https://mermaid-js.github.io/mermaid/{docMap[docKey] || ''}"
-								><i class="far fa-eye mr-2" /> DOC</a>
-						</div>
+						<button class="btn btn-secondary btn-xs" title="View documentation">
+							<a target="_blank" href="https://mermaid-js.github.io/mermaid{docURL || ''}"
+								><i class="fas fa-book mr-1" />DOC</a>
+						</button>
 					</div>
 				</div>
 
@@ -187,9 +206,9 @@
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="btn btn-primary btn-xs shadow-lg"
+					class="btn btn-secondary btn-xs"
 					title="View diagram in new page"
-					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-2" /> View</button>
+					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-1" />View</button>
 
 				<div class="flex-1 overflow-auto">
 					<View />
