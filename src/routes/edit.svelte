@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
 	import type monaco from 'monaco-editor';
-	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
+	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
 
 	serializedState; // Weird fix for error > serializedState is not defined. Treeshaking?
@@ -21,7 +21,7 @@
 		code: 'mermaid',
 		config: 'json'
 	};
-	const docMap = {
+	const docMap: DocConfig = {
 		graph: {
 			code: '/#/flowchart',
 			config: '/#/flowchart?id=configuration'
@@ -71,10 +71,8 @@
 		}
 		let codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
 		let docKey = codeTypeMatch && codeTypeMatch.length > 1 ? codeTypeMatch[1] : null;
-		docURL =
-			((docKey && docMap[docKey]) || {})[selectedMode] ||
-			((docKey && docMap[docKey]) || {})['code'] ||
-			'';
+		let docConfig = (docKey && docMap[docKey]) || {};
+		docURL = docConfig[selectedMode] || docConfig['code'] || '';
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		$codeStore.updateEditor = true;
