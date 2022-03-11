@@ -195,7 +195,7 @@
 						{/if}
 
 						<button class="btn btn-secondary btn-xs" title="View documentation">
-							<a target="_blank" href={docURL}><i class="fas fa-book mr-1" />Docs</a>
+							<a target="_blank" href={docURL} data-cy="docs"><i class="fas fa-book mr-1" />Docs</a>
 						</button>
 					</div>
 				</div>
