@@ -16,11 +16,16 @@
 	import { base } from '$app/paths';
 
 	serializedState; // Weird fix for error > serializedState is not defined. Treeshaking?
-	let selectedMode = 'code';
-	const languageMap = {
+
+	type Modes = 'code' | 'config';
+	type Languages = 'mermaid' | 'json';
+
+	let selectedMode: Modes = 'code';
+	const languageMap: { [key in Modes]: Languages } = {
 		code: 'mermaid',
 		config: 'json'
 	};
+	const docURLBase = 'https://mermaid-js.github.io/mermaid';
 	const docMap: DocConfig = {
 		graph: {
 			code: '/#/flowchart',
@@ -57,8 +62,8 @@
 		}
 	};
 	let text = '';
-	let docURL = '';
-	let language: 'mermaid' | 'json' = 'mermaid';
+	let docURL = docURLBase;
+	let language: Languages = 'mermaid';
 	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
 	$: {
@@ -73,14 +78,16 @@
 		if (state.updateEditor) {
 			text = selectedMode === 'code' ? state.code : state.mermaid;
 		}
-		let codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
-		let docKey = codeTypeMatch && codeTypeMatch.length > 1 ? codeTypeMatch[1] : null;
-		let docConfig = (docKey && docMap[docKey]) || {};
-		docURL = docConfig[selectedMode] || docConfig['code'] || '';
+		const codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
+		if (codeTypeMatch && codeTypeMatch.length > 1) {
+			const docKey = codeTypeMatch[1];
+			const docConfig = docMap[docKey] ?? { code: '' };
+			docURL = docURLBase + (docConfig[selectedMode] ?? docConfig.code ?? '');
+		}
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		$codeStore.updateEditor = true;
-		selectedMode = message.detail.id;
+		selectedMode = message.detail.id === 'code' ? 'code' : 'config';
 	};
 	const tabs: Tab[] = [
 		{
@@ -188,8 +195,7 @@
 						{/if}
 
 						<button class="btn btn-secondary btn-xs" title="View documentation">
-							<a target="_blank" href="https://mermaid-js.github.io/mermaid{docURL || ''}"
-								><i class="fas fa-book mr-1" />DOC</a>
+							<a target="_blank" href={docURL}><i class="fas fa-book mr-1" />Docs</a>
 						</button>
 					</div>
 				</div>
