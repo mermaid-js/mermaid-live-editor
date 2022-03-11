@@ -26,6 +26,10 @@
 			code: '/#/flowchart',
 			config: '/#/flowchart?id=configuration'
 		},
+		flowchart: {
+			code: '/#/flowchart',
+			config: '/#/flowchart?id=configuration'
+		},
 		sequenceDiagram: {
 			code: '/#/sequenceDiagram',
 			config: '/#/sequenceDiagram?id=configuration'
