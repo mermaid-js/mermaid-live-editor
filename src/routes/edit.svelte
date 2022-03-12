@@ -86,8 +86,8 @@
 		}
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
-		$codeStore.updateEditor = true;
 		selectedMode = message.detail.id === 'code' ? 'code' : 'config';
+		$codeStore.updateEditor = true;
 	};
 	const tabs: Tab[] = [
 		{
