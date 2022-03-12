@@ -1,6 +1,6 @@
 describe('Editor docs tests', () => {
     beforeEach(() => {
-        cy.on('uncaught:exception', (err, runnable) => {
+        cy.on('uncaught:exception', () => {
             return false;
         });
         cy.clearLocalStorage();
