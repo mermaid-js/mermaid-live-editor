@@ -26,7 +26,7 @@
 		<ul class="tabs" transition:fade>
 			{#each tabs as tab}
 				<div
-					class="tab tab-lifted text-primary-content {activeTabID === tab.id ? 'tab-active' : ''}"
+					class="tab tab-lifted {activeTabID === tab.id ? 'tab-active' : 'text-primary-content'}"
 					on:click|stopPropagation={() => toggleTabs(tab)}>
 					<i class="mr-1 {tab.icon}" />
 					{tab.title}

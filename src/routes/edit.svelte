@@ -12,17 +12,58 @@
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
 	import type monaco from 'monaco-editor';
-	import type { EditorUpdateEvent, State, Tab } from '$lib/types';
+	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
 
 	serializedState; // Weird fix for error > serializedState is not defined. Treeshaking?
-	let selectedMode = 'code';
-	const languageMap = {
+
+	type Modes = 'code' | 'config';
+	type Languages = 'mermaid' | 'json';
+
+	let selectedMode: Modes = 'code';
+	const languageMap: { [key in Modes]: Languages } = {
 		code: 'mermaid',
 		config: 'json'
 	};
+	const docURLBase = 'https://mermaid-js.github.io/mermaid';
+	const docMap: DocConfig = {
+		graph: {
+			code: '/#/flowchart',
+			config: '/#/flowchart?id=configuration'
+		},
+		flowchart: {
+			code: '/#/flowchart',
+			config: '/#/flowchart?id=configuration'
+		},
+		sequenceDiagram: {
+			code: '/#/sequenceDiagram',
+			config: '/#/sequenceDiagram?id=configuration'
+		},
+		classDiagram: {
+			code: '/#/classDiagram',
+			config: '/#/classDiagram?id=configuration'
+		},
+		'stateDiagram-v2': {
+			code: '/#/stateDiagram'
+		},
+		gantt: {
+			code: '/#/gantt',
+			config: '/#/gantt?id=configuration'
+		},
+		pie: {
+			code: '/#/pie'
+		},
+		erDiagram: {
+			code: '/#/entityRelationshipDiagram',
+			config: '/#/entityRelationshipDiagram?id=styling'
+		},
+		journey: {
+			code: '/#/user-journey'
+		}
+	};
 	let text = '';
-	let language: 'mermaid' | 'json' = 'mermaid';
+	let docURL = docURLBase;
+	let language: Languages = 'mermaid';
 	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
 	$: {
@@ -37,10 +78,16 @@
 		if (state.updateEditor) {
 			text = selectedMode === 'code' ? state.code : state.mermaid;
 		}
+		const codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
+		if (codeTypeMatch && codeTypeMatch.length > 1) {
+			const docKey = codeTypeMatch[1];
+			const docConfig = docMap[docKey] ?? { code: '' };
+			docURL = docURLBase + (docConfig[selectedMode] ?? docConfig.code ?? '');
+		}
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
+		selectedMode = message.detail.id === 'code' ? 'code' : 'config';
 		$codeStore.updateEditor = true;
-		selectedMode = message.detail.id;
 	};
 	const tabs: Tab[] = [
 		{
@@ -128,24 +175,28 @@
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
 				<div slot="actions">
 					<div class="flex flex-row items-center">
+						<div class="form-control flex-row items-center">
+							<label class="cursor-pointer label" for="autoSync">
+								<span> Auto sync</span>
+								<input
+									type="checkbox"
+									class="toggle {$codeStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
+									id="autoSync"
+									bind:checked={$codeStore.autoSync} />
+							</label>
+						</div>
+
 						{#if !$codeStore.autoSync}
 							<button
-								class="btn btn-secondary btn-xs"
+								class="btn btn-secondary btn-xs mr-1"
 								title="Sync Diagram"
 								data-cy="sync"
 								on:click={syncDiagram}><i class="fas fa-sync" /></button>
 						{/if}
 
-						<div class="form-control">
-							<label class="cursor-pointer label" for="autoSync">
-								<input
-									type="checkbox"
-									class="toggle toggle-primary mr-1"
-									id="autoSync"
-									bind:checked={$codeStore.autoSync} />
-								<span> Auto sync</span>
-							</label>
-						</div>
+						<button class="btn btn-secondary btn-xs" title="View documentation">
+							<a target="_blank" href={docURL} data-cy="docs"><i class="fas fa-book mr-1" />Docs</a>
+						</button>
 					</div>
 				</div>
 
@@ -163,9 +214,9 @@
 			<Card title="Diagram" isCloseable={false}>
 				<button
 					slot="actions"
-					class="btn btn-primary btn-xs shadow-lg"
+					class="btn btn-secondary btn-xs"
 					title="View diagram in new page"
-					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-2" /> View</button>
+					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-1" />View</button>
 
 				<div class="flex-1 overflow-auto">
 					<View />
