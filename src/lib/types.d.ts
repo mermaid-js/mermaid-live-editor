@@ -57,4 +57,11 @@ export interface HistoryEntry {
 	url?: string;
 }
 
+export interface DocConfig {
+	[key: string]: {
+		code: string;
+		config?: string;
+	};
+}
+
 type Loader = (url: string) => Promise<State>;
