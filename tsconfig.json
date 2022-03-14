@@ -23,6 +23,7 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
+			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"]
 		}
 	},
@@ -35,5 +36,6 @@
 		"cypress/**/*.js",
 		"static/**/*.js",
 		"src/pako.mts"
-	]
+	],
+	"extends": "./.svelte-kit/tsconfig.json"
 }
