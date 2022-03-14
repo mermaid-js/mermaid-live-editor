@@ -23,7 +23,6 @@ jobs:
         run: |
           npm i -g yarn
           export DEPLOY=true
-          [ "$GITHUB_EVENT_NAME" == "pull_request" ] && export BETA=true && rm -rf docs/beta/
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
           yarn install
           version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)

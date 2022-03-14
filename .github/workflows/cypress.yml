@@ -27,17 +27,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-
 
-      - name: Lint
+      - name: Build & Lint
         run: |
           yarn install
-          yarn run lint
+          yarn build
+          yarn lint
 
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          build: yarn build
           start: yarn preview
           wait-on: 'http://localhost:3000'
           record: true
