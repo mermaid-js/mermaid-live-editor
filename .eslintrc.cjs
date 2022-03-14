@@ -27,7 +27,8 @@ module.exports = {
 		ecmaVersion: 2019,
 		tsconfigRootDir: __dirname,
 		project: ['./tsconfig.json'],
-		extraFileExtensions: ['.svelte']
+		extraFileExtensions: ['.svelte'],
+		allowAutomaticSingleRunInference: true
 	},
 	env: {
 		browser: true,
