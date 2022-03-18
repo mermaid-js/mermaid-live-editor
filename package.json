@@ -57,7 +57,7 @@
 		"js-base64": "^3.7.2",
 		"mermaid": "8.14.0",
 		"moment": "^2.29.1",
-		"monaco-editor": "^0.32.1",
+		"monaco-editor": "^0.33.0",
 		"monaco-mermaid": "^1.0.3",
 		"pako": "2.0.4",
 		"random-word-slugs": "^0.1.6"
