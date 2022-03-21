@@ -1646,10 +1646,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.6.4.tgz#f6395306b4d2b4cca0b40291592c04c4f5824bc5"
-  integrity sha512-3l7WHgpOTdyUBVu2TD6uZH4+IbwaBnPXdoWjjvmzT6hxR5+WUHMl4vvPP+7/VB+CcoxSB296qaYWXQcoWcbISw==
+daisyui@2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.11.0.tgz#e12850bc845c4f7d04b2ad9145e65149b984e59d"
+  integrity sha512-v+jng19L5/9LEmQv26gxDiK/w2aYLAb3LtwasSDCJWwCxn2rh+BgueTFP5mz5g38tBZ8lyAD6ZzcpMDeSnYieg==
   dependencies:
     color "^4.2"
     css-selector-tokenizer "^0.8.0"
