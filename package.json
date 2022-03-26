@@ -16,7 +16,7 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.29",
-		"@sveltejs/kit": "1.0.0-next.301",
+		"@sveltejs/kit": "1.0.0-next.303",
 		"@types/mermaid": "^8.2.9",
 		"@types/pako": "^1.0.3",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
@@ -40,20 +40,20 @@
 		"node-html-parser": "^5.3.3",
 		"postcss": "^8.4.12",
 		"postcss-load-config": "^3.1.3",
-		"prettier": "~2.6.0",
+		"prettier": "~2.6.1",
 		"prettier-plugin-svelte": "^2.6.0",
 		"svelte": "^3.46.4",
 		"svelte-preprocess": "^4.10.4",
 		"tailwindcss": "^3.0.21",
 		"tslib": "^2.3.1",
-		"typescript": "^4.6.2"
+		"typescript": "^4.6.3"
 	},
 	"type": "module",
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.3.0",
 		"analytics": "^0.8.1",
-		"daisyui": "2.11.0",
+		"daisyui": "2.13.0",
 		"js-base64": "^3.7.2",
 		"mermaid": "8.14.0",
 		"moment": "^2.29.1",

@@ -215,10 +215,10 @@
   dependencies:
     tiny-glob "^0.2.9"
 
-"@sveltejs/kit@1.0.0-next.301":
-  version "1.0.0-next.301"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.301.tgz#d5c6b3fde3682bbab835d31d9acf2470248b210f"
-  integrity sha512-F/XP1VEu+fpvgY04JekNxAFupccNMKOyXtbox0LwNJvBulL15/Tzy6tf4g+9t2Jy7mprwI3h0ZC9G/nVujRFnQ==
+"@sveltejs/kit@1.0.0-next.303":
+  version "1.0.0-next.303"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.303.tgz#062a8e2b2918499f84142a443c4a278a81d3a9c3"
+  integrity sha512-WdxDc8OiF1WEd/bEza7CBdzA+3qIcCi1GKBj/gieKX9I3N8iDJt/Cg2POrLo9wQoJ47nZcAd1eOhfr7XEX1aIQ==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.32"
     sade "^1.7.4"
@@ -1646,10 +1646,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.11.0.tgz#e12850bc845c4f7d04b2ad9145e65149b984e59d"
-  integrity sha512-v+jng19L5/9LEmQv26gxDiK/w2aYLAb3LtwasSDCJWwCxn2rh+BgueTFP5mz5g38tBZ8lyAD6ZzcpMDeSnYieg==
+daisyui@2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.13.0.tgz#2e667431e9f635c242b17a3438461904cfb63022"
+  integrity sha512-f5Ju0ERSeTwUl29HCMsDEPSiSkGfz3UvLthKB6cMhrVOm8XsZgbjRRAIwE6arKTnzo4UCHaw+XE37XAzHaLxiA==
   dependencies:
     color "^4.2"
     css-selector-tokenizer "^0.8.0"
@@ -3787,10 +3787,10 @@ prettier-plugin-svelte@^2.6.0:
   resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-2.6.0.tgz#0e845b560b55cd1d951d6c50431b4949f8591746"
   integrity sha512-NPSRf6Y5rufRlBleok/pqg4+1FyGsL0zYhkYP6hnueeL1J/uCm3OfOZPsLX4zqD9VAdcXfyEL2PYqGv8ZoOSfA==
 
-prettier@~2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.0.tgz#12f8f504c4d8ddb76475f441337542fa799207d4"
-  integrity sha512-m2FgJibYrBGGgQXNzfd0PuDGShJgRavjUoRCw1mZERIWVSXF0iLzLm+aOqTAbLnC3n6JzUhAA8uZnFVghHJ86A==
+prettier@~2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.1.tgz#d472797e0d7461605c1609808e27b80c0f9cfe17"
+  integrity sha512-8UVbTBYGwN37Bs9LERmxCPjdvPxlEowx2urIL6urHzdb3SDq4B/Z6xLFCblrSnE4iKWcS6ziJ3aOYrc1kz/E2A==
 
 pretty-bytes@^5.6.0:
   version "5.6.0"
@@ -4498,10 +4498,10 @@ type-fest@^0.21.3:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
-typescript@^4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
-  integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
+typescript@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.3.tgz#eefeafa6afdd31d725584c67a0eaba80f6fc6c6c"
+  integrity sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==
 
 universal-analytics@^0.4.20:
   version "0.4.23"
