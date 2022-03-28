@@ -13,4 +13,5 @@ RUN yarn install
 RUN yarn build
 
 FROM nginx:alpine as mermaid-live-editor-runner
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=mermaid-live-editor-builder --chown=nginx:nginx /home/docs /usr/share/nginx/html
