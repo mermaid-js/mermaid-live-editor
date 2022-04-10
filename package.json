@@ -55,7 +55,7 @@
 		"analytics": "^0.8.1",
 		"daisyui": "2.13.6",
 		"js-base64": "^3.7.2",
-		"mermaid": "8.14.0",
+		"mermaid": "9.0.0",
 		"moment": "^2.29.2",
 		"monaco-editor": "^0.33.0",
 		"monaco-mermaid": "^1.0.3",
