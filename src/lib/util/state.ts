@@ -103,11 +103,11 @@ export const updateConfig = (config: string, updateEditor: boolean): void => {
 	});
 };
 
-export const toggleDarkTheme = (dark: boolean): void => {
+export const toggleDarkTheme = (dark: boolean, theme: string): void => {
 	codeStore.update((state) => {
 		const config = JSON.parse(state.mermaid);
-		if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-			config.theme = dark ? 'dark' : 'default';
+		if (!config.theme || ['dark', 'default', 'forest'].includes(config.theme)) {
+			config.theme = dark ? (theme === 'forest' ? 'forest' : 'dark') : 'default';
 		}
 
 		return { ...state, mermaid: JSON.stringify(config, null, 2), updateEditor: true };

@@ -31,7 +31,7 @@
 		themeStore.subscribe(({ theme, isDark }) => {
 			if (theme) {
 				document.getElementsByTagName('html')[0].setAttribute('data-theme', theme);
-				toggleDarkTheme(isDark);
+				toggleDarkTheme(isDark, theme);
 			}
 		});
 	});
