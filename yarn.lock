@@ -208,10 +208,10 @@
   dependencies:
     tiny-glob "^0.2.9"
 
-"@sveltejs/kit@1.0.0-next.312":
-  version "1.0.0-next.312"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.312.tgz#aceb3a7be4a5d7f52929c473d3e395d0dc284bb1"
-  integrity sha512-l07ct0FJQnt+y3/NSEBvHKDKVE/7syYQnFhCVZ6H+4LEYRtTNybFxUTC8jA3xpZwPqJLZz1X+Tt+Sa8ZMuVzDg==
+"@sveltejs/kit@1.0.0-next.318":
+  version "1.0.0-next.318"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.318.tgz#c62ecc9d166b224d5ad519e8864afa2c3f8b037e"
+  integrity sha512-/M/XNvEqK71KCGro1xLuiUuklsMPe+G5DiVMs39tpfFIFhH4oCzAt+YBaIZDKORogGz3QDaYc5BV+eFv9E5cyw==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.32"
     sade "^1.7.4"
@@ -1651,10 +1651,10 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@2.13.6:
-  version "2.13.6"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.13.6.tgz#91f938671d60ee6cc9ac8f720c7f7676affd47d4"
-  integrity sha512-Z3DOqNwIKxp4og9qd64i8/eS4i3TccmmfcaKKXM/Y619FmRjKXRmKAm/GTu9qH+4W7GcVdL8IRxuw0z5GQSqvQ==
+daisyui@2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.14.1.tgz#39fd835dc3fc6a045e79a2baa37acfd584c0a92c"
+  integrity sha512-gVfq0R/yRHoYTUGy2s4ZPFzkshzsFcRb+taTmAs/0Q3BpIB+OUDcPKHebTSt8TM54WFqcCQksJO6MqOUkwiPDw==
   dependencies:
     color "^4.2"
     css-selector-tokenizer "^0.8.0"
@@ -3059,10 +3059,10 @@ lilconfig@^2.0.3, lilconfig@^2.0.5:
   resolved "https://registry.yarnpkg.com/lilconfig/-/lilconfig-2.0.5.tgz#19e57fd06ccc3848fd1891655b5a447092225b25"
   integrity sha512-xaYmXZtTHPAw5m+xLN8ab9C+3a8YmV3asNSPOATITbtwrfbwaLJj8h66H1WMIpALCkqsIzK3h7oQ+PdX+LQ9Eg==
 
-lint-staged@^12.3.7:
-  version "12.3.7"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-12.3.7.tgz#ad0e2014302f704f9cf2c0ebdb97ac63d0f17be0"
-  integrity sha512-/S4D726e2GIsDVWIk1XGvheCaDm1SJRQp8efamZFWJxQMVEbOwSysp7xb49Oo73KYCdy97mIWinhlxcoNqIfIQ==
+lint-staged@^12.4.0:
+  version "12.4.0"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-12.4.0.tgz#1fb8c73ac7a1c670b87bd2c1bf1e302c866e77af"
+  integrity sha512-3X7MR0h9b7qf4iXf/1n7RlVAx+EzpAZXoCEMhVSpaBlgKDfH2ewf+QUm7BddFyq29v4dgPP+8+uYpWuSWx035A==
   dependencies:
     cli-truncate "^3.1.0"
     colorette "^2.0.16"
@@ -3219,10 +3219,10 @@ merge2@^1.3.0:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.0.0.tgz#a1a43b02210b7d7e77932a673c0ec42987fedd15"
-  integrity sha512-HN0gHZ1+2RnyCR/7pS3ceRMGlt/2PpWAM5dUAzTEQ4nmMOM2Ix7XodcPkQbA7BradLQ5LwFhlH5jcMu1LARl1Q==
+mermaid@9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.0.1.tgz#b804f372d827936ab8a8cbde72a5b79fb2629680"
+  integrity sha512-TXXffALLhCACez+MUky4cOOcGXEXiJhHwN8eRV7bBqD8F6KdcjssyPZClVgzrC2KQzSGLqQkj7ce8ea7MhWz+Q==
   dependencies:
     "@braintree/sanitize-url" "^6.0.0"
     cypress-image-snapshot "^4.0.1"
@@ -3326,20 +3326,20 @@ moment-mini@^2.24.0:
   resolved "https://registry.yarnpkg.com/moment-mini/-/moment-mini-2.24.0.tgz#fa68d98f7fe93ae65bf1262f6abb5fb6983d8d18"
   integrity sha512-9ARkWHBs+6YJIvrIp0Ik5tyTTtP9PoV0Ssu2Ocq5y9v8+NOOpWiRshAp8c4rZVWTOe+157on/5G+zj5pwIQFEQ==
 
-moment@^2.29.2:
-  version "2.29.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.2.tgz#00910c60b20843bcba52d37d58c628b47b1f20e4"
-  integrity sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==
+moment@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
+  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
 
 monaco-editor@^0.33.0:
   version "0.33.0"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.33.0.tgz#842e244f3750a2482f8a29c676b5684e75ff34af"
   integrity sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==
 
-monaco-mermaid@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.3.tgz#807bf5a0635723684029646b716a2ba97dd6a175"
-  integrity sha512-SOtoCXxfUXCh8j09OhgambkQ8eqbifaK2YYt2lAo5YXIk/iRXdprvBVhLOJNx1gTMtRNINixALGaTy5StYfiqw==
+monaco-mermaid@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.4.tgz#05033668c654b693b9c104f29bd2384b0ac349a0"
+  integrity sha512-Mpr+7D4QzEmlSfQYxhMNhf1ZtjN/PUTbMJPs+XdTKnfC2/YzQTtPLEk4mTxbDCeH8N4EzL7jOmF/3DIk8c7Dkw==
 
 mri@^1.1.0:
   version "1.1.6"

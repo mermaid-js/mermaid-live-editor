@@ -11,6 +11,7 @@ module.exports = {
 	ignorePatterns: [
 		'docs/*',
 		'*.cjs',
+		'*.js',
 		'*.md',
 		'snapshots.js',
 		'svelte.config.js',
