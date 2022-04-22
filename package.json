@@ -56,7 +56,7 @@
 		"daisyui": "2.13.6",
 		"js-base64": "^3.7.2",
 		"mermaid": "9.0.0",
-		"moment": "^2.29.2",
+		"moment": "^2.29.3",
 		"monaco-editor": "^0.33.0",
 		"monaco-mermaid": "^1.0.3",
 		"pako": "2.0.4",
