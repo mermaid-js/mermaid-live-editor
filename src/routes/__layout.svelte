@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { loadingStateStore } from '$lib/util/loading';
 	import { setTheme, themeStore } from '$lib/util/theme';
-	import { toggleDarkTheme } from '$lib/util/state';
+	import { setDiagramTheme } from '$lib/util/state';
 
 	// This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
 	// Then move it into src and vite will bundle it automatically.
@@ -31,7 +31,7 @@
 		themeStore.subscribe(({ theme, isDark }) => {
 			if (theme) {
 				document.getElementsByTagName('html')[0].setAttribute('data-theme', theme);
-				toggleDarkTheme(isDark, theme);
+				setDiagramTheme(isDark ? (theme === 'forest' ? 'forest' : 'dark') : 'default');
 			}
 		});
 	});
