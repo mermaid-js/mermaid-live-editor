@@ -24,7 +24,7 @@
 		"autoprefixer": "^10.4.7",
 		"chai": "^4.3.6",
 		"cssnano": "^5.1.7",
-		"cypress": "9.5.4",
+		"cypress": "9.6.0",
 		"cypress-localstorage-commands": "^1.7.0",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.5.0",
