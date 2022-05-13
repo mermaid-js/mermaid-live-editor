@@ -16,7 +16,7 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.30",
-		"@sveltejs/kit": "1.0.0-next.326",
+		"@sveltejs/kit": "1.0.0-next.328",
 		"@types/mermaid": "^8.2.9",
 		"@types/pako": "^2.0.0",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
