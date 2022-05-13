@@ -201,10 +201,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@sveltejs/adapter-static@1.0.0-next.29":
-  version "1.0.0-next.29"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.29.tgz#bdc5df5c174a2b2405622eca1817cf6850869dc6"
-  integrity sha512-0hjGnfT3BRyoHnzJ2w0/xL+xICRpKneDTm45ZzggiRrc0r71WJfF6toGeg8N4QUQnj8EJ3Itm453gsS1kt7VUQ==
+"@sveltejs/adapter-static@1.0.0-next.30":
+  version "1.0.0-next.30"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.30.tgz#3c47b535efa171e6052f19846b20af6899872176"
+  integrity sha512-xJPOXuj4T/lw9pZpMQAoN68TgrOPp/zOldvSFA+A5CIhb8yLXkgxOWh6UDUrbVxM1NjOdt8lwPdZfdkh5FL2Fg==
   dependencies:
     tiny-glob "^0.2.9"
 
