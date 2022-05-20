@@ -29,6 +29,7 @@ jobs:
 
       - name: Build & Lint
         run: |
+          sudo apt install build-essential
           yarn install
           yarn build
           yarn lint
