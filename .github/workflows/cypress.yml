@@ -18,16 +18,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - uses: actions/cache@v3
-      #   id: yarn-and-build-cache
-      #   with:
-      #     path: |
-      #       ~/.cache/Cypress
-      #       build
-      #       node_modules
-      #     key: ${{ runner.os }}-node_modules-build-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-node_modules-build-
+      - uses: actions/cache@v3
+        id: yarn-and-build-cache
+        with:
+          path: |
+            ~/.cache/Cypress
+            build
+            node_modules
+          key: ${{ runner.os }}-node_modules-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-build-
 
       - run: chown -R 1001:1001 /github/home/.cache && echo "pwn dat cache"
 
