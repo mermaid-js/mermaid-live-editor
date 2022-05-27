@@ -10,7 +10,9 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     # Update from https://hub.docker.com/r/cypress/browsers/tags
-    container: cypress/browsers:node16.14.0-chrome99-ff97
+    container:
+      image: cypress/browsers:node16.14.0-chrome99-ff97
+      options: --user 1001
 
     steps:
       - name: Checkout
