@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
-		"@sveltejs/adapter-static": "1.0.0-next.31",
+		"@sveltejs/adapter-static": "1.0.0-next.32",
 		"@sveltejs/kit": "1.0.0-next.336",
 		"@types/mermaid": "^8.2.9",
 		"@types/pako": "^1.0.3",
