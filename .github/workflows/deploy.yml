@@ -21,7 +21,6 @@ jobs:
 
       - name: Build & Deploy
         run: |
-          npm i -g yarn
           export DEPLOY=true
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
           yarn install
