@@ -12,7 +12,7 @@ jobs:
     # Update from https://hub.docker.com/r/cypress/browsers/tags
     container:
       image: cypress/browsers:node16.14.0-chrome99-ff97
-      options: --user 1001
+      # options: --user 1001
 
     steps:
       - name: Checkout
@@ -28,6 +28,8 @@ jobs:
       #     key: ${{ runner.os }}-node_modules-build-${{ hashFiles('**/yarn.lock') }}
       #     restore-keys: |
       #       ${{ runner.os }}-node_modules-build-
+
+      - run: chown -R 1001:1001 /github/home/.cache && echo "pwn dat cache"
 
       - name: Build & Lint
         run: |
