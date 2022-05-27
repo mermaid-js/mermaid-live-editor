@@ -16,15 +16,15 @@
 	"devDependencies": {
 		"@cypress/snapshot": "^2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.32",
-		"@sveltejs/kit": "1.0.0-next.336",
+		"@sveltejs/kit": "1.0.0-next.345",
 		"@types/mermaid": "^8.2.9",
 		"@types/pako": "^1.0.3",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
 		"@typescript-eslint/parser": "^4.33.0",
 		"autoprefixer": "^10.4.7",
 		"chai": "^4.3.6",
-		"cssnano": "^5.1.8",
-		"cypress": "9.6.1",
+		"cssnano": "^5.1.9",
+		"cypress": "9.7.0",
 		"cypress-localstorage-commands": "^1.7.0",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -39,14 +39,14 @@
 		"mocha": "^10.0.0",
 		"node-html-parser": "^5.3.3",
 		"postcss": "^8.4.14",
-		"postcss-load-config": "^3.1.4",
+		"postcss-load-config": "^4.0.0",
 		"prettier": "~2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.48.0",
 		"svelte-preprocess": "^4.10.6",
 		"tailwindcss": "^3.0.24",
 		"tslib": "^2.4.0",
-		"typescript": "^4.6.4"
+		"typescript": "^4.7.2"
 	},
 	"type": "module",
 	"dependencies": {
@@ -73,6 +73,6 @@
 		"yarn": "1.22.10"
 	},
 	"engines": {
-		"node": ">=16.x"
+		"node": ">=16.7"
 	}
 }

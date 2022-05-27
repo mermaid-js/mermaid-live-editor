@@ -208,15 +208,15 @@
   dependencies:
     tiny-glob "^0.2.9"
 
-"@sveltejs/kit@1.0.0-next.336":
-  version "1.0.0-next.336"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.336.tgz#18f4ba17d95f5ad31a81b454017052c0e9c80325"
-  integrity sha512-DfERqclfwI8Gdx8/p5qIU3vwEOQfWqC8+BXR12bNykbXFM1k8koDplRDpmGzcsXyhslf83j+RmchnkifbNLjsw==
+"@sveltejs/kit@1.0.0-next.345":
+  version "1.0.0-next.345"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.345.tgz#4e2a02c3edcb8c6c0fa1052ce8c5e0c8b56126d3"
+  integrity sha512-2nLZoXZ02uXMSxqRAMRCr/J4aCphqgKLxEhRRyh3c3aWLAjWiDWLDcvSB770eHt3y0MkYrTvp7JrDF7RhfyuBA==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.0-next.44"
     chokidar "^3.5.3"
     sade "^1.7.4"
-    vite "^2.9.0"
+    vite "^2.9.9"
 
 "@sveltejs/vite-plugin-svelte@^1.0.0-next.44":
   version "1.0.0-next.44"
@@ -1010,10 +1010,10 @@ cssesc@^3.0.0:
   resolved "https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
-cssnano-preset-default@^5.2.8:
-  version "5.2.8"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-5.2.8.tgz#d7886e8cf6d075ae2298d7526b4cccf0eacdcbdc"
-  integrity sha512-6xQXUhTAPupvib3KC0Gl0d1jIwGFcJyuWQiMcA6grprGdmIzt1cxG5z78VuZu6DRRS6qin6ETkQsH6ixxb/SQw==
+cssnano-preset-default@^5.2.9:
+  version "5.2.9"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-5.2.9.tgz#63f6aa9a9f0b21d9a526371dd308253b656a9784"
+  integrity sha512-/4qcQcAfFEg+gnXE5NxKmYJ9JcT+8S5SDuJCLYMDN8sM/ymZ+lgLXq5+ohx/7V2brUCkgW2OaoCzOdAN0zvhGw==
   dependencies:
     css-declaration-sorter "^6.2.2"
     cssnano-utils "^3.1.0"
@@ -1024,7 +1024,7 @@ cssnano-preset-default@^5.2.8:
     postcss-discard-duplicates "^5.1.0"
     postcss-discard-empty "^5.1.1"
     postcss-discard-overridden "^5.1.0"
-    postcss-merge-longhand "^5.1.4"
+    postcss-merge-longhand "^5.1.5"
     postcss-merge-rules "^5.1.1"
     postcss-minify-font-values "^5.1.0"
     postcss-minify-gradients "^5.1.1"
@@ -1050,12 +1050,12 @@ cssnano-utils@^3.1.0:
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-3.1.0.tgz#95684d08c91511edfc70d2636338ca37ef3a6861"
   integrity sha512-JQNR19/YZhz4psLX/rQ9M83e3z2Wf/HdJbryzte4a3NSuafyp9w/I4U+hx5C2S9g41qlstH7DEWnZaaj83OuEA==
 
-cssnano@^5.1.8:
-  version "5.1.8"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-5.1.8.tgz#6add8a61c8ae493184689af347e61b1bc7cd57dd"
-  integrity sha512-5lma/yQlK+6eOHSUqNAS11b4/fbiuasoxmCHoVYxSg6lQsyX7bGGIqiLi4o3Pe2CrUTrgcD2udW7JIgzC2806g==
+cssnano@^5.1.9:
+  version "5.1.9"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-5.1.9.tgz#e6cb286c4907cbd55678eb315837a21008be21be"
+  integrity sha512-hctQHIIeDrfMjq0bQhoVmRVaSeNNOGxkvkKVOcKpJzLr09wlRrZWH4GaYudp0aszpW8wJeaO5/yBmID9n7DNCg==
   dependencies:
-    cssnano-preset-default "^5.2.8"
+    cssnano-preset-default "^5.2.9"
     lilconfig "^2.0.3"
     yaml "^1.10.2"
 
@@ -1071,10 +1071,10 @@ cypress-localstorage-commands@^1.7.0:
   resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-1.7.0.tgz#39840973de0a861d50b82f9fa548331db5973f5f"
   integrity sha512-4v4FrDRPimMStWmiGikyN7OmO2rH0MLI7DMk76dBpb9/sJqCDwa7fAHTUDx6avUEDmO7TFQFgaT3OQTr1HqasQ==
 
-cypress@9.6.1:
-  version "9.6.1"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.6.1.tgz#a7d6b5a53325b3dc4960181f5800a5ade0f085eb"
-  integrity sha512-ECzmV7pJSkk+NuAhEw6C3D+RIRATkSb2VAHXDY6qGZbca/F9mv5pPsj2LO6Ty6oIFVBTrwCyL9agl28MtJMe2g==
+cypress@9.7.0:
+  version "9.7.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.7.0.tgz#bf55b2afd481f7a113ef5604aa8b693564b5e744"
+  integrity sha512-+1EE1nuuuwIt/N1KXRR2iWHU+OiIt7H28jJDyyI4tiUftId/DrXYEwoDa5+kH2pki1zxnA0r6HrUGHV5eLbF5Q==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
@@ -3542,10 +3542,18 @@ postcss-load-config@^3.1.0, postcss-load-config@^3.1.4:
     lilconfig "^2.0.5"
     yaml "^1.10.2"
 
-postcss-merge-longhand@^5.1.4:
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/postcss-merge-longhand/-/postcss-merge-longhand-5.1.4.tgz#0f46f8753989a33260efc47de9a0cdc571f2ec5c"
-  integrity sha512-hbqRRqYfmXoGpzYKeW0/NCZhvNyQIlQeWVSao5iKWdyx7skLvCfQFGIUsP9NUs3dSbPac2IC4Go85/zG+7MlmA==
+postcss-load-config@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-load-config/-/postcss-load-config-4.0.0.tgz#4c95647abc531bdf648647b3bf9b64c030a4bff5"
+  integrity sha512-HBMHYoN1OobLx7EpbuW52AOZiJ408ISFJ6QTF/kJ8aKhpoOXFIDzEtcRwoh+JdEt6oUkcU7XZa2Ot0KJ5sI+jQ==
+  dependencies:
+    lilconfig "^2.0.5"
+    yaml "^2.1.0"
+
+postcss-merge-longhand@^5.1.5:
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/postcss-merge-longhand/-/postcss-merge-longhand-5.1.5.tgz#b0e03bee3b964336f5f33c4fc8eacae608e91c05"
+  integrity sha512-NOG1grw9wIO+60arKa2YYsrbgvP6tp+jqc7+ZD5/MalIw234ooH2C6KlR6FEn4yle7GqZoBxSK1mLBE9KPur6w==
   dependencies:
     postcss-value-parser "^4.2.0"
     stylehacks "^5.1.0"
@@ -3750,7 +3758,7 @@ postcss@^8.3.0, postcss@^8.4.12, postcss@^8.4.4:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postcss@^8.4.14:
+postcss@^8.4.13, postcss@^8.4.14:
   version "8.4.14"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.14.tgz#ee9274d5622b4858c1007a74d76e42e56fd21caf"
   integrity sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig==
@@ -4470,10 +4478,10 @@ type-fest@^0.21.3:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
-typescript@^4.6.4:
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.4.tgz#caa78bbc3a59e6a5c510d35703f6a09877ce45e9"
-  integrity sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==
+typescript@^4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.2.tgz#1f9aa2ceb9af87cca227813b4310fff0b51593c4"
+  integrity sha512-Mamb1iX2FDUpcTRzltPxgWMKy3fhg0TN378ylbktPGPK/99KbDtMQ4W1hwgsbPAsG3a0xKa1vmw4VKZQbkvz5A==
 
 universal-analytics@^0.4.20:
   version "0.4.23"
@@ -4538,13 +4546,13 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.9.0:
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.1.tgz#84bce95fae210a7beb566a0af06246748066b48f"
-  integrity sha512-vSlsSdOYGcYEJfkQ/NeLXgnRv5zZfpAsdztkIrs7AZHV8RCMZQkwjo4DS5BnrYTqoWqLoUe1Cah4aVO4oNNqCQ==
+vite@^2.9.9:
+  version "2.9.9"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.9.tgz#8b558987db5e60fedec2f4b003b73164cb081c5e"
+  integrity sha512-ffaam+NgHfbEmfw/Vuh6BHKKlI/XIAhxE5QSS7gFLIngxg171mg1P3a4LSRME0z2ZU1ScxoKzphkipcYwSD5Ew==
   dependencies:
     esbuild "^0.14.27"
-    postcss "^8.4.12"
+    postcss "^8.4.13"
     resolve "^1.22.0"
     rollup "^2.59.0"
   optionalDependencies:
@@ -4614,6 +4622,11 @@ yaml@^1.10.2:
   version "1.10.2"
   resolved "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
+
+yaml@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.1.0.tgz#96ba62ff4dd990c0eb16bd96c6254a085d288b80"
+  integrity sha512-OuAINfTsoJrY5H7CBWnKZhX6nZciXBydrMtTHr1dC4nP40X5jyTIVlogZHxSlVZM8zSgXRfgZGsaHF4+pV+JRw==
 
 yargs-parser@20.2.4:
   version "20.2.4"

@@ -23,6 +23,9 @@ const config = {
 		vite: {
 			envPrefix: 'MERMAID_',
 			optimizeDeps: { include: ['mermaid'] }
+		},
+		prerender: {
+			default: true
 		}
 	}
 };
