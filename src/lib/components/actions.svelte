@@ -160,15 +160,23 @@
 		<button class="action-btn flex-auto" on:click={onDownloadSVG}>
 			<i class="fas fa-download mr-2" /> SVG
 		</button>
-		<button class="action-btn flex-auto">
-			<a target="_blank" href={iUrl}><i class="fas fa-external-link-alt mr-2" /> PNG</a>
-		</button>
-		<button class="action-btn flex-auto">
-			<a target="_blank" href={svgUrl}><i class="fas fa-external-link-alt mr-2" /> SVG</a>
-		</button>
-		<button class="action-btn flex-auto">
-			<a target="_blank" href={krokiUrl}><i class="fas fa-external-link-alt mr-2" /> Kroki</a>
-		</button>
+		<a target="_blank" href={iUrl}>
+			<button class="action-btn flex-auto">
+				<i class="fas fa-external-link-alt mr-2" /> PNG
+			</button>
+		</a>
+
+		<a target="_blank" href={svgUrl}>
+			<button class="action-btn flex-auto">
+				<i class="fas fa-external-link-alt mr-2" /> SVG
+			</button>
+		</a>
+
+		<a target="_blank" href={krokiUrl}>
+			<button class="action-btn flex-auto">
+				<i class="fas fa-external-link-alt mr-2" /> Kroki
+			</button>
+		</a>
 
 		<div class="flex gap-2 items-center">
 			PNG size
