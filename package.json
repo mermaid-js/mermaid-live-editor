@@ -39,7 +39,7 @@
 		"mocha": "^10.0.0",
 		"node-html-parser": "^5.3.3",
 		"postcss": "^8.4.14",
-		"postcss-load-config": "^4.0.0",
+		"postcss-load-config": "^4.0.1",
 		"prettier": "~2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.48.0",
