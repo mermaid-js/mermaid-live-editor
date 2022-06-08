@@ -728,9 +728,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001332, caniuse-lite@^1.0.30001335:
-  version "1.0.30001346"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001346.tgz"
-  integrity sha512-q6ibZUO2t88QCIPayP/euuDREq+aMAxFE5S70PkrLh0iTDj/zEhgvJRKC2+CvXY6EWc6oQwUR48lL5vCW6jiXQ==
+  version "1.0.30001349"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001349.tgz"
+  integrity sha512-VFaWW3jeo6DLU5rwdiasosxhYSduJgSGil4cSyX3/85fbctlE58pXAkWyuRmVA0r2RxsOSVYUTZcySJ8WpbTxw==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1071,10 +1071,10 @@ cypress-localstorage-commands@^2.1.0:
   resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-2.1.0.tgz#6fc299ec60b6b5ccfc09dd23d004866b7444ee78"
   integrity sha512-DIJLCIh+CcKulAxMVEng6EhpW691emHRqFUD4dK2HUn86Xzt3ABL3SkmxW4rXgvQt697nTDpZC+jo5K5BwndrQ==
 
-cypress@9.7.0:
-  version "9.7.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.7.0.tgz#bf55b2afd481f7a113ef5604aa8b693564b5e744"
-  integrity sha512-+1EE1nuuuwIt/N1KXRR2iWHU+OiIt7H28jJDyyI4tiUftId/DrXYEwoDa5+kH2pki1zxnA0r6HrUGHV5eLbF5Q==
+cypress@10.0.3:
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-10.0.3.tgz#889b4bef863b7d1ef1b608b85b964394ad350c5f"
+  integrity sha512-8C82XTybsEmJC9POYSNITGUhMLCRwB9LadP0x33H+52QVoBjhsWvIzrI+ybCe0+TyxaF0D5/9IL2kSTgjqCB9A==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
@@ -2042,13 +2042,13 @@ eslint-plugin-es@^4.1.0:
     eslint-utils "^2.0.0"
     regexpp "^3.0.0"
 
-eslint-plugin-mocha@^10.0.4:
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-10.0.4.tgz#b129a1aef8312e8ceaf1b35ff0367f93e917d90a"
-  integrity sha512-8wzAeepVY027oBHz/TmBmUr7vhVqoC1KTFeDybFLhbaWKx+aQ7fJJVuUsqcUy+L+G+XvgQBJY+cbAf7hl5DF7Q==
+eslint-plugin-mocha@^10.0.5:
+  version "10.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-10.0.5.tgz#c3b1e9f59c01063566d8e64b64226533376ffccd"
+  integrity sha512-H5xuD5NStlpaKLqUWYC5BsMx8fHgrIYsdloFbONUTc2vgVNiJcWdKoX29Tt0BO75QgAltplPLIziByMozGGixA==
   dependencies:
     eslint-utils "^3.0.0"
-    ramda "^0.28.0"
+    rambda "^7.1.0"
 
 eslint-plugin-postcss-modules@^2.0.0:
   version "2.0.0"
@@ -3542,13 +3542,13 @@ postcss-load-config@^3.1.0, postcss-load-config@^3.1.4:
     lilconfig "^2.0.5"
     yaml "^1.10.2"
 
-postcss-load-config@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/postcss-load-config/-/postcss-load-config-4.0.0.tgz#4c95647abc531bdf648647b3bf9b64c030a4bff5"
-  integrity sha512-HBMHYoN1OobLx7EpbuW52AOZiJ408ISFJ6QTF/kJ8aKhpoOXFIDzEtcRwoh+JdEt6oUkcU7XZa2Ot0KJ5sI+jQ==
+postcss-load-config@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-load-config/-/postcss-load-config-4.0.1.tgz#152383f481c2758274404e4962743191d73875bd"
+  integrity sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==
   dependencies:
     lilconfig "^2.0.5"
-    yaml "^2.1.0"
+    yaml "^2.1.1"
 
 postcss-merge-longhand@^5.1.5:
   version "5.1.5"
@@ -3840,15 +3840,15 @@ quick-lru@^5.1.1:
   resolved "https://registry.npmjs.org/quick-lru/-/quick-lru-5.1.1.tgz"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+rambda@^7.1.0:
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/rambda/-/rambda-7.1.4.tgz#7faa9665a54c5d81773975532a942b3113bb4a56"
+  integrity sha512-bPK8sSiVHIC7CqdWga8R+hRi5hfc4hK6S01lZW4KrLwSNryQoKaCOJA9GNiF20J7Nbe1vejRfR37/ASQXFL5EA==
+
 ramda@0.25.0:
   version "0.25.0"
   resolved "https://registry.npmjs.org/ramda/-/ramda-0.25.0.tgz"
   integrity sha512-GXpfrYVPwx3K7RQ6aYT8KPS8XViSXUVJT1ONhoKPE9VAleW42YE+U+8VEyGWt41EnEQW7gwecYJriTI0pKoecQ==
-
-ramda@^0.28.0:
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
-  integrity sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==
 
 random-word-slugs@^0.1.6:
   version "0.1.6"
@@ -4308,10 +4308,10 @@ svelte-hmr@^0.14.11:
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.14.11.tgz#63d532dc9c2c849ab708592f034765fa2502e568"
   integrity sha512-R9CVfX6DXxW1Kn45Jtmx+yUe+sPhrbYSUp7TkzbW0jI5fVPn6lsNG9NEs5dFg5qRhFNAoVdRw5qQDLALNKhwbQ==
 
-svelte-preprocess@^4.10.6:
-  version "4.10.6"
-  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.10.6.tgz#5f9a53e7ed3b85fc7e0841120c725b76ac5a1ba8"
-  integrity sha512-I2SV1w/AveMvgIQlUF/ZOO3PYVnhxfcpNyGt8pxpUVhPfyfL/CZBkkw/KPfuFix5FJ9TnnNYMhACK3DtSaYVVQ==
+svelte-preprocess@^4.10.7:
+  version "4.10.7"
+  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.10.7.tgz#3626de472f51ffe20c9bc71eff5a3da66797c362"
+  integrity sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==
   dependencies:
     "@types/pug" "^2.0.4"
     "@types/sass" "^1.16.0"
@@ -4623,10 +4623,10 @@ yaml@^1.10.2:
   resolved "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-yaml@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.1.0.tgz#96ba62ff4dd990c0eb16bd96c6254a085d288b80"
-  integrity sha512-OuAINfTsoJrY5H7CBWnKZhX6nZciXBydrMtTHr1dC4nP40X5jyTIVlogZHxSlVZM8zSgXRfgZGsaHF4+pV+JRw==
+yaml@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.1.1.tgz#1e06fb4ca46e60d9da07e4f786ea370ed3c3cfec"
+  integrity sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==
 
 yargs-parser@20.2.4:
   version "20.2.4"
