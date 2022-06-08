@@ -9,7 +9,7 @@
 		"lint:fix": "prettier --write --plugin-search-dir=. .;eslint --fix --ignore-path .gitignore .",
 		"format": "prettier --write --plugin-search-dir=. .",
 		"pre-commit": "lint-staged",
-		"postinstall": "husky install",
+		"postinstall": "husky install; cypress cache prune",
 		"test": "cypress run",
 		"cy": "cypress open"
 	},
@@ -24,7 +24,7 @@
 		"autoprefixer": "^10.4.7",
 		"chai": "^4.3.6",
 		"cssnano": "^5.1.9",
-		"cypress": "9.7.0",
+		"cypress": "10.0.3",
 		"cypress-localstorage-commands": "^2.1.0",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.5.0",
