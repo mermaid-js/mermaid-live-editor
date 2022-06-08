@@ -5,8 +5,7 @@
 		"src/**/*.svelte",
 		"cypress/**/*.ts",
 		"cypress/**/*.js",
-		"static/**/*.js",
-		"cypress.config.ts"
+		"static/**/*.js"
 	],
 	"extends": "./.svelte-kit/tsconfig.json"
 }
