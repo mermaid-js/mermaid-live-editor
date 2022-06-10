@@ -35,7 +35,7 @@
 		"eslint-plugin-svelte3": "^3.4.1",
 		"eslint-plugin-tailwindcss": "^3.5.2",
 		"husky": "^8.0.1",
-		"lint-staged": "13.0.0",
+		"lint-staged": "13.0.1",
 		"mocha": "^10.0.0",
 		"node-html-parser": "^5.3.3",
 		"postcss": "^8.4.14",
