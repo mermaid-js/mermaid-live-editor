@@ -59,6 +59,10 @@
 		},
 		journey: {
 			code: '/#/user-journey'
+		},
+		gitGraph: {
+			code: '/#/gitgraph',
+			config: '/#/gitgraph?id=gitgraph-specific-configuration-options'
 		}
 	};
 	let text = '';

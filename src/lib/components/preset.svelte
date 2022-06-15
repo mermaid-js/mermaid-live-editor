@@ -79,7 +79,19 @@
     section Go home
       Go downstairs: 5: Me
       Sit down: 3: Me
-      `
+      `,
+		'Git Graph': `    gitGraph
+      commit
+      commit
+      branch develop
+      checkout develop
+      commit
+      commit
+      checkout main
+      merge develop
+      commit
+      commit
+`
 	};
 
 	const loadSampleDiagram = (diagramType: string): void => {

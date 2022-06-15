@@ -9,8 +9,6 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    # Update after https://github.com/cypress-io/cypress-docker-images/issues/487
-    container: cypress/browsers:node14.16.0-chrome90-ff88
 
     steps:
       - name: Checkout
@@ -27,6 +25,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
       - name: Build & Lint
         run: |
           yarn install
@@ -36,7 +39,7 @@ jobs:
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v3
         with:
           start: yarn preview
           wait-on: 'http://localhost:3000'
