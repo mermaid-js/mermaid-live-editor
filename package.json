@@ -40,7 +40,7 @@
 		"node-html-parser": "^5.3.3",
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
-		"prettier": "~2.6.2",
+		"prettier": "~2.7.1",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.48.0",
 		"svelte-preprocess": "4.10.7",
