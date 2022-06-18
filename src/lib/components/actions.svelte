@@ -14,7 +14,7 @@
 		svg?.setAttribute('height', `${height}px`);
 		svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
 		if (!svg) {
-			svg = document.querySelector('#container svg');
+			svg = getSvgEl();
 		}
 		const svgString = svg.outerHTML
 			.replaceAll('<br>', '<br/>')
@@ -24,7 +24,7 @@
 
 	const exportImage = (event: Event, exporter: Exporter) => {
 		const canvas: HTMLCanvasElement = document.createElement('canvas');
-		const svg: HTMLElement = document.querySelector('#container svg');
+		const svg: HTMLElement = getSvgEl();
 		const box: DOMRect = svg.getBoundingClientRect();
 		canvas.width = box.width;
 		canvas.height = box.height;
@@ -48,6 +48,22 @@
 
 		event.stopPropagation();
 		event.preventDefault();
+	};
+
+	const getSvgEl = () => {
+		const svgEl: HTMLElement = document
+			.querySelector('#container svg')
+			.cloneNode(true) as HTMLElement;
+		const fontAwesomeCdnUrl = Array.from(document.head.getElementsByTagName('link'))
+			.map((l) => l.href)
+			.find((h) => h && h.includes('font-awesome'));
+		if (fontAwesomeCdnUrl == null) {
+			return svgEl;
+		}
+		const styleEl = document.createElement('style');
+		styleEl.innerText = `@import url("${fontAwesomeCdnUrl}");'`;
+		svgEl.prepend(styleEl);
+		return svgEl;
 	};
 
 	const simulateDownload = (download: string, href: string): void => {
