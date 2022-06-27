@@ -1066,6 +1066,11 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
+cy-verify-downloads@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/cy-verify-downloads/-/cy-verify-downloads-0.1.8.tgz#e16e86f1a6cc17376c39b4c5aa53e5ffa630c9c0"
+  integrity sha512-hfcgXd/YAtoN6TRmuy26DetcxBkApMJPBJI/T61KrV4PciOaWZtFhxPaiF7Kn2aE8XzXt1Os3HULM2Yp8A1mfw==
+
 cypress-localstorage-commands@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-2.1.0.tgz#6fc299ec60b6b5ccfc09dd23d004866b7444ee78"
