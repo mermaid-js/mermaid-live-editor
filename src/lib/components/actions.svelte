@@ -10,6 +10,9 @@
 
 	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
+	const getFileName = (ext: string) =>
+		`mermaid-diagram-${moment().format('YYYY-MM-DD-HHmmss')}.${ext}`;
+
 	const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
 		svg?.setAttribute('height', `${height}px`);
 		svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
@@ -24,7 +27,7 @@
 
 	const exportImage = (event: Event, exporter: Exporter) => {
 		const canvas: HTMLCanvasElement = document.createElement('canvas');
-		const svg: HTMLElement = getSvgEl();
+		const svg: HTMLElement = document.querySelector('#container svg');
 		const box: DOMRect = svg.getBoundingClientRect();
 		canvas.width = box.width;
 		canvas.height = box.height;
@@ -78,7 +81,7 @@
 			const { canvas } = context;
 			context.drawImage(image, 0, 0, canvas.width, canvas.height);
 			simulateDownload(
-				`mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.png`,
+				getFileName('png'),
 				canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
 			);
 		};
@@ -118,10 +121,7 @@
 	};
 
 	const onDownloadSVG = () => {
-		simulateDownload(
-			`mermaid-diagram-${moment().format('YYYYMMDDHHmmss')}.svg`,
-			`data:image/svg+xml;base64,${getBase64SVG()}`
-		);
+		simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
 	};
 
 	const onCopyMarkdown = () => {
@@ -170,10 +170,10 @@
 				><i class="far fa-copy mr-2" /> Copy Image to clipboard
 			</button>
 		{/if}
-		<button class="action-btn flex-auto" on:click={onDownloadPNG}>
+		<button id="downloadPNG" class="action-btn flex-auto" on:click={onDownloadPNG}>
 			<i class="fas fa-download mr-2" /> PNG
 		</button>
-		<button class="action-btn flex-auto" on:click={onDownloadSVG}>
+		<button id="downloadSVG" class="action-btn flex-auto" on:click={onDownloadSVG}>
 			<i class="fas fa-download mr-2" /> SVG
 		</button>
 		<a target="_blank" href={iUrl}>
