@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 import fs from 'fs';
-
+import { isFileExist, findFiles } from 'cy-verify-downloads';
 export default defineConfig({
 	projectId: '2ckppp',
 	viewportWidth: 1440,
@@ -11,11 +11,16 @@ export default defineConfig({
 	e2e: {
 		setupNodeEvents(on, config) {
 			on('task', {
+				isFileExist,
+				findFiles,
+				deleteFile(path) {
+					fs.rmSync(path);
+					return null;
+				},
 				readFileMaybe(filename) {
 					if (fs.existsSync(filename)) {
 						return fs.readFileSync(filename, 'utf8');
 					}
-
 					return null;
 				}
 			});
