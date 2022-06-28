@@ -12,7 +12,8 @@ const config = {
 	],
 	kit: {
 		adapter: adapter({
-			pages: `docs`
+			pages: `docs`,
+			precompress: true
 		}),
 		paths: process.env['DEPLOY']
 			? {
