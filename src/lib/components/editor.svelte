@@ -2,6 +2,7 @@
 	import type { EditorEvents } from '$lib/types';
 	import { stateStore } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
+
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
@@ -38,26 +39,43 @@
 	});
 
 	const dispatch = createEventDispatcher<EditorEvents>();
-	const loadMonaco = async () => {
-		let i = 0;
-		while (i++ < 10) {
-			try {
-				// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
-				Monaco = monaco;
-				return;
-			} catch {
-				await new Promise((r) => setTimeout(r, 500));
-			}
-		}
-		alert('Loading Monaco Editor failed. Please try refreshing the page.');
-	};
+
 	onMount(async () => {
-		try {
-			// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
-			Monaco = monaco;
-		} catch {
-			await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
-		}
+		// @ts-ignore
+		self.MonacoEnvironment = {
+			getWorker: function (workerId: string, label: string) {
+				const getWorkerModule = (moduleUrl: string, label: string): Worker => {
+					// @ts-ignore
+					return new Worker(self.MonacoEnvironment.getWorkerUrl(moduleUrl), {
+						name: label,
+						type: 'module'
+					});
+				};
+
+				switch (label) {
+					case 'json':
+						return getWorkerModule('/monaco-editor/esm/vs/language/json/json.worker?worker', label);
+					case 'css':
+					case 'scss':
+					case 'less':
+						return getWorkerModule('/monaco-editor/esm/vs/language/css/css.worker?worker', label);
+					case 'html':
+					case 'handlebars':
+					case 'razor':
+						return getWorkerModule('/monaco-editor/esm/vs/language/html/html.worker?worker', label);
+					case 'typescript':
+					case 'javascript':
+						return getWorkerModule(
+							'/monaco-editor/esm/vs/language/typescript/ts.worker?worker',
+							label
+						);
+					default:
+						return getWorkerModule('/monaco-editor/esm/vs/editor/editor.worker?worker', label);
+				}
+			}
+		};
+
+		Monaco = await import('monaco-editor');
 		initEditor(Monaco);
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(() => {
@@ -66,7 +84,7 @@
 				text
 			});
 		});
-		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
+		Monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
 		const resizeObserver = new ResizeObserver((entries) => {
 			editor.layout({
 				height: entries[0].contentRect.height,
