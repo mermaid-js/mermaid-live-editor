@@ -94,7 +94,7 @@ export const loadState = (data: string): void => {
 		}
 		state.mermaid = JSON.stringify(mermaidConfig, null, 2);
 	} catch (e) {
-		state = get(stateStore);
+		state = get(inputStateStore);
 		if (data) {
 			console.error('Init error', e);
 			state.code = urlParseFailedState;

@@ -12,7 +12,6 @@
 	let manualUpdate = true;
 	onMount(() => {
 		stateStore.subscribe((state) => {
-			console.log(state);
 			if (state.error !== undefined) {
 				error = true;
 				return;
