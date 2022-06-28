@@ -54,5 +54,4 @@ export const loadDataFromUrl = async (): Promise<void> => {
 			updateDiagram: true,
 			updateEditor: true
 		});
-	// window.location.search = '';
 };

@@ -68,10 +68,6 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 					message: e.str
 				};
 				processed.errorMarkers = [marker];
-				// Clear all previous errors before this error.
-				// errorMarkers = errorMarkers.filter(
-				// 	(m) => m.startLineNumber >= marker.startLineNumber && m.startColumn >= marker.startColumn
-				// );
 			} catch (err) {
 				console.error('Error without line helper', err);
 			}

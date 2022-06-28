@@ -12,8 +12,6 @@
 	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
 
-	// stateStore; // Weird fix for error > serializedState is not defined. Treeshaking?
-
 	type Modes = 'code' | 'config';
 	type Languages = 'mermaid' | 'json';
 
@@ -153,7 +151,7 @@
 									type="checkbox"
 									class="toggle {$stateStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
 									id="autoSync"
-									bind:checked={$stateStore.autoSync} />
+									bind:checked={$inputStateStore.autoSync} />
 							</label>
 						</div>
 

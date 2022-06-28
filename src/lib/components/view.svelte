@@ -49,7 +49,6 @@
 				}
 			} catch (e) {
 				console.log('view fail', e);
-				// errorStore.set(e);
 				error = true;
 			}
 		});
