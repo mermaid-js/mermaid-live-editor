@@ -2,12 +2,12 @@
 	import type { EditorEvents } from '$lib/types';
 	import { stateStore } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
-
+	import 'monaco-editor';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
 
-	let divEl: HTMLDivElement = null;
+	let divEl: HTMLDivElement;
 	let editor: monaco.editor.IStandaloneCodeEditor;
 	let Monaco: typeof monaco;
 
@@ -99,4 +99,4 @@
 	});
 </script>
 
-<div bind:this={divEl} id="editor" class="overflow-hidden" />
+<div bind:this={divEl} id="editor" class="overflow-hidden min-h-12" />

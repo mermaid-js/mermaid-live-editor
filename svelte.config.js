@@ -22,7 +22,7 @@ const config = {
 		trailingSlash: 'ignore',
 		vite: {
 			envPrefix: 'MERMAID_',
-			optimizeDeps: { include: ['mermaid'] }
+			optimizeDeps: { include: ['mermaid', 'monaco-editor'] }
 		},
 		prerender: {
 			default: true
