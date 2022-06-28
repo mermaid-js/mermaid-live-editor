@@ -9,7 +9,7 @@
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
-	let Monaco;
+	let Monaco: typeof monaco;
 
 	export let text: string;
 	export let language: string;
@@ -23,19 +23,19 @@
 		overviewRulerLanes: 0
 	};
 	let oldText = text;
-	$: editor && Monaco?.editor.setModelLanguage(editor.getModel(), language);
+	$: editor && Monaco.editor.setModelLanguage(editor.getModel(), language);
 	$: {
 		if (text !== oldText) {
-			if ($stateStore.updateEditor) {
-				editor?.setValue(text);
+			if (editor && $stateStore.updateEditor) {
+				editor.setValue(text);
 			}
 			oldText = text;
 		}
-		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', $stateStore.errorMarkers);
+		editor && Monaco.editor.setModelMarkers(editor.getModel(), 'test', $stateStore.errorMarkers);
 	}
 
 	themeStore.subscribe(({ isDark }) => {
-		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
+		editor && Monaco.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
 	});
 
 	const dispatch = createEventDispatcher<EditorEvents>();
