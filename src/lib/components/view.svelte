@@ -57,7 +57,7 @@
 </script>
 
 {#if error && $stateStore.error instanceof Error}
-	<div class="p-2 text-red-600">{$stateStore.error}</div>
+	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
 {/if}
 
 <div id="view" bind:this={view} class="p-2" class:error class:outOfSync>
