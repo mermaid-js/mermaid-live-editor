@@ -95,7 +95,10 @@
 	};
 
 	const loadSampleDiagram = (diagramType: string): void => {
-		updateCode(samples[diagramType], true, true);
+		updateCode(samples[diagramType], {
+			updateDiagram: true,
+			updateEditor: true
+		});
 	};
 </script>
 

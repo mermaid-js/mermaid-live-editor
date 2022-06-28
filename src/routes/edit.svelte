@@ -6,16 +6,13 @@
 	import View from '$lib/components/view.svelte';
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
-	import { updateCode, updateConfig, codeStore, serializedState } from '$lib/util/state';
+	import { updateCode, updateConfig, inputStateStore, stateStore } from '$lib/util/state';
 	import { initHandler, syncDiagram } from '$lib/util/util';
-	import { errorStore } from '$lib/util/error';
 	import { onMount } from 'svelte';
-	import mermaid from 'mermaid';
-	import type monaco from 'monaco-editor';
 	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
 
-	serializedState; // Weird fix for error > serializedState is not defined. Treeshaking?
+	// stateStore; // Weird fix for error > serializedState is not defined. Treeshaking?
 
 	type Modes = 'code' | 'config';
 	type Languages = 'mermaid' | 'json';
@@ -68,17 +65,16 @@
 	let text = '';
 	let docURL = docURLBase;
 	let language: Languages = 'mermaid';
-	let errorMarkers: monaco.editor.IMarkerData[] = [];
 	$: language = languageMap[selectedMode];
 	$: {
 		if (selectedMode === 'code') {
-			text = $codeStore.code;
+			text = $stateStore.code;
 		} else {
-			text = $codeStore.mermaid;
+			text = $stateStore.mermaid;
 		}
 	}
 
-	codeStore.subscribe((state: State) => {
+	stateStore.subscribe((state: State) => {
 		if (state.updateEditor) {
 			text = selectedMode === 'code' ? state.code : state.mermaid;
 		}
@@ -91,7 +87,7 @@
 	});
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		selectedMode = message.detail.id === 'code' ? 'code' : 'config';
-		$codeStore.updateEditor = true;
+		$inputStateStore.updateEditor = true;
 	};
 	const tabs: Tab[] = [
 		{
@@ -106,55 +102,26 @@
 		}
 	];
 
-	const handleCodeUpdate = (code: string): void => {
-		mermaid.parse(code);
-		updateCode(code, false);
-	};
-
-	const handleConfigUpdate = (config: string): void => {
-		JSON.parse(config);
-		updateConfig(config, false);
-	};
-
 	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
-		try {
-			if (selectedMode === 'code') {
-				handleCodeUpdate(message.detail.text);
-			} else {
-				handleConfigUpdate(message.detail.text);
-			}
-			errorStore.set(undefined);
-			errorMarkers = [];
-		} catch (e) {
-			errorStore.set(e);
-			if (e.hash) {
-				const marker: monaco.editor.IMarkerData = {
-					severity: 8, //Error
-					startLineNumber: e.hash.loc.first_line,
-					startColumn: e.hash.loc.first_column,
-					endLineNumber: e.hash.loc.last_line,
-					endColumn: (e.hash.loc.last_column as number) + 1,
-					message: e.str
-				};
-				errorMarkers.push(marker);
-				// Clear all previous errors before this error.
-				errorMarkers = errorMarkers.filter(
-					(m) => m.startLineNumber >= marker.startLineNumber && m.startColumn >= marker.startColumn
-				);
-			}
-			console.error(e);
+		const code = message.detail.text;
+		if (selectedMode === 'code') {
+			updateCode(code, {
+				updateEditor: false
+			});
+		} else {
+			updateConfig(code, false);
 		}
 	};
 
 	const viewDiagram = () => {
-		window.open(`${base}/view#${$serializedState}`, '_blank').focus();
+		window.open(`${base}/view#${$stateStore.serialized}`, '_blank').focus();
 	};
 
 	onMount(async () => {
 		await initHandler();
 		const resizer = document.getElementById('resizeHandler');
 		const element = document.getElementById('editorPane');
-		const resize = (e) => {
+		const resize = (e: { pageX: number }) => {
 			const newWidth = e.pageX - element.getBoundingClientRect().left;
 			if (newWidth > 50) {
 				element.style.width = `${newWidth}px`;
@@ -184,13 +151,13 @@
 								<span> Auto sync</span>
 								<input
 									type="checkbox"
-									class="toggle {$codeStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
+									class="toggle {$stateStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
 									id="autoSync"
-									bind:checked={$codeStore.autoSync} />
+									bind:checked={$stateStore.autoSync} />
 							</label>
 						</div>
 
-						{#if !$codeStore.autoSync}
+						{#if !$stateStore.autoSync}
 							<button
 								class="btn btn-secondary btn-xs mr-1"
 								title="Sync Diagram"
@@ -204,7 +171,7 @@
 					</div>
 				</div>
 
-				<Editor on:update={updateHandler} {language} bind:text {errorMarkers} />
+				<Editor on:update={updateHandler} {language} bind:text />
 			</Card>
 
 			<div class="-mt-2">

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Card from '$lib/components/card/card.svelte';
-	import { codeStore, getStateString } from '$lib/util/state';
+	import { inputStateStore, getStateString } from '$lib/util/state';
 	import {
 		addHistoryEntry,
 		historyModeStore,
@@ -37,7 +37,7 @@
 		const previousState: string = getPreviousState(auto);
 		if (previousState !== currentState) {
 			addHistoryEntry({
-				state: $codeStore,
+				state: $inputStateStore,
 				time: Date.now(),
 				type: auto ? 'auto' : 'manual'
 			});
@@ -54,7 +54,7 @@
 	};
 
 	const restoreHistory = (state: State): void => {
-		codeStore.set({ ...state, updateEditor: true, updateDiagram: true });
+		inputStateStore.set({ ...state, updateEditor: true, updateDiagram: true });
 	};
 
 	const relativeTime = (time: number) => {

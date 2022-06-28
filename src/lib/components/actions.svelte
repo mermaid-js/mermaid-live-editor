@@ -4,7 +4,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
 	import { pakoSerde } from '$lib/util/serde';
-	import { serializedState, codeStore } from '$lib/util/state';
+	import { stateStore } from '$lib/util/state';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
@@ -130,10 +130,10 @@
 	};
 
 	let gistURL = '';
-	codeStore.subscribe((state) => {
-		if (state.loader?.type === 'gist') {
+	stateStore.subscribe(({ loader }) => {
+		if (loader?.type === 'gist') {
 			// @ts-ignore Gist will have url
-			gistURL = state.loader.config.url;
+			gistURL = loader.config.url;
 		}
 	});
 
@@ -155,11 +155,11 @@
 	if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
 		isNetlify = true;
 	}
-	serializedState.subscribe((encodedState: string) => {
-		iUrl = `${rendererUrl}/img/${encodedState}`;
-		svgUrl = `${rendererUrl}/svg/${encodedState}`;
-		krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize($codeStore.code)}`;
-		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${encodedState})`;
+	stateStore.subscribe(({ code, serialized }) => {
+		iUrl = `${rendererUrl}/img/${serialized}`;
+		svgUrl = `${rendererUrl}/svg/${serialized}`;
+		krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`;
+		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`;
 	});
 </script>
 

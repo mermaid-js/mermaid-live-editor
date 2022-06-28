@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { errorStore } from '$lib/util/error';
-
-	import { codeStore } from '$lib/util/state';
+	import { inputStateStore, stateStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
 
@@ -13,11 +11,17 @@
 	let outOfSync = false;
 	let manualUpdate = true;
 	onMount(() => {
-		codeStore.subscribe((state) => {
+		stateStore.subscribe((state) => {
+			console.log(state);
+			if (state.error !== undefined) {
+				error = true;
+				return;
+			}
+			error = false;
 			try {
 				if (container && state && (state.updateDiagram || state.autoSync)) {
 					if (!state.autoSync) {
-						$codeStore.updateDiagram = false;
+						$inputStateStore.updateDiagram = false;
 					}
 					outOfSync = false;
 					manualUpdate = true;
@@ -31,7 +35,10 @@
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
-						container.innerHTML = svgCode;
+						if (svgCode.length > 0) {
+							console.log(svgCode);
+							container.innerHTML = svgCode;
+						}
 					});
 					view.parentElement.scrollTop = scroll;
 					error = false;
@@ -42,19 +49,16 @@
 				}
 			} catch (e) {
 				console.log('view fail', e);
+				// errorStore.set(e);
 				error = true;
-			}
-		});
-		errorStore.subscribe((err) => {
-			if (typeof err === 'undefined') {
-				error = false;
-			} else {
-				error = true;
-				console.log('Error: ', err);
 			}
 		});
 	});
 </script>
+
+{#if error && $stateStore.error instanceof Error}
+	<div class="p-2 text-red-600">{$stateStore.error}</div>
+{/if}
 
 <div id="view" bind:this={view} class="p-2" class:error class:outOfSync>
 	<div id="container" bind:this={container} class="flex-1 overflow-auto" />
@@ -62,7 +66,6 @@
 
 <style>
 	#view {
-		border: 1px solor darkred;
 		flex: 1;
 	}
 	.error,
