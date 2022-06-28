@@ -17,7 +17,7 @@ describe('Site Loads', () => {
 		);
 		cy.url().should(
 			'include',
-			'/edit#pako:eNpVkM1qw0AMhF9F6NRC_AI-FBo7zSXQQHLz-iC8cnZJ9oe1TAm2373rmkKrk9B8MwyasAuascRbomjgWisPed6byiQ7iKOhhaJ4m48s4ILn5wz7l2OAwYQYrb-9bvx-haCaTivGIMb6-7JJ1Y__0_MMdXOiKCG2f5XrV5jh0NizyfH_FZM4uz6ansqeio4SVJRa3KHj5MjqXHtaDQrFsGOFZV419zQ-RKHyS0bHqEn4oK2EhDnmMfAOaZRwefoOS0kj_0K1pfwFtx2XbzAdW4g'
+			'/edit#pako:eNpVkE1qw0AMha8itEohvoAXhcZOsgm00Ow8XgiPnBna-WEsU4Ltu3ccE2i1kvS-9xCasAuascRbomjgWisPud6ayiQ7iKOhhaJ4nc8s4ILn-wyH3TnAYEKM1t9eNv6wQlBNlxVjEGP917JJ1cP_7nmGurlQlBDbv8r1J8xwbOyHyfH_FZM4u05NT2VPRUcJKkot7tFxcmR1PntaDQrFsGOFZW419zR-i0Lll4yOUZPwUVsJCUtJI--RRgmfd989542pLeUnuG25_ALXsls9'
 		);
 		cy.contains('History').click();
 		cy.getLocalStorage('codeStore').snapshot();
