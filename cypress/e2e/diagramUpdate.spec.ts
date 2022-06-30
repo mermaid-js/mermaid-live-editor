@@ -3,6 +3,7 @@ describe('Auto sync tests', () => {
 		cy.clearLocalStorage();
 		cy.visit('/');
 	});
+
 	it('should dim diagram when code is edited', () => {
 		cy.contains('Auto sync').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
@@ -39,5 +40,18 @@ describe('Auto sync tests', () => {
 
 		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
 		cy.get('#view').contains('Car').should('exist');
+	});
+
+	it('supports editing code when code is incorrect', () => {
+		cy.visit(
+			'/edit#pako:eNpljjEKwzAMRa8SNOcEnlt6gK5eVFvYJsgOqkwpIXevg9smEE1PnyfxF3DFExgISW-CczQ2D21cYU7a-SGYXRwyvTp9jUhuKlVP-eHy7zA-leQsMEmg_QOM0BLG5FujZVMsaCQmC6ahR5ks2Lw2r84ela4-aREwKpVGwKrl_s7ut3fnkjAIcg_XDzuaUhs'
+		);
+		cy.get('#editor').type(`{enter}branch test`);
+		cy.get('#editor').contains('branch test').should('exist');
+		cy.get('#errorContainer')
+			.contains(
+				'Error: Trying to checkout branch which is not yet created. (Help try using "branch master")'
+			)
+			.should('exist');
 	});
 });

@@ -6,6 +6,16 @@ export interface Locals {
 	userid: string;
 }
 
+export interface MarkerData {
+	severity: number;
+	message: string;
+	source?: string;
+	startLineNumber: number;
+	startColumn: number;
+	endLineNumber: number;
+	endColumn: number;
+}
+
 export interface EditorUpdateEvent {
 	text: string;
 }
@@ -30,6 +40,12 @@ export interface State {
 	updateDiagram: boolean;
 	autoSync: boolean;
 	loader?: LoaderConfig;
+}
+
+export interface ValidatedState extends State {
+	error: any;
+	errorMarkers: MarkerData[];
+	serialized: string;
 }
 
 export interface GistLoaderConfig {
@@ -64,4 +80,4 @@ export interface DocConfig {
 	};
 }
 
-type Loader = (url: string) => Promise<State>;
+export type Loader = (url: string) => Promise<State>;
