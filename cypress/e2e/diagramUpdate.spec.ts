@@ -46,6 +46,7 @@ describe('Auto sync tests', () => {
 		cy.visit(
 			'/edit#pako:eNpljjEKwzAMRa8SNOcEnlt6gK5eVFvYJsgOqkwpIXevg9smEE1PnyfxF3DFExgISW-CczQ2D21cYU7a-SGYXRwyvTp9jUhuKlVP-eHy7zA-leQsMEmg_QOM0BLG5FujZVMsaCQmC6ahR5ks2Lw2r84ela4-aREwKpVGwKrl_s7ut3fnkjAIcg_XDzuaUhs'
 		);
+		cy.get('#errorContainer').should('not.exist');
 		cy.get('#editor').type(`{enter}branch test`);
 		cy.get('#editor').contains('branch test').should('exist');
 		cy.get('#errorContainer')
