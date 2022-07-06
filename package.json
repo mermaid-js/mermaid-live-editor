@@ -1,6 +1,8 @@
 {
 	"name": "mermaid-live-editor",
 	"version": "2.0.67",
+	"type": "module",
+	"license": "MIT",
 	"scripts": {
 		"dev": "svelte-kit dev --host 0.0.0.0",
 		"build": "svelte-kit build",
@@ -49,7 +51,6 @@
 		"tslib": "^2.4.0",
 		"typescript": "^4.7.4"
 	},
-	"type": "module",
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
 		"@macfja/svelte-persistent-store": "^1.3.0",
