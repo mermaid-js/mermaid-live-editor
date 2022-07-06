@@ -1,4 +1,12 @@
 describe('Auto sync tests', () => {
+	const cmd = Cypress.platform === 'darwin' ? 'meta' : 'ctrl';
+	const getEditor = ({ bottom = true, newline = false } = {}) =>
+		cy
+			.get('#editor textarea:first')
+			.click()
+			.focused()
+			.type(`{${cmd}}${bottom ? '{downarrow}' : ''}${newline ? '{enter}' : ''}`);
+
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
@@ -7,7 +15,7 @@ describe('Auto sync tests', () => {
 	it('should dim diagram when code is edited', () => {
 		cy.contains('Auto sync').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
-		cy.get('#editor').type('  C --> Test');
+		getEditor().type('C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
 		cy.getLocalStorage('codeStore').snapshot();
 	});
@@ -19,26 +27,25 @@ describe('Auto sync tests', () => {
 		cy.get('#autoSync').check();
 		cy.get('[data-cy=sync]').should('not.exist');
 	});
+
 	it('should not dim diagram when code is in sync', () => {
 		cy.contains('Auto sync').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
-		cy.get('#editor').type('  C --> Test');
+		getEditor().type('C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
 		cy.get('[data-cy=sync]').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		cy.get('#autoSync').check();
-		cy.get('#editor').type('ing');
+		getEditor().type('ing');
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		cy.getLocalStorage('codeStore').snapshot();
 	});
 
 	it('supports commenting code out/in', () => {
-		const cmd = Cypress.platform === 'darwin' ? 'meta' : 'ctrl';
-
-		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
+		getEditor().type(`{uparrow}{${cmd}}/`);
 		cy.get('#view').contains('Car').should('not.exist');
 
-		cy.get('#editor').type(`{uparrow}{${cmd}}/`);
+		getEditor().type(`{uparrow}{${cmd}}/`);
 		cy.get('#view').contains('Car').should('exist');
 	});
 
@@ -47,7 +54,7 @@ describe('Auto sync tests', () => {
 			'/edit#pako:eNpljjEKwzAMRa8SNOcEnlt6gK5eVFvYJsgOqkwpIXevg9smEE1PnyfxF3DFExgISW-CczQ2D21cYU7a-SGYXRwyvTp9jUhuKlVP-eHy7zA-leQsMEmg_QOM0BLG5FujZVMsaCQmC6ahR5ks2Lw2r84ela4-aREwKpVGwKrl_s7ut3fnkjAIcg_XDzuaUhs'
 		);
 		cy.get('#errorContainer').should('not.exist');
-		cy.get('#editor').type(`{enter}branch test`);
+		getEditor({ newline: true }).type(`branch test`);
 		cy.get('#editor').contains('branch test').should('exist');
 		cy.get('#errorContainer')
 			.contains(
