@@ -43,7 +43,7 @@ export interface State {
 }
 
 export interface ValidatedState extends State {
-	error: any;
+	error: unknown;
 	errorMarkers: MarkerData[];
 	serialized: string;
 }

@@ -11,7 +11,7 @@ const config = {
 		environment: 'jsdom',
 		// in-source testing
 		includeSource: ['src/**/*.{js,ts,svelte}'],
-		// setupFiles: ['./src/tests/setup.ts'],
+		setupFiles: ['./src/tests/setup.ts'],
 		coverage: {
 			exclude: ['src/mocks', '.svelte-kit', 'src/**/*.test.ts'],
 			reporter: ['text', 'json', 'html', 'lcov']
