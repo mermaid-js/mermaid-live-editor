@@ -4,9 +4,9 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
-		"dev": "svelte-kit dev --host 0.0.0.0",
-		"build": "svelte-kit build",
-		"preview": "svelte-kit preview",
+		"dev": "vite dev --host 0.0.0.0",
+		"build": "vite build",
+		"preview": "vite preview",
 		"lint": "prettier --check --cache --plugin-search-dir=. .;eslint --ignore-path .gitignore .",
 		"lint:fix": "prettier --write --cache --plugin-search-dir=. .;eslint --fix --ignore-path .gitignore .",
 		"format": "prettier --write --cache --plugin-search-dir=. .",
@@ -49,7 +49,8 @@
 		"svelte-preprocess": "4.10.7",
 		"tailwindcss": "^3.1.4",
 		"tslib": "^2.4.0",
-		"typescript": "^4.7.4"
+		"typescript": "^4.7.4",
+		"vite": "^2.9.13"
 	},
 	"dependencies": {
 		"@analytics/google-analytics": "^0.5.3",
