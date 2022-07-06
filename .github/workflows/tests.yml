@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Tests
 
 on:
   pull_request:
@@ -35,6 +35,9 @@ jobs:
           yarn install
           yarn build
           yarn lint
+
+      - name: Unit Tests
+        run: yarn test:unit
 
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
