@@ -16,7 +16,7 @@ describe('Auto sync tests', () => {
 	it('should dim diagram when code is edited', () => {
 		cy.contains('Auto sync').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
-		getEditor().type('C --> Test');
+		getEditor().type('  C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
 		cy.getLocalStorage('codeStore').snapshot();
 	});
@@ -32,7 +32,7 @@ describe('Auto sync tests', () => {
 	it('should not dim diagram when code is in sync', () => {
 		cy.contains('Auto sync').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
-		getEditor().type('C --> Test');
+		getEditor().type('  C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
 		cy.get('[data-cy=sync]').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
