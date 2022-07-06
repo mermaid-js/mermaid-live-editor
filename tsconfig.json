@@ -8,7 +8,6 @@
 		"static/**/*.js"
 	],
 	"compilerOptions": {
-		"lib": ["ESNext", "dom"],
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"types": ["vitest/importMeta"]
