@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { EditorEvents } from '$lib/types';
-	import { codeStore } from '$lib/util/state';
+	import { stateStore } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
@@ -21,17 +21,16 @@
 		theme: 'mermaid',
 		overviewRulerLanes: 0
 	};
-	export let errorMarkers: monaco.editor.IMarkerData[] = [];
 	let oldText = text;
 	$: editor && Monaco?.editor.setModelLanguage(editor.getModel(), language);
 	$: {
 		if (text !== oldText) {
-			if ($codeStore.updateEditor) {
+			if ($stateStore.updateEditor) {
 				editor?.setValue(text);
 			}
 			oldText = text;
 		}
-		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
+		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', $stateStore.errorMarkers);
 	}
 
 	themeStore.subscribe(({ isDark }) => {
