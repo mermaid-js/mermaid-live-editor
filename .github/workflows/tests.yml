@@ -30,20 +30,19 @@ jobs:
           node-version: 16
           cache: 'yarn'
 
-      - name: Build & Lint
+      - name: Build, Lint & Test
         run: |
           yarn install
           yarn build
           yarn lint
-
-      - name: Unit Tests
-        run: yarn test:unit
+          yarn test:unit
 
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
+          install: false
           start: yarn preview
           wait-on: 'http://localhost:3000'
           record: true
