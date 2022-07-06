@@ -5,7 +5,8 @@ describe('Auto sync tests', () => {
 			.get('#editor textarea:first')
 			.click()
 			.focused()
-			.type(`{${cmd}}${bottom ? '{downarrow}' : ''}${newline ? '{enter}' : ''}`);
+			.type(`${bottom ? '{pageDown}' : `{${cmd}}`}`)
+			.type(`${newline ? '{enter}' : `{${cmd}}`}`);
 
 	beforeEach(() => {
 		cy.clearLocalStorage();
