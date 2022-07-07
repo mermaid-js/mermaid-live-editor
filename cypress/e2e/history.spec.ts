@@ -47,7 +47,6 @@ describe('Save History', () => {
 	});
 
 	// TODO: Fix #639
-	// eslint-disable-next-line mocha/no-skipped-tests
 	xit('should auto save history', () => {
 		cy.get('#editor').type('  C --> HistoryTest');
 		cy.tick(70000);

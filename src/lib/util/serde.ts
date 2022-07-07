@@ -28,18 +28,20 @@ export const pakoSerde: Serde = {
 	}
 };
 
-const serdes: { [key: string]: Serde } = {
+export type SerdeType = 'base64' | 'pako';
+
+const serdes: { [key in SerdeType]: Serde } = {
 	base64: base64Serde,
 	pako: pakoSerde
 };
 
-type SerdeType = keyof typeof serdes;
-
-export const serializeState = (state: State): string => {
+export const serializeState = (state: State, serde: SerdeType = 'pako'): string => {
+	if (serdes[serde] === undefined) {
+		throw new Error(`Unknown serde type: ${serde}`);
+	}
 	const json = JSON.stringify(state);
-	const defaultSerde: SerdeType = 'pako';
-	const serialized = serdes[defaultSerde].serialize(json);
-	return `${defaultSerde}:${serialized}`;
+	const serialized = serdes[serde].serialize(json);
+	return `${serde}:${serialized}`;
 };
 
 export const deserializeState = (state: string): State => {
@@ -48,7 +50,7 @@ export const deserializeState = (state: string): State => {
 		let tempType: string;
 		[tempType, serialized] = state.split(':');
 		if (tempType in serdes) {
-			type = tempType;
+			type = tempType as SerdeType;
 		} else {
 			throw new Error(`Unknown serde type: ${tempType}`);
 		}

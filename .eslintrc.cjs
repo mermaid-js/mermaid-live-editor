@@ -7,7 +7,7 @@ module.exports = {
 		// 'plugin:@typescript-eslint/recommended-requiring-type-checking',
 		'prettier'
 	],
-	plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es'],
+	plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es', 'vitest'],
 	ignorePatterns: [
 		'docs/*',
 		'*.cjs',

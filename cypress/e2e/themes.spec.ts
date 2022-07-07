@@ -32,7 +32,6 @@ describe('Test themes', () => {
 	});
 
 	describe('Test dark mode', () => {
-		// eslint-disable-next-line mocha/no-hooks-for-single-case
 		beforeEach(() => {
 			cy.clearLocalStorage();
 			cy.visit('/edit', {

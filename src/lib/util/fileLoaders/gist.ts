@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -43,6 +44,7 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
 		}
 		const currentItem = history[0];
 		return {
+			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 			url: `${html_url}/${currentItem.version}`,
 			code,
 			config,
