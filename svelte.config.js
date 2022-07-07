@@ -20,10 +20,6 @@ const config = {
 			  }
 			: {},
 		trailingSlash: 'ignore',
-		vite: {
-			envPrefix: 'MERMAID_',
-			optimizeDeps: { include: ['mermaid'] }
-		},
 		prerender: {
 			default: true
 		}

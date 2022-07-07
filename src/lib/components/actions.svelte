@@ -57,6 +57,7 @@
 		const svgEl: HTMLElement = document
 			.querySelector('#container svg')
 			.cloneNode(true) as HTMLElement;
+		svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
 		const fontAwesomeCdnUrl = Array.from(document.head.getElementsByTagName('link'))
 			.map((l) => l.href)
 			.find((h) => h && h.includes('font-awesome'));

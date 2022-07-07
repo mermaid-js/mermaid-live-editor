@@ -6,7 +6,7 @@ Live editor only has a single version, which will be maintained.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| latest   | :white_check_mark: |
+| latest  | :white_check_mark: |
 
 ## Reporting a Vulnerability
 

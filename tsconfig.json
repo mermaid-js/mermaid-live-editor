@@ -8,7 +8,9 @@
 		"static/**/*.js"
 	],
 	"compilerOptions": {
-		"allowSyntheticDefaultImports": true
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"types": ["vitest/importMeta"]
 	},
 	"extends": "./.svelte-kit/tsconfig.json"
 }
