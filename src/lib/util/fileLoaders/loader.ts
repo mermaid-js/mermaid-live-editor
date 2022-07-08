@@ -23,6 +23,9 @@ export const loadDataFromUrl = async (): Promise<void> => {
 		config = defaultState.mermaid;
 	}
 	if (!code) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		for (const [key, value] of searchParams.entries()) {
 			if (key in loaders) {
 				try {

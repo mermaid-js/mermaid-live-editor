@@ -10,7 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ./bin/update-monaco
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: Update monaco version
+        run: |
+          yarn install
+          node ./bin/update-monaco.js
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
