@@ -111,10 +111,6 @@
 		}
 	};
 
-	const viewDiagram = () => {
-		window.open(`${base}/view#${$stateStore.serialized}`, '_blank').focus();
-	};
-
 	onMount(async () => {
 		await initHandler();
 		const resizer = document.getElementById('resizeHandler');
@@ -181,11 +177,13 @@
 		<div id="resizeHandler" class="hidden md:block" />
 		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
-				<button
+				<a
+					href={`${base}/view#${$stateStore.serialized}`}
+					target="_blank"
 					slot="actions"
 					class="btn btn-secondary btn-xs"
 					title="View diagram in new page"
-					on:click|stopPropagation={() => viewDiagram()}><i class="far fa-eye mr-1" />View</button>
+					><i class="fas fa-external-link-alt mr-1" />Full screen</a>
 
 				<div class="flex-1 overflow-auto">
 					<View />
