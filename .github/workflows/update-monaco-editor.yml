@@ -13,7 +13,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 18
-      - run: node ./bin/update-monaco.js
+      - name: Update monaco version
+        run: |
+          yarn install
+          node ./bin/update-monaco.js
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
