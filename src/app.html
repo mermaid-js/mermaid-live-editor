@@ -15,30 +15,38 @@
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
 		<link
 			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+			integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.min.css"
+			integrity="sha512-633RnebxsjmF57QUx9c85T6XILSAuJFzKnN5dVsUQ3nsc7c0bW649fCj1Z8ZkAbo5vAHnKZIsGqDokJRiABupA=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer" />
 		<script>
 			var require = {
-				paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }
+				paths: {
+					vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs",
+				},
 			};
 		</script>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.min.js"
+			integrity="sha512-O9SYDgWAM3bEzit1z6mkFd+dxKUplO/oB8UwYGAkg2Zy/WzDUQ2mYA/ysk3c0CxiXAN4u8T9JeZ0Ahk2Jj/33Q=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"></script>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.nls.min.js"
+			integrity="sha512-TShm8t61Zg9dutpJGD4KMy+VO4yVW0pgvHfeFjovzp+kBcSpblO7mBGSbL2ncApu0FfiqHiygwcef65+qiLRxg=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"></script>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.js"
+			integrity="sha512-7p8WMGQI2IAHj9dn6uYYQYGsHNlpMp8Wv4Q1M0SNxM+8Rd16sHL7gXmktieLjh1iyWl41doD6NOiId7e+XCw6Q=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"></script>
-
 		%sveltekit.head%
 	</head>
 	<body>
