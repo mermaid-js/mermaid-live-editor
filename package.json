@@ -59,7 +59,7 @@
 		"tslib": "2.4.0",
 		"typescript": "4.7.4",
 		"vite": "2.9.13",
-		"vitest": "0.17.0",
+		"vitest": "0.17.1",
 		"vitest-svelte-kit": "0.0.6"
 	},
 	"dependencies": {
