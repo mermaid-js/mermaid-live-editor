@@ -29,7 +29,7 @@
 		"@types/pako": "1.0.3",
 		"@typescript-eslint/eslint-plugin": "5.30.6",
 		"@typescript-eslint/parser": "5.30.6",
-		"@vitest/ui": "0.17.1",
+		"@vitest/ui": "0.18.0",
 		"autoprefixer": "10.4.7",
 		"c8": "7.11.3",
 		"chai": "4.3.6",
