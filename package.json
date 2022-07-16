@@ -22,14 +22,14 @@
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.36",
-		"@sveltejs/kit": "1.0.0-next.372",
+		"@sveltejs/kit": "1.0.0-next.377",
 		"@testing-library/jest-dom": "5.16.4",
 		"@testing-library/svelte": "3.1.3",
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "1.0.3",
 		"@typescript-eslint/eslint-plugin": "5.30.6",
 		"@typescript-eslint/parser": "5.30.6",
-		"@vitest/ui": "0.17.1",
+		"@vitest/ui": "0.18.0",
 		"autoprefixer": "10.4.7",
 		"c8": "7.11.3",
 		"chai": "4.3.6",
@@ -59,7 +59,7 @@
 		"tslib": "2.4.0",
 		"typescript": "4.7.4",
 		"vite": "2.9.13",
-		"vitest": "0.18.0",
+		"vitest": "0.18.1",
 		"vitest-svelte-kit": "0.0.6"
 	},
 	"dependencies": {
