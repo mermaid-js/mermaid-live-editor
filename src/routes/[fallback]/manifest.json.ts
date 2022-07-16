@@ -1,2 +1,2 @@
-import { get as manifestGet } from '../manifest.json';
-export const get = manifestGet;
+import { GET as manifestGet } from '../manifest.json';
+export const GET = manifestGet;

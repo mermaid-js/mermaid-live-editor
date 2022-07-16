@@ -1,5 +1,5 @@
 import { base } from '$app/paths';
-export const get = (): { body: unknown } => {
+export const GET = (): { body: unknown } => {
 	return {
 		body: {
 			short_name: 'Mermaid',
