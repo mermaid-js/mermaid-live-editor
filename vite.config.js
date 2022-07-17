@@ -7,6 +7,9 @@ const config = {
 	ssr: {
 		noExternal: ['@macfja/svelte-persistent-store']
 	},
+	preview: {
+		port: 3000
+	},
 	test: {
 		environment: 'jsdom',
 		// in-source testing
