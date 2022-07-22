@@ -258,10 +258,10 @@
   dependencies:
     tiny-glob "^0.2.9"
 
-"@sveltejs/kit@1.0.0-next.377":
-  version "1.0.0-next.377"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.377.tgz#e74565b35e78d068a26640a3b5492e70dd2787c5"
-  integrity sha512-DH2v2yUBUuDZ7vzjPXUd/yt1AMR3BIkZN0ubLAvS2C+q5Wbvk7ZvAJhfPZ3OYc3ZpQXe4ZGEcptOjvEYvd1lLA==
+"@sveltejs/kit@1.0.0-next.390":
+  version "1.0.0-next.390"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.390.tgz#500d8a7119a598505c3fab301861ee2d1f9892eb"
+  integrity sha512-BlWjFL7v1y2vIYHMYMwH2Iy49eOkaunQ8jElQ9qMlC2kp/IdP3uLulS12ZX3oOURxoJICB4gQ82uEyjxen/kdQ==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.1"
     chokidar "^3.5.3"
