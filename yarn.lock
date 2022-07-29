@@ -1853,15 +1853,15 @@ dagre@^0.8.5:
     graphlib "^2.1.8"
     lodash "^4.17.15"
 
-daisyui@2.19.1:
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.19.1.tgz#0055f3727a7e5f29b279605f47d7c3de46114281"
-  integrity sha512-qExtDCp7N3F0Nlt7oVVehP1QMulbav8dXmEo66wavVxLVIf5tM4cV0F2Oi0OO0drzaez9v1LjBzk/vHMESs/lw==
+daisyui@2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.20.0.tgz#6abeeb628912a15636bfc9e924417d985c92fa89"
+  integrity sha512-97xFBWQOXV/JCVRrGI5xranElKMmXIajDxojTQ1qoYwcWlkfFE7hY4D/NyHVIzlQb+B4xbiXhVPJM7EleRAY8g==
   dependencies:
     color "^4.2"
     css-selector-tokenizer "^0.8.0"
     postcss-js "^4.0.0"
-    tailwindcss "^3.0"
+    tailwindcss "^3"
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -4765,7 +4765,7 @@ symbol-tree@^3.2.4:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
-tailwindcss@3.1.6, tailwindcss@^3.0, tailwindcss@^3.1.3:
+tailwindcss@3.1.6, tailwindcss@^3, tailwindcss@^3.1.3:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.1.6.tgz#bcb719357776c39e6376a8d84e9834b2b19a49f1"
   integrity sha512-7skAOY56erZAFQssT1xkpk+kWt2NrO45kORlxFPXUt3CiGsVPhH1smuH5XoDH6sGPXLyBv+zgCKA2HWBsgCytg==
