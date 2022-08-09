@@ -4,7 +4,7 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
-		"dev": "vite dev --host 0.0.0.0",
+		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check --cache --plugin-search-dir=. .;eslint --ignore-path .gitignore .",
@@ -28,14 +28,14 @@
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "1.0.3",
 		"@typescript-eslint/eslint-plugin": "5.32.0",
-		"@typescript-eslint/parser": "5.31.0",
+		"@typescript-eslint/parser": "5.33.0",
 		"@vitest/ui": "0.21.0",
 		"autoprefixer": "10.4.8",
 		"c8": "7.12.0",
 		"chai": "4.3.6",
 		"cssnano": "5.1.12",
 		"cy-verify-downloads": "0.1.8",
-		"cypress": "10.3.1",
+		"cypress": "10.4.0",
 		"cypress-localstorage-commands": "2.2.0",
 		"eslint": "8.20.0",
 		"eslint-config-prettier": "8.5.0",
@@ -60,7 +60,7 @@
 		"typescript": "4.7.4",
 		"vite": "^3.0.4",
 		"vitest": "0.19.1",
-		"vitest-svelte-kit": "0.0.6"
+		"vitest-svelte-kit": "0.0.7"
 	},
 	"dependencies": {
 		"@analytics/google-analytics": "1.0.3",
@@ -70,7 +70,7 @@
 		"js-base64": "3.7.2",
 		"mermaid": "9.1.3",
 		"moment": "2.29.4",
-		"monaco-editor": "0.33.0",
+		"monaco-editor": "0.34.0",
 		"monaco-mermaid": "1.0.6",
 		"pako": "2.0.4",
 		"random-word-slugs": "0.1.6"
