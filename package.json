@@ -29,7 +29,7 @@
 		"@types/pako": "1.0.3",
 		"@typescript-eslint/eslint-plugin": "5.32.0",
 		"@typescript-eslint/parser": "5.31.0",
-		"@vitest/ui": "0.19.1",
+		"@vitest/ui": "0.21.0",
 		"autoprefixer": "10.4.8",
 		"c8": "7.12.0",
 		"chai": "4.3.6",
@@ -60,7 +60,7 @@
 		"typescript": "4.7.4",
 		"vite": "^3.0.4",
 		"vitest": "0.19.1",
-		"vitest-svelte-kit": "0.0.6"
+		"vitest-svelte-kit": "0.0.7"
 	},
 	"dependencies": {
 		"@analytics/google-analytics": "1.0.3",

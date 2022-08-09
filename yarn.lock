@@ -535,10 +535,10 @@
     "@typescript-eslint/types" "5.32.0"
     eslint-visitor-keys "^3.3.0"
 
-"@vitest/ui@0.19.1":
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.19.1.tgz#3760ebf796defe84480914200b9161837f7cafb9"
-  integrity sha512-TmbEJmcieK7chFJqdkgni4Lq/2MY6fKoxGPktromnnyabBkQFSGJlAl5vzFMYy8SfCj/zyaZy48FzDdWixziKg==
+"@vitest/ui@0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.21.0.tgz#f0b73e4f6d34bfeecfab0beb539d1dd3018122fe"
+  integrity sha512-xhMSwxsuaygIWn1jcTHbAVfNty6D2+hFVq+tvqNuSBE0WI3CWyeSOT1ISQ5urt3j5qoRbEXrZxWLC2dN3QeBSA==
   dependencies:
     sirv "^2.0.2"
 
@@ -5040,10 +5040,10 @@ verror@1.10.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest-svelte-kit@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/vitest-svelte-kit/-/vitest-svelte-kit-0.0.6.tgz#a8d5ea0c9340b440d75043ecbc9a4667ffeaceea"
-  integrity sha512-bQ1GcCAk600YV1xOiJBhltGE/HO/j6FozNY2BFq2GP1mHh3pj0KrGZlyx0kVlXx+BSKDXQHuYZtwlHwNlvv0fQ==
+vitest-svelte-kit@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/vitest-svelte-kit/-/vitest-svelte-kit-0.0.7.tgz#002b943a2946beffaadf20838ff0d950e8f861f3"
+  integrity sha512-B83C14BAQEwNqTHcZ1dEV9EuCwOEKglcix32zBqRFonTmnc652JUOPJhMDAkQmOzHlA+SIXZ3FNEKiJjXyd1JA==
 
 vitest@0.19.1:
   version "0.19.1"
