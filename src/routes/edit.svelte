@@ -64,13 +64,6 @@
 	let docURL = docURLBase;
 	let language: Languages = 'mermaid';
 	$: language = languageMap[selectedMode];
-	$: {
-		if (selectedMode === 'code') {
-			text = $stateStore.code;
-		} else {
-			text = $stateStore.mermaid;
-		}
-	}
 
 	stateStore.subscribe((state: State) => {
 		if (state.updateEditor) {
@@ -100,15 +93,19 @@
 		}
 	];
 
+	let debounce: { [key: string]: any } = {};
 	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
-		const code = message.detail.text;
-		if (selectedMode === 'code') {
-			updateCode(code, {
-				updateEditor: false
-			});
-		} else {
-			updateConfig(code, false);
-		}
+		clearTimeout(debounce[selectedMode]);
+		debounce[selectedMode] = setTimeout(() => {
+			const code = message.detail.text;
+			if (selectedMode === 'code') {
+				updateCode(code, {
+					updateEditor: false
+				});
+			} else {
+				updateConfig(code, false);
+			}
+		}, 300);
 	};
 
 	onMount(async () => {
