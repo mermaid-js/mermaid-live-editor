@@ -9,6 +9,11 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # run 3 copies of the current job in parallel
+        containers: [1, 2, 3]
 
     steps:
       - name: Checkout
@@ -30,12 +35,6 @@ jobs:
           node-version: 16
           cache: 'yarn'
 
-      - name: Lint & Test
-        run: |
-          yarn install
-          yarn lint
-          yarn test:unit
-
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
@@ -46,5 +45,6 @@ jobs:
           wait-on: 'http://localhost:3000'
           record: true
           headless: true
+          parallel: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
