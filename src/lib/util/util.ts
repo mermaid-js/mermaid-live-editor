@@ -1,4 +1,3 @@
-import type { State } from '$lib/types';
 import { initURLSubscription, loadState, updateCodeStore } from './state';
 import { analytics, initAnalytics } from './stats';
 import { loadDataFromUrl } from './fileLoaders/loader';
@@ -11,7 +10,7 @@ export const loadStateFromURL = (): void => {
 export const syncDiagram = (): void => {
 	updateCodeStore({
 		updateDiagram: true
-	} as State);
+	});
 };
 
 export const initHandler = async (): Promise<void> => {
@@ -22,3 +21,6 @@ export const initHandler = async (): Promise<void> => {
 	await initAnalytics();
 	analytics?.page();
 };
+
+export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+export const cmdKey = isMac ? 'Cmd' : 'Ctrl';

@@ -7,7 +7,7 @@ const loaders: Record<string, Loader> = {
 
 export const loadDataFromUrl = async (): Promise<void> => {
 	const searchParams = new URLSearchParams(window.location.search);
-	let state: State = defaultState;
+	let state: Partial<State> = defaultState;
 	let code: string, config: string;
 	let loaded = false;
 	const codeURL: string = searchParams.get('code');
@@ -48,7 +48,7 @@ export const loadDataFromUrl = async (): Promise<void> => {
 					configURL
 				}
 			}
-		} as State;
+		};
 	}
 	loaded &&
 		updateCodeStore({
