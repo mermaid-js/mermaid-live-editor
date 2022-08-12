@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { inputStateStore, stateStore } from '$lib/util/state';
+	import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
 	import panzoom from 'svg-pan-zoom';
@@ -12,9 +12,18 @@
 	let outOfSync = false;
 	let hide = false;
 	let manualUpdate = true;
-	let pan: SvgPanZoom.Point;
-	let zoom: number;
 	let pzoom: SvgPanZoom.Instance;
+	let debounce: number;
+
+	const handlePanZoomChange = () => {
+		const pan = pzoom.getPan();
+		const zoom = pzoom.getZoom();
+		clearTimeout(debounce);
+		debounce = window.setTimeout(() => {
+			updateCodeStore({ pan, zoom });
+		}, 500);
+	};
+
 	onMount(() => {
 		stateStore.subscribe((state) => {
 			if (state.error !== undefined) {
@@ -40,28 +49,25 @@
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
 						if (svgCode.length > 0) {
-							let oldPan = pan ? { ...pan } : undefined;
-							let oldZoom = zoom;
 							pzoom?.destroy();
+							pzoom = undefined;
 							hide = true;
 							container.innerHTML = svgCode;
 							setTimeout(() => {
-								pzoom = panzoom('#graph-div', {
-									onPan: (p) => {
-										pan = p;
-										zoom = pzoom.getZoom();
-									},
-									onZoom: (z) => {
-										zoom = z;
-										pan = pzoom.getPan();
-									},
-									zoomEnabled: true,
-									panEnabled: true,
-									controlIconsEnabled: true
+								const graphDiv = document.getElementById('graph-div');
+								graphDiv.setAttribute('height', '100%');
+								graphDiv.style.maxWidth = '100%';
+								pzoom = panzoom(graphDiv, {
+									onPan: handlePanZoomChange,
+									onZoom: handlePanZoomChange,
+									controlIconsEnabled: true,
+									fit: true,
+									center: true
 								});
-								if (oldPan !== undefined && oldZoom !== undefined) {
-									pzoom.zoom(oldZoom);
-									pzoom.pan(oldPan);
+								const { pan, zoom } = state;
+								if (pan !== undefined && zoom !== undefined) {
+									pzoom.zoom(zoom);
+									pzoom.pan(pan);
 								}
 								hide = false;
 							}, 0);
@@ -79,6 +85,13 @@
 				error = true;
 			}
 		});
+		window.addEventListener('resize', () => {
+			if (pzoom) {
+				pzoom.resize();
+				pzoom.fit();
+				pzoom.center();
+			}
+		});
 	});
 </script>
 
@@ -86,8 +99,8 @@
 	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
 {/if}
 
-<div id="view" bind:this={view} class="p-2" class:error class:outOfSync>
-	<div id="container" bind:this={container} class="flex-1 overflow-auto" class:hide />
+<div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
+	<div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
 </div>
 
 <style>

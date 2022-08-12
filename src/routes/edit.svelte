@@ -93,10 +93,10 @@
 		}
 	];
 
-	let debounce: { [key: string]: any } = {};
+	let debounce: { [key: string]: number } = {};
 	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
 		clearTimeout(debounce[selectedMode]);
-		debounce[selectedMode] = setTimeout(() => {
+		debounce[selectedMode] = window.setTimeout(() => {
 			const code = message.detail.text;
 			if (selectedMode === 'code') {
 				updateCode(code, {
