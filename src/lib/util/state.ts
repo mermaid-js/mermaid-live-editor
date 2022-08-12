@@ -2,6 +2,7 @@ import { writable, get, derived } from 'svelte/store';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { saveStatistics } from './stats';
 import { serializeState, deserializeState } from './serde';
+import { cmdKey } from './util';
 import mermaid from 'mermaid';
 
 import type { Readable } from 'svelte/store';
@@ -104,7 +105,7 @@ export const loadState = (data: string): void => {
 	updateCodeStore({ ...state, updateEditor: true });
 };
 
-export const updateCodeStore = (newState: State): void => {
+export const updateCodeStore = (newState: Partial<State>): void => {
 	inputStateStore.update((state) => {
 		return { ...state, ...newState };
 	});
@@ -120,13 +121,13 @@ export const updateCode = (
 
 	if (lines > 50 && !prompted && get(stateStore).autoSync) {
 		const turnOff = confirm(
-			'Long diagram detected. Turn off Auto Sync? Click the sync logo to manually sync.'
+			`Long diagram detected. Turn off Auto Sync? Use ${cmdKey} + Enter or click the sync logo to manually sync.`
 		);
 		prompted = true;
 		if (turnOff) {
 			updateCodeStore({
 				autoSync: false
-			} as State);
+			});
 		}
 	}
 

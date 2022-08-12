@@ -11,7 +11,7 @@ export const loadStateFromURL = (): void => {
 export const syncDiagram = (): void => {
 	updateCodeStore({
 		updateDiagram: true
-	} as State);
+	});
 };
 
 export const initHandler = async (): Promise<void> => {
@@ -24,3 +24,4 @@ export const initHandler = async (): Promise<void> => {
 };
 
 export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
