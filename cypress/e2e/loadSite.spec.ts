@@ -1,11 +1,13 @@
 import { toBase64 } from 'js-base64';
+import { disableDebounce } from './util';
 
 describe('Site Loads', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
+		cy.visit('/');
+		disableDebounce();
 	});
 	it('Check Home page load', () => {
-		cy.visit('/');
 		cy.url().should('include', '/edit');
 		cy.contains('History').click();
 		cy.getLocalStorage('codeStore').snapshot();
