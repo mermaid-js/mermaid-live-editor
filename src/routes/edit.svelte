@@ -63,7 +63,15 @@
 	let text = '';
 	let docURL = docURLBase;
 	let language: Languages = 'mermaid';
+	const handleModeUpdate = (mode: Modes) => {
+		if (mode === 'code') {
+			text = $stateStore.code;
+		} else {
+			text = $stateStore.mermaid;
+		}
+	};
 	$: language = languageMap[selectedMode];
+	$: handleModeUpdate(selectedMode);
 
 	stateStore.subscribe((state: State) => {
 		if (state.updateEditor) {
@@ -162,7 +170,7 @@
 					</div>
 				</div>
 
-				<Editor on:update={updateHandler} {language} bind:text />
+				<Editor on:update={updateHandler} {language} {text} />
 			</Card>
 
 			<div class="-mt-2">

@@ -1,12 +1,12 @@
 describe('Auto sync tests', () => {
-	const cmd = Cypress.platform === 'darwin' ? 'meta' : 'ctrl';
+	const cmd = `{${Cypress.platform === 'darwin' ? 'meta' : 'ctrl'}}`;
 	const getEditor = ({ bottom = true, newline = false } = {}) =>
 		cy
 			.get('#editor textarea:first')
 			.click()
 			.focused()
-			.type(`${bottom ? '{pageDown}' : `{${cmd}}`}`)
-			.type(`${newline ? '{enter}' : `{${cmd}}`}`);
+			.type(`${bottom ? '{pageDown}' : cmd}`)
+			.type(`${newline ? '{enter}' : cmd}`);
 
 	beforeEach(() => {
 		cy.clearLocalStorage();
@@ -26,7 +26,7 @@ describe('Auto sync tests', () => {
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		getEditor().type('  C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
-		getEditor().type(`{${cmd}}{enter}`);
+		getEditor().type(`${cmd}{enter}`);
 		cy.get('#view').should('not.have.class', 'outOfSync');
 	});
 
@@ -52,10 +52,10 @@ describe('Auto sync tests', () => {
 	});
 
 	it('supports commenting code out/in', () => {
-		getEditor().type(`{uparrow}{${cmd}}/`);
+		getEditor().type(`{uparrow}${cmd}/`);
 		cy.get('#view').contains('Car').should('not.exist');
 
-		getEditor().type(`{uparrow}{${cmd}}/`);
+		getEditor().type(`{uparrow}${cmd}/`);
 		cy.get('#view').contains('Car').should('exist');
 	});
 
