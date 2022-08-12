@@ -22,3 +22,5 @@ export const initHandler = async (): Promise<void> => {
 	await initAnalytics();
 	analytics?.page();
 };
+
+export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;

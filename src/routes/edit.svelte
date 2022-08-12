@@ -7,7 +7,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
 	import { updateCode, updateConfig, inputStateStore, stateStore } from '$lib/util/state';
-	import { initHandler, syncDiagram } from '$lib/util/util';
+	import { initHandler, isMac, syncDiagram } from '$lib/util/util';
 	import { onMount } from 'svelte';
 	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
@@ -154,7 +154,7 @@
 						{#if !$stateStore.autoSync}
 							<button
 								class="btn btn-secondary btn-xs mr-1"
-								title="Sync Diagram"
+								title="Sync Diagram ({isMac ? 'Cmd' : 'Ctrl'} + Enter)"
 								data-cy="sync"
 								on:click={syncDiagram}><i class="fas fa-sync" /></button>
 						{/if}

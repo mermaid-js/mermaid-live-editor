@@ -21,6 +21,15 @@ describe('Auto sync tests', () => {
 		cy.getLocalStorage('codeStore').snapshot();
 	});
 
+	it('should update diagram when shortcut is used', () => {
+		cy.contains('Auto sync').click();
+		cy.get('#view').should('not.have.class', 'outOfSync');
+		getEditor().type('  C --> Test');
+		cy.get('#view').should('have.class', 'outOfSync');
+		getEditor().type(`{${cmd}}{enter}`);
+		cy.get('#view').should('not.have.class', 'outOfSync');
+	});
+
 	it('should show/hide sync button with auto sync', () => {
 		cy.get('[data-cy=sync]').should('not.exist');
 		cy.contains('Auto sync').click();

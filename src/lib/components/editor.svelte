@@ -2,6 +2,7 @@
 	import type { EditorEvents } from '$lib/types';
 	import { stateStore } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
+	import { syncDiagram } from '$lib/util/util';
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
@@ -65,6 +66,14 @@
 			dispatch('update', {
 				text
 			});
+		});
+		editor.addAction({
+			id: 'mermaid-render-diagram',
+			label: 'Render Diagram',
+			keybindings: [Monaco.KeyMod.CtrlCmd | Monaco.KeyCode.Enter],
+			run: function () {
+				syncDiagram();
+			}
 		});
 		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
 		const resizeObserver = new ResizeObserver((entries) => {
