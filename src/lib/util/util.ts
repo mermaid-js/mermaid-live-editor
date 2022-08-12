@@ -1,4 +1,3 @@
-import type { State } from '$lib/types';
 import { initURLSubscription, loadState, updateCodeStore } from './state';
 import { analytics, initAnalytics } from './stats';
 import { loadDataFromUrl } from './fileLoaders/loader';
