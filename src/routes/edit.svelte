@@ -7,7 +7,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
 	import { updateCode, updateConfig, inputStateStore, stateStore } from '$lib/util/state';
-	import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
+	import { cmdKey, debounceMultiplier, initHandler, syncDiagram } from '$lib/util/util';
 	import { onMount } from 'svelte';
 	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
@@ -113,7 +113,7 @@
 			} else {
 				updateConfig(code, false);
 			}
-		}, 300);
+		}, 300 * debounceMultiplier);
 	};
 
 	onMount(async () => {

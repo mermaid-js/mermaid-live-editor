@@ -1,7 +1,9 @@
+import { disableDebounce } from './util';
 describe('Check actions', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/edit');
+		disableDebounce();
 	});
 
 	it('should update markdown code', () => {
@@ -24,8 +26,7 @@ describe('Check actions', () => {
 	});
 
 	it('should download png and svg', () => {
-		const now = new Date(2022, 0, 1).getTime();
-		cy.clock(now);
+		cy.clock(new Date(2022, 0, 1).getTime());
 		const downloadsFolder = Cypress.config('downloadsFolder');
 
 		const verifyFileSize = (fileType: string, size: number) => {

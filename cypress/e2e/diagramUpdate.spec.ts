@@ -1,16 +1,10 @@
-describe('Auto sync tests', () => {
-	const cmd = `{${Cypress.platform === 'darwin' ? 'meta' : 'ctrl'}}`;
-	const getEditor = ({ bottom = true, newline = false } = {}) =>
-		cy
-			.get('#editor textarea:first')
-			.click()
-			.focused()
-			.type(`${bottom ? '{pageDown}' : cmd}`)
-			.type(`${newline ? '{enter}' : cmd}`);
+import { getEditor, cmd, disableDebounce } from './util';
 
+describe('Auto sync tests', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
+		disableDebounce();
 	});
 
 	it('should dim diagram when code is edited', () => {
