@@ -21,34 +21,34 @@
 			referrerpolicy="no-referrer" />
 		<link
 			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.min.css"
-			integrity="sha512-633RnebxsjmF57QUx9c85T6XILSAuJFzKnN5dVsUQ3nsc7c0bW649fCj1Z8ZkAbo5vAHnKZIsGqDokJRiABupA=="
+			href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/editor/editor.main.min.css"
+			integrity="sha512-iQEIc0rsSDujsfjtD+lfyJ1W23Bh/lbgriubKDAym6VlEIDRj9rrbSIyJRyshOrl8s0yRcQ0+gyrZfSLyjJGWQ=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer" />
 		<script>
 			var require = {
 				paths: {
-					vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs",
+					vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs",
 				},
 			};
 		</script>
 		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.min.js"
-			integrity="sha512-O9SYDgWAM3bEzit1z6mkFd+dxKUplO/oB8UwYGAkg2Zy/WzDUQ2mYA/ysk3c0CxiXAN4u8T9JeZ0Ahk2Jj/33Q=="
+			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"
+			integrity="sha512-6bIYsGqvLpAiEBXPdRQeFf5cueeBECtAKJjIHer3BhBZNTV3WLcLA8Tm3pDfxUwTMIS+kAZwTUvJ1IrMdX8C5w=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"></script>
 		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.nls.min.js"
-			integrity="sha512-TShm8t61Zg9dutpJGD4KMy+VO4yVW0pgvHfeFjovzp+kBcSpblO7mBGSbL2ncApu0FfiqHiygwcef65+qiLRxg=="
+			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/editor/editor.main.nls.min.js"
+			integrity="sha512-CCv+DKWw+yZhxf4Z+ExT6HC5G+3S45TeMTYcJyYbdrv4BpK2vyALJ4FoVR/KGWDIPu7w4tNCOC9MJQIkYPR5FA=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"></script>
 		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.js"
-			integrity="sha512-7p8WMGQI2IAHj9dn6uYYQYGsHNlpMp8Wv4Q1M0SNxM+8Rd16sHL7gXmktieLjh1iyWl41doD6NOiId7e+XCw6Q=="
+			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/editor/editor.main.js"
+			integrity="sha512-TTPQbVI87mnVMV+1KbkKJ8vdQ4QqqbKyuTtJ9wQD8CqnwQLSQgXH7MWOQ88VO7pRzxWhqI1vYDeEV651sAH4ig=="
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"></script>
 		<meta http-equiv="content-security-policy" content="">
-	<link rel="modulepreload" href="/mermaid-live-editor/_app/immutable/start-5062d60d.js">
+	<link rel="modulepreload" href="/mermaid-live-editor/_app/immutable/start-bd131b60.js">
 	<link rel="modulepreload" href="/mermaid-live-editor/_app/immutable/chunks/index-1530a265.js">
 	<link rel="modulepreload" href="/mermaid-live-editor/_app/immutable/chunks/preload-helper-23bf4dac.js">
 	<link rel="modulepreload" href="/mermaid-live-editor/_app/immutable/chunks/paths-b9644fda.js">
@@ -57,7 +57,10 @@
 	<body>
 		<div id="svelte">
 		<script type="module" data-sveltekit-hydrate="45h">
-		import { start } from "/mermaid-live-editor/_app/immutable/start-5062d60d.js";
+		import { set_public_env, start } from "/mermaid-live-editor/_app/immutable/start-bd131b60.js";
+
+		set_public_env({});
+
 		start({
 			target: document.querySelector('[data-sveltekit-hydrate="45h"]').parentNode,
 			paths: {"base":"/mermaid-live-editor","assets":"/mermaid-live-editor"},
