@@ -21,7 +21,7 @@
 		clearTimeout(debounce);
 		debounce = window.setTimeout(() => {
 			updateCodeStore({ pan, zoom });
-		}, 500);
+		}, 200);
 	};
 
 	onMount(() => {
@@ -53,7 +53,7 @@
 							pzoom = undefined;
 							hide = true;
 							container.innerHTML = svgCode;
-							setTimeout(() => {
+							Promise.resolve().then(() => {
 								const graphDiv = document.getElementById('graph-div');
 								graphDiv.setAttribute('height', '100%');
 								graphDiv.style.maxWidth = '100%';
@@ -65,12 +65,12 @@
 									center: true
 								});
 								const { pan, zoom } = state;
-								if (pan !== undefined && zoom !== undefined) {
+								if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
 									pzoom.zoom(zoom);
 									pzoom.pan(pan);
 								}
 								hide = false;
-							}, 1);
+							});
 						}
 					});
 					view.parentElement.scrollTop = scroll;
@@ -107,13 +107,17 @@
 	#view {
 		flex: 1;
 	}
+
+	#container {
+		transition: visibility 0.3s;
+	}
+
 	.error,
 	.outOfSync {
 		opacity: 0.5;
 	}
 
 	.hide {
-		opacity: 0;
-		transition: opacity 0.3s;
+		visibility: hidden;
 	}
 </style>
