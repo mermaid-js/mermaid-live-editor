@@ -70,7 +70,7 @@
 									pzoom.pan(pan);
 								}
 								hide = false;
-							}, 0);
+							}, 1);
 						}
 					});
 					view.parentElement.scrollTop = scroll;

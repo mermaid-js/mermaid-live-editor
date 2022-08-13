@@ -7,7 +7,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
 	import { updateCode, updateConfig, inputStateStore, stateStore } from '$lib/util/state';
-	import { cmdKey, debounceMultiplier, initHandler, syncDiagram } from '$lib/util/util';
+	import { cmdKey, debounceEnabled, initHandler, syncDiagram } from '$lib/util/util';
 	import { onMount } from 'svelte';
 	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
@@ -101,19 +101,27 @@
 		}
 	];
 
+	const handleUpdate = (text: string) => {
+		if (selectedMode === 'code') {
+			updateCode(text, {
+				updateEditor: false
+			});
+		} else {
+			updateConfig(text, false);
+		}
+	};
+
 	let debounce: { [key: string]: number } = {};
-	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
-		clearTimeout(debounce[selectedMode]);
-		debounce[selectedMode] = window.setTimeout(() => {
-			const code = message.detail.text;
-			if (selectedMode === 'code') {
-				updateCode(code, {
-					updateEditor: false
-				});
-			} else {
-				updateConfig(code, false);
-			}
-		}, 300 * debounceMultiplier);
+	const updateHandler = ({ detail: { text } }: CustomEvent<EditorUpdateEvent>) => {
+		console.log({ debounceEnabled });
+		if (debounceEnabled) {
+			clearTimeout(debounce[selectedMode]);
+			debounce[selectedMode] = window.setTimeout(() => {
+				handleUpdate(text);
+			}, 300);
+		} else {
+			handleUpdate(text);
+		}
 	};
 
 	onMount(async () => {

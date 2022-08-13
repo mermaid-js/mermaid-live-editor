@@ -25,4 +25,4 @@ export const initHandler = async (): Promise<void> => {
 export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
 
-export const debounceMultiplier = window.localStorage.getItem('noDebounce') === 'true' ? 0 : 1;
+export const debounceEnabled = window.localStorage.getItem('noDebounce') !== 'true';
