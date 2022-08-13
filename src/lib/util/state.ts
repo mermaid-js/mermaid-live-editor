@@ -79,7 +79,7 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 
 export const loadState = (data: string): void => {
 	let state: State;
-	console.log('Loading', data);
+	console.log(`Loading '${data}'`);
 	try {
 		state = deserializeState(data);
 		const mermaidConfig: { [key: string]: string } =
