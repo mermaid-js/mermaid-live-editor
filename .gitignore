@@ -12,3 +12,6 @@ yarn-error.log
 /cypress/downloads
 /cypress/videos
 /cypress/screenshots
+/test-results/
+/playwright-report/
+/playwright/.cache/

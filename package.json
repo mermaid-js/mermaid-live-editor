@@ -21,6 +21,7 @@
 	},
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
+		"@playwright/test": "^1.25.0",
 		"@sveltejs/adapter-static": "1.0.0-next.39",
 		"@sveltejs/kit": "1.0.0-next.405",
 		"@testing-library/jest-dom": "5.16.5",
