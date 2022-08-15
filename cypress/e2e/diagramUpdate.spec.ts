@@ -67,3 +67,18 @@ describe('Auto sync tests', () => {
 			.should('exist');
 	});
 });
+
+describe.only('Pan and Zoom', () => {
+	beforeEach(() => {
+		cy.clearLocalStorage();
+		cy.visit('/');
+		disableDebounce();
+	});
+	it('should toggle pan and zoom', () => {
+		cy.get('#svg-pan-zoom-reset-pan-zoom').should('not.exist');
+		cy.contains('Pan & Zoom').click();
+		cy.get('#svg-pan-zoom-reset-pan-zoom').should('exist');
+		cy.contains('Pan & Zoom').click();
+		cy.get('#svg-pan-zoom-reset-pan-zoom').should('not.exist');
+	});
+});
