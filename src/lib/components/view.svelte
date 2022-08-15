@@ -30,7 +30,6 @@
 					}
 					code = state.code;
 					config = state.mermaid;
-					const scroll = view.parentElement.scrollTop;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
@@ -39,7 +38,6 @@
 							container.innerHTML = svgCode;
 						}
 					});
-					view.parentElement.scrollTop = scroll;
 					error = false;
 				} else if (manualUpdate) {
 					manualUpdate = false;
