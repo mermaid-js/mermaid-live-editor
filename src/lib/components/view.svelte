@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
 	import panzoom from 'svg-pan-zoom';
+	import type { State } from '$lib/types';
 
 	let code = '';
 	let config = '';
@@ -23,6 +24,31 @@
 		debounce = window.setTimeout(() => {
 			updateCodeStore({ pan, zoom });
 		}, 200);
+	};
+
+	const handlePanZoom = (state: State) => {
+		if (!state.panZoom) {
+			return;
+		}
+		hide = true;
+		pzoom?.destroy();
+		pzoom = undefined;
+		Promise.resolve().then(() => {
+			const graphDiv = document.getElementById('graph-div');
+			pzoom = panzoom(graphDiv, {
+				onPan: handlePanZoomChange,
+				onZoom: handlePanZoomChange,
+				controlIconsEnabled: true,
+				fit: true,
+				center: true
+			});
+			const { pan, zoom } = state;
+			if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
+				pzoom.zoom(zoom);
+				pzoom.pan(pan);
+			}
+			hide = false;
+		});
 	};
 
 	onMount(() => {
@@ -51,27 +77,7 @@
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
 						if (svgCode.length > 0) {
-							if (state.panZoom) {
-								hide = true;
-								pzoom?.destroy();
-								pzoom = undefined;
-								Promise.resolve().then(() => {
-									const graphDiv = document.getElementById('graph-div');
-									pzoom = panzoom(graphDiv, {
-										onPan: handlePanZoomChange,
-										onZoom: handlePanZoomChange,
-										controlIconsEnabled: true,
-										fit: true,
-										center: true
-									});
-									const { pan, zoom } = state;
-									if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
-										pzoom.zoom(zoom);
-										pzoom.pan(pan);
-									}
-									hide = false;
-								});
-							}
+							handlePanZoom(state);
 							container.innerHTML = svgCode;
 							const graphDiv = document.getElementById('graph-div');
 							graphDiv.setAttribute('height', '100%');
