@@ -97,7 +97,8 @@
 	const loadSampleDiagram = (diagramType: string): void => {
 		updateCode(samples[diagramType], {
 			updateDiagram: true,
-			updateEditor: true
+			updateEditor: true,
+			resetPanZoom: true
 		});
 	};
 </script>

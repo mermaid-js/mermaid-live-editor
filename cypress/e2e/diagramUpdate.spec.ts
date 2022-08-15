@@ -1,16 +1,10 @@
-describe('Auto sync tests', () => {
-	const cmd = Cypress.platform === 'darwin' ? 'meta' : 'ctrl';
-	const getEditor = ({ bottom = true, newline = false } = {}) =>
-		cy
-			.get('#editor textarea:first')
-			.click()
-			.focused()
-			.type(`${bottom ? '{pageDown}' : `{${cmd}}`}`)
-			.type(`${newline ? '{enter}' : `{${cmd}}`}`);
+import { getEditor, cmd, disableDebounce } from './util';
 
+describe('Auto sync tests', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
+		disableDebounce();
 	});
 
 	it('should dim diagram when code is edited', () => {
@@ -26,7 +20,7 @@ describe('Auto sync tests', () => {
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		getEditor().type('  C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
-		getEditor().type(`{${cmd}}{enter}`);
+		getEditor().type(`${cmd}{enter}`);
 		cy.get('#view').should('not.have.class', 'outOfSync');
 	});
 
@@ -52,10 +46,10 @@ describe('Auto sync tests', () => {
 	});
 
 	it('supports commenting code out/in', () => {
-		getEditor().type(`{uparrow}{${cmd}}/`);
+		getEditor().type(`{uparrow}${cmd}/`);
 		cy.get('#view').contains('Car').should('not.exist');
 
-		getEditor().type(`{uparrow}{${cmd}}/`);
+		getEditor().type(`{uparrow}${cmd}/`);
 		cy.get('#view').contains('Car').should('exist');
 	});
 
@@ -71,5 +65,20 @@ describe('Auto sync tests', () => {
 				'Error: Trying to checkout branch which is not yet created. (Help try using "branch master")'
 			)
 			.should('exist');
+	});
+});
+
+describe.only('Pan and Zoom', () => {
+	beforeEach(() => {
+		cy.clearLocalStorage();
+		cy.visit('/');
+		disableDebounce();
+	});
+	it('should toggle pan and zoom', () => {
+		cy.get('#svg-pan-zoom-reset-pan-zoom').should('not.exist');
+		cy.contains('Pan & Zoom').click();
+		cy.get('#svg-pan-zoom-reset-pan-zoom').should('exist');
+		cy.contains('Pan & Zoom').click();
+		cy.get('#svg-pan-zoom-reset-pan-zoom').should('not.exist');
 	});
 });

@@ -7,7 +7,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
 	import { updateCode, updateConfig, inputStateStore, stateStore } from '$lib/util/state';
-	import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
+	import { cmdKey, debounceEnabled, initHandler, syncDiagram } from '$lib/util/util';
 	import { onMount } from 'svelte';
 	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
 	import { base } from '$app/paths';
@@ -63,14 +63,15 @@
 	let text = '';
 	let docURL = docURLBase;
 	let language: Languages = 'mermaid';
-	$: language = languageMap[selectedMode];
-	$: {
-		if (selectedMode === 'code') {
+	const handleModeUpdate = (mode: Modes) => {
+		if (mode === 'code') {
 			text = $stateStore.code;
 		} else {
 			text = $stateStore.mermaid;
 		}
-	}
+	};
+	$: language = languageMap[selectedMode];
+	$: handleModeUpdate(selectedMode);
 
 	stateStore.subscribe((state: State) => {
 		if (state.updateEditor) {
@@ -100,14 +101,26 @@
 		}
 	];
 
-	const updateHandler = (message: CustomEvent<EditorUpdateEvent>) => {
-		const code = message.detail.text;
+	const handleUpdate = (text: string) => {
 		if (selectedMode === 'code') {
-			updateCode(code, {
+			updateCode(text, {
 				updateEditor: false
 			});
 		} else {
-			updateConfig(code, false);
+			updateConfig(text, false);
+		}
+	};
+
+	let debounce: { [key: string]: number } = {};
+	const updateHandler = ({ detail: { text } }: CustomEvent<EditorUpdateEvent>) => {
+		console.log({ debounceEnabled });
+		if (debounceEnabled) {
+			clearTimeout(debounce[selectedMode]);
+			debounce[selectedMode] = window.setTimeout(() => {
+				handleUpdate(text);
+			}, 300);
+		} else {
+			handleUpdate(text);
 		}
 	};
 
@@ -138,34 +151,32 @@
 	<div class="flex-1 flex overflow-hidden">
 		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
-				<div slot="actions">
-					<div class="flex flex-row items-center">
-						<div class="form-control flex-row items-center">
-							<label class="cursor-pointer label" for="autoSync">
-								<span> Auto sync</span>
-								<input
-									type="checkbox"
-									class="toggle {$stateStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
-									id="autoSync"
-									bind:checked={$inputStateStore.autoSync} />
-							</label>
-						</div>
-
-						{#if !$stateStore.autoSync}
-							<button
-								class="btn btn-secondary btn-xs mr-1"
-								title="Sync Diagram ({cmdKey} + Enter)"
-								data-cy="sync"
-								on:click={syncDiagram}><i class="fas fa-sync" /></button>
-						{/if}
-
-						<button class="btn btn-secondary btn-xs" title="View documentation">
-							<a target="_blank" href={docURL} data-cy="docs"><i class="fas fa-book mr-1" />Docs</a>
-						</button>
+				<div slot="actions" class="flex flex-row items-center">
+					<div class="form-control flex-row items-center">
+						<label class="cursor-pointer label" for="autoSync">
+							<span> Auto sync</span>
+							<input
+								type="checkbox"
+								class="toggle {$stateStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
+								id="autoSync"
+								bind:checked={$inputStateStore.autoSync} />
+						</label>
 					</div>
+
+					{#if !$stateStore.autoSync}
+						<button
+							class="btn btn-secondary btn-xs mr-1"
+							title="Sync Diagram ({cmdKey} + Enter)"
+							data-cy="sync"
+							on:click={syncDiagram}><i class="fas fa-sync" /></button>
+					{/if}
+
+					<button class="btn btn-secondary btn-xs" title="View documentation">
+						<a target="_blank" href={docURL} data-cy="docs"><i class="fas fa-book mr-1" />Docs</a>
+					</button>
 				</div>
 
-				<Editor on:update={updateHandler} {language} bind:text />
+				<Editor on:update={updateHandler} {language} {text} />
 			</Card>
 
 			<div class="-mt-2">
@@ -177,13 +188,22 @@
 		<div id="resizeHandler" class="hidden md:block" />
 		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
-				<a
-					href={`${base}/view#${$stateStore.serialized}`}
-					target="_blank"
-					slot="actions"
-					class="btn btn-secondary btn-xs"
-					title="View diagram in new page"
-					><i class="fas fa-external-link-alt mr-1" />Full screen</a>
+				<div slot="actions" class="flex flex-row items-center">
+					<label class="cursor-pointer label py-0" for="panZoom">
+						<span>Pan & Zoom</span>
+						<input
+							type="checkbox"
+							class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'} ml-1"
+							id="panZoom"
+							bind:checked={$inputStateStore.panZoom} />
+					</label>
+					<a
+						href={`${base}/view#${$stateStore.serialized}`}
+						target="_blank"
+						class="btn btn-secondary btn-xs"
+						title="View diagram in new page"
+						><i class="fas fa-external-link-alt mr-1" />Full screen</a>
+				</div>
 
 				<div class="flex-1 overflow-auto">
 					<View />

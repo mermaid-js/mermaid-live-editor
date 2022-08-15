@@ -24,15 +24,18 @@
 	};
 	let oldText = text;
 	$: editor && Monaco?.editor.setModelLanguage(editor.getModel(), language);
-	$: {
-		if (text !== oldText) {
+
+	const handleTextUpdate = (newText: string) => {
+		if (newText !== oldText) {
 			if ($stateStore.updateEditor) {
-				editor?.setValue(text);
+				editor?.setValue(newText);
 			}
-			oldText = text;
+			oldText = newText;
 		}
 		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', $stateStore.errorMarkers);
-	}
+	};
+
+	$: handleTextUpdate(text);
 
 	themeStore.subscribe(({ isDark }) => {
 		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
@@ -62,9 +65,9 @@
 		initEditor(Monaco);
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(() => {
-			text = editor.getValue();
+			oldText = editor.getValue();
 			dispatch('update', {
-				text
+				text: oldText
 			});
 		});
 		editor.addAction({

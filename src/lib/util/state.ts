@@ -79,7 +79,7 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 
 export const loadState = (data: string): void => {
 	let state: State;
-	console.log('Loading', data);
+	console.log(`Loading '${data}'`);
 	try {
 		state = deserializeState(data);
 		const mermaidConfig: { [key: string]: string } =
@@ -114,7 +114,11 @@ export const updateCodeStore = (newState: Partial<State>): void => {
 let prompted = false;
 export const updateCode = (
 	code: string,
-	{ updateEditor, updateDiagram = false }: { updateEditor: boolean; updateDiagram?: boolean }
+	{
+		updateEditor,
+		updateDiagram = false,
+		resetPanZoom = false
+	}: { updateEditor: boolean; updateDiagram?: boolean; resetPanZoom?: boolean }
 ): void => {
 	saveStatistics(code);
 	const lines = (code.match(/\n/g) || '').length + 1;
@@ -132,6 +136,10 @@ export const updateCode = (
 	}
 
 	inputStateStore.update((state) => {
+		if (resetPanZoom) {
+			state.pan = undefined;
+			state.zoom = undefined;
+		}
 		return { ...state, code, updateEditor, updateDiagram };
 	});
 };

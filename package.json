@@ -73,7 +73,8 @@
 		"monaco-editor": "0.34.0",
 		"monaco-mermaid": "1.0.6",
 		"pako": "2.0.4",
-		"random-word-slugs": "0.1.6"
+		"random-word-slugs": "0.1.6",
+		"svg-pan-zoom": "^3.6.1"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [

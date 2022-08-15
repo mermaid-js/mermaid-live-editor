@@ -8,6 +8,10 @@ export default defineConfig({
 	snapshotFileName: './cypress/snapshots.js',
 	defaultCommandTimeout: 16000,
 	requestTimeout: 16000,
+	retries: {
+		runMode: 2,
+		openMode: 0
+	},
 	e2e: {
 		setupNodeEvents(on, config) {
 			on('task', {
@@ -26,6 +30,6 @@ export default defineConfig({
 			});
 		},
 		baseUrl: 'http://localhost:3000',
-		specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}'
+		specPattern: 'cypress/e2e/**/*.spec.ts'
 	}
 });
