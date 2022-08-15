@@ -4,6 +4,7 @@
 	import mermaid from 'mermaid';
 	import panzoom from 'svg-pan-zoom';
 	import type { State } from '$lib/types';
+	import { logEvent } from '$lib/util/stats';
 
 	let code = '';
 	let config = '';
@@ -23,6 +24,7 @@
 		clearTimeout(debounce);
 		debounce = window.setTimeout(() => {
 			updateCodeStore({ pan, zoom });
+			void logEvent('panZoom');
 		}, 200);
 	};
 

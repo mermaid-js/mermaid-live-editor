@@ -6,6 +6,7 @@
 	import type monaco from 'monaco-editor';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
+	import { logEvent } from '$lib/util/stats';
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
@@ -76,6 +77,9 @@
 			keybindings: [Monaco.KeyMod.CtrlCmd | Monaco.KeyCode.Enter],
 			run: function () {
 				syncDiagram();
+				void logEvent('renderDiagram', {
+					method: 'keyboadShortcut'
+				});
 			}
 		});
 		Monaco?.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');

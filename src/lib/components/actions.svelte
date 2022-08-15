@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { browser } from '$app/env';
-
 	import Card from '$lib/components/card/card.svelte';
 	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
 	import { pakoSerde } from '$lib/util/serde';
 	import { stateStore } from '$lib/util/state';
+	import { logEvent } from '$lib/util/stats';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
 
@@ -115,19 +115,23 @@
 
 	const onCopyClipboard = (event: Event) => {
 		exportImage(event, clipboardCopy);
+		void logEvent('copyClipboard');
 	};
 
 	const onDownloadPNG = (event: Event) => {
 		exportImage(event, downloadImage);
+		void logEvent('downloadPNG');
 	};
 
 	const onDownloadSVG = () => {
 		simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
+		void logEvent('downloadSVG');
 	};
 
 	const onCopyMarkdown = () => {
 		(document.getElementById('markdown') as HTMLInputElement).select();
 		document.execCommand('Copy');
+		void logEvent('copyMarkdown');
 	};
 
 	let gistURL = '';
@@ -143,6 +147,7 @@
 			alert('Please enter a Gist URL first');
 		}
 		window.location.href = `${window.location.pathname}?gist=${gistURL}`;
+		void logEvent('loadGist');
 	};
 
 	let iUrl: string;
