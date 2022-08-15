@@ -39,6 +39,7 @@ export interface State {
 	updateEditor: boolean;
 	updateDiagram: boolean;
 	autoSync: boolean;
+	panZoom?: boolean;
 	pan?: { x: number; y: number };
 	zoom?: number;
 	loader?: LoaderConfig;

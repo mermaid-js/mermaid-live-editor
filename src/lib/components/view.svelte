@@ -12,6 +12,7 @@
 	let outOfSync = false;
 	let hide = false;
 	let manualUpdate = true;
+	let panZoomEnabled = $stateStore.panZoom;
 	let pzoom: SvgPanZoom.Instance;
 	let debounce: number;
 
@@ -38,39 +39,43 @@
 					}
 					outOfSync = false;
 					manualUpdate = true;
-					if (code === state.code && config === state.mermaid) {
-						// Do not render if there is no change in Code/Config
+					if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
+						// Do not render if there is no change in Code/Config/PanZoom
 						return;
 					}
 					code = state.code;
 					config = state.mermaid;
+					panZoomEnabled = state.panZoom;
 					const scroll = view.parentElement.scrollTop;
 					delete container.dataset.processed;
 					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
 					mermaid.render('graph-div', code, (svgCode) => {
 						if (svgCode.length > 0) {
-							pzoom?.destroy();
-							pzoom = undefined;
-							hide = true;
-							container.innerHTML = svgCode;
-							Promise.resolve().then(() => {
-								const graphDiv = document.getElementById('graph-div');
-								graphDiv.setAttribute('height', '100%');
-								graphDiv.style.maxWidth = '100%';
-								pzoom = panzoom(graphDiv, {
-									onPan: handlePanZoomChange,
-									onZoom: handlePanZoomChange,
-									controlIconsEnabled: true,
-									fit: true,
-									center: true
+							if (state.panZoom) {
+								hide = true;
+								pzoom?.destroy();
+								pzoom = undefined;
+								Promise.resolve().then(() => {
+									const graphDiv = document.getElementById('graph-div');
+									pzoom = panzoom(graphDiv, {
+										onPan: handlePanZoomChange,
+										onZoom: handlePanZoomChange,
+										controlIconsEnabled: true,
+										fit: true,
+										center: true
+									});
+									const { pan, zoom } = state;
+									if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
+										pzoom.zoom(zoom);
+										pzoom.pan(pan);
+									}
+									hide = false;
 								});
-								const { pan, zoom } = state;
-								if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
-									pzoom.zoom(zoom);
-									pzoom.pan(pan);
-								}
-								hide = false;
-							});
+							}
+							container.innerHTML = svgCode;
+							const graphDiv = document.getElementById('graph-div');
+							graphDiv.setAttribute('height', '100%');
+							graphDiv.style.maxWidth = '100%';
 						}
 					});
 					view.parentElement.scrollTop = scroll;
@@ -86,10 +91,8 @@
 			}
 		});
 		window.addEventListener('resize', () => {
-			if (pzoom) {
+			if ($stateStore.panZoom && pzoom) {
 				pzoom.resize();
-				pzoom.fit();
-				pzoom.center();
 			}
 		});
 	});
