@@ -33,17 +33,20 @@ const detectType = (text: string): string => {
 };
 
 // manual debounce
-let timeout;
+let timeout: number;
 export const saveStatistics = (graph: string): void => {
 	if (analytics) {
 		clearTimeout(timeout);
 		// Only save statistics after a 5 sec delay
-		timeout = setTimeout(function () {
+		timeout = window.setTimeout(() => {
 			const graphType = detectType(graph);
-			console.debug('ga:', 'send', 'event', 'render', graphType);
-			void analytics.track('render', {
-				graphType
-			});
+			console.debug(`ga: send event: render ${graphType}`);
+			void logEvent('render', { graphType });
 		}, 5000);
 	}
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const logEvent = async (name: string, data?: any): Promise<void> => {
+	await analytics?.track(name, data);
 };
