@@ -113,7 +113,6 @@
 
 	let debounce: { [key: string]: number } = {};
 	const updateHandler = ({ detail: { text } }: CustomEvent<EditorUpdateEvent>) => {
-		console.log({ debounceEnabled });
 		if (debounceEnabled) {
 			clearTimeout(debounce[selectedMode]);
 			debounce[selectedMode] = window.setTimeout(() => {
