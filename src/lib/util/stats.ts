@@ -8,18 +8,28 @@ export const initAnalytics = async (): Promise<void> => {
 		try {
 			const { Analytics } = await import('analytics');
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const googleAnalytics = await import('@analytics/google-analytics');
+			const googleAnalytics = (await import('@analytics/google-analytics')).default;
+			const plausible = (await import('analytics-plugin-plausible')).default;
 			analytics = Analytics({
 				app: 'mermaid-live-editor',
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				plugins: [
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-					googleAnalytics.init({
-						trackingId: 'UA-153180559-1'
+					googleAnalytics({
+						measurementIds: ['UA-153180559-1']
+					}),
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					plausible({
+						domain: 'mermaid.live',
+						hashMode: false,
+						trackLocalhost: false, // By default 'false'
+						apiHost: 'https://plausible.io'
 					})
 				]
 			});
-		} catch {
+		} catch (e) {
+			console.log(e);
 			console.info('Analytics blocked ;)');
 		}
 	}
