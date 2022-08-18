@@ -90,7 +90,7 @@
 					error = false;
 				} else if (manualUpdate) {
 					manualUpdate = false;
-				} else {
+				} else if (code !== state.code || config !== state.mermaid) {
 					outOfSync = true;
 				}
 			} catch (e) {
