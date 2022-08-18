@@ -120,12 +120,16 @@
 
 	const onDownloadPNG = (event: Event) => {
 		exportImage(event, downloadImage);
-		void logEvent('downloadPNG');
+		void logEvent('download', {
+			type: 'png'
+		});
 	};
 
 	const onDownloadSVG = () => {
 		simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
-		void logEvent('downloadSVG');
+		void logEvent('download', {
+			type: 'svg'
+		});
 	};
 
 	const onCopyMarkdown = () => {
