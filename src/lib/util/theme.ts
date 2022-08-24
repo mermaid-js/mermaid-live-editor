@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, createLocalStorage } from '@macfja/svelte-persistent-store';
 import { logEvent } from './stats';
 
 export interface ThemeConfig {
@@ -12,7 +12,7 @@ export const themeStore: Writable<ThemeConfig> = persist(
 	writable({
 		isDark: false
 	}),
-	localStorage(),
+	createLocalStorage(),
 	'themeStore'
 );
 

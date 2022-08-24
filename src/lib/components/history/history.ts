@@ -1,6 +1,6 @@
 import { derived, writable, get } from 'svelte/store';
 import type { Readable, Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, createLocalStorage } from '@macfja/svelte-persistent-store';
 import { generateSlug } from 'random-word-slugs';
 import type { HistoryEntry, HistoryType } from '$lib/types';
 
@@ -8,19 +8,19 @@ const MAX_AUTO_HISTORY_LENGTH = 30;
 
 export const historyModeStore: Writable<HistoryType> = persist(
 	writable('manual'),
-	localStorage(),
+	createLocalStorage(),
 	'autoHistoryMode'
 );
 
 const autoHistoryStore: Writable<HistoryEntry[]> = persist(
 	writable([]),
-	localStorage(),
+	createLocalStorage(),
 	'autoHistoryStore'
 );
 
 const manualHistoryStore: Writable<HistoryEntry[]> = persist(
 	writable([]),
-	localStorage(),
+	createLocalStorage(),
 	'manualHistoryStore'
 );
 

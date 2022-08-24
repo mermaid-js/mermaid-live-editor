@@ -1,5 +1,5 @@
 import { writable, get, derived } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, createLocalStorage } from '@macfja/svelte-persistent-store';
 import { saveStatistics } from './stats';
 import { serializeState, deserializeState } from './serde';
 import { cmdKey } from './util';
@@ -40,7 +40,7 @@ const urlParseFailedState = `graph TD
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
 // inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
-export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
+export const inputStateStore = persist(writable(defaultState), createLocalStorage(), 'codeStore');
 
 // All internal reads should be done via stateStore, but it should not be persisted/shared externally.
 export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
