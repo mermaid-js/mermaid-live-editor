@@ -10,6 +10,9 @@ describe('Save History', () => {
 		cy.contains('History').click();
 	});
 
+	// TODO: Add test to verify state that's set in localstorage can be read.
+	// This is useful to know if migration of persistance layer will render old data invalid.
+
 	it('should save when clicked', () => {
 		cy.get('#historyList').find('li').should('have.length', 0);
 		cy.get('#historyList').contains('No items in History');

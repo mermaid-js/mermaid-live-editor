@@ -75,3 +75,8 @@ export const getPreviousState = (auto: boolean): string => {
 	}
 	return '';
 };
+
+export const restoreHistory = (data: HistoryEntry[]) => {
+	// Should this replace the current history or append to it?
+	manualHistoryStore.set(data);
+};
