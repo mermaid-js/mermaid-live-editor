@@ -7,10 +7,12 @@
 		clearHistoryData,
 		getPreviousState,
 		historyStore,
-		loaderHistoryStore
+		loaderHistoryStore,
+		restoreHistory
 	} from './history';
 	import { notify, prompt } from '$lib/util/notify';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import moment from 'moment';
 	import type { HistoryType, State, Tab } from '$lib/types';
 
@@ -32,6 +34,35 @@
 		}
 	];
 
+	const downloadHistory = () => {
+		const data = get(historyStore);
+		const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'history.json';
+		a.click();
+		URL.revokeObjectURL(url);
+	};
+
+	const uploadHistory = () => {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.accept = 'application/json';
+		input.addEventListener('change', ({ target }: Event) => {
+			const file = (<HTMLInputElement>target).files[0];
+			if (!file) {
+				return;
+			}
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const data = JSON.parse(e.target.result as string);
+				restoreHistory(data);
+			};
+			reader.readAsText(file);
+		});
+		input.click();
+	};
 	const saveHistory = (auto = false) => {
 		const currentState: string = getStateString();
 		const previousState: string = getPreviousState(auto);
@@ -53,7 +84,7 @@
 		clearHistoryData(date);
 	};
 
-	const restoreHistory = (state: State): void => {
+	const restoreHistoryItem = (state: State): void => {
 		inputStateStore.set({ ...state, updateEditor: true, updateDiagram: true });
 	};
 
@@ -89,6 +120,19 @@
 <Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
 	<div slot="actions">
 		<button
+			id="uploadHistory"
+			class="btn btn-xs btn-secondary w-12"
+			on:click|stopPropagation={() => uploadHistory()}
+			title="Upload history"><i class="fa fa-upload" /></button>
+		{#if $historyStore.length > 0}
+			<button
+				id="downloadHistory"
+				class="btn btn-xs btn-secondary w-12"
+				on:click|stopPropagation={() => downloadHistory()}
+				title="Download history"><i class="fa fa-download" /></button>
+		{/if}
+		|
+		<button
 			id="saveHistory"
 			class="btn btn-xs btn-success w-12"
 			on:click|stopPropagation={() => saveHistory()}
@@ -121,7 +165,7 @@
 							</div>
 						</div>
 						<div class="flex gap-2 content-center">
-							<button class="btn btn-success" on:click={() => restoreHistory(state)}
+							<button class="btn btn-success" on:click={() => restoreHistoryItem(state)}
 								><i class="fas fa-undo mr-1" />Restore</button>
 							{#if type !== 'loader'}
 								<button class="btn btn-error" on:click={() => clearHistory(time)}
