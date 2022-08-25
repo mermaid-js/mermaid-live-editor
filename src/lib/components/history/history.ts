@@ -2,7 +2,8 @@ import { derived, writable, get } from 'svelte/store';
 import type { Readable, Writable } from 'svelte/store';
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { generateSlug } from 'random-word-slugs';
-import type { HistoryEntry, HistoryType } from '$lib/types';
+import type { HistoryEntry, HistoryType, Optional } from '$lib/types';
+import { v4 as uuidV4 } from 'uuid';
 
 const MAX_AUTO_HISTORY_LENGTH = 30;
 
@@ -41,28 +42,37 @@ export const historyStore: Readable<HistoryEntry[]> = derived(
 	}
 );
 
-export const addHistoryEntry = (entry: HistoryEntry): void => {
+export const addHistoryEntry = (entryToAdd: Optional<HistoryEntry, 'id'>): void => {
+	const entry: HistoryEntry = {
+		...entryToAdd,
+		id: uuidV4()
+	};
+
 	if (entry.type === 'loader') {
 		loaderHistoryStore.update((entries) => [entry, ...entries]);
 		return;
 	}
-	entry.name = generateSlug(2);
-	if (entry.type !== 'auto') {
-		manualHistoryStore.update((entries) => [entry, ...entries]);
-		return;
+
+	if (!entry.name) {
+		entry.name = generateSlug(2);
 	}
-	autoHistoryStore.update((entries) => {
-		if (entries.length === MAX_AUTO_HISTORY_LENGTH) {
-			entries.pop();
-		}
-		return [entry, ...entries];
-	});
+
+	if (entry.type === 'auto') {
+		autoHistoryStore.update((entries) => {
+			if (entries.length >= MAX_AUTO_HISTORY_LENGTH) {
+				entries = entries.slice(0, MAX_AUTO_HISTORY_LENGTH - 1);
+			}
+			return [entry, ...entries];
+		});
+	} else if (entry.type === 'manual') {
+		manualHistoryStore.update((entries) => [entry, ...entries]);
+	}
 };
 
-export const clearHistoryData = (time?: number): void => {
+export const clearHistoryData = (idToClear?: string): void => {
 	(get(historyModeStore) === 'auto' ? autoHistoryStore : manualHistoryStore).update((entries) => {
 		if (get(historyModeStore) !== 'loader') {
-			entries = entries.filter((entry) => time && entry.time != time);
+			entries = entries.filter(({ id }) => idToClear && id != idToClear);
 		}
 		return entries;
 	});
@@ -77,6 +87,46 @@ export const getPreviousState = (auto: boolean): string => {
 };
 
 export const restoreHistory = (data: HistoryEntry[]) => {
-	// Should this replace the current history or append to it?
-	manualHistoryStore.set(data);
+	const entries = data.filter(validateEntry);
+	const invalidEntryCount = data.length - entries.length;
+	if (invalidEntryCount > 0) {
+		console.error(`${invalidEntryCount} invalid history entries were removed.`);
+		console.error(data);
+	}
+	if (entries.length > 0) {
+		let entryCount = 0;
+		(entries[0].type === 'auto' ? autoHistoryStore : manualHistoryStore).update((existing) => {
+			const existingIDs = new Set(existing.map(({ id }) => id));
+			const newEntries = entries.filter(({ id }) => !existingIDs.has(id));
+			entryCount = newEntries.length;
+			const combined = [...existing, ...newEntries];
+			combined.sort((a, b) => b.time - a.time);
+			return combined;
+		});
+
+		alert(
+			`${entryCount} entries restored. ${invalidEntryCount} invalid, ${
+				entries.length - entryCount
+			} duplicates.`
+		);
+	} else {
+		alert('No valid entries found.');
+	}
+};
+
+export const injectHistoryIDs = (): void => {
+	const setIDs = (entries: HistoryEntry[]) => {
+		for (const entry of entries) {
+			if (!entry.id) {
+				entry.id = uuidV4();
+			}
+		}
+		return entries;
+	};
+	autoHistoryStore.update(setIDs);
+	manualHistoryStore.update(setIDs);
+};
+
+const validateEntry = (entry: HistoryEntry): boolean => {
+	return entry.type && entry.state && entry.time && true;
 };

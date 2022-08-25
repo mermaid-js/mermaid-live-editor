@@ -77,11 +77,11 @@
 		}
 	};
 
-	const clearHistory = (date?: number): void => {
-		if (!date && !prompt('Clear all saved items?')) {
+	const clearHistory = (id?: string): void => {
+		if (!id && !prompt('Clear all saved items?')) {
 			return;
 		}
-		clearHistoryData(date);
+		clearHistoryData(id);
 	};
 
 	const restoreHistoryItem = (state: State): void => {
@@ -147,7 +147,7 @@
 	</div>
 	<ul class="p-2 space-y-2 overflow-auto h-56" id="historyList">
 		{#if $historyStore.length > 0}
-			{#each $historyStore as { state, time, name, url, type }}
+			{#each $historyStore as { id, state, time, name, url, type }}
 				<li class="rounded p-2 shadow flex-col">
 					<div class="flex">
 						<div class="flex-1">
@@ -168,7 +168,7 @@
 							<button class="btn btn-success" on:click={() => restoreHistoryItem(state)}
 								><i class="fas fa-undo mr-1" />Restore</button>
 							{#if type !== 'loader'}
-								<button class="btn btn-error" on:click={() => clearHistory(time)}
+								<button class="btn btn-error" on:click={() => clearHistory(id)}
 									><i class="fas fa-trash-alt mr-1" />Delete</button>
 							{/if}
 						</div>
