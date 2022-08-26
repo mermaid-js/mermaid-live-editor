@@ -298,10 +298,10 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.39.tgz#ae79b95accd3af6ecfa92e9596c4d41b49cf6fea"
   integrity sha512-EeD39H6iEe0UEKnKxLFTZFZpi/FcX5xfbAvsMQ+B09aDZccpQmkJBSIo+4kq1JsQGSjwi/+J3aE9bR67R6CIyQ==
 
-"@sveltejs/kit@1.0.0-next.432":
-  version "1.0.0-next.432"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.432.tgz#8abade612d41a52a9364200c4877e2d9a6e28f56"
-  integrity sha512-weGruEorXX2QJ+OoXbm46snqAaEtJOuSKP5G9VLTa5Ae2pBZE+6N2wWxvgP/iE1r7+9jlrdIyntvxGX0US6GYw==
+"@sveltejs/kit@1.0.0-next.442":
+  version "1.0.0-next.442"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.442.tgz#9fa8d36067801ee95226c88a8132973fe7bae87d"
+  integrity sha512-xFGgyQuQEvIrBpdfsGQNG9cHINxpqmaa5LMENUdAt0lpbLuRrc4V2Zi2T11MPT2znNBn3rHEFsqCH9zviEcCRw==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^1.0.1"
     cookie "^0.5.0"
