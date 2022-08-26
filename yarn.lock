@@ -39,11 +39,6 @@
   dependencies:
     "@analytics/type-utils" "^0.6.0"
 
-"@analytics/google-analytics@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@analytics/google-analytics/-/google-analytics-1.0.3.tgz#4b3966c4b5729ae65f909149b9f1a58ac42dc10f"
-  integrity sha512-LnwefjQaqypjIXhw9GLRYpUz8dkriEC53JTLgJZ+mxSBZTkSrLSi3zuAiuV8rcsI0XfYmlWIav9RgGq92dWd4w==
-
 "@analytics/localstorage-utils@^0.1.7", "@analytics/localstorage-utils@^0.1.8":
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@analytics/localstorage-utils/-/localstorage-utils-0.1.8.tgz#eab6a9690ccd3c05d131e3a9788b4443affdb800"
@@ -5086,11 +5081,6 @@ vite@3.0.9, "vite@^2.9.12 || ^3.0.0-0":
     rollup ">=2.75.6 <2.77.0 || ~2.77.0"
   optionalDependencies:
     fsevents "~2.3.2"
-
-vitest-svelte-kit@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/vitest-svelte-kit/-/vitest-svelte-kit-0.0.7.tgz#002b943a2946beffaadf20838ff0d950e8f861f3"
-  integrity sha512-B83C14BAQEwNqTHcZ1dEV9EuCwOEKglcix32zBqRFonTmnc652JUOPJhMDAkQmOzHlA+SIXZ3FNEKiJjXyd1JA==
 
 vitest@0.22.1:
   version "0.22.1"
