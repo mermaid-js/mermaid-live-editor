@@ -27,7 +27,7 @@
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "1.0.3",
-		"@typescript-eslint/eslint-plugin": "5.34.0",
+		"@typescript-eslint/eslint-plugin": "5.35.1",
 		"@typescript-eslint/parser": "5.34.0",
 		"@vitest/ui": "0.22.1",
 		"autoprefixer": "10.4.8",
