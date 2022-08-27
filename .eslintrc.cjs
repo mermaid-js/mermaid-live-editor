@@ -25,7 +25,7 @@ module.exports = {
 	},
 	parserOptions: {
 		sourceType: 'module',
-		ecmaVersion: 2019,
+		ecmaVersion: 2020,
 		tsconfigRootDir: __dirname,
 		project: ['./tsconfig.json'],
 		extraFileExtensions: ['.svelte'],
@@ -33,8 +33,7 @@ module.exports = {
 	},
 	env: {
 		browser: true,
-		es2017: true,
-		node: true
+		es2020: true
 	},
 	rules: {
 		'@typescript-eslint/ban-ts-comment': [
