@@ -9,7 +9,7 @@ export default defineConfig({
 	defaultCommandTimeout: 16000,
 	requestTimeout: 16000,
 	retries: {
-		runMode: 2,
+		runMode: 4,
 		openMode: 0
 	},
 	e2e: {
