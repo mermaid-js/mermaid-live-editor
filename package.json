@@ -11,7 +11,7 @@
 		"lint:fix": "prettier --write --cache --plugin-search-dir=. .;eslint --fix --ignore-path .gitignore .",
 		"format": "prettier --write --cache --plugin-search-dir=. .",
 		"pre-commit": "lint-staged",
-		"postinstall": "husky install; cypress cache prune; svelte-kit sync",
+		"postinstall": "husky install; svelte-kit sync",
 		"test:unit": "vitest",
 		"test:ui": "vitest --ui",
 		"test:coverage": "vitest run --coverage",
@@ -22,7 +22,7 @@
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.39",
-		"@sveltejs/kit": "1.0.0-next.405",
+		"@sveltejs/kit": "1.0.0-next.442",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
