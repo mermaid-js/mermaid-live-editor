@@ -15,6 +15,7 @@
 	import { get } from 'svelte/store';
 	import moment from 'moment';
 	import type { HistoryType, State, Tab } from '$lib/types';
+	import { logEvent } from '$lib/util/stats';
 
 	const HISTORY_SAVE_INTERVAL = 60000;
 
@@ -43,6 +44,9 @@
 		a.download = `mermaid-history-${moment().format('YYYY-MM-DD-HHmmss')}.json`;
 		a.click();
 		URL.revokeObjectURL(url);
+		logEvent('history', {
+			action: 'download'
+		});
 	};
 
 	const uploadHistory = () => {
@@ -63,6 +67,7 @@
 		});
 		input.click();
 	};
+
 	const saveHistory = (auto = false) => {
 		const currentState: string = getStateString();
 		const previousState: string = getPreviousState(auto);
