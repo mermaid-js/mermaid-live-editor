@@ -1,4 +1,4 @@
-import { disableDebounce } from './util';
+import { disableDebounce, verifyFileSize } from './util';
 describe('Check actions', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
@@ -27,28 +27,22 @@ describe('Check actions', () => {
 
 	it('should download png and svg', () => {
 		cy.clock(new Date(2022, 0, 1).getTime());
-		const downloadsFolder = Cypress.config('downloadsFolder');
 
-		const verifyFileSize = (fileType: string, size: number) => {
-			cy.get(`#download${fileType.toUpperCase()}`).click();
-			const fileName = `mermaid-diagram-2022-01-01-000000.${fileType}`;
-			const filePath = `${downloadsFolder}/${fileName}`;
-			cy.verifyDownload(fileName);
-			cy.readFile(filePath, null, {
-				log: false
-			}).then((buffer) => expect((buffer as ArrayBuffer).byteLength).to.be.gt(size));
-			cy.task('deleteFile', filePath);
-		};
+		cy.get(`#downloadPNG`).click();
+		verifyFileSize('diagram', 'png', 21_000);
 
-		verifyFileSize('png', 21_000);
-		verifyFileSize('svg', 11_000);
+		cy.get(`#downloadSVG`).click();
+		verifyFileSize('diagram', 'svg', 10_000);
 
 		// Verify downloaded file is different for different diagrams
 		cy.contains('Sample Diagrams').click();
 		cy.contains('ER Diagram').click();
 
-		verifyFileSize('png', 46_000);
-		verifyFileSize('svg', 12_000);
+		cy.get(`#downloadPNG`).click();
+		verifyFileSize('diagram', 'png', 46_000);
+
+		cy.get(`#downloadSVG`).click();
+		verifyFileSize('diagram', 'svg', 12_000);
 
 		cy.clock().invoke('restore');
 	});

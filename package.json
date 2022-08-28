@@ -22,12 +22,13 @@
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.39",
-		"@sveltejs/kit": "1.0.0-next.432",
+		"@sveltejs/kit": "1.0.0-next.442",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "1.0.3",
-		"@typescript-eslint/eslint-plugin": "5.34.0",
+		"@types/uuid": "^8.3.4",
+		"@typescript-eslint/eslint-plugin": "5.35.1",
 		"@typescript-eslint/parser": "5.34.0",
 		"@vitest/ui": "0.22.1",
 		"autoprefixer": "10.4.8",
@@ -57,7 +58,7 @@
 		"svelte-preprocess": "4.10.7",
 		"tailwindcss": "3.1.8",
 		"tslib": "2.4.0",
-		"typescript": "4.7.4",
+		"typescript": "4.8.2",
 		"vite": "3.0.9",
 		"vitest": "0.22.1",
 		"vitest-svelte-kit": "0.0.7"
@@ -67,7 +68,7 @@
 		"@macfja/svelte-persistent-store": "2.0.0",
 		"analytics": "0.8.1",
 		"analytics-plugin-plausible": "^0.0.6",
-		"daisyui": "2.22.0",
+		"daisyui": "2.24.0",
 		"js-base64": "3.7.2",
 		"mermaid": "9.1.6",
 		"moment": "2.29.4",
@@ -75,7 +76,8 @@
 		"monaco-mermaid": "1.0.6",
 		"pako": "2.0.4",
 		"random-word-slugs": "0.1.6",
-		"svg-pan-zoom": "^3.6.1"
+		"svg-pan-zoom": "^3.6.1",
+		"uuid": "^8.3.2"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [
