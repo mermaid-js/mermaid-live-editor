@@ -40,7 +40,7 @@
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		a.href = url;
-		a.download = 'history.json';
+		a.download = `mermaid-history-${moment().format('YYYY-MM-DD-HHmmss')}.json`;
 		a.click();
 		URL.revokeObjectURL(url);
 	};
