@@ -1,5 +1,5 @@
 import { writable, get, type Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, createLocalStorage } from '@macfja/svelte-persistent-store';
 import { injectHistoryIDs } from '$lib/components/history/history';
 import { logEvent } from './stats';
 
@@ -13,7 +13,7 @@ const migrations: { [key: string]: () => void } = {
 
 const migrationStore: Writable<MigrationState> = persist(
 	writable({ version: -1 }),
-	localStorage(),
+	createLocalStorage(),
 	'migrations'
 );
 
