@@ -62,6 +62,15 @@ describe('history', () => {
 			time: 123456,
 			type: 'manual'
 		});
+
+		const store: HistoryEntry[] = get(historyStore);
+		expect(store.length).toBe(2);
+		clearHistoryData(store[1].id);
+		expect(get(historyStore).length).toBe(1);
+		clearHistoryData();
+		expect(get(historyStore).length).toBe(0);
+
+		historyModeStore.set('auto');
 		addHistoryEntry({
 			state: defaultState,
 			time: 54321,
@@ -72,15 +81,6 @@ describe('history', () => {
 			time: 654321,
 			type: 'auto'
 		});
-
-		const store: HistoryEntry[] = get(historyStore);
-		expect(store.length).toBe(2);
-		clearHistoryData(store[1].id);
-		expect(get(historyStore).length).toBe(1);
-		clearHistoryData();
-		expect(get(historyStore).length).toBe(0);
-
-		historyModeStore.set('auto');
 		expect(get(historyStore).length).toBe(2);
 		clearHistoryData();
 		expect(get(historyStore).length).toBe(0);
