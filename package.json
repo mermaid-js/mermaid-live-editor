@@ -22,11 +22,12 @@
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.39",
-		"@sveltejs/kit": "1.0.0-next.444",
+		"@sveltejs/kit": "1.0.0-next.449",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "1.0.3",
+		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "5.35.1",
 		"@typescript-eslint/parser": "5.36.1",
 		"@vitest/ui": "0.22.1",
@@ -37,7 +38,7 @@
 		"cy-verify-downloads": "0.1.8",
 		"cypress": "10.6.0",
 		"cypress-localstorage-commands": "2.2.0",
-		"eslint": "8.22.0",
+		"eslint": "8.23.0",
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-cypress": "2.12.1",
 		"eslint-plugin-es": "4.1.0",
@@ -75,7 +76,8 @@
 		"monaco-mermaid": "1.0.6",
 		"pako": "2.0.4",
 		"random-word-slugs": "0.1.6",
-		"svg-pan-zoom": "^3.6.1"
+		"svg-pan-zoom": "^3.6.1",
+		"uuid": "^8.3.2"
 	},
 	"lint-staged": {
 		"*.{ts,svelte,js,css,md,json}": [
