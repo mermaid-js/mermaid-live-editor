@@ -33,10 +33,12 @@
 			}
 			oldText = newText;
 		}
-		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', $stateStore.errorMarkers);
 	};
 
 	$: handleTextUpdate(text);
+	stateStore.subscribe(({ errorMarkers }) => {
+		editor && Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
+	});
 
 	themeStore.subscribe(({ isDark }) => {
 		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
