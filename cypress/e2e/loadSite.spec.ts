@@ -1,5 +1,4 @@
 import { toBase64 } from 'js-base64';
-import { disableDebounce } from './util';
 
 describe('Site Loads', () => {
 	beforeEach(() => {

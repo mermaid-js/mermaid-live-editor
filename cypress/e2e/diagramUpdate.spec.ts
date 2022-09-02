@@ -1,4 +1,4 @@
-import { getEditor, cmd, disableDebounce } from './util';
+import { getEditor, cmd } from './util';
 
 describe('Auto sync tests', () => {
 	beforeEach(() => {
