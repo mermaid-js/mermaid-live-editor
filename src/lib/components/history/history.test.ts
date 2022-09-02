@@ -1,5 +1,5 @@
 import type { HistoryEntry } from '$lib/types';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
 	addHistoryEntry,
 	injectHistoryIDs,
@@ -63,6 +63,7 @@ describe('history', () => {
 			type: 'manual'
 		});
 
+		historyModeStore.set('manual');
 		const store: HistoryEntry[] = get(historyStore);
 		expect(store.length).toBe(2);
 		clearHistoryData(store[1].id);
