@@ -19,10 +19,7 @@ const config = {
 					base: `/mermaid-live-editor`
 			  }
 			: {},
-		trailingSlash: 'ignore',
-		prerender: {
-			default: true
-		}
+		trailingSlash: 'ignore'
 	}
 };
 
