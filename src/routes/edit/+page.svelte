@@ -66,7 +66,7 @@
 
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
 		const editorMode: EditorMode = message.detail.id === 'code' ? 'code' : 'config';
-		updateCodeStore({ updateEditor: true, editorMode });
+		updateCodeStore({ editorMode });
 	};
 
 	const tabs: Tab[] = [

@@ -49,11 +49,9 @@
 
 	const handleUpdate = (text: string, mode: EditorMode) => {
 		if (mode === 'code') {
-			updateCode(text, {
-				updateEditor: false
-			});
+			updateCode(text);
 		} else {
-			updateConfig(text, false);
+			updateConfig(text);
 		}
 	};
 

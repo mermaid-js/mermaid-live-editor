@@ -54,7 +54,6 @@ export const loadDataFromUrl = async (): Promise<void> => {
 		updateCodeStore({
 			...state,
 			autoSync: true,
-			updateDiagram: true,
-			updateEditor: true
+			updateDiagram: true
 		});
 };
