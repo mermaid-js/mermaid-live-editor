@@ -5,7 +5,8 @@
 		"src/**/*.svelte",
 		"cypress/**/*.ts",
 		"cypress/**/*.js",
-		"static/**/*.js"
+		"static/**/*.js",
+		"static/**/*.json"
 	],
 	"compilerOptions": {
 		"resolveJsonModule": true,
