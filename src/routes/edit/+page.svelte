@@ -55,7 +55,7 @@
 	let docURL = docURLBase;
 	let activeTabID = 'code';
 	stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
-		activeTabID = editorMode ?? 'code';
+		activeTabID = editorMode;
 		const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
 		if (codeTypeMatch && codeTypeMatch.length > 1) {
 			const docKey = codeTypeMatch[1];

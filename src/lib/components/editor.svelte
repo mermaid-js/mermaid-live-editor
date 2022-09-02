@@ -2,11 +2,12 @@
 	import type { EditorMode } from '$lib/types';
 	import { stateStore, updateCode, updateConfig } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
-	import { debounceEnabled, syncDiagram } from '$lib/util/util';
+	import { syncDiagram } from '$lib/util/util';
 	import type monaco from 'monaco-editor';
 	import { onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
 	import { logEvent } from '$lib/util/stats';
+	import { debounceEnabled } from '$lib/util/env';
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
@@ -19,7 +20,6 @@
 		overviewRulerLanes: 0
 	};
 	let text = '';
-	let mode: EditorMode | undefined = undefined;
 
 	stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
 		if (!editor) return;
@@ -32,10 +32,9 @@
 		}
 
 		// Update editor mode if it's different
-		if (mode !== editorMode) {
-			const language = editorMode === 'code' ? 'mermaid' : 'json';
+		const language = editorMode === 'code' ? 'mermaid' : 'json';
+		if (editor.getModel().getLanguageId() !== language) {
 			Monaco?.editor.setModelLanguage(editor.getModel(), language);
-			mode = editorMode;
 		}
 
 		// Display errors if present
@@ -62,6 +61,7 @@
 	let debounce: { [key: string]: number } = {};
 	const updateHandler = (newText: string) => {
 		text = newText;
+		const mode = $stateStore.editorMode;
 		if (debounceEnabled) {
 			clearTimeout(debounce[mode]);
 			debounce[mode] = window.setTimeout(() => {
@@ -90,7 +90,7 @@
 		await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
 		initEditor(Monaco);
 		editor = Monaco.editor.create(divEl, editorOptions);
-		editor.onDidChangeModelContent((e) => {
+		editor.onDidChangeModelContent(() => {
 			updateHandler(editor.getValue());
 		});
 		editor.addAction({

@@ -4,7 +4,7 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "MERMAID_DISABLE_DEBOUNCE=true vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check --cache --plugin-search-dir=. .;eslint --ignore-path .gitignore .",

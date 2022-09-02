@@ -48,8 +48,10 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 		...state,
 		serialized: '',
 		errorMarkers: [],
-		error: undefined
+		error: undefined,
+		editorMode: state.editorMode ?? 'code'
 	};
+
 	// No changes should be done to fields part of `state`.
 	try {
 		processed.serialized = serializeState(state);
@@ -107,6 +109,7 @@ export const loadState = (data: string): void => {
 
 export const updateCodeStore = (newState: Partial<State>): void => {
 	inputStateStore.update((state) => {
+		// console.log({ newState, state });
 		return { ...state, ...newState };
 	});
 };
