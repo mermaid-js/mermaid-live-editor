@@ -4,7 +4,6 @@ describe('Auto sync tests', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
-		disableDebounce();
 	});
 
 	it('should dim diagram when code is edited', () => {
@@ -72,7 +71,6 @@ describe.only('Pan and Zoom', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
-		disableDebounce();
 	});
 	it('should toggle pan and zoom', () => {
 		cy.get('#svg-pan-zoom-reset-pan-zoom').should('not.exist');

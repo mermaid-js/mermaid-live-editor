@@ -5,7 +5,6 @@ describe('Site Loads', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
-		disableDebounce();
 	});
 	it('Check Home page load', () => {
 		cy.url().should('include', '/edit');

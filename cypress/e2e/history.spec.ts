@@ -1,11 +1,11 @@
-import { getEditor, disableDebounce, verifyFileSnapshot } from './util';
+import { getEditor, verifyFileSnapshot } from './util';
 
 describe('Save History', () => {
 	beforeEach(() => {
 		cy.clock(new Date(2022, 0, 1).getTime());
 		cy.clearLocalStorage();
 		cy.visit('/edit');
-		disableDebounce();
+
 		cy.contains('Actions').click();
 		cy.contains('History').click();
 	});
