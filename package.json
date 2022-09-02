@@ -21,8 +21,8 @@
 	},
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
-		"@sveltejs/adapter-static": "1.0.0-next.39",
-		"@sveltejs/kit": "1.0.0-next.444",
+		"@sveltejs/adapter-static": "1.0.0-next.41",
+		"@sveltejs/kit": "1.0.0-next.463",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
@@ -59,7 +59,7 @@
 		"tailwindcss": "3.1.8",
 		"tslib": "2.4.0",
 		"typescript": "4.8.2",
-		"vite": "3.0.9",
+		"vite": "3.1.0-beta.2",
 		"vitest": "0.22.1",
 		"vitest-svelte-kit": "0.0.7"
 	},
