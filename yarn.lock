@@ -5344,11 +5344,6 @@ vite@3.1.0-beta.2:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest-svelte-kit@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/vitest-svelte-kit/-/vitest-svelte-kit-0.0.7.tgz#002b943a2946beffaadf20838ff0d950e8f861f3"
-  integrity sha512-B83C14BAQEwNqTHcZ1dEV9EuCwOEKglcix32zBqRFonTmnc652JUOPJhMDAkQmOzHlA+SIXZ3FNEKiJjXyd1JA==
-
 vitest@0.22.1:
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.22.1.tgz#3122e6024bf782ee9aca53034017af7adb009c32"
