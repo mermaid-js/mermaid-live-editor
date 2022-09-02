@@ -1,5 +1,5 @@
 import { writable, get, type Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, localStorage } from '$lib/util/persist';
 import { injectHistoryIDs } from '$lib/components/history/history';
 import { logEvent } from './stats';
 

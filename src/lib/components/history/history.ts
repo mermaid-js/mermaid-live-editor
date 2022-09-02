@@ -1,6 +1,6 @@
 import { derived, writable, get } from 'svelte/store';
 import type { Readable, Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, localStorage } from '$lib/util/persist';
 import { generateSlug } from 'random-word-slugs';
 import type { HistoryEntry, HistoryType, Optional } from '$lib/types';
 import { v4 as uuidV4 } from 'uuid';

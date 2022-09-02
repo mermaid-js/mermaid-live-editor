@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import Card from '$lib/components/card/card.svelte';
 	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
 	import { pakoSerde } from '$lib/util/serde';
