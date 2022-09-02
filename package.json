@@ -37,7 +37,7 @@
 		"cssnano": "5.1.13",
 		"cy-verify-downloads": "0.1.8",
 		"cypress": "10.7.0",
-		"cypress-localstorage-commands": "2.2.0",
+		"cypress-localstorage-commands": "2.2.1",
 		"eslint": "8.23.0",
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-cypress": "2.12.1",
