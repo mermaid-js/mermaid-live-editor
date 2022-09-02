@@ -28,7 +28,7 @@
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "1.0.3",
 		"@types/uuid": "^8.3.4",
-		"@typescript-eslint/eslint-plugin": "5.35.1",
+		"@typescript-eslint/eslint-plugin": "5.36.1",
 		"@typescript-eslint/parser": "5.36.1",
 		"@vitest/ui": "0.22.1",
 		"autoprefixer": "10.4.8",
