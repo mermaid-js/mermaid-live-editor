@@ -1,5 +1,5 @@
 import { writable, get, derived } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, localStorage } from './persist';
 import { saveStatistics } from './stats';
 import { serializeState, deserializeState } from './serde';
 import { cmdKey } from './util';

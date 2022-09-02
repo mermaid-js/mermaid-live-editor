@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, localStorage } from '$lib/util/persist';
 import { logEvent } from './stats';
 
 export interface ThemeConfig {
