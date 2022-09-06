@@ -98,7 +98,6 @@
 	const loadSampleDiagram = (diagramType: string): void => {
 		updateCode(samples[diagramType], {
 			updateDiagram: true,
-			updateEditor: true,
 			resetPanZoom: true
 		});
 		void logEvent('loadSampleDiagram', { diagramType });

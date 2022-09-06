@@ -6,12 +6,10 @@
 	import { setTheme, themeStore } from '$lib/util/theme';
 	import { toggleDarkTheme } from '$lib/util/state';
 	import { initHandler } from '$lib/util/util';
-	import { applyMigrations } from '$lib/util/migrations';
 
 	// This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
 	// Then move it into src and vite will bundle it automatically.
 	onMount(() => {
-		applyMigrations();
 		window.addEventListener('hashchange', async (ev) => {
 			await initHandler();
 		});

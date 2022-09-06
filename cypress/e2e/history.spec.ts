@@ -1,11 +1,11 @@
-import { getEditor, disableDebounce, verifyFileSnapshot } from './util';
+import { getEditor, verifyFileSnapshot } from './util';
 
 describe('Save History', () => {
 	beforeEach(() => {
 		cy.clock(new Date(2022, 0, 1).getTime());
 		cy.clearLocalStorage();
 		cy.visit('/edit');
-		disableDebounce();
+
 		cy.contains('Actions').click();
 		cy.contains('History').click();
 	});
@@ -17,11 +17,11 @@ describe('Save History', () => {
 	it('should load history from localstorage', () => {
 		cy.setLocalStorage(
 			'manualHistoryStore',
-			'[{"state":{"code":"graph TD\\n    A[Halloween] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","updateEditor":false,"autoSync":true,"updateDiagram":false},"time":0,"type":"manual","id":"d7ea820e-21dd-418a-b984-fd58acde09df","name":"hollow-art"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","updateEditor":true,"autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"b749ffc6-522b-4a44-86cf-7c1ffc3146b3","name":"helpful-ocean"}]'
+			'[{"state":{"code":"graph TD\\n    A[Halloween] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"manual","id":"d7ea820e-21dd-418a-b984-fd58acde09df","name":"hollow-art"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"b749ffc6-522b-4a44-86cf-7c1ffc3146b3","name":"helpful-ocean"}]'
 		);
 		cy.setLocalStorage(
 			'autoHistoryStore',
-			'[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","updateEditor":false,"autoSync":true,"updateDiagram":false},"time":0,"type":"auto","id":"69ea820e-522b-4a44-86cf-fd58acde09df","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","updateEditor":true,"autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"x749ffc6-21dd-418a-b984-7c1ffc3146b3","name":"needy-mosquito"}]'
+			'[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"auto","id":"69ea820e-522b-4a44-86cf-fd58acde09df","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"x749ffc6-21dd-418a-b984-7c1ffc3146b3","name":"needy-mosquito"}]'
 		);
 		cy.reload();
 		cy.contains('Actions').click();

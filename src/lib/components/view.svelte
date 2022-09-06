@@ -94,7 +94,7 @@
 					outOfSync = true;
 				}
 			} catch (e) {
-				console.log('view fail', e);
+				console.error('view fail', e);
 				error = true;
 			}
 		});

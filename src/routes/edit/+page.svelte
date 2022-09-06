@@ -6,20 +6,12 @@
 	import View from '$lib/components/view.svelte';
 	import Card from '$lib/components/card/card.svelte';
 	import History from '$lib/components/history/history.svelte';
-	import { updateCode, updateConfig, inputStateStore, stateStore } from '$lib/util/state';
-	import { cmdKey, debounceEnabled, initHandler, syncDiagram } from '$lib/util/util';
+	import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
+	import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
 	import { onMount } from 'svelte';
-	import type { EditorUpdateEvent, State, Tab, DocConfig } from '$lib/types';
+	import type { Tab, DocConfig, EditorMode, ValidatedState } from '$lib/types';
 	import { base } from '$app/paths';
 
-	type Modes = 'code' | 'config';
-	type Languages = 'mermaid' | 'json';
-
-	let selectedMode: Modes = 'code';
-	const languageMap: { [key in Modes]: Languages } = {
-		code: 'mermaid',
-		config: 'json'
-	};
 	const docURLBase = 'https://mermaid-js.github.io/mermaid';
 	const docMap: DocConfig = {
 		graph: {
@@ -60,34 +52,23 @@
 			config: '/#/gitgraph?id=gitgraph-specific-configuration-options'
 		}
 	};
-	let text = '';
 	let docURL = docURLBase;
-	let language: Languages = 'mermaid';
-	const handleModeUpdate = (mode: Modes) => {
-		if (mode === 'code') {
-			text = $stateStore.code;
-		} else {
-			text = $stateStore.mermaid;
-		}
-	};
-	$: language = languageMap[selectedMode];
-	$: handleModeUpdate(selectedMode);
-
-	stateStore.subscribe((state: State) => {
-		if (state.updateEditor) {
-			text = selectedMode === 'code' ? state.code : state.mermaid;
-		}
-		const codeTypeMatch = /([\S]+)[\s\n]/.exec(state.code);
+	let activeTabID = 'code';
+	stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
+		activeTabID = editorMode;
+		const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
 		if (codeTypeMatch && codeTypeMatch.length > 1) {
 			const docKey = codeTypeMatch[1];
 			const docConfig = docMap[docKey] ?? { code: '' };
-			docURL = docURLBase + (docConfig[selectedMode] ?? docConfig.code ?? '');
+			docURL = docURLBase + (docConfig[editorMode] ?? docConfig.code ?? '');
 		}
 	});
+
 	const tabSelectHandler = (message: CustomEvent<Tab>) => {
-		selectedMode = message.detail.id === 'code' ? 'code' : 'config';
-		$inputStateStore.updateEditor = true;
+		const editorMode: EditorMode = message.detail.id === 'code' ? 'code' : 'config';
+		updateCodeStore({ editorMode });
 	};
+
 	const tabs: Tab[] = [
 		{
 			id: 'code',
@@ -100,28 +81,6 @@
 			icon: 'fas fa-cogs'
 		}
 	];
-
-	const handleUpdate = (text: string) => {
-		if (selectedMode === 'code') {
-			updateCode(text, {
-				updateEditor: false
-			});
-		} else {
-			updateConfig(text, false);
-		}
-	};
-
-	let debounce: { [key: string]: number } = {};
-	const updateHandler = ({ detail: { text } }: CustomEvent<EditorUpdateEvent>) => {
-		if (debounceEnabled) {
-			clearTimeout(debounce[selectedMode]);
-			debounce[selectedMode] = window.setTimeout(() => {
-				handleUpdate(text);
-			}, 300);
-		} else {
-			handleUpdate(text);
-		}
-	};
 
 	onMount(async () => {
 		await initHandler();
@@ -149,7 +108,7 @@
 	<Navbar />
 	<div class="flex-1 flex overflow-hidden">
 		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
-			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} title="Mermaid">
+			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} {activeTabID} title="Mermaid">
 				<div slot="actions" class="flex flex-row items-center">
 					<div class="form-control flex-row items-center">
 						<label class="cursor-pointer label" for="autoSync">
@@ -175,7 +134,7 @@
 					</button>
 				</div>
 
-				<Editor on:update={updateHandler} {language} {text} />
+				<Editor />
 			</Card>
 
 			<div class="-mt-2">
