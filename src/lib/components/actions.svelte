@@ -180,26 +180,24 @@
 				><i class="far fa-copy mr-2" /> Copy Image to clipboard
 			</button>
 		{/if}
-		<button id="downloadPNG" class="action-btn flex-auto" on:click={onDownloadPNG}>
+		<button id="downloadPNG" class="action-btn flex-grow" on:click={onDownloadPNG}>
 			<i class="fas fa-download mr-2" /> PNG
 		</button>
-		<button id="downloadSVG" class="action-btn flex-auto" on:click={onDownloadSVG}>
+		<button id="downloadSVG" class="action-btn flex-grow" on:click={onDownloadSVG}>
 			<i class="fas fa-download mr-2" /> SVG
 		</button>
-		<a target="_blank" href={iUrl}>
-			<button class="action-btn flex-auto">
+		<a target="_blank" class="flex-grow" href={iUrl}>
+			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> PNG
 			</button>
 		</a>
-
-		<a target="_blank" href={svgUrl}>
-			<button class="action-btn flex-auto">
+		<a target="_blank" class="flex-grow" href={svgUrl}>
+			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> SVG
 			</button>
 		</a>
-
-		<a target="_blank" href={krokiUrl}>
-			<button class="action-btn flex-auto">
+		<a target="_blank" class="flex-grow" href={krokiUrl}>
+			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> Kroki
 			</button>
 		</a>
