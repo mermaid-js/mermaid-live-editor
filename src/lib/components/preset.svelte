@@ -4,19 +4,19 @@
 	import { logEvent } from '$lib/util/stats';
 
 	const samples = {
-		'Flow Chart': `graph TD
+		Flow: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
     B --> C{Let me think}
     C -->|One| D[Laptop]
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]`,
-		'Sequence Diagram': `sequenceDiagram
+		Sequence: `sequenceDiagram
     Alice->>+John: Hello John, how are you?
     Alice->>+John: John, can you hear me?
     John-->>-Alice: Hi Alice, I can hear you!
     John-->>-Alice: I feel great!
             `,
-		'Class Diagram': `classDiagram
+		Class: `classDiagram
     Animal <|-- Duck
     Animal <|-- Fish
     Animal <|-- Zebra
@@ -38,7 +38,7 @@
       +run()
     }
             `,
-		'State Diagram': `stateDiagram-v2
+		State: `stateDiagram-v2
     [*] --> Still
     Still --> [*]
     Still --> Moving
@@ -46,7 +46,7 @@
     Moving --> Crash
     Crash --> [*]
             `,
-		'Gantt Chart': `gantt
+		Gantt: `gantt
     title A Gantt Diagram
     dateFormat  YYYY-MM-DD
     section Section
@@ -56,22 +56,22 @@
     Task in sec      :2014-01-12  , 12d
     another task      : 24d
             `,
-		'Pie Chart': `pie title Pets adopted by volunteers
+		Pie: `pie title Pets adopted by volunteers
     "Dogs" : 386
     "Cats" : 85
     "Rats" : 15
             `,
-		'ER Diagram': `erDiagram
-          CUSTOMER }|..|{ DELIVERY-ADDRESS : has
-          CUSTOMER ||--o{ ORDER : places
-          CUSTOMER ||--o{ INVOICE : "liable for"
-          DELIVERY-ADDRESS ||--o{ ORDER : receives
-          INVOICE ||--|{ ORDER : covers
-          ORDER ||--|{ ORDER-ITEM : includes
-          PRODUCT-CATEGORY ||--|{ PRODUCT : contains
-          PRODUCT ||--o{ ORDER-ITEM : "ordered in"
+		ER: `erDiagram
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : has
+    CUSTOMER ||--o{ ORDER : places
+    CUSTOMER ||--o{ INVOICE : "liable for"
+    DELIVERY-ADDRESS ||--o{ ORDER : receives
+    INVOICE ||--|{ ORDER : covers
+    ORDER ||--|{ ORDER-ITEM : includes
+    PRODUCT-CATEGORY ||--|{ PRODUCT : contains
+    PRODUCT ||--o{ ORDER-ITEM : "ordered in"
             `,
-		'User Journey': `  journey
+		'User Journey': `journey
     title My working day
     section Go to work
       Make tea: 5: Me
@@ -81,18 +81,35 @@
       Go downstairs: 5: Me
       Sit down: 3: Me
       `,
-		'Git Graph': `    gitGraph
-      commit
-      commit
-      branch develop
-      checkout develop
-      commit
-      commit
-      checkout main
-      merge develop
-      commit
-      commit
-`
+		Git: `gitGraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit
+    commit
+`,
+		Mindmap: `mindmap
+  root((mindmap))
+    Origins
+      Long history
+      ::icon(fa fa-book)
+      Popularisation
+        British popular psychology author Tony Buzan
+    Research
+      On effectivness<br/>and eatures
+      On Automatic creation
+        Uses
+            Creative techniques
+            Strategic planning
+            Argument mapping
+    Tools
+      Pen and paper
+      Mermaid`
 	};
 
 	const loadSampleDiagram = (diagramType: string): void => {
@@ -102,13 +119,27 @@
 		});
 		void logEvent('loadSampleDiagram', { diagramType });
 	};
+
+	const diagramOrder: (keyof typeof samples)[] = [
+		'Sequence',
+		'Flow',
+		'State',
+		'Class',
+		'Gantt',
+		'Pie',
+		'ER',
+		'User Journey',
+		'Git',
+		'Mindmap'
+	];
 </script>
 
 <Card title="Sample Diagrams" isOpen={false}>
 	<div class="flex gap-2 flex-wrap p-2">
-		{#each Object.keys(samples) as sample}
-			<button class="btn btn-primary normal-case btn-sm" on:click={() => loadSampleDiagram(sample)}
-				>{sample}</button>
+		{#each diagramOrder as sample}
+			<button
+				class="btn btn-primary normal-case btn-sm flex-grow"
+				on:click={() => loadSampleDiagram(sample)}>{sample}</button>
 		{/each}
 	</div>
 </Card>
