@@ -14,8 +14,7 @@
     Alice->>+John: Hello John, how are you?
     Alice->>+John: John, can you hear me?
     John-->>-Alice: Hi Alice, I can hear you!
-    John-->>-Alice: I feel great!
-            `,
+    John-->>-Alice: I feel great!`,
 		Class: `classDiagram
     Animal <|-- Duck
     Animal <|-- Fish
@@ -36,16 +35,14 @@
     class Zebra{
       +bool is_wild
       +run()
-    }
-            `,
+    }`,
 		State: `stateDiagram-v2
     [*] --> Still
     Still --> [*]
     Still --> Moving
     Moving --> Still
     Moving --> Crash
-    Crash --> [*]
-            `,
+    Crash --> [*]`,
 		Gantt: `gantt
     title A Gantt Diagram
     dateFormat  YYYY-MM-DD
@@ -54,13 +51,11 @@
     Another task     :after a1  , 20d
     section Another
     Task in sec      :2014-01-12  , 12d
-    another task      : 24d
-            `,
+    another task      : 24d`,
 		Pie: `pie title Pets adopted by volunteers
     "Dogs" : 386
     "Cats" : 85
-    "Rats" : 15
-            `,
+    "Rats" : 15`,
 		ER: `erDiagram
     CUSTOMER }|..|{ DELIVERY-ADDRESS : has
     CUSTOMER ||--o{ ORDER : places
@@ -69,8 +64,7 @@
     INVOICE ||--|{ ORDER : covers
     ORDER ||--|{ ORDER-ITEM : includes
     PRODUCT-CATEGORY ||--|{ PRODUCT : contains
-    PRODUCT ||--o{ ORDER-ITEM : "ordered in"
-            `,
+    PRODUCT ||--o{ ORDER-ITEM : "ordered in"`,
 		'User Journey': `journey
     title My working day
     section Go to work
@@ -79,8 +73,7 @@
       Do work: 1: Me, Cat
     section Go home
       Go downstairs: 5: Me
-      Sit down: 3: Me
-      `,
+      Sit down: 3: Me`,
 		Git: `gitGraph
     commit
     commit
@@ -91,8 +84,7 @@
     checkout main
     merge develop
     commit
-    commit
-`,
+    commit`,
 		Mindmap: `mindmap
   root((mindmap))
     Origins
@@ -120,26 +112,33 @@
 		void logEvent('loadSampleDiagram', { diagramType });
 	};
 
-	const diagramOrder: (keyof typeof samples)[] = [
+	// Adding in this array will add an icon to the preset menu
+	const newDiagrams: Array<keyof typeof samples> = ['Mindmap'];
+	const diagramOrder: Array<keyof typeof samples> = [
 		'Sequence',
 		'Flow',
-		'State',
 		'Class',
-		'Gantt',
-		'Pie',
+		'State',
 		'ER',
+		'Gantt',
 		'User Journey',
 		'Git',
+		'Pie',
 		'Mindmap'
 	];
 </script>
 
 <Card title="Sample Diagrams" isOpen={false}>
-	<div class="flex gap-2 flex-wrap p-2">
+	<div class="flex flex-wrap p-2 gap-2">
 		{#each diagramOrder as sample}
 			<button
-				class="btn btn-primary normal-case btn-sm flex-grow"
-				on:click={() => loadSampleDiagram(sample)}>{sample}</button>
+				class="btn btn-sm btn-primary w-28 normal-case flex-grow"
+				on:click={() => loadSampleDiagram(sample)}>
+				{sample}
+				{#if newDiagrams.includes(sample)}
+					<span class="ml-2 fa fa-heart" />
+				{/if}
+			</button>
 		{/each}
 	</div>
 </Card>
