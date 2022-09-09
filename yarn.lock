@@ -646,7 +646,7 @@ am-i-a-dependency@1.1.2:
   resolved "https://registry.npmjs.org/am-i-a-dependency/-/am-i-a-dependency-1.1.2.tgz"
   integrity sha1-+dNCIwTW9kL4IeTEB1ZQNfYWfx8=
 
-analytics-plugin-plausible@^0.0.6:
+analytics-plugin-plausible@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/analytics-plugin-plausible/-/analytics-plugin-plausible-0.0.6.tgz#22595821f1d201cb2e58dde2bb688d78fae78725"
   integrity sha512-gXeoJo85JLO91DckbPq23jn/QJW4vg1hA/bRcAbcAo5D6u6JUIg/rG6Ecwkk75sPefnGFIZ6qGHIoz1b2wFK9w==
