@@ -23,15 +23,15 @@
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.42",
-		"@sveltejs/kit": "1.0.0-next.478",
+		"@sveltejs/kit": "1.0.0-next.480",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
-		"@types/pako": "1.0.3",
+		"@types/pako": "2.0.0",
 		"@types/uuid": "8.3.4",
-		"@typescript-eslint/eslint-plugin": "5.36.1",
-		"@typescript-eslint/parser": "5.36.1",
-		"@vitest/ui": "0.22.1",
+		"@typescript-eslint/eslint-plugin": "5.36.2",
+		"@typescript-eslint/parser": "5.36.2",
+		"@vitest/ui": "0.23.1",
 		"autoprefixer": "10.4.8",
 		"c8": "7.12.0",
 		"chai": "4.3.6",
@@ -51,7 +51,7 @@
 		"husky": "8.0.1",
 		"jsdom": "20.0.0",
 		"lint-staged": "13.0.3",
-		"node-html-parser": "5.4.2",
+		"node-html-parser": "6.0.0",
 		"postcss": "8.4.16",
 		"postcss-load-config": "4.0.1",
 		"prettier": "2.7.1",
@@ -62,12 +62,12 @@
 		"tslib": "2.4.0",
 		"typescript": "4.8.3",
 		"vite": "3.1.0",
-		"vitest": "0.22.1"
+		"vitest": "0.23.1"
 	},
 	"dependencies": {
 		"@analytics/google-analytics": "1.0.3",
 		"analytics": "0.8.1",
-		"analytics-plugin-plausible": "^0.0.6",
+		"analytics-plugin-plausible": "0.0.6",
 		"daisyui": "2.25.0",
 		"js-base64": "3.7.2",
 		"mermaid": "9.1.6",
@@ -87,7 +87,7 @@
 	},
 	"volta": {
 		"node": "18.5.0",
-		"yarn": "1.22.10"
+		"yarn": "1.22.19"
 	},
 	"engines": {
 		"node": ">=16.7"
