@@ -3,12 +3,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	export let isCloseable = true;
-	export let tabs: Tab[] = [];
+	export let tabs: Tab[];
 	export let title: string;
 	export let isOpen = false;
+	export let activeTabID: string;
 
-	$: activeTabID = tabs[0]?.id;
-
+	if (!activeTabID && tabs.length > 0) {
+		activeTabID = tabs[0].id;
+	}
 	const dispatch = createEventDispatcher<TabEvents>();
 	const toggleTabs = (tab: Tab) => {
 		activeTabID = tab.id;

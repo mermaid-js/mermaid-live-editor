@@ -8,8 +8,6 @@ export const getEditor = ({ bottom = true, newline = false } = {}) =>
 		.type(`${bottom ? '{pageDown}' : cmd}`)
 		.type(`${newline ? '{enter}' : cmd}`);
 
-export const disableDebounce = () => cy.setLocalStorage('noDebounce', 'true');
-
 const downloadsFolder = Cypress.config('downloadsFolder');
 
 export const verifyFileSize = (

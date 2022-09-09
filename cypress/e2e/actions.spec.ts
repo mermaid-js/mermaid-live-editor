@@ -1,9 +1,8 @@
-import { disableDebounce, verifyFileSize } from './util';
+import { verifyFileSize } from './util';
 describe('Check actions', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/edit');
-		disableDebounce();
 	});
 
 	it('should update markdown code', () => {

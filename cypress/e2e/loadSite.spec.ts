@@ -1,11 +1,9 @@
 import { toBase64 } from 'js-base64';
-import { disableDebounce } from './util';
 
 describe('Site Loads', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');
-		disableDebounce();
 	});
 	it('Check Home page load', () => {
 		cy.url().should('include', '/edit');
@@ -60,7 +58,7 @@ describe('Site Loads', () => {
 	// Disabled temporarily. Should be enabled after the issue is fixed in Mermaid.
 	// it('should prevent setting the "securityLevel" option via URL', () => {
 	// 	const b64State = toBase64(
-	// 		`{"code":"graph TD\\nA[\\"<img src='https://via.placeholder.com/64' width=64 />\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","updateEditor":true,"autoSync":true,"updateDiagram":true}`,
+	// 		`{"code":"graph TD\\nA[\\"<img src='https://via.placeholder.com/64' width=64 />\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","autoSync":true,"updateDiagram":true}`,
 	// 		true
 	// 	);
 	// 	cy.on('window:confirm', () => true);
@@ -75,7 +73,7 @@ describe('Site Loads', () => {
 
 	it('should allow persisting "securityLevel" using confirm dialogue', () => {
 		const b64State = toBase64(
-			`{"code":"graph TD\\nA[\\"<img src='https://dummyimage.com/64' width=64/>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","updateEditor":true,"autoSync":true,"updateDiagram":true}`,
+			`{"code":"graph TD\\nA[\\"<img src='https://dummyimage.com/64' width=64/>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","autoSync":true,"updateDiagram":true}`,
 			true
 		);
 		cy.on('window:confirm', () => false);

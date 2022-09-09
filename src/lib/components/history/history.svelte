@@ -90,7 +90,7 @@
 	};
 
 	const restoreHistoryItem = (state: State): void => {
-		inputStateStore.set({ ...state, updateEditor: true, updateDiagram: true });
+		inputStateStore.set({ ...state, updateDiagram: true });
 	};
 
 	const relativeTime = (time: number) => {
