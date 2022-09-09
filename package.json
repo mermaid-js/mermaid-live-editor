@@ -23,14 +23,14 @@
 	"devDependencies": {
 		"@cypress/snapshot": "2.1.7",
 		"@sveltejs/adapter-static": "1.0.0-next.42",
-		"@sveltejs/kit": "1.0.0-next.478",
+		"@sveltejs/kit": "1.0.0-next.480",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.1",
 		"@types/mermaid": "8.2.9",
 		"@types/pako": "2.0.0",
 		"@types/uuid": "8.3.4",
-		"@typescript-eslint/eslint-plugin": "5.36.1",
-		"@typescript-eslint/parser": "5.36.1",
+		"@typescript-eslint/eslint-plugin": "5.36.2",
+		"@typescript-eslint/parser": "5.36.2",
 		"@vitest/ui": "0.23.1",
 		"autoprefixer": "10.4.8",
 		"c8": "7.12.0",
@@ -87,7 +87,7 @@
 	},
 	"volta": {
 		"node": "18.5.0",
-		"yarn": "1.22.10"
+		"yarn": "1.22.19"
 	},
 	"engines": {
 		"node": ">=16.7"
