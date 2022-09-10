@@ -34,5 +34,5 @@ export const setTheme = (theme: string): void => {
 	const isDark = darkThemes.includes(theme);
 	console.log('Setting theme', theme);
 	themeStore.set({ theme, isDark });
-	void logEvent('themeChange', { theme, isDark });
+	logEvent('themeChange', { theme, isDark });
 };

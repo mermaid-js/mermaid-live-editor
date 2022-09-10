@@ -115,19 +115,19 @@
 
 	const onCopyClipboard = (event: Event) => {
 		exportImage(event, clipboardCopy);
-		void logEvent('copyClipboard');
+		logEvent('copyClipboard');
 	};
 
 	const onDownloadPNG = (event: Event) => {
 		exportImage(event, downloadImage);
-		void logEvent('download', {
+		logEvent('download', {
 			type: 'png'
 		});
 	};
 
 	const onDownloadSVG = () => {
 		simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
-		void logEvent('download', {
+		logEvent('download', {
 			type: 'svg'
 		});
 	};
@@ -135,7 +135,7 @@
 	const onCopyMarkdown = () => {
 		(document.getElementById('markdown') as HTMLInputElement).select();
 		document.execCommand('Copy');
-		void logEvent('copyMarkdown');
+		logEvent('copyMarkdown');
 	};
 
 	let gistURL = '';
@@ -151,7 +151,7 @@
 			alert('Please enter a Gist URL first');
 		}
 		window.location.href = `${window.location.pathname}?gist=${gistURL}`;
-		void logEvent('loadGist');
+		logEvent('loadGist');
 	};
 
 	let iUrl: string;
