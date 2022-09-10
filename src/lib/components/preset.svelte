@@ -100,7 +100,7 @@
 			updateDiagram: true,
 			resetPanZoom: true
 		});
-		void logEvent('loadSampleDiagram', { diagramType });
+		logEvent('loadSampleDiagram', { diagramType });
 	};
 </script>
 

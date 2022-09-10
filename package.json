@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
-		"dev:test": "MERMAID_DISABLE_DEBOUNCE=true yarn dev",
+		"dev:test": "yarn dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check --cache --plugin-search-dir=. .;eslint --ignore-path .gitignore .",
