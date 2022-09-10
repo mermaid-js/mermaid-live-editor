@@ -53,7 +53,7 @@ const timeouts: Record<string, number> = {};
 export const logEvent = (name: string, data?: unknown): void => {
 	if (analytics) {
 		const key = data ? JSON.stringify({ name, data }) : name;
-		clearInterval(timeouts[key]);
+		clearTimeout(timeouts[key]);
 		timeouts[key] = window.setTimeout(() => {
 			void analytics.track(name, data);
 		}, 5000);
