@@ -16,18 +16,12 @@
 	let manualUpdate = true;
 	let panZoomEnabled = $stateStore.panZoom;
 	let pzoom: SvgPanZoom.Instance;
-	// let panZoomDebounce: number;
-	// let stateDebounce: number;
 
 	const handlePanZoomChange = () => {
-		// This needs to be debounced here separately to avoid frequent updates to browser history API, breaking it.
 		const pan = pzoom.getPan();
 		const zoom = pzoom.getZoom();
-		// clearTimeout(panZoomDebounce);
-		// panZoomDebounce = window.setTimeout(() => {
 		updateCodeStore({ pan, zoom });
 		logEvent('panZoom');
-		// }, 200);
 	};
 
 	const handlePanZoom = (state: State) => {
@@ -101,10 +95,7 @@
 	};
 	onMount(() => {
 		stateStore.subscribe((state) => {
-			// clearTimeout(stateDebounce);
-			// stateDebounce = window.setTimeout(() =>
 			handleStateChange(state);
-			// , 200);
 		});
 		window.addEventListener('resize', () => {
 			if ($stateStore.panZoom && pzoom) {
