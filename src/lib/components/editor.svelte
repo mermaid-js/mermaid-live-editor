@@ -37,10 +37,8 @@
 			Monaco?.editor.setModelLanguage(editor.getModel(), language);
 		}
 
-		// Display errors if present
-		if (errorMarkers.length > 0) {
-			Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
-		}
+		// Display/clear error
+		Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
 	});
 
 	themeStore.subscribe(({ isDark }) => {
