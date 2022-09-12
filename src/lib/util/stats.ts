@@ -42,21 +42,20 @@ const detectType = (text: string): string => {
 		.split(' ')[0];
 };
 
-// manual debounce
-let timeout: number;
 export const saveStatistics = (graph: string): void => {
-	if (analytics) {
-		clearTimeout(timeout);
-		// Only save statistics after a 5 sec delay
-		timeout = window.setTimeout(() => {
-			const graphType = detectType(graph);
-			console.debug(`ga: send event: render ${graphType}`);
-			void logEvent('render', { graphType });
-		}, 5000);
-	}
+	const graphType = detectType(graph);
+	console.debug(`ga: send event: render ${graphType}`);
+	logEvent('render', { graphType });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const logEvent = async (name: string, data?: any): Promise<void> => {
-	await analytics?.track(name, data);
+// manual debounce to only send analytics event every 5 seconds if same event is repeated frequently.
+const timeouts: Record<string, number> = {};
+export const logEvent = (name: string, data?: unknown): void => {
+	if (analytics) {
+		const key = data ? JSON.stringify({ name, data }) : name;
+		clearTimeout(timeouts[key]);
+		timeouts[key] = window.setTimeout(() => {
+			void analytics.track(name, data);
+		}, 5000);
+	}
 };

@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
-		"dev:test": "MERMAID_DISABLE_DEBOUNCE=true yarn dev",
+		"dev:test": "yarn dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check --cache --plugin-search-dir=. .;eslint --ignore-path .gitignore .",
@@ -31,7 +31,7 @@
 		"@types/uuid": "8.3.4",
 		"@typescript-eslint/eslint-plugin": "5.36.2",
 		"@typescript-eslint/parser": "5.36.2",
-		"@vitest/ui": "0.23.1",
+		"@vitest/ui": "0.23.2",
 		"autoprefixer": "10.4.8",
 		"c8": "7.12.0",
 		"chai": "4.3.6",
@@ -62,7 +62,7 @@
 		"tslib": "2.4.0",
 		"typescript": "4.8.3",
 		"vite": "3.1.0",
-		"vitest": "0.23.1"
+		"vitest": "0.23.2"
 	},
 	"dependencies": {
 		"@analytics/google-analytics": "1.0.3",
