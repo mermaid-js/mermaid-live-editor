@@ -1,5 +1,5 @@
 import { writable, get, derived } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, localStorage } from './persist';
 import { saveStatistics } from './stats';
 import { serializeState, deserializeState } from './serde';
 import { cmdKey } from './util';
@@ -23,7 +23,6 @@ export const defaultState: State = {
 		null,
 		2
 	),
-	updateEditor: false,
 	autoSync: true,
 	updateDiagram: true
 };
@@ -48,8 +47,10 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 		...state,
 		serialized: '',
 		errorMarkers: [],
-		error: undefined
+		error: undefined,
+		editorMode: state.editorMode ?? 'code'
 	};
+
 	// No changes should be done to fields part of `state`.
 	try {
 		processed.serialized = serializeState(state);
@@ -102,11 +103,12 @@ export const loadState = (data: string): void => {
 			state.mermaid = defaultState.mermaid;
 		}
 	}
-	updateCodeStore({ ...state, updateEditor: true });
+	updateCodeStore({ ...state });
 };
 
 export const updateCodeStore = (newState: Partial<State>): void => {
 	inputStateStore.update((state) => {
+		// console.log({ newState, state });
 		return { ...state, ...newState };
 	});
 };
@@ -115,10 +117,9 @@ let prompted = false;
 export const updateCode = (
 	code: string,
 	{
-		updateEditor,
 		updateDiagram = false,
 		resetPanZoom = false
-	}: { updateEditor: boolean; updateDiagram?: boolean; resetPanZoom?: boolean }
+	}: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
 ): void => {
 	saveStatistics(code);
 	const lines = (code.match(/\n/g) || '').length + 1;
@@ -140,13 +141,13 @@ export const updateCode = (
 			state.pan = undefined;
 			state.zoom = undefined;
 		}
-		return { ...state, code, updateEditor, updateDiagram };
+		return { ...state, code, updateDiagram };
 	});
 };
 
-export const updateConfig = (config: string, updateEditor: boolean): void => {
+export const updateConfig = (config: string): void => {
 	inputStateStore.update((state) => {
-		return { ...state, mermaid: config, updateEditor };
+		return { ...state, mermaid: config };
 	});
 };
 
@@ -157,13 +158,17 @@ export const toggleDarkTheme = (dark: boolean): void => {
 			config.theme = dark ? 'dark' : 'default';
 		}
 
-		return { ...state, mermaid: JSON.stringify(config, null, 2), updateEditor: true };
+		return { ...state, mermaid: JSON.stringify(config, null, 2) };
 	});
 };
 
+let urlDebounce: number;
 export const initURLSubscription = (): void => {
 	stateStore.subscribe(({ serialized }) => {
-		history.replaceState(undefined, undefined, `#${serialized}`);
+		clearTimeout(urlDebounce);
+		urlDebounce = window.setTimeout(() => {
+			history.replaceState(undefined, undefined, `#${serialized}`);
+		}, 250);
 	});
 };
 

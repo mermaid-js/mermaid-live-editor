@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import Card from '$lib/components/card/card.svelte';
 	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
 	import { pakoSerde } from '$lib/util/serde';
@@ -115,19 +115,19 @@
 
 	const onCopyClipboard = (event: Event) => {
 		exportImage(event, clipboardCopy);
-		void logEvent('copyClipboard');
+		logEvent('copyClipboard');
 	};
 
 	const onDownloadPNG = (event: Event) => {
 		exportImage(event, downloadImage);
-		void logEvent('download', {
+		logEvent('download', {
 			type: 'png'
 		});
 	};
 
 	const onDownloadSVG = () => {
 		simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
-		void logEvent('download', {
+		logEvent('download', {
 			type: 'svg'
 		});
 	};
@@ -135,7 +135,7 @@
 	const onCopyMarkdown = () => {
 		(document.getElementById('markdown') as HTMLInputElement).select();
 		document.execCommand('Copy');
-		void logEvent('copyMarkdown');
+		logEvent('copyMarkdown');
 	};
 
 	let gistURL = '';
@@ -151,7 +151,7 @@
 			alert('Please enter a Gist URL first');
 		}
 		window.location.href = `${window.location.pathname}?gist=${gistURL}`;
-		void logEvent('loadGist');
+		logEvent('loadGist');
 	};
 
 	let iUrl: string;
@@ -180,26 +180,24 @@
 				><i class="far fa-copy mr-2" /> Copy Image to clipboard
 			</button>
 		{/if}
-		<button id="downloadPNG" class="action-btn flex-auto" on:click={onDownloadPNG}>
+		<button id="downloadPNG" class="action-btn flex-grow" on:click={onDownloadPNG}>
 			<i class="fas fa-download mr-2" /> PNG
 		</button>
-		<button id="downloadSVG" class="action-btn flex-auto" on:click={onDownloadSVG}>
+		<button id="downloadSVG" class="action-btn flex-grow" on:click={onDownloadSVG}>
 			<i class="fas fa-download mr-2" /> SVG
 		</button>
-		<a target="_blank" href={iUrl}>
-			<button class="action-btn flex-auto">
+		<a target="_blank" class="flex-grow" href={iUrl}>
+			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> PNG
 			</button>
 		</a>
-
-		<a target="_blank" href={svgUrl}>
-			<button class="action-btn flex-auto">
+		<a target="_blank" class="flex-grow" href={svgUrl}>
+			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> SVG
 			</button>
 		</a>
-
-		<a target="_blank" href={krokiUrl}>
-			<button class="action-btn flex-auto">
+		<a target="_blank" class="flex-grow" href={krokiUrl}>
+			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> Kroki
 			</button>
 		</a>

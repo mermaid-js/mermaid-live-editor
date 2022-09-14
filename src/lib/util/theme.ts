@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { persist, localStorage } from '$lib/util/persist';
 import { logEvent } from './stats';
 
 export interface ThemeConfig {
@@ -34,5 +34,5 @@ export const setTheme = (theme: string): void => {
 	const isDark = darkThemes.includes(theme);
 	console.log('Setting theme', theme);
 	themeStore.set({ theme, isDark });
-	void logEvent('themeChange', { theme, isDark });
+	logEvent('themeChange', { theme, isDark });
 };

@@ -16,13 +16,6 @@ export interface MarkerData {
 	endColumn: number;
 }
 
-export interface EditorUpdateEvent {
-	text: string;
-}
-export interface EditorEvents {
-	update: EditorUpdateEvent;
-}
-
 export interface TabEvents {
 	select: Tab;
 }
@@ -36,9 +29,9 @@ export interface Tab {
 export interface State {
 	code: string;
 	mermaid: string;
-	updateEditor: boolean;
 	updateDiagram: boolean;
 	autoSync: boolean;
+	editorMode?: EditorMode;
 	panZoom?: boolean;
 	pan?: { x: number; y: number };
 	zoom?: number;
@@ -46,6 +39,7 @@ export interface State {
 }
 
 export interface ValidatedState extends State {
+	editorMode: EditorMode;
 	error: unknown;
 	errorMarkers: MarkerData[];
 	serialized: string;
@@ -68,13 +62,16 @@ export interface LoaderConfig {
 	config: GistLoaderConfig | FileLoaderConfig;
 }
 export type HistoryType = 'auto' | 'manual' | 'loader';
-export interface HistoryEntry {
-	state: State;
-	time: number;
-	name?: string;
-	type: HistoryType;
-	url?: string;
-}
+export type HistoryEntry = { id: string; state: State; time: number; url?: string } & (
+	| {
+			type: 'loader';
+			name: string;
+	  }
+	| {
+			type: HistoryType;
+			name?: string;
+	  }
+);
 
 export interface DocConfig {
 	[key: string]: {
@@ -83,4 +80,7 @@ export interface DocConfig {
 	};
 }
 
+export type EditorMode = 'code' | 'config';
+
 export type Loader = (url: string) => Promise<State>;
+export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;

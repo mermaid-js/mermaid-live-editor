@@ -1,13 +1,45 @@
-import { getEditor, disableDebounce } from './util';
+import { getEditor, verifyFileSnapshot } from './util';
 
 describe('Save History', () => {
 	beforeEach(() => {
-		cy.clock();
+		cy.clock(new Date(2022, 0, 1).getTime());
 		cy.clearLocalStorage();
 		cy.visit('/edit');
-		disableDebounce();
+
 		cy.contains('Actions').click();
 		cy.contains('History').click();
+	});
+
+	afterEach(() => {
+		cy.clock().invoke('restore');
+	});
+
+	it('should load history from localstorage', () => {
+		cy.setLocalStorage(
+			'manualHistoryStore',
+			'[{"state":{"code":"graph TD\\n    A[Halloween] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"manual","id":"d7ea820e-21dd-418a-b984-fd58acde09df","name":"hollow-art"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"b749ffc6-522b-4a44-86cf-7c1ffc3146b3","name":"helpful-ocean"}]'
+		);
+		cy.setLocalStorage(
+			'autoHistoryStore',
+			'[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"auto","id":"69ea820e-522b-4a44-86cf-fd58acde09df","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"x749ffc6-21dd-418a-b984-7c1ffc3146b3","name":"needy-mosquito"}]'
+		);
+		cy.reload();
+		cy.contains('Actions').click();
+		cy.contains('History').click();
+		cy.get('#historyList').find('li').should('have.length', 2);
+		cy.get('#historyList').find('No items in History').should('not.exist');
+		cy.get('#historyList').contains('helpful-ocean');
+		cy.get('#historyList').contains('hollow-art');
+		cy.contains('Restore').click();
+		cy.contains('Halloween');
+		cy.contains('Timeline').click();
+
+		cy.get('#historyList').find('li').should('have.length', 2);
+		cy.get('#historyList').find('No items in History').should('not.exist');
+		cy.get('#historyList').contains('needy-mosquito');
+		cy.get('#historyList').contains('barking-dog');
+		cy.contains('Restore').click();
+		cy.contains('New Year');
 	});
 
 	it('should save when clicked', () => {
@@ -63,5 +95,11 @@ describe('Save History', () => {
 			cy.tick(70000);
 		}
 		cy.get('#historyList').find('li').should('have.length', 30);
+	});
+
+	it('should download history', () => {
+		cy.get('#saveHistory').click();
+		cy.get(`#downloadHistory`).click();
+		verifyFileSnapshot('history', 'json', 'A[Christmas] -->|Get money| B(Go shopping)');
 	});
 });

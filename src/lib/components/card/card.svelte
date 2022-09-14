@@ -5,6 +5,7 @@
 	export let isCloseable = true;
 	export let isOpen = true;
 	export let tabs: Tab[] = [];
+	export let activeTabID: string = '';
 	export let title: string;
 	$: isOpen = isCloseable ? isOpen : true;
 	$: isTabsShown = isOpen && tabs.length > 0;
@@ -15,7 +16,7 @@
 		class="bg-primary p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
 		on:click={() => (isOpen = !isOpen)}>
 		<div class="flex justify-between">
-			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} />
+			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} {activeTabID} />
 			<div class="flex gap-x-4 items-center {isTabsShown ? '-mt-2' : ''}">
 				<slot name="actions" />
 			</div>

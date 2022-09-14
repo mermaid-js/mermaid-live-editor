@@ -1,4 +1,8 @@
 {
 	"editor.formatOnSave": true,
-	"cSpell.words": ["pako", "Serde", "serdes"]
+	"cSpell.words": ["pako", "Serde", "serdes"],
+	"vitest.commandLine": "yarn test:unit",
+	"vitest.enable": true,
+	"testing.autoRun.mode": "rerun",
+	"svelte.enable-ts-plugin": true
 }

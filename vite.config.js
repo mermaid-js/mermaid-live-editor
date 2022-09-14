@@ -4,9 +4,6 @@ const config = {
 	plugins: [sveltekit()],
 	envPrefix: 'MERMAID_',
 	optimizeDeps: { include: ['mermaid'] },
-	ssr: {
-		noExternal: ['@macfja/svelte-persistent-store']
-	},
 	server: {
 		port: 3000,
 		host: true
