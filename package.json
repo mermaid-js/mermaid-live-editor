@@ -65,7 +65,6 @@
 		"vitest": "0.23.2"
 	},
 	"dependencies": {
-		"@analytics/google-analytics": "1.0.3",
 		"analytics": "0.8.1",
 		"analytics-plugin-plausible": "0.0.6",
 		"daisyui": "2.27.0",

@@ -6,20 +6,13 @@ export let analytics: AnalyticsInstance;
 export const initAnalytics = async (): Promise<void> => {
 	if (browser && !analytics) {
 		try {
-			const { Analytics } = await import('analytics');
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const googleAnalytics = (await import('@analytics/google-analytics')).default;
-			const plausible = (await import('analytics-plugin-plausible')).default;
+			const [{ Analytics }, { default: plausible }] = await Promise.all([
+				import('analytics'),
+				import('analytics-plugin-plausible')
+			]);
 			analytics = Analytics({
 				app: 'mermaid-live-editor',
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				plugins: [
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-					googleAnalytics({
-						measurementIds: ['UA-153180559-1']
-					}),
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
 					plausible({
 						domain: 'mermaid.live',
 						hashMode: false,
