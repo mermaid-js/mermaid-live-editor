@@ -54,6 +54,9 @@ export const countLines = (code: string): number => {
 
 export const saveStatistics = (graph: string): void => {
 	const graphType = detectType(graph);
+	if (!graphType) {
+		return;
+	}
 	const length = countLines(graph);
 	logEvent('render', { graphType, length });
 };
