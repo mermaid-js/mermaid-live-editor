@@ -1,25 +1,17 @@
 import { browser } from '$app/environment';
 import type { AnalyticsInstance } from 'analytics';
-
 export let analytics: AnalyticsInstance;
 
 export const initAnalytics = async (): Promise<void> => {
 	if (browser && !analytics) {
 		try {
-			const { Analytics } = await import('analytics');
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const googleAnalytics = (await import('@analytics/google-analytics')).default;
-			const plausible = (await import('analytics-plugin-plausible')).default;
+			const [{ Analytics }, { default: plausible }] = await Promise.all([
+				import('analytics'),
+				import('analytics-plugin-plausible')
+			]);
 			analytics = Analytics({
 				app: 'mermaid-live-editor',
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				plugins: [
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-					googleAnalytics({
-						measurementIds: ['UA-153180559-1']
-					}),
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
 					plausible({
 						domain: 'mermaid.live',
 						hashMode: false,
@@ -35,27 +27,72 @@ export const initAnalytics = async (): Promise<void> => {
 	}
 };
 
-const detectType = (text: string): string => {
-	return text
+export const detectType = (text: string): string => {
+	const possibleDiagramTypes = [
+		'classDiagram',
+		'erDiagram',
+		'flowChart',
+		'gantt',
+		'gitGraph',
+		'graph',
+		'journey',
+		'pie',
+		'stateDiagram'
+	];
+	const firstLine = text
 		.replace(/^\s*%%.*\n/g, '\n')
 		.trimStart()
-		.split(' ')[0];
+		.split(' ')[0]
+		.toLowerCase();
+	const detectedDiagram = possibleDiagramTypes.find((d) => firstLine.includes(d.toLowerCase()));
+	return detectedDiagram;
+};
+
+export const countLines = (code: string): number => {
+	return (code.match(/\n/g) || '').length + 1;
 };
 
 export const saveStatistics = (graph: string): void => {
 	const graphType = detectType(graph);
-	console.debug(`ga: send event: render ${graphType}`);
-	logEvent('render', { graphType });
+	if (!graphType) {
+		return;
+	}
+	const length = countLines(graph);
+	logEvent('render', { graphType, length });
 };
 
-// manual debounce to only send analytics event every 5 seconds if same event is repeated frequently.
+const minutesToMilliSeconds = (minutes: number): number => {
+	return minutes * 60_000;
+};
+
+const defaultDelay = minutesToMilliSeconds(1);
+const delaysPerEvent = {
+	render: minutesToMilliSeconds(5),
+	panZoom: minutesToMilliSeconds(10),
+	copyClipboard: defaultDelay,
+	download: defaultDelay,
+	copyMarkdown: defaultDelay,
+	loadGist: defaultDelay,
+	loadSampleDiagram: defaultDelay,
+	renderDiagram: defaultDelay,
+	history: defaultDelay,
+	migration: defaultDelay,
+	themeChange: defaultDelay
+};
+export type AnalyticsEvent = keyof typeof delaysPerEvent;
 const timeouts: Record<string, number> = {};
-export const logEvent = (name: string, data?: unknown): void => {
-	if (analytics) {
-		const key = data ? JSON.stringify({ name, data }) : name;
-		clearTimeout(timeouts[key]);
-		timeouts[key] = window.setTimeout(() => {
-			void analytics.track(name, data);
-		}, 5000);
+// manual debounce to reduce the number of events sent to analytics
+export const logEvent = (name: AnalyticsEvent, data?: unknown): void => {
+	if (!analytics) {
+		return;
 	}
+	const key = data ? JSON.stringify({ name, data }) : name;
+	if (timeouts[key] === undefined) {
+		void analytics.track(name, data);
+	} else {
+		clearTimeout(timeouts[key]);
+	}
+	timeouts[key] = window.setTimeout(() => {
+		delete timeouts[key];
+	}, delaysPerEvent[name]);
 };

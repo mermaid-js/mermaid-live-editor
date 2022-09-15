@@ -1,6 +1,6 @@
 import { writable, get, derived } from 'svelte/store';
 import { persist, localStorage } from './persist';
-import { saveStatistics } from './stats';
+import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
 import { cmdKey } from './util';
 import mermaid from 'mermaid';
@@ -121,8 +121,8 @@ export const updateCode = (
 		resetPanZoom = false
 	}: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
 ): void => {
+	const lines = countLines(code);
 	saveStatistics(code);
-	const lines = (code.match(/\n/g) || '').length + 1;
 
 	if (lines > 50 && !prompted && get(stateStore).autoSync) {
 		const turnOff = confirm(
