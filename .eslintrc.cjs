@@ -44,6 +44,7 @@ module.exports = {
 		],
 		'@typescript-eslint/no-unsafe-member-access': 'off',
 		'@typescript-eslint/no-unsafe-assignment': 'off',
-		'es/no-regexp-lookbehind-assertions': 'error'
+		'es/no-regexp-lookbehind-assertions': 'error',
+		curly: ['error', 'all']
 	}
 };
