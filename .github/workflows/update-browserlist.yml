@@ -1,9 +1,9 @@
 name: Update Browserslist
 on:
-  pull_request:
-    branches:
-      - develop
-
+  push:
+    branches-ignore:
+      - 'develop'
+      - 'master'
 jobs:
   build:
     runs-on: ubuntu-latest
