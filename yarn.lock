@@ -405,10 +405,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
 
-"@types/mermaid@8.2.9":
-  version "8.2.9"
-  resolved "https://registry.yarnpkg.com/@types/mermaid/-/mermaid-8.2.9.tgz#1844505dcffcd47703e94628a6200583d35c2c76"
-  integrity sha512-f1i8fNoVFVJXedk+R7GcEk4KoOWzWAU3CzFqlVw1qWKktfsataBERezCz1pOdKy8Ec02ZdPQXGM7NU2lPHABYQ==
+"@types/mermaid@9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@types/mermaid/-/mermaid-9.1.0.tgz#e9ba511d8a6793749d6be84f86325f0f58553154"
+  integrity sha512-rc8QqhveKAY7PouzY/p8ljS+eBSNCv7o79L97RSub/Ic2SQ34ph1Ng3s8wFLWVjvaEt6RLOWtSCsgYWd95NY8A==
 
 "@types/node@*":
   version "15.0.2"
