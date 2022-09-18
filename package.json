@@ -37,7 +37,7 @@
 		"chai": "4.3.6",
 		"cssnano": "5.1.13",
 		"cy-verify-downloads": "0.1.8",
-		"cypress": "10.7.0",
+		"cypress": "10.8.0",
 		"cypress-localstorage-commands": "2.2.1",
 		"eslint": "8.23.1",
 		"eslint-config-prettier": "8.5.0",
@@ -67,7 +67,7 @@
 	"dependencies": {
 		"analytics": "0.8.1",
 		"analytics-plugin-plausible": "0.0.6",
-		"daisyui": "2.27.0",
+		"daisyui": "2.28.0",
 		"js-base64": "3.7.2",
 		"mermaid": "9.1.7",
 		"moment": "2.29.4",
