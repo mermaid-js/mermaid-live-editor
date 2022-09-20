@@ -1,10 +1,9 @@
 name: Update Browserslist
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - develop
-
+    branches-ignore:
+      - 'develop'
+      - 'master'
 jobs:
   build:
     runs-on: ubuntu-latest
