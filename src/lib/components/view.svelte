@@ -5,6 +5,7 @@
 	import panzoom from 'svg-pan-zoom';
 	import type { State, ValidatedState } from '$lib/types';
 	import { logEvent } from '$lib/util/stats';
+	import { cmdKey } from '$lib/util/util';
 
 	let code = '';
 	let config = '';
@@ -109,6 +110,12 @@
 	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
 {/if}
 
+{#if outOfSync}
+	<div class="absolute w-full p-2 z-10 text-yellow-600 bg-base-100 bg-opacity-80 text-center">
+		Diagram out of sync. <br />
+		Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+	</div>
+{/if}
 <div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
 	<div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
 </div>
