@@ -3,7 +3,7 @@ import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
 import { cmdKey } from './util';
-import mermaid from 'mermaid';
+import { parse } from './mermaid';
 
 import type { Readable } from 'svelte/store';
 import type { MarkerData, State, ValidatedState } from '$lib/types';
@@ -54,7 +54,7 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 	// No changes should be done to fields part of `state`.
 	try {
 		processed.serialized = serializeState(state);
-		mermaid.parse(state.code);
+		parse(state.code);
 		JSON.parse(state.mermaid);
 	} catch (e) {
 		processed.error = e;

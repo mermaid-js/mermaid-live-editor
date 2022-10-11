@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
-	import mermaid from 'mermaid';
 	import panzoom from 'svg-pan-zoom';
 	import type { State, ValidatedState } from '$lib/types';
 	import { logEvent } from '$lib/util/stats';
 	import { cmdKey } from '$lib/util/util';
+	import { render as renderDiagram } from '$lib/util/mermaid';
 
 	let code = '';
 	let config = '';
@@ -50,7 +50,7 @@
 		});
 	};
 
-	const handleStateChange = (state: ValidatedState) => {
+	const handleStateChange = async (state: ValidatedState) => {
 		if (state.error !== undefined) {
 			error = true;
 			return;
@@ -72,16 +72,23 @@
 				panZoomEnabled = state.panZoom;
 				const scroll = view.parentElement.scrollTop;
 				delete container.dataset.processed;
-				mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
-				mermaid.render('graph-div', code, (svgCode) => {
-					if (svgCode.length > 0) {
-						handlePanZoom(state);
-						container.innerHTML = svgCode;
-						const graphDiv = document.getElementById('graph-div');
-						graphDiv.setAttribute('height', '100%');
-						graphDiv.style.maxWidth = '100%';
+				await renderDiagram(
+					Object.assign({}, JSON.parse(state.mermaid)),
+					code,
+					'graph-div',
+					(svgCode, bindFunctions) => {
+						if (svgCode.length > 0) {
+							handlePanZoom(state);
+							container.innerHTML = svgCode;
+							const graphDiv = document.getElementById('graph-div');
+							graphDiv.setAttribute('height', '100%');
+							graphDiv.style.maxWidth = '100%';
+							if (bindFunctions) {
+								bindFunctions(graphDiv);
+							}
+						}
 					}
-				});
+				);
 				view.parentElement.scrollTop = scroll;
 				error = false;
 			} else if (manualUpdate) {
