@@ -3,14 +3,12 @@ import mermaid from 'mermaid';
 import type { MermaidConfig } from 'mermaid/dist/config.type';
 
 const init = (async () => {
-	mermaid.initialize({
+	await mermaid.initializeAsync({
 		lazyLoadedDiagrams: [
-			// We should make SRI mandatory for all lazy-loaded diagrams.
 			'https://unpkg.com/@mermaid-js/mermaid-mindmap@9.2.0-rc2/dist/mermaid-mindmap-detector.esm.mjs'
-		]
+		],
+		loadExternalDiagramsAtStartup: true
 	});
-	// Lazy loading should be moved from init to initialize.
-	await mermaid.init();
 })();
 
 export const render = async (
@@ -31,7 +29,7 @@ export const render = async (
 	await mermaid.mermaidAPI.renderAsync(id, code, callback);
 };
 
-// export const parse = mermaid.parse;
-export const parse = (_: string) => {
-	// Parse doesn't work.
+export const parse = async (code: string): Promise<boolean> => {
+	await init;
+	return mermaid.parseAsync(code);
 };
