@@ -101,9 +101,10 @@
 			error = true;
 		}
 	};
+
 	onMount(() => {
-		stateStore.subscribe((state) => {
-			handleStateChange(state);
+		stateStore.subscribe(async (state) => {
+			await handleStateChange(state);
 		});
 		window.addEventListener('resize', () => {
 			if ($stateStore.panZoom && pzoom) {

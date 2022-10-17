@@ -3665,10 +3665,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@9.2.0-rc5:
-  version "9.2.0-rc5"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.2.0-rc5.tgz#647c0c0118974c202d93182fdbed27bb01836df1"
-  integrity sha512-xRKiwHtVe8br4LLuq4X3m3ITOd9CicGfj8YPSWio1u/LJsQHOiGNuBXfp0DWk0StqrlhAJcTmggXp6q/fs9qCA==
+mermaid@9.2.0-rc6:
+  version "9.2.0-rc6"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.2.0-rc6.tgz#8c8ab4403c5bb9eca73cb8f1aba6fbd00fd8ede9"
+  integrity sha512-zrbaufHxlWs/i81BZePSh3PtQ/FpS3koY3cX9MS2bclchLqXrzO6wJ5S31Tl95j+7fMzV02HFu3sexSRfJOkhQ==
   dependencies:
     "@braintree/sanitize-url" "^6.0.0"
     d3 "^7.0.0"

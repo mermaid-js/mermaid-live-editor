@@ -53,15 +53,15 @@
 	};
 
 	const loadMonaco = async () => {
+		console.log('Loading Monaco...');
 		let i = 0;
 		while (i++ < 500) {
-			try {
-				// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
-				Monaco = window.monaco;
+			// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+			Monaco = window.monaco;
+			if (Monaco !== undefined) {
 				return;
-			} catch {
-				await new Promise((r) => setTimeout(r, 100));
 			}
+			await new Promise((r) => setTimeout(r, 100));
 		}
 		alert('Loading Monaco Editor failed. Please try refreshing the page.');
 	};
