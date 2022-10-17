@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
-		"dev:force": "yarn dev --force",
+		"dev:force": "MERMAID_LOCAL=true yarn dev --force",
 		"dev:test": "yarn dev",
 		"build": "vite build",
 		"preview": "vite preview",

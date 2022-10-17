@@ -1,20 +1,20 @@
 import mermaid from 'mermaid';
 // We need to export MermaidConfig and all related types from mermaid.
 import type { MermaidConfig } from 'mermaid/dist/config.type';
-import { mermaidCDNUrl, isDev, mermaidBaseURL } from './env';
+import { env } from './env';
+const { mermaidBaseURL, mermaidCDNUrl, useLocalMermaid } = env;
 
 const getDiagramURL = (name: string, version: string): string => {
-	// if (isDev) {
-	// 	// TODO: Check and fallback to CDN if mermaidBaseURL isn't up.
-	// 	return `${mermaidBaseURL}/${name}-detector.esm.mjs`;
-	// }
+	if (useLocalMermaid) {
+		return `${mermaidBaseURL}/${name}-detector.esm.mjs`;
+	}
 	return `${mermaidCDNUrl}/${name}@${version}/dist/${name}-detector.esm.mjs`;
 };
 
 console.log(mermaid);
 const initialize = mermaid.initializeAsync({
 	logLevel: 0,
-	lazyLoadedDiagrams: [getDiagramURL('mermaid-mindmap', '9.2.0-rc3')],
+	lazyLoadedDiagrams: [getDiagramURL('mermaid-mindmap', '9.2.0-rc4')],
 	loadExternalDiagramsAtStartup: true
 });
 

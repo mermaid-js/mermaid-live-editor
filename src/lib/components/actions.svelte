@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import Card from '$lib/components/card/card.svelte';
-	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
+	import { env } from '$lib/util/env';
 	import { pakoSerde } from '$lib/util/serde';
 	import { stateStore } from '$lib/util/state';
 	import { logEvent } from '$lib/util/stats';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
+	const { krokiRendererUrl, rendererUrl } = env;
 
 	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
