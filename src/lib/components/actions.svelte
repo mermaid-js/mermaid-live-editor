@@ -166,7 +166,7 @@
 		isNetlify = true;
 	}
 	stateStore.subscribe(({ code, serialized }) => {
-		iUrl = `${rendererUrl}/img/${serialized}`;
+		iUrl = `${rendererUrl}/img/${serialized}?type=png`;
 		svgUrl = `${rendererUrl}/svg/${serialized}`;
 		krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`;
 		mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`;
