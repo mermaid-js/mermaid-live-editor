@@ -178,7 +178,10 @@ export const toggleDarkTheme = (dark: boolean): void => {
 
 let urlDebounce: number;
 export const initURLSubscription = (): void => {
-	stateStore.subscribe(({ serialized }) => {
+	stateStore.subscribe(({ serialized }: ValidatedState) => {
+		if (serialized.length < 5) {
+			return;
+		}
 		clearTimeout(urlDebounce);
 		urlDebounce = window.setTimeout(() => {
 			history.replaceState(undefined, undefined, `#${serialized}`);
