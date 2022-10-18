@@ -3,8 +3,9 @@
 	import { onMount } from 'svelte';
 	import mermaid from 'mermaid';
 	import panzoom from 'svg-pan-zoom';
-	import type { State } from '$lib/types';
+	import type { State, ValidatedState } from '$lib/types';
 	import { logEvent } from '$lib/util/stats';
+	import { cmdKey } from '$lib/util/util';
 
 	let code = '';
 	let config = '';
@@ -16,16 +17,12 @@
 	let manualUpdate = true;
 	let panZoomEnabled = $stateStore.panZoom;
 	let pzoom: SvgPanZoom.Instance;
-	let debounce: number;
 
 	const handlePanZoomChange = () => {
 		const pan = pzoom.getPan();
 		const zoom = pzoom.getZoom();
-		clearTimeout(debounce);
-		debounce = window.setTimeout(() => {
-			updateCodeStore({ pan, zoom });
-			void logEvent('panZoom');
-		}, 200);
+		updateCodeStore({ pan, zoom });
+		logEvent('panZoom');
 	};
 
 	const handlePanZoom = (state: State) => {
@@ -53,50 +50,53 @@
 		});
 	};
 
+	const handleStateChange = (state: ValidatedState) => {
+		if (state.error !== undefined) {
+			error = true;
+			return;
+		}
+		error = false;
+		try {
+			if (container && state && (state.updateDiagram || state.autoSync)) {
+				if (!state.autoSync) {
+					$inputStateStore.updateDiagram = false;
+				}
+				outOfSync = false;
+				manualUpdate = true;
+				if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
+					// Do not render if there is no change in Code/Config/PanZoom
+					return;
+				}
+				code = state.code;
+				config = state.mermaid;
+				panZoomEnabled = state.panZoom;
+				const scroll = view.parentElement.scrollTop;
+				delete container.dataset.processed;
+				mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
+				mermaid.render('graph-div', code, (svgCode) => {
+					if (svgCode.length > 0) {
+						handlePanZoom(state);
+						container.innerHTML = svgCode;
+						const graphDiv = document.getElementById('graph-div');
+						graphDiv.setAttribute('height', '100%');
+						graphDiv.style.maxWidth = '100%';
+					}
+				});
+				view.parentElement.scrollTop = scroll;
+				error = false;
+			} else if (manualUpdate) {
+				manualUpdate = false;
+			} else if (code !== state.code || config !== state.mermaid) {
+				outOfSync = true;
+			}
+		} catch (e) {
+			console.error('view fail', e);
+			error = true;
+		}
+	};
 	onMount(() => {
 		stateStore.subscribe((state) => {
-			if (state.error !== undefined) {
-				error = true;
-				return;
-			}
-			error = false;
-			try {
-				if (container && state && (state.updateDiagram || state.autoSync)) {
-					if (!state.autoSync) {
-						$inputStateStore.updateDiagram = false;
-					}
-					outOfSync = false;
-					manualUpdate = true;
-					if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
-						// Do not render if there is no change in Code/Config/PanZoom
-						return;
-					}
-					code = state.code;
-					config = state.mermaid;
-					panZoomEnabled = state.panZoom;
-					const scroll = view.parentElement.scrollTop;
-					delete container.dataset.processed;
-					mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
-					mermaid.render('graph-div', code, (svgCode) => {
-						if (svgCode.length > 0) {
-							handlePanZoom(state);
-							container.innerHTML = svgCode;
-							const graphDiv = document.getElementById('graph-div');
-							graphDiv.setAttribute('height', '100%');
-							graphDiv.style.maxWidth = '100%';
-						}
-					});
-					view.parentElement.scrollTop = scroll;
-					error = false;
-				} else if (manualUpdate) {
-					manualUpdate = false;
-				} else if (code !== state.code || config !== state.mermaid) {
-					outOfSync = true;
-				}
-			} catch (e) {
-				console.error('view fail', e);
-				error = true;
-			}
+			handleStateChange(state);
 		});
 		window.addEventListener('resize', () => {
 			if ($stateStore.panZoom && pzoom) {
@@ -110,6 +110,12 @@
 	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
 {/if}
 
+{#if outOfSync}
+	<div class="absolute w-full p-2 z-10 text-yellow-600 bg-base-100 bg-opacity-80 text-center">
+		Diagram out of sync. <br />
+		Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+	</div>
+{/if}
 <div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
 	<div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
 </div>

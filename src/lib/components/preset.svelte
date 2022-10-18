@@ -109,7 +109,7 @@
 			updateDiagram: true,
 			resetPanZoom: true
 		});
-		void logEvent('loadSampleDiagram', { diagramType });
+		logEvent('loadSampleDiagram', { diagramType });
 	};
 
 	// Adding in this array will add an icon to the preset menu

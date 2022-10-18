@@ -14,10 +14,6 @@
 		{
 			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
 			"automerge": true
-		},
-		{
-			"matchDatasources": ["npm"],
-			"stabilityDays": 3
 		}
 	],
 	"dependencyDashboard": true,

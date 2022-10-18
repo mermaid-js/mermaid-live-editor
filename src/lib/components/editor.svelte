@@ -7,7 +7,6 @@
 	import { onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
 	import { logEvent } from '$lib/util/stats';
-	import { debounceEnabled } from '$lib/util/env';
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
@@ -37,10 +36,8 @@
 			Monaco?.editor.setModelLanguage(editor.getModel(), language);
 		}
 
-		// Display errors if present
-		if (errorMarkers.length > 0) {
-			Monaco?.editor.setModelMarkers(editor.getModel(), 'test', errorMarkers);
-		}
+		// Display/clear errors
+		Monaco?.editor.setModelMarkers(editor.getModel(), 'mermaid', errorMarkers);
 	});
 
 	themeStore.subscribe(({ isDark }) => {
@@ -52,21 +49,6 @@
 			updateCode(text);
 		} else {
 			updateConfig(text);
-		}
-	};
-
-	// Debounce state updates to avoid performance issues
-	let debounce: { [key: string]: number } = {};
-	const updateHandler = (newText: string) => {
-		text = newText;
-		const mode = $stateStore.editorMode;
-		if (debounceEnabled) {
-			clearTimeout(debounce[mode]);
-			debounce[mode] = window.setTimeout(() => {
-				handleUpdate(text, mode);
-			}, 300);
-		} else {
-			handleUpdate(text, mode);
 		}
 	};
 
@@ -89,7 +71,8 @@
 		initEditor(Monaco);
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(() => {
-			updateHandler(editor.getValue());
+			text = editor.getValue();
+			handleUpdate(text, $stateStore.editorMode);
 		});
 		editor.addAction({
 			id: 'mermaid-render-diagram',
@@ -97,7 +80,7 @@
 			keybindings: [Monaco.KeyMod.CtrlCmd | Monaco.KeyCode.Enter],
 			run: function () {
 				syncDiagram();
-				void logEvent('renderDiagram', {
+				logEvent('renderDiagram', {
 					method: 'keyboadShortcut'
 				});
 			}
