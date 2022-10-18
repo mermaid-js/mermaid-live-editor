@@ -5,8 +5,8 @@
 	import type { State, ValidatedState } from '$lib/types';
 	import { logEvent } from '$lib/util/stats';
 	import { cmdKey } from '$lib/util/util';
-	import { render as renderDiagram } from '$lib/util/mermaid';
-
+	import { render as renderDiagram, init as mermaidInit } from '$lib/util/mermaid';
+	const init = mermaidInit();
 	let code = '';
 	let config = '';
 	let container: HTMLDivElement;
@@ -50,7 +50,7 @@
 		});
 	};
 
-	const handleStateChange = async (state: ValidatedState) => {
+	const handleStateChange = (state: ValidatedState) => {
 		if (state.error !== undefined) {
 			error = true;
 			return;
@@ -72,11 +72,11 @@
 				panZoomEnabled = state.panZoom;
 				const scroll = view.parentElement.scrollTop;
 				delete container.dataset.processed;
-				await renderDiagram(
-					Object.assign({}, JSON.parse(state.mermaid)),
+				renderDiagram({
+					config: Object.assign({}, JSON.parse(state.mermaid)),
 					code,
-					'graph-div',
-					(svgCode, bindFunctions) => {
+					id: 'graph-div',
+					callback: (svgCode, bindFunctions) => {
 						if (svgCode.length > 0) {
 							handlePanZoom(state);
 							container.innerHTML = svgCode;
@@ -88,7 +88,7 @@
 							}
 						}
 					}
-				);
+				});
 				view.parentElement.scrollTop = scroll;
 				error = false;
 			} else if (manualUpdate) {
@@ -103,8 +103,8 @@
 	};
 
 	onMount(() => {
-		stateStore.subscribe(async (state) => {
-			await handleStateChange(state);
+		stateStore.subscribe((state) => {
+			handleStateChange(state);
 		});
 		window.addEventListener('resize', () => {
 			if ($stateStore.panZoom && pzoom) {
@@ -114,19 +114,23 @@
 	});
 </script>
 
-{#if error && $stateStore.error instanceof Error}
-	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
-{/if}
+{#await init}
+	Loading...
+{:then}
+	{#if error && $stateStore.error instanceof Error}
+		<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
+	{/if}
 
-{#if outOfSync}
-	<div class="absolute w-full p-2 z-10 text-yellow-600 bg-base-100 bg-opacity-80 text-center">
-		Diagram out of sync. <br />
-		Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+	{#if outOfSync}
+		<div class="absolute w-full p-2 z-10 text-yellow-600 bg-base-100 bg-opacity-80 text-center">
+			Diagram out of sync. <br />
+			Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+		</div>
+	{/if}
+	<div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
+		<div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
 	</div>
-{/if}
-<div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
-	<div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
-</div>
+{/await}
 
 <style>
 	#view {

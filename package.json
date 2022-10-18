@@ -27,6 +27,7 @@
 		"@sveltejs/kit": "1.0.0-next.516",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/svelte": "3.2.2",
+		"@types/async": "^3.2.15",
 		"@types/pako": "2.0.0",
 		"@types/uuid": "8.3.4",
 		"@typescript-eslint/eslint-plugin": "5.40.1",
@@ -67,6 +68,7 @@
 	"dependencies": {
 		"analytics": "0.8.1",
 		"analytics-plugin-plausible": "0.0.6",
+		"async": "^3.2.4",
 		"daisyui": "2.31.0",
 		"js-base64": "3.7.2",
 		"mermaid": "9.2.0-rc6",

@@ -44,53 +44,41 @@ const urlParseFailedState = `graph TD
 export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
 
 // All internal reads should be done via stateStore, but it should not be persisted/shared externally.
-export const stateStore: Readable<ValidatedState> = derived(
-	[inputStateStore],
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	async ([state], set) => {
-		const processed: ValidatedState = {
-			...state,
-			serialized: '',
-			errorMarkers: [],
-			error: undefined,
-			editorMode: state.editorMode ?? 'code'
-		};
-
-		// No changes should be done to fields part of `state`.
-		try {
-			processed.serialized = serializeState(state);
-			await parse(state.code);
-			JSON.parse(state.mermaid);
-		} catch (e) {
-			processed.error = e;
-			console.error(e);
-			if (e.hash) {
-				try {
-					const marker: MarkerData = {
-						severity: 8, // Error
-						startLineNumber: e.hash.loc.first_line,
-						startColumn: e.hash.loc.first_column,
-						endLineNumber: e.hash.loc.last_line,
-						endColumn: (e.hash.loc.last_column as number) + 1,
-						message: e.str
-					};
-					processed.errorMarkers = [marker];
-				} catch (err) {
-					console.error('Error without line helper', err);
-				}
-			}
-		}
-		set(processed);
-	},
-	{
-		...get(inputStateStore),
-		serialized: serializeState(get(inputStateStore)),
+export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
+	const processed: ValidatedState = {
+		...state,
+		serialized: '',
 		errorMarkers: [],
 		error: undefined,
-		editorMode: get(inputStateStore).editorMode ?? 'code'
+		editorMode: state.editorMode ?? 'code'
+	};
+
+	// No changes should be done to fields part of `state`.
+	try {
+		processed.serialized = serializeState(state);
+		// await parse(state.code);
+		JSON.parse(state.mermaid);
+	} catch (e) {
+		processed.error = e;
+		console.error(e);
+		if (e.hash) {
+			try {
+				const marker: MarkerData = {
+					severity: 8, // Error
+					startLineNumber: e.hash.loc.first_line,
+					startColumn: e.hash.loc.first_column,
+					endLineNumber: e.hash.loc.last_line,
+					endColumn: (e.hash.loc.last_column as number) + 1,
+					message: e.str
+				};
+				processed.errorMarkers = [marker];
+			} catch (err) {
+				console.error('Error without line helper', err);
+			}
+		}
 	}
-);
+	return processed;
+});
 
 export const loadState = (data: string): void => {
 	let state: State;
@@ -117,12 +105,11 @@ export const loadState = (data: string): void => {
 			state.mermaid = defaultState.mermaid;
 		}
 	}
-	updateCodeStore({ ...state });
+	updateCodeStore(state);
 };
 
 export const updateCodeStore = (newState: Partial<State>): void => {
 	inputStateStore.update((state) => {
-		// console.log({ newState, state });
 		return { ...state, ...newState };
 	});
 };
