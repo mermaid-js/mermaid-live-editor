@@ -27,7 +27,8 @@
 </script>
 
 <div class="hidden lg:block dropdown">
-	<div class="btn btn-ghost ">
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<div tabindex="0" class="btn btn-ghost ">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
@@ -48,7 +49,8 @@
 	</div>
 	<div
 		class="mt-14 overflow-y-auto shadow-2xl top-px dropdown-content h-96 w-56 bg-base-200 text-base-content">
-		<ul class="p-4 menu compact">
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<ul tabindex="0" class="p-4 menu compact">
 			{#each themes as theme}
 				<li class={theme.includes($themeStore.theme) ? 'bordered' : ''}>
 					<span
