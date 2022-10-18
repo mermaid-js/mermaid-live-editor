@@ -186,17 +186,17 @@
 		<button id="downloadSVG" class="action-btn flex-grow" on:click={onDownloadSVG}>
 			<i class="fas fa-download mr-2" /> SVG
 		</button>
-		<a target="_blank" class="flex-grow" href={iUrl}>
+		<a target="_blank" rel="noreferrer" class="flex-grow" href={iUrl}>
 			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> PNG
 			</button>
 		</a>
-		<a target="_blank" class="flex-grow" href={svgUrl}>
+		<a target="_blank" rel="noreferrer" class="flex-grow" href={svgUrl}>
 			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> SVG
 			</button>
 		</a>
-		<a target="_blank" class="flex-grow" href={krokiUrl}>
+		<a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
 			<button class="action-btn w-full">
 				<i class="fas fa-external-link-alt mr-2" /> Kroki
 			</button>

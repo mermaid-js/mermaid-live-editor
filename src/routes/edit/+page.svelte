@@ -130,7 +130,9 @@
 					{/if}
 
 					<button class="btn btn-secondary btn-xs" title="View documentation">
-						<a target="_blank" href={docURL} data-cy="docs"><i class="fas fa-book mr-1" />Docs</a>
+						<a target="_blank" rel="noreferrer" href={docURL} data-cy="docs">
+							<i class="fas fa-book mr-1" />Docs
+						</a>
 					</button>
 				</div>
 
@@ -158,6 +160,7 @@
 					<a
 						href={`${base}/view#${$stateStore.serialized}`}
 						target="_blank"
+						rel="noreferrer"
 						class="btn btn-secondary btn-xs"
 						title="View diagram in new page"
 						><i class="fas fa-external-link-alt mr-1" />Full screen</a>

@@ -14,7 +14,8 @@
 <div class="card rounded overflow-hidden m-2 flex-grow flex flex-col shadow-2xl">
 	<div
 		class="bg-primary p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
-		on:click={() => (isOpen = !isOpen)}>
+		on:click={() => (isOpen = !isOpen)}
+		on:keypress={() => (isOpen = !isOpen)}>
 		<div class="flex justify-between">
 			<Tabs on:select {tabs} bind:isOpen {title} {isCloseable} {activeTabID} />
 			<div class="flex gap-x-4 items-center {isTabsShown ? '-mt-2' : ''}">
