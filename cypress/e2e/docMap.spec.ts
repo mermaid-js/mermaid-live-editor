@@ -13,13 +13,13 @@ describe('Editor docs tests', () => {
 	});
 
 	it('Test to see if the correct URL loads when changing from one diagram to other', () => {
-		cy.contains('Flow Chart').click();
+		cy.contains('Flow').click();
 		cy.get(`[data-cy=docs][href$="/#/flowchart"]`).should('exist');
 
 		cy.contains('Config').click();
 		cy.get(`[data-cy=docs][href$="/#/flowchart?id=configuration"]`).should('exist');
 
-		cy.contains('Sequence Diagram').click();
+		cy.contains('Sequence').click();
 		cy.get(`[data-cy=docs][href$="/#/sequenceDiagram?id=configuration"]`).should('exist');
 
 		cy.contains('Code').click();
@@ -27,7 +27,7 @@ describe('Editor docs tests', () => {
 	});
 
 	it("Test to check URLs for a case where config URL doesn't exist", () => {
-		cy.contains('State Diagram').click();
+		cy.contains('State').click();
 		cy.get(`[data-cy=docs][href$="/#/stateDiagram"]`).should('exist');
 
 		cy.contains('Config').click();
