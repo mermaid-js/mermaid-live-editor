@@ -93,7 +93,7 @@
       Popularisation
         British popular psychology author Tony Buzan
     Research
-      On effectivness<br/>and eatures
+      On effectivness<br/>and features
       On Automatic creation
         Uses
             Creative techniques
