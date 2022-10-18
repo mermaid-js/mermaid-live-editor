@@ -85,7 +85,7 @@ export const stateStore: Readable<ValidatedState> = derived(
 	},
 	{
 		...get(inputStateStore),
-		serialized: '',
+		serialized: serializeState(get(inputStateStore)),
 		errorMarkers: [],
 		error: undefined,
 		editorMode: get(inputStateStore).editorMode ?? 'code'
