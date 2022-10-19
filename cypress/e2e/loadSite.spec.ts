@@ -27,7 +27,7 @@ describe('Site Loads', () => {
 		cy.contains('classDiagram');
 	});
 
-	describe.skip('github', () => {
+	(Cypress.env('CI') === 'true' ? describe : describe.skip)('github', () => {
 		it('should load diagram from gist', () => {
 			cy.visit(`/edit?gist=https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a`);
 			cy.contains('History').click();
