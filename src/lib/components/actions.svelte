@@ -140,8 +140,7 @@
 	};
 
 	let gistURL = '';
-	stateStore.subscribe(async (state) => {
-		const { loader } = await state;
+	stateStore.subscribe(({ loader }) => {
 		if (loader?.type === 'gist') {
 			// @ts-ignore Gist will have url
 			gistURL = loader.config.url;

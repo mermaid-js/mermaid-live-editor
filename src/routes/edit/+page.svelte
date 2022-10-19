@@ -54,8 +54,7 @@
 	};
 	let docURL = docURLBase;
 	let activeTabID = 'code';
-	stateStore.subscribe(async (state) => {
-		const { code, editorMode } = await state;
+	stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
 		activeTabID = editorMode;
 		const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
 		if (codeTypeMatch && codeTypeMatch.length > 1) {
@@ -85,30 +84,28 @@
 
 	onMount(async () => {
 		await initHandler();
+		const resizer = document.getElementById('resizeHandler');
+		const element = document.getElementById('editorPane');
+		const resize = (e: { pageX: number }) => {
+			const newWidth = e.pageX - element.getBoundingClientRect().left;
+			if (newWidth > 50) {
+				element.style.width = `${newWidth}px`;
+			}
+		};
 
-		// const resizer = document.getElementById('resizeHandler');
-		// const element = document.getElementById('editorPane');
-		// const resize = (e: { pageX: number }) => {
-		// 	const newWidth = e.pageX - element.getBoundingClientRect().left;
-		// 	if (newWidth > 50) {
-		// 		element.style.width = `${newWidth}px`;
-		// 	}
-		// };
-
-		// const stopResize = () => {
-		// 	window.removeEventListener('mousemove', resize);
-		// };
-		// resizer.addEventListener('mousedown', (e) => {
-		// 	e.preventDefault();
-		// 	window.addEventListener('mousemove', resize);
-		// 	window.addEventListener('mouseup', stopResize);
-		// });
+		const stopResize = () => {
+			window.removeEventListener('mousemove', resize);
+		};
+		resizer.addEventListener('mousedown', (e) => {
+			e.preventDefault();
+			window.addEventListener('mousemove', resize);
+			window.addEventListener('mouseup', stopResize);
+		});
 	});
 </script>
 
 <div class="h-full flex flex-col overflow-hidden">
 	<Navbar />
-
 	<div class="flex-1 flex overflow-hidden">
 		<div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
 			<Card on:select={tabSelectHandler} {tabs} isCloseable={false} {activeTabID} title="Mermaid">
@@ -116,21 +113,21 @@
 					<div class="form-control flex-row items-center">
 						<label class="cursor-pointer label" for="autoSync">
 							<span> Auto sync</span>
-							<!-- <input
-									type="checkbox"
-									class="toggle {state.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
-									id="autoSync"
-									bind:checked={$inputStateStore.autoSync} /> -->
+							<input
+								type="checkbox"
+								class="toggle {$stateStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
+								id="autoSync"
+								bind:checked={$inputStateStore.autoSync} />
 						</label>
 					</div>
 
-					<!-- {#if !state.autoSync}
-							<button
-								class="btn btn-secondary btn-xs mr-1"
-								title="Sync Diagram ({cmdKey} + Enter)"
-								data-cy="sync"
-								on:click={syncDiagram}><i class="fas fa-sync" /></button>
-						{/if} -->
+					{#if !$stateStore.autoSync}
+						<button
+							class="btn btn-secondary btn-xs mr-1"
+							title="Sync Diagram ({cmdKey} + Enter)"
+							data-cy="sync"
+							on:click={syncDiagram}><i class="fas fa-sync" /></button>
+					{/if}
 
 					<button class="btn btn-secondary btn-xs" title="View documentation">
 						<a target="_blank" rel="noreferrer" href={docURL} data-cy="docs">
@@ -152,21 +149,21 @@
 		<div class="flex-1 flex flex-col overflow-hidden">
 			<Card title="Diagram" isCloseable={false}>
 				<div slot="actions" class="flex flex-row items-center">
-					<!-- <label class="cursor-pointer label py-0" for="panZoom">
-							<span>Pan & Zoom</span>
-							<input
-								type="checkbox"
-								class="toggle {state.panZoom ? 'btn-secondary' : 'toggle-primary'} ml-1"
-								id="panZoom"
-								bind:checked={$inputStateStore.panZoom} />
-						</label>
-						<a
-							href={`${base}/view#${state.serialized}`}
-							target="_blank"
-							rel="noreferrer"
-							class="btn btn-secondary btn-xs"
-							title="View diagram in new page"
-							><i class="fas fa-external-link-alt mr-1" />Full screen</a> -->
+					<label class="cursor-pointer label py-0" for="panZoom">
+						<span>Pan & Zoom</span>
+						<input
+							type="checkbox"
+							class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'} ml-1"
+							id="panZoom"
+							bind:checked={$inputStateStore.panZoom} />
+					</label>
+					<a
+						href={`${base}/view#${$stateStore.serialized}`}
+						target="_blank"
+						rel="noreferrer"
+						class="btn btn-secondary btn-xs"
+						title="View diagram in new page"
+						><i class="fas fa-external-link-alt mr-1" />Full screen</a>
 				</div>
 
 				<div class="flex-1 overflow-auto">

@@ -181,18 +181,18 @@ export const updateCodeStore = (newState: Partial<State>): void => {
 };
 
 let prompted = false;
-export const updateCode = async (
+export const updateCode = (
 	code: string,
 	{
 		updateDiagram = false,
 		resetPanZoom = false
 	}: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
-): Promise<void> => {
+): void => {
 	console.log('updateCode', code);
 	const lines = countLines(code);
 	saveStatistics(code);
 	errorDebug();
-	if (lines > 50 && !prompted && (await get(stateStore)).autoSync) {
+	if (lines > 50 && !prompted && get(stateStore).autoSync) {
 		const turnOff = confirm(
 			`Long diagram detected. Turn off Auto Sync? Use ${cmdKey} + Enter or click the sync logo to manually sync.`
 		);
@@ -233,8 +233,7 @@ export const toggleDarkTheme = (dark: boolean): void => {
 
 let urlDebounce: number;
 export const initURLSubscription = (): void => {
-	stateStore.subscribe(async (state) => {
-		const { serialized } = await state;
+	stateStore.subscribe(({ serialized }) => {
 		clearTimeout(urlDebounce);
 		urlDebounce = window.setTimeout(() => {
 			history.replaceState(undefined, undefined, `#${serialized}`);

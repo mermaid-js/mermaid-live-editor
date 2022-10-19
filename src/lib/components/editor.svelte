@@ -46,10 +46,10 @@
 		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
 	});
 
-	const handleUpdate = async (text: string, mode: EditorMode) => {
+	const handleUpdate = (text: string, mode: EditorMode) => {
 		console.log('editor HandleUpdate', { text, mode });
 		if (mode === 'code') {
-			await updateCode(text);
+			updateCode(text);
 		} else {
 			updateConfig(text);
 		}
@@ -75,14 +75,14 @@
 		initEditor(Monaco);
 		errorDebug(100);
 		editor = Monaco.editor.create(divEl, editorOptions);
-		editor.onDidChangeModelContent(async ({ isFlush, changes }) => {
+		editor.onDidChangeModelContent(({ isFlush, changes }) => {
 			const newText = editor.getValue();
 			console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
 			if (text === newText || isFlush) {
 				return;
 			}
 			text = newText;
-			await handleUpdate(text, currentState.editorMode);
+			handleUpdate(text, currentState.editorMode);
 		});
 		editor.addAction({
 			id: 'mermaid-render-diagram',

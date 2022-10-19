@@ -104,8 +104,8 @@
       Mermaid`
 	};
 
-	const loadSampleDiagram = async (diagramType: string): Promise<void> => {
-		await updateCode(samples[diagramType], {
+	const loadSampleDiagram = (diagramType: string): void => {
+		updateCode(samples[diagramType], {
 			updateDiagram: true,
 			resetPanZoom: true
 		});

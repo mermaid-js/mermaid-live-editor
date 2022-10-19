@@ -57,7 +57,6 @@
 		"prettier": "2.7.1",
 		"prettier-plugin-svelte": "2.8.0",
 		"svelte": "3.52.0",
-		"svelte-asyncable": "^2.1.0",
 		"svelte-preprocess": "4.10.7",
 		"tailwindcss": "3.1.8",
 		"tslib": "2.4.0",

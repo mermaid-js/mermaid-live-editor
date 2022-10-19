@@ -15,7 +15,7 @@
 	let outOfSync = false;
 	let hide = false;
 	let manualUpdate = true;
-	let panZoomEnabled = false;
+	let panZoomEnabled = $stateStore.panZoom;
 	let pzoom: SvgPanZoom.Instance;
 
 	const handlePanZoomChange = () => {
@@ -50,15 +50,9 @@
 		});
 	};
 
-	// let count = 0;
 	const handleStateChange = async (state: ValidatedState) => {
-		// const c = count;
-		// count += 1;
-		// console.log('handleStateChange', c, state);
-		panZoomEnabled;
 		if (state.error !== undefined) {
 			error = true;
-			// console.log('handleStateChange End error', c);
 			return;
 		}
 		error = false;
@@ -69,9 +63,8 @@
 				}
 				outOfSync = false;
 				manualUpdate = true;
+				// Do not render if there is no change in Code/Config/PanZoom
 				if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
-					// console.log('handleStateChange End nochange', c);
-					// Do not render if there is no change in Code/Config/PanZoom
 					return;
 				}
 				code = state.code;
@@ -108,7 +101,6 @@
 			console.error('view fail', e);
 			error = true;
 		}
-		// console.log('handleStateChange End', c);
 	};
 
 	const stateChanges = [];
@@ -121,19 +113,16 @@
 		while (stateChanges.length > 0) {
 			const state = stateChanges.shift();
 			await handleStateChange(state);
-			// if (stateChanges.length > 0) {
-			// 	Promise.resolve().then(processStateChanges);
-			// }
 		}
 		processing = false;
 	};
 	onMount(() => {
 		stateStore.subscribe(async (state) => {
-			stateChanges.push(await state);
+			stateChanges.push(state);
 			await processStateChanges();
 		});
-		window.addEventListener('resize', async () => {
-			if ((await $stateStore).panZoom && pzoom) {
+		window.addEventListener('resize', () => {
+			if ($stateStore.panZoom && pzoom) {
 				pzoom.resize();
 			}
 		});
@@ -141,11 +130,9 @@
 	});
 </script>
 
-{#await $stateStore then state}
-	{#if error && state.error instanceof Error}
-		<div class="p-2 text-red-600" id="errorContainer">{state.error}</div>
-	{/if}
-{/await}
+{#if error && $stateStore.error instanceof Error}
+	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
+{/if}
 
 {#if outOfSync}
 	<div class="absolute w-full p-2 z-10 text-yellow-600 bg-base-100 bg-opacity-80 text-center">
