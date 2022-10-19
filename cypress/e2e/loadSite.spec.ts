@@ -5,6 +5,7 @@ describe('Site Loads', () => {
 		cy.clearLocalStorage();
 		cy.visit('/');
 	});
+
 	it('Check Home page load', () => {
 		cy.url().should('include', '/edit');
 		cy.contains('History').click();
