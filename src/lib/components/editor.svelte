@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { EditorMode } from '$lib/types';
-	import { stateStore, updateCode, updateConfig } from '$lib/util/state';
+	import { currentState, stateStore, updateCode, updateConfig } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
 	import { errorDebug, syncDiagram } from '$lib/util/util';
 	import type monaco from 'monaco-editor';
@@ -20,8 +20,7 @@
 	};
 	let text = '';
 
-	stateStore.subscribe(async (state) => {
-		const { errorMarkers, editorMode, code, mermaid } = await state;
+	stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
 		console.log('editor store subscription', { code, mermaid });
 		if (!editor) return;
 
@@ -48,6 +47,7 @@
 	});
 
 	const handleUpdate = async (text: string, mode: EditorMode) => {
+		console.log('editor HandleUpdate', { text, mode });
 		if (mode === 'code') {
 			await updateCode(text);
 		} else {
@@ -77,13 +77,13 @@
 		editor = Monaco.editor.create(divEl, editorOptions);
 		editor.onDidChangeModelContent(async () => {
 			const newText = editor.getValue();
-			console.log({ text, newText });
+			console.log('editor onDidChangeModelContent', { text, newText });
 			// errorDebug(500);
 			if (text === newText) {
 				return;
 			}
 			text = newText;
-			await handleUpdate(text, (await $stateStore).editorMode);
+			await handleUpdate(text, currentState.editorMode);
 		});
 		editor.addAction({
 			id: 'mermaid-render-diagram',

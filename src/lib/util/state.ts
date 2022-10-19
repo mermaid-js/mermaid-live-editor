@@ -1,13 +1,11 @@
-import { writable, get, type Readable } from 'svelte/store';
+import { writable, get, type Readable, derived } from 'svelte/store';
 import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
-import { asyncable, syncable } from 'svelte-asyncable';
 import { cmdKey, errorDebug } from './util';
 import { parse } from './mermaid';
 
 import type { MarkerData, State, ValidatedState } from '$lib/types';
-let count = 0;
 export const defaultState: State = {
 	code: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
@@ -52,9 +50,16 @@ export let currentState: ValidatedState = (() => {
 	};
 })();
 
-// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
-export const stateStore = asyncable(
-	async (state: State) => {
+const stateChanges: State[] = [];
+let processing = false;
+const processStateChange = async (newState: State, set) => {
+	stateChanges.push(newState);
+	if (processing) {
+		return;
+	}
+	processing = true;
+	while (stateChanges.length > 0) {
+		const state = stateChanges.shift();
 		const processed: ValidatedState = {
 			...state,
 			serialized: '',
@@ -90,10 +95,18 @@ export const stateStore = asyncable(
 			}
 		}
 		currentState = processed;
-		return processed;
+		set(processed);
+	}
+	processing = false;
+};
+
+// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
+export const stateStore: Readable<ValidatedState> = derived(
+	[inputStateStore],
+	([state], set) => {
+		processStateChange(state, set);
 	},
-	undefined,
-	[inputStateStore]
+	currentState
 );
 
 // export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
