@@ -4,7 +4,7 @@
 	import panzoom from 'svg-pan-zoom';
 	import type { State, ValidatedState } from '$lib/types';
 	import { logEvent } from '$lib/util/stats';
-	import { cmdKey } from '$lib/util/util';
+	import { AsyncQueue, cmdKey } from '$lib/util/util';
 	import { render as renderDiagram } from '$lib/util/mermaid';
 
 	let code = '';
@@ -103,23 +103,11 @@
 		}
 	};
 
-	const stateChanges = [];
-	let processing = false;
-	const processStateChanges = async () => {
-		if (processing) {
-			return;
-		}
-		processing = true;
-		while (stateChanges.length > 0) {
-			const state = stateChanges.shift();
-			await handleStateChange(state);
-		}
-		processing = false;
-	};
+	const q = new AsyncQueue(handleStateChange);
+
 	onMount(() => {
 		stateStore.subscribe(async (state) => {
-			stateChanges.push(state);
-			await processStateChanges();
+			await q.process(state);
 		});
 		window.addEventListener('resize', () => {
 			if ($stateStore.panZoom && pzoom) {

@@ -2,7 +2,7 @@ import { writable, get, type Readable, derived } from 'svelte/store';
 import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
-import { cmdKey, errorDebug } from './util';
+import { cmdKey, errorDebug, AsyncQueue } from './util';
 import { parse } from './mermaid';
 
 import type { MarkerData, State, ValidatedState } from '$lib/types';
@@ -39,7 +39,7 @@ const urlParseFailedState = `graph TD
 // inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
 export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
 
-export let currentState: ValidatedState = (() => {
+export const currentState: ValidatedState = (() => {
 	const state = get(inputStateStore);
 	return {
 		...state,
@@ -50,100 +50,58 @@ export let currentState: ValidatedState = (() => {
 	};
 })();
 
-const stateChanges: State[] = [];
-let processing = false;
-const processStateChange = async (newState: State, set) => {
-	stateChanges.push(newState);
-	if (processing) {
-		return;
-	}
-	processing = true;
-	while (stateChanges.length > 0) {
-		const state = stateChanges.shift();
-		const processed: ValidatedState = {
-			...state,
-			serialized: '',
-			errorMarkers: [],
-			error: undefined,
-			editorMode: state.editorMode ?? 'code'
-		};
+let q: AsyncQueue<State>;
 
-		console.log('asyncable', state);
-		// No changes should be done to fields part of `state`.
-		try {
-			processed.serialized = serializeState(state);
-			await parse(state.code);
-			JSON.parse(state.mermaid);
-		} catch (e) {
-			processed.error = e;
-			errorDebug();
-			console.error(e);
-			if (e.hash) {
-				try {
-					const marker: MarkerData = {
-						severity: 8, // Error
-						startLineNumber: e.hash.loc.first_line,
-						startColumn: e.hash.loc.first_column,
-						endLineNumber: e.hash.loc.last_line,
-						endColumn: (e.hash.loc.last_column as number) + 1,
-						message: e.str
-					};
-					processed.errorMarkers = [marker];
-				} catch (err) {
-					console.error('Error without line helper', err);
-				}
+const processState = async (state: State) => {
+	const processed: ValidatedState = {
+		...state,
+		serialized: '',
+		errorMarkers: [],
+		error: undefined,
+		editorMode: state.editorMode ?? 'code'
+	};
+	// No changes should be done to fields part of `state`.
+	try {
+		processed.serialized = serializeState(state);
+		await parse(state.code);
+		JSON.parse(state.mermaid);
+	} catch (e) {
+		processed.error = e;
+		errorDebug();
+		console.error(e);
+		if (e.hash) {
+			try {
+				const marker: MarkerData = {
+					severity: 8, // Error
+					startLineNumber: e.hash.loc.first_line,
+					startColumn: e.hash.loc.first_column,
+					endLineNumber: e.hash.loc.last_line,
+					endColumn: (e.hash.loc.last_column as number) + 1,
+					message: e.str
+				};
+				processed.errorMarkers = [marker];
+			} catch (err) {
+				console.error('Error without line helper', err);
 			}
 		}
-		currentState = processed;
-		set(processed);
 	}
-	processing = false;
+	return processed;
 };
 
 // All internal reads should be done via stateStore, but it should not be persisted/shared externally.
 export const stateStore: Readable<ValidatedState> = derived(
 	[inputStateStore],
 	([state], set) => {
-		processStateChange(state, set);
+		if (!q) {
+			q = new AsyncQueue(async (state: State) => {
+				const newState = await processState(state);
+				set(newState);
+			});
+		}
+		q.process(state);
 	},
 	currentState
 );
-
-// export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
-// 	const processed: ValidatedState = {
-// 		...state,
-// 		serialized: '',
-// 		errorMarkers: [],
-// 		error: undefined,
-// 		editorMode: state.editorMode ?? 'code'
-// 	};
-
-// 	// No changes should be done to fields part of `state`.
-// 	try {
-// 		processed.serialized = serializeState(state);
-// 		mermaid.parse(state.code);
-// 		JSON.parse(state.mermaid);
-// 	} catch (e) {
-// 		processed.error = e;
-// 		console.error(e);
-// 		if (e.hash) {
-// 			try {
-// 				const marker: MarkerData = {
-// 					severity: 8, // Error
-// 					startLineNumber: e.hash.loc.first_line,
-// 					startColumn: e.hash.loc.first_column,
-// 					endLineNumber: e.hash.loc.last_line,
-// 					endColumn: (e.hash.loc.last_column as number) + 1,
-// 					message: e.str
-// 				};
-// 				processed.errorMarkers = [marker];
-// 			} catch (err) {
-// 				console.error('Error without line helper', err);
-// 			}
-// 		}
-// 	}
-// 	return processed;
-// });
 
 export const loadState = (data: string): void => {
 	let state: State;
@@ -175,7 +133,6 @@ export const loadState = (data: string): void => {
 
 export const updateCodeStore = (newState: Partial<State>): void => {
 	inputStateStore.update((state) => {
-		// console.log({ newState, state });
 		return { ...state, ...newState };
 	});
 };

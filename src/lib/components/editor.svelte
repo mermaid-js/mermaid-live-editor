@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { EditorMode } from '$lib/types';
-	import { currentState, stateStore, updateCode, updateConfig } from '$lib/util/state';
+	import { stateStore, updateCode, updateConfig } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
 	import { errorDebug, syncDiagram } from '$lib/util/util';
 	import type monaco from 'monaco-editor';
@@ -82,7 +82,7 @@
 				return;
 			}
 			text = newText;
-			handleUpdate(text, currentState.editorMode);
+			handleUpdate(text, $stateStore.editorMode);
 		});
 		editor.addAction({
 			id: 'mermaid-render-diagram',

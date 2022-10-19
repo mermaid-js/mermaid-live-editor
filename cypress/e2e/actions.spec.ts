@@ -35,7 +35,7 @@ describe('Check actions', () => {
 
 		// Verify downloaded file is different for different diagrams
 		cy.contains('Sample Diagrams').click();
-		cy.contains('ER Diagram').click();
+		cy.contains('ER').click();
 
 		cy.get(`#downloadPNG`).click();
 		verifyFileSize('diagram', 'png', 46_000);
