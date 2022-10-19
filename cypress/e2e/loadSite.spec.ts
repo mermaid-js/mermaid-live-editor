@@ -73,7 +73,7 @@ describe('Site Loads', () => {
 	// 	cy.get('#view').contains(`src='https://via.placeholder.com/64'`);
 	// });
 
-	it('should allow persisting "securityLevel" using confirm dialogue', () => {
+	it.skip('should allow persisting "securityLevel" using confirm dialogue', () => {
 		const b64State = toBase64(
 			`{"code":"graph TD\\nA[\\"<img src='https://dummyimage.com/64' width=64/>\\"]","mermaid":"{\\"securityLevel\\": \\"loose\\", \\"theme\\": \\"forest\\"}","autoSync":true,"updateDiagram":true}`,
 			true
