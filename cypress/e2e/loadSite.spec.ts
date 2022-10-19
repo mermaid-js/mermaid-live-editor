@@ -80,6 +80,7 @@ describe('Site Loads', () => {
 		);
 		cy.on('window:confirm', () => false);
 		cy.visit(`/edit#${b64State}`);
+		cy.get('#editor').type(' ');
 		cy.contains('Config').click();
 		cy.contains('forest');
 		cy.contains('securityLevel');
