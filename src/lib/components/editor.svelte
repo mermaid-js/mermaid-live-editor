@@ -2,7 +2,7 @@
 	import type { EditorMode } from '$lib/types';
 	import { stateStore, updateCode, updateConfig } from '$lib/util/state';
 	import { themeStore } from '$lib/util/theme';
-	import { syncDiagram } from '$lib/util/util';
+	import { errorDebug, syncDiagram } from '$lib/util/util';
 	import type monaco from 'monaco-editor';
 	import { onMount } from 'svelte';
 	import initEditor from 'monaco-mermaid';
@@ -20,12 +20,15 @@
 	};
 	let text = '';
 
-	stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
+	stateStore.subscribe(async (state) => {
+		const { errorMarkers, editorMode, code, mermaid } = await state;
+		console.log('editor store subscription', { code, mermaid });
 		if (!editor) return;
 
 		// Update editor text if it's different
 		const newText = editorMode === 'code' ? code : mermaid;
 		if (newText !== text) {
+			console.log('updating editor text', newText);
 			editor.setValue(newText);
 			text = newText;
 		}
@@ -44,24 +47,25 @@
 		editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
 	});
 
-	const handleUpdate = (text: string, mode: EditorMode) => {
+	const handleUpdate = async (text: string, mode: EditorMode) => {
 		if (mode === 'code') {
-			updateCode(text);
+			await updateCode(text);
 		} else {
 			updateConfig(text);
 		}
 	};
 
 	const loadMonaco = async () => {
+		console.log('Loading Monaco...');
+		// errorDebug();
 		let i = 0;
 		while (i++ < 500) {
-			try {
-				// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
-				Monaco = window.monaco;
+			// @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+			Monaco = window.monaco;
+			if (Monaco !== undefined) {
 				return;
-			} catch {
-				await new Promise((r) => setTimeout(r, 100));
 			}
+			await new Promise((r) => setTimeout(r, 100));
 		}
 		alert('Loading Monaco Editor failed. Please try refreshing the page.');
 	};
@@ -69,10 +73,17 @@
 	onMount(async () => {
 		await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
 		initEditor(Monaco);
+		errorDebug(100);
 		editor = Monaco.editor.create(divEl, editorOptions);
-		editor.onDidChangeModelContent(() => {
-			text = editor.getValue();
-			handleUpdate(text, $stateStore.editorMode);
+		editor.onDidChangeModelContent(async () => {
+			const newText = editor.getValue();
+			console.log({ text, newText });
+			// errorDebug(500);
+			if (text === newText) {
+				return;
+			}
+			text = newText;
+			await handleUpdate(text, (await $stateStore).editorMode);
 		});
 		editor.addAction({
 			id: 'mermaid-render-diagram',
@@ -94,7 +105,9 @@
 		});
 
 		resizeObserver.observe(divEl.parentElement);
+		console.log(`editor mounted`);
 		return () => {
+			console.log(`editor disposed`);
 			editor.dispose();
 		};
 	});

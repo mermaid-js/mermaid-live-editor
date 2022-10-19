@@ -26,3 +26,13 @@ export const initHandler = async (): Promise<void> => {
 
 export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
+
+let count = 0;
+export const errorDebug = (limit = 100) => {
+	count += 1;
+	if (count > limit) {
+		console.log(count, limit);
+		// eslint-disable-next-line no-debugger
+		debugger;
+	}
+};

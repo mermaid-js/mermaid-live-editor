@@ -1,13 +1,13 @@
-import { writable, get, derived } from 'svelte/store';
+import { writable, get, type Readable } from 'svelte/store';
 import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
-import { cmdKey } from './util';
-import mermaid from 'mermaid';
+import { asyncable, syncable } from 'svelte-asyncable';
+import { cmdKey, errorDebug } from './util';
+import { parse } from './mermaid';
 
-import type { Readable } from 'svelte/store';
 import type { MarkerData, State, ValidatedState } from '$lib/types';
-
+let count = 0;
 export const defaultState: State = {
 	code: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
@@ -41,42 +41,96 @@ const urlParseFailedState = `graph TD
 // inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
 export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
 
-// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
-export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
-	const processed: ValidatedState = {
+export let currentState: ValidatedState = (() => {
+	const state = get(inputStateStore);
+	return {
 		...state,
-		serialized: '',
+		serialized: serializeState(state),
 		errorMarkers: [],
 		error: undefined,
 		editorMode: state.editorMode ?? 'code'
 	};
+})();
 
-	// No changes should be done to fields part of `state`.
-	try {
-		processed.serialized = serializeState(state);
-		mermaid.parse(state.code);
-		JSON.parse(state.mermaid);
-	} catch (e) {
-		processed.error = e;
-		console.error(e);
-		if (e.hash) {
-			try {
-				const marker: MarkerData = {
-					severity: 8, // Error
-					startLineNumber: e.hash.loc.first_line,
-					startColumn: e.hash.loc.first_column,
-					endLineNumber: e.hash.loc.last_line,
-					endColumn: (e.hash.loc.last_column as number) + 1,
-					message: e.str
-				};
-				processed.errorMarkers = [marker];
-			} catch (err) {
-				console.error('Error without line helper', err);
+// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
+export const stateStore = asyncable(
+	async (state: State) => {
+		const processed: ValidatedState = {
+			...state,
+			serialized: '',
+			errorMarkers: [],
+			error: undefined,
+			editorMode: state.editorMode ?? 'code'
+		};
+
+		console.log('asyncable', state);
+		// No changes should be done to fields part of `state`.
+		try {
+			processed.serialized = serializeState(state);
+			await parse(state.code);
+			JSON.parse(state.mermaid);
+		} catch (e) {
+			processed.error = e;
+			errorDebug();
+			console.error(e);
+			if (e.hash) {
+				try {
+					const marker: MarkerData = {
+						severity: 8, // Error
+						startLineNumber: e.hash.loc.first_line,
+						startColumn: e.hash.loc.first_column,
+						endLineNumber: e.hash.loc.last_line,
+						endColumn: (e.hash.loc.last_column as number) + 1,
+						message: e.str
+					};
+					processed.errorMarkers = [marker];
+				} catch (err) {
+					console.error('Error without line helper', err);
+				}
 			}
 		}
-	}
-	return processed;
-});
+		currentState = processed;
+		return processed;
+	},
+	undefined,
+	[inputStateStore]
+);
+
+// export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
+// 	const processed: ValidatedState = {
+// 		...state,
+// 		serialized: '',
+// 		errorMarkers: [],
+// 		error: undefined,
+// 		editorMode: state.editorMode ?? 'code'
+// 	};
+
+// 	// No changes should be done to fields part of `state`.
+// 	try {
+// 		processed.serialized = serializeState(state);
+// 		mermaid.parse(state.code);
+// 		JSON.parse(state.mermaid);
+// 	} catch (e) {
+// 		processed.error = e;
+// 		console.error(e);
+// 		if (e.hash) {
+// 			try {
+// 				const marker: MarkerData = {
+// 					severity: 8, // Error
+// 					startLineNumber: e.hash.loc.first_line,
+// 					startColumn: e.hash.loc.first_column,
+// 					endLineNumber: e.hash.loc.last_line,
+// 					endColumn: (e.hash.loc.last_column as number) + 1,
+// 					message: e.str
+// 				};
+// 				processed.errorMarkers = [marker];
+// 			} catch (err) {
+// 				console.error('Error without line helper', err);
+// 			}
+// 		}
+// 	}
+// 	return processed;
+// });
 
 export const loadState = (data: string): void => {
 	let state: State;
@@ -103,7 +157,7 @@ export const loadState = (data: string): void => {
 			state.mermaid = defaultState.mermaid;
 		}
 	}
-	updateCodeStore({ ...state });
+	updateCodeStore(state);
 };
 
 export const updateCodeStore = (newState: Partial<State>): void => {
@@ -114,17 +168,18 @@ export const updateCodeStore = (newState: Partial<State>): void => {
 };
 
 let prompted = false;
-export const updateCode = (
+export const updateCode = async (
 	code: string,
 	{
 		updateDiagram = false,
 		resetPanZoom = false
 	}: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
-): void => {
+): Promise<void> => {
+	console.log('updateCode', code);
 	const lines = countLines(code);
 	saveStatistics(code);
-
-	if (lines > 50 && !prompted && get(stateStore).autoSync) {
+	errorDebug();
+	if (lines > 50 && !prompted && (await get(stateStore)).autoSync) {
 		const turnOff = confirm(
 			`Long diagram detected. Turn off Auto Sync? Use ${cmdKey} + Enter or click the sync logo to manually sync.`
 		);
@@ -146,6 +201,7 @@ export const updateCode = (
 };
 
 export const updateConfig = (config: string): void => {
+	console.log('updateConfig', config);
 	inputStateStore.update((state) => {
 		return { ...state, mermaid: config };
 	});
@@ -164,7 +220,8 @@ export const toggleDarkTheme = (dark: boolean): void => {
 
 let urlDebounce: number;
 export const initURLSubscription = (): void => {
-	stateStore.subscribe(({ serialized }) => {
+	stateStore.subscribe(async (state) => {
+		const { serialized } = await state;
 		clearTimeout(urlDebounce);
 		urlDebounce = window.setTimeout(() => {
 			history.replaceState(undefined, undefined, `#${serialized}`);

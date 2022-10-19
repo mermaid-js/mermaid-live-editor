@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import Card from '$lib/components/card/card.svelte';
-	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
+	import { env } from '$lib/util/env';
 	import { pakoSerde } from '$lib/util/serde';
 	import { stateStore } from '$lib/util/state';
 	import { logEvent } from '$lib/util/stats';
 	import { toBase64 } from 'js-base64';
 	import moment from 'moment';
+	const { krokiRendererUrl, rendererUrl } = env;
 
 	type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
@@ -139,7 +140,8 @@
 	};
 
 	let gistURL = '';
-	stateStore.subscribe(({ loader }) => {
+	stateStore.subscribe(async (state) => {
+		const { loader } = await state;
 		if (loader?.type === 'gist') {
 			// @ts-ignore Gist will have url
 			gistURL = loader.config.url;
@@ -165,7 +167,8 @@
 	if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
 		isNetlify = true;
 	}
-	stateStore.subscribe(({ code, serialized }) => {
+	stateStore.subscribe(async (state) => {
+		const { code, serialized } = await state;
 		iUrl = `${rendererUrl}/img/${serialized}?type=png`;
 		svgUrl = `${rendererUrl}/svg/${serialized}`;
 		krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`;

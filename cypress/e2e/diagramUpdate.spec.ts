@@ -10,7 +10,7 @@ describe('Auto sync tests', () => {
 		cy.contains('Auto sync').click();
 		cy.get('#view').should('not.have.class', 'outOfSync');
 		cy.get('#view').should('not.contain.text', 'Diagram out of sync.');
-		getEditor().type('  C --> Test');
+		getEditor({ bottom: true, newline: true }).type('  C --> Test');
 		cy.get('#view').should('have.class', 'outOfSync');
 		cy.get('#view').should('contain.text', 'Diagram out of sync.');
 		cy.getLocalStorage('codeStore').snapshot();
@@ -71,7 +71,7 @@ describe('Auto sync tests', () => {
 	});
 });
 
-describe.only('Pan and Zoom', () => {
+describe('Pan and Zoom', () => {
 	beforeEach(() => {
 		cy.clearLocalStorage();
 		cy.visit('/');

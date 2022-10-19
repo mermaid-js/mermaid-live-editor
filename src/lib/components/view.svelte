@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
 	import { onMount } from 'svelte';
-	import mermaid from 'mermaid';
 	import panzoom from 'svg-pan-zoom';
 	import type { State, ValidatedState } from '$lib/types';
 	import { logEvent } from '$lib/util/stats';
 	import { cmdKey } from '$lib/util/util';
+	import { render as renderDiagram } from '$lib/util/mermaid';
 
 	let code = '';
 	let config = '';
@@ -15,7 +15,7 @@
 	let outOfSync = false;
 	let hide = false;
 	let manualUpdate = true;
-	let panZoomEnabled = $stateStore.panZoom;
+	let panZoomEnabled = false;
 	let pzoom: SvgPanZoom.Instance;
 
 	const handlePanZoomChange = () => {
@@ -50,9 +50,15 @@
 		});
 	};
 
-	const handleStateChange = (state: ValidatedState) => {
+	// let count = 0;
+	const handleStateChange = async (state: ValidatedState) => {
+		// const c = count;
+		// count += 1;
+		// console.log('handleStateChange', c, state);
+		panZoomEnabled;
 		if (state.error !== undefined) {
 			error = true;
+			// console.log('handleStateChange End error', c);
 			return;
 		}
 		error = false;
@@ -64,6 +70,7 @@
 				outOfSync = false;
 				manualUpdate = true;
 				if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
+					// console.log('handleStateChange End nochange', c);
 					// Do not render if there is no change in Code/Config/PanZoom
 					return;
 				}
@@ -72,16 +79,24 @@
 				panZoomEnabled = state.panZoom;
 				const scroll = view.parentElement.scrollTop;
 				delete container.dataset.processed;
-				mermaid.initialize(Object.assign({}, JSON.parse(state.mermaid)));
-				mermaid.render('graph-div', code, (svgCode) => {
-					if (svgCode.length > 0) {
-						handlePanZoom(state);
-						container.innerHTML = svgCode;
-						const graphDiv = document.getElementById('graph-div');
-						graphDiv.setAttribute('height', '100%');
-						graphDiv.style.maxWidth = '100%';
+				await renderDiagram(
+					Object.assign({}, JSON.parse(state.mermaid)),
+					code,
+					'graph-div',
+					(svgCode, bindFunctions) => {
+						if (svgCode.length > 0) {
+							handlePanZoom(state);
+							container.innerHTML = svgCode;
+							// console.log(container.innerHTML);
+							const graphDiv = document.getElementById('graph-div');
+							graphDiv.setAttribute('height', '100%');
+							graphDiv.style.maxWidth = '100%';
+							if (bindFunctions) {
+								bindFunctions(graphDiv);
+							}
+						}
 					}
-				});
+				);
 				view.parentElement.scrollTop = scroll;
 				error = false;
 			} else if (manualUpdate) {
@@ -93,22 +108,44 @@
 			console.error('view fail', e);
 			error = true;
 		}
+		// console.log('handleStateChange End', c);
+	};
+
+	const stateChanges = [];
+	let processing = false;
+	const processStateChanges = async () => {
+		if (processing) {
+			return;
+		}
+		processing = true;
+		while (stateChanges.length > 0) {
+			const state = stateChanges.shift();
+			await handleStateChange(state);
+			// if (stateChanges.length > 0) {
+			// 	Promise.resolve().then(processStateChanges);
+			// }
+		}
+		processing = false;
 	};
 	onMount(() => {
-		stateStore.subscribe((state) => {
-			handleStateChange(state);
+		stateStore.subscribe(async (state) => {
+			stateChanges.push(await state);
+			await processStateChanges();
 		});
-		window.addEventListener('resize', () => {
-			if ($stateStore.panZoom && pzoom) {
+		window.addEventListener('resize', async () => {
+			if ((await $stateStore).panZoom && pzoom) {
 				pzoom.resize();
 			}
 		});
+		console.log('View mounted');
 	});
 </script>
 
-{#if error && $stateStore.error instanceof Error}
-	<div class="p-2 text-red-600" id="errorContainer">{$stateStore.error}</div>
-{/if}
+{#await $stateStore then state}
+	{#if error && state.error instanceof Error}
+		<div class="p-2 text-red-600" id="errorContainer">{state.error}</div>
+	{/if}
+{/await}
 
 {#if outOfSync}
 	<div class="absolute w-full p-2 z-10 text-yellow-600 bg-base-100 bg-opacity-80 text-center">
