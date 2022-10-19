@@ -19,7 +19,6 @@
 		overviewRulerLanes: 0
 	};
 	let text = '';
-	let texts: string[] = [];
 
 	stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
 		console.log('editor store subscription', { code, mermaid });
@@ -48,10 +47,6 @@
 	});
 
 	const handleUpdate = async (text: string, mode: EditorMode) => {
-		if (texts.includes(text)) {
-			return;
-		}
-		texts.push(text);
 		console.log('editor HandleUpdate', { text, mode });
 		if (mode === 'code') {
 			await updateCode(text);
@@ -77,17 +72,13 @@
 
 	onMount(async () => {
 		await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
-		setInterval(() => {
-			texts = [];
-		}, 500);
 		initEditor(Monaco);
 		errorDebug(100);
 		editor = Monaco.editor.create(divEl, editorOptions);
-		editor.onDidChangeModelContent(async () => {
+		editor.onDidChangeModelContent(async ({ isFlush, changes }) => {
 			const newText = editor.getValue();
-			console.log('editor onDidChangeModelContent', { text, newText });
-			// errorDebug(500);
-			if (text === newText) {
+			console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
+			if (text === newText || isFlush) {
 				return;
 			}
 			text = newText;
