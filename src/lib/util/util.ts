@@ -37,6 +37,7 @@ export const errorDebug = (limit = 100) => {
 	}
 };
 
+// To queue async tasks so they are executed one after the other, not concurrently.
 export class AsyncQueue<T> {
 	private readonly queue: T[] = [];
 	private running = false;
