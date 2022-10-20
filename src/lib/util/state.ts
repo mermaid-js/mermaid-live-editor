@@ -93,6 +93,7 @@ export const stateStore: Readable<ValidatedState> = derived(
 	[inputStateStore],
 	([state], set) => {
 		if (!q) {
+			// Initialize the queue for first time.
 			q = new AsyncQueue(async (state: State) => {
 				const newState = await processState(state);
 				set(newState);
