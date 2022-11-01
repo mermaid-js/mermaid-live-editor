@@ -1,13 +1,11 @@
-import { writable, get, derived } from 'svelte/store';
+import { writable, get, type Readable, derived } from 'svelte/store';
 import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
-import { cmdKey } from './util';
-import mermaid from 'mermaid';
+import { cmdKey, errorDebug, AsyncQueue } from './util';
+import { parse } from './mermaid';
 
-import type { Readable } from 'svelte/store';
 import type { MarkerData, State, ValidatedState } from '$lib/types';
-
 export const defaultState: State = {
 	code: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
@@ -41,8 +39,20 @@ const urlParseFailedState = `graph TD
 // inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
 export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
 
-// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
-export const stateStore: Readable<ValidatedState> = derived([inputStateStore], ([state]) => {
+export const currentState: ValidatedState = (() => {
+	const state = get(inputStateStore);
+	return {
+		...state,
+		serialized: serializeState(state),
+		errorMarkers: [],
+		error: undefined,
+		editorMode: state.editorMode ?? 'code'
+	};
+})();
+
+let q: AsyncQueue<State>;
+
+const processState = async (state: State) => {
 	const processed: ValidatedState = {
 		...state,
 		serialized: '',
@@ -50,14 +60,14 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 		error: undefined,
 		editorMode: state.editorMode ?? 'code'
 	};
-
 	// No changes should be done to fields part of `state`.
 	try {
 		processed.serialized = serializeState(state);
-		mermaid.parse(state.code);
+		await parse(state.code);
 		JSON.parse(state.mermaid);
 	} catch (e) {
 		processed.error = e;
+		errorDebug();
 		console.error(e);
 		if (e.hash) {
 			try {
@@ -76,7 +86,23 @@ export const stateStore: Readable<ValidatedState> = derived([inputStateStore], (
 		}
 	}
 	return processed;
-});
+};
+
+// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
+export const stateStore: Readable<ValidatedState> = derived(
+	[inputStateStore],
+	([state], set) => {
+		if (!q) {
+			// Initialize the queue for first time.
+			q = new AsyncQueue(async (state: State) => {
+				const newState = await processState(state);
+				set(newState);
+			});
+		}
+		q.process(state);
+	},
+	currentState
+);
 
 export const loadState = (data: string): void => {
 	let state: State;
@@ -103,12 +129,11 @@ export const loadState = (data: string): void => {
 			state.mermaid = defaultState.mermaid;
 		}
 	}
-	updateCodeStore({ ...state });
+	updateCodeStore(state);
 };
 
 export const updateCodeStore = (newState: Partial<State>): void => {
 	inputStateStore.update((state) => {
-		// console.log({ newState, state });
 		return { ...state, ...newState };
 	});
 };
@@ -121,9 +146,10 @@ export const updateCode = (
 		resetPanZoom = false
 	}: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
 ): void => {
+	console.log('updateCode', code);
 	const lines = countLines(code);
 	saveStatistics(code);
-
+	errorDebug();
 	if (lines > 50 && !prompted && get(stateStore).autoSync) {
 		const turnOff = confirm(
 			`Long diagram detected. Turn off Auto Sync? Use ${cmdKey} + Enter or click the sync logo to manually sync.`
@@ -146,6 +172,7 @@ export const updateCode = (
 };
 
 export const updateConfig = (config: string): void => {
+	console.log('updateConfig', config);
 	inputStateStore.update((state) => {
 		return { ...state, mermaid: config };
 	});
