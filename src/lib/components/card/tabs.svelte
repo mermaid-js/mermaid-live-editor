@@ -19,7 +19,10 @@
 </script>
 
 <div class="flex cursor-default">
-	<span class="mr-2 font-semibold" on:click|stopPropagation={() => (isOpen = !isOpen)}>
+	<span
+		class="mr-2 font-semibold"
+		on:click|stopPropagation={() => (isOpen = !isOpen)}
+		on:keypress|stopPropagation={() => (isOpen = !isOpen)}>
 		{#if isCloseable}
 			<i class="fas fa-chevron-right icon" class:isOpen />
 		{/if}
@@ -29,7 +32,8 @@
 			{#each tabs as tab}
 				<div
 					class="tab tab-lifted {activeTabID === tab.id ? 'tab-active' : 'text-primary-content'}"
-					on:click|stopPropagation={() => toggleTabs(tab)}>
+					on:click|stopPropagation={() => toggleTabs(tab)}
+					on:keypress|stopPropagation={() => toggleTabs(tab)}>
 					<i class="mr-1 {tab.icon}" />
 					{tab.title}
 				</div>
