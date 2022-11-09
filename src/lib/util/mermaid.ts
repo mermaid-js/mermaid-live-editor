@@ -1,21 +1,7 @@
-import mermaid from 'mermaid';
-// We need to export MermaidConfig and all related types from mermaid.
-import type { MermaidConfig } from 'mermaid/dist/config.type';
-import { env } from './env';
-const { mermaidBaseURL, mermaidCDNUrl, useLocalMermaid } = env;
+import mermaid, { type MermaidConfig } from 'mermaid';
+import mindmap from '@mermaid-js/mermaid-mindmap';
 
-const getDiagramURL = (name: string, version: string): string => {
-  if (useLocalMermaid) {
-    return `${mermaidBaseURL}/${name}-detector.esm.mjs`;
-  }
-  return `${mermaidCDNUrl}/${name}@${version}/dist/${name}-detector.esm.mjs`;
-};
-
-const initialize = mermaid.initializeAsync({
-  // logLevel: 0,
-  lazyLoadedDiagrams: [getDiagramURL('mermaid-mindmap', '9.2.0-rc4')],
-  loadExternalDiagramsAtStartup: true
-});
+const initialize = mermaid.registerExternalDiagrams([mindmap]);
 
 export const init = async () => {
   await initialize;
@@ -37,5 +23,5 @@ export const render = async (
 
 export const parse = async (code: string): Promise<boolean> => {
   await init();
-  return mermaid.parseAsync(code);
+  return (await mermaid.parseAsync(code)) as boolean;
 };
