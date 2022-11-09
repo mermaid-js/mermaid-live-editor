@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { updateCode } from '$lib/util/state';
-	import Card from '$lib/components/card/card.svelte';
-	import { logEvent } from '$lib/util/stats';
+  import { updateCode } from '$lib/util/state';
+  import Card from '$lib/components/card/card.svelte';
+  import { logEvent } from '$lib/util/stats';
 
-	const samples = {
-		Flow: `graph TD
+  const samples = {
+    Flow: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
     B --> C{Let me think}
     C -->|One| D[Laptop]
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]`,
-		Sequence: `sequenceDiagram
+    Sequence: `sequenceDiagram
     Alice->>+John: Hello John, how are you?
     Alice->>+John: John, can you hear me?
     John-->>-Alice: Hi Alice, I can hear you!
     John-->>-Alice: I feel great!`,
-		Class: `classDiagram
+    Class: `classDiagram
     Animal <|-- Duck
     Animal <|-- Fish
     Animal <|-- Zebra
@@ -36,14 +36,14 @@
       +bool is_wild
       +run()
     }`,
-		State: `stateDiagram-v2
+    State: `stateDiagram-v2
     [*] --> Still
     Still --> [*]
     Still --> Moving
     Moving --> Still
     Moving --> Crash
     Crash --> [*]`,
-		Gantt: `gantt
+    Gantt: `gantt
     title A Gantt Diagram
     dateFormat  YYYY-MM-DD
     section Section
@@ -52,11 +52,11 @@
     section Another
     Task in sec      :2014-01-12  , 12d
     another task      : 24d`,
-		Pie: `pie title Pets adopted by volunteers
+    Pie: `pie title Pets adopted by volunteers
     "Dogs" : 386
     "Cats" : 85
     "Rats" : 15`,
-		ER: `erDiagram
+    ER: `erDiagram
     CUSTOMER }|..|{ DELIVERY-ADDRESS : has
     CUSTOMER ||--o{ ORDER : places
     CUSTOMER ||--o{ INVOICE : "liable for"
@@ -65,7 +65,7 @@
     ORDER ||--|{ ORDER-ITEM : includes
     PRODUCT-CATEGORY ||--|{ PRODUCT : contains
     PRODUCT ||--o{ ORDER-ITEM : "ordered in"`,
-		'User Journey': `journey
+    'User Journey': `journey
     title My working day
     section Go to work
       Make tea: 5: Me
@@ -74,7 +74,7 @@
     section Go home
       Go downstairs: 5: Me
       Sit down: 3: Me`,
-		Git: `gitGraph
+    Git: `gitGraph
     commit
     commit
     branch develop
@@ -85,7 +85,7 @@
     merge develop
     commit
     commit`,
-		Mindmap: `mindmap
+    Mindmap: `mindmap
   root((mindmap))
     Origins
       Long history
@@ -102,43 +102,43 @@
     Tools
       Pen and paper
       Mermaid`
-	};
+  };
 
-	const loadSampleDiagram = (diagramType: string): void => {
-		updateCode(samples[diagramType], {
-			updateDiagram: true,
-			resetPanZoom: true
-		});
-		logEvent('loadSampleDiagram', { diagramType });
-	};
+  const loadSampleDiagram = (diagramType: string): void => {
+    updateCode(samples[diagramType], {
+      updateDiagram: true,
+      resetPanZoom: true
+    });
+    logEvent('loadSampleDiagram', { diagramType });
+  };
 
-	// Adding in this array will add an icon to the preset menu
-	const newDiagrams: Array<keyof typeof samples> = ['Mindmap'];
-	const diagramOrder: Array<keyof typeof samples> = [
-		'Sequence',
-		'Flow',
-		'Class',
-		'State',
-		'ER',
-		'Gantt',
-		'User Journey',
-		'Git',
-		'Pie',
-		'Mindmap'
-	];
+  // Adding in this array will add an icon to the preset menu
+  const newDiagrams: Array<keyof typeof samples> = ['Mindmap'];
+  const diagramOrder: Array<keyof typeof samples> = [
+    'Sequence',
+    'Flow',
+    'Class',
+    'State',
+    'ER',
+    'Gantt',
+    'User Journey',
+    'Git',
+    'Pie',
+    'Mindmap'
+  ];
 </script>
 
 <Card title="Sample Diagrams" isOpen={false}>
-	<div class="flex flex-wrap p-2 gap-2">
-		{#each diagramOrder as sample}
-			<button
-				class="btn btn-sm btn-primary w-28 normal-case flex-grow"
-				on:click={() => loadSampleDiagram(sample)}>
-				{sample}
-				{#if newDiagrams.includes(sample)}
-					<span class="ml-2 fa fa-heart" />
-				{/if}
-			</button>
-		{/each}
-	</div>
+  <div class="flex flex-wrap p-2 gap-2">
+    {#each diagramOrder as sample}
+      <button
+        class="btn btn-sm btn-primary w-28 normal-case flex-grow"
+        on:click={() => loadSampleDiagram(sample)}>
+        {sample}
+        {#if newDiagrams.includes(sample)}
+          <span class="ml-2 fa fa-heart" />
+        {/if}
+      </button>
+    {/each}
+  </div>
 </Card>
