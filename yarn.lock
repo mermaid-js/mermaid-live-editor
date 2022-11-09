@@ -250,10 +250,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@mermaid-js/mermaid-mindmap@9.2.2-rc.2":
-  version "9.2.2-rc.2"
-  resolved "https://registry.yarnpkg.com/@mermaid-js/mermaid-mindmap/-/mermaid-mindmap-9.2.2-rc.2.tgz#6703dec434c020182b323de3045c2f555ed5f3b7"
-  integrity sha512-/mEPI62y6/6r7Hsf6M1F2qhv4gH+WIz/EyKjnqCtJ7sCBF7/m1VJQz8MQIJfggGS1LqxPDbvtcztfzwMBu9/vg==
+"@mermaid-js/mermaid-mindmap@9.2.2":
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/@mermaid-js/mermaid-mindmap/-/mermaid-mindmap-9.2.2.tgz#106b06733748cf3a5b9e6a9bd6d11546020bed38"
+  integrity sha512-uzUY0PR/itxkQxpDRg95yDPJ++mRDUmGce4EVCKFebUCs0UNI/xi5mhvV6Oq8czM2ImY0W1gJu4MS2Xq3yiQug==
   dependencies:
     "@braintree/sanitize-url" "^6.0.0"
     cytoscape "^3.23.0"
@@ -3748,10 +3748,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@9.2.2-rc.2:
-  version "9.2.2-rc.2"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.2.2-rc.2.tgz#869c51f9923c0501f3af94da6a0812d69f214212"
-  integrity sha512-diWNUCpIxzlZXuDlfokENDezjhh7fcCHuhpJYLD0+pHesut1MnbaajnoyPnmFMcGy4GFGtJMI96CPov3xUHqhg==
+mermaid@9.2.2:
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.2.2.tgz#73cca1f0b74e7e674c0de3519d7e7e8ea83bea4a"
+  integrity sha512-6s7eKMqFJGS+0MYjmx8f6ZigqKBJVoSx5ql2gw6a4Aa+WJ49QiEJg7gPwywaBg3DZMs79UP7trESp4+jmaQccw==
   dependencies:
     "@braintree/sanitize-url" "^6.0.0"
     d3 "^7.0.0"
