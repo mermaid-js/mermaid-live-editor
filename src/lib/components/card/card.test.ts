@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/svelte';
 import { describe, expect, it, afterEach } from 'vitest';
-import Card from './card.svelte';
+import Card from './Card.svelte';
 
 describe('card.svelte', () => {
   // TODO: @testing-library/svelte claims to add this automatically but it doesn't work without explicit afterEach

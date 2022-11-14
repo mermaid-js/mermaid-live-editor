@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment';
-  import Card from '$lib/components/card/card.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import { env } from '$lib/util/env';
   import { pakoSerde } from '$lib/util/serde';
   import { stateStore } from '$lib/util/state';
