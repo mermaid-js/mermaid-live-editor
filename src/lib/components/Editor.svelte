@@ -74,6 +74,7 @@
 
   onMount(async () => {
     await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     initEditor(Monaco);
     errorDebug(100);
     editor = Monaco.editor.create(divEl, editorOptions);

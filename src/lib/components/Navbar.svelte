@@ -1,7 +1,7 @@
-<script context="module">
+<script context="module" lang="ts">
   import { version } from 'mermaid/package.json';
   import { analytics } from '$lib/util/stats';
-  analytics?.track('version', {
+  void analytics?.track('version', {
     mermaidVersion: version
   });
 </script>

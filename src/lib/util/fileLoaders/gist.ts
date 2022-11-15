@@ -9,11 +9,17 @@ import { addHistoryEntry } from '$lib/components/History/History';
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
 
+interface GithubFile {
+  truncated: boolean;
+  raw_url: string;
+  content: string;
+}
+
 const isValidGist = (files: any): boolean => {
   return codeFileName in files;
 };
 
-const getFileContent = async (file: any): Promise<string> => {
+const getFileContent = async (file: GithubFile): Promise<string> => {
   if (file.truncated) {
     return await (await fetch(file.raw_url)).text();
   }
@@ -29,11 +35,17 @@ interface GistData {
   url: string;
 }
 
+interface GistResponse {
+  files: Record<string, GithubFile>;
+  html_url: string;
+  history: { url: string; committed_at: string; version: string; user: { login: string } }[];
+}
+
 const getGistData = async (gistURL: string): Promise<GistData> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, gistID, revisionID] = gistURL.split('github.com').pop().split('/');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { html_url, files, history } = await (
+  const { html_url, files, history }: GistResponse = await (
     await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
   ).json();
   if (isValidGist(files)) {
@@ -50,7 +62,7 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
       config,
       author: currentItem.user.login,
       time: new Date(currentItem.committed_at).getTime(),
-      version: (currentItem.version as string).slice(-7)
+      version: currentItem.version.slice(-7)
     };
   } else {
     throw 'Invalid gist provided';
@@ -77,7 +89,7 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, __, gistID, revisionID] = gistURL.split('github.com').pop().split('/');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { history } = await (
+    const { history }: GistResponse = await (
       await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
     ).json();
     const gistHistory: GistData[] = [];

@@ -6,6 +6,8 @@ import { cmdKey, errorDebug, AsyncQueue } from './util';
 import { parse } from './mermaid';
 
 import type { MarkerData, State, ValidatedState } from '$lib/types';
+import type { MermaidConfig } from 'mermaid';
+
 export const defaultState: State = {
   code: `graph TD
     A[Christmas] -->|Get money| B(Go shopping)
@@ -99,7 +101,7 @@ export const stateStore: Readable<ValidatedState> = derived(
         set(newState);
       });
     }
-    q.process(state);
+    void q.process(state);
   },
   currentState
 );
@@ -180,7 +182,7 @@ export const updateConfig = (config: string): void => {
 
 export const toggleDarkTheme = (dark: boolean): void => {
   inputStateStore.update((state) => {
-    const config = JSON.parse(state.mermaid);
+    const config: MermaidConfig = JSON.parse(state.mermaid);
     if (!config.theme || ['dark', 'default'].includes(config.theme)) {
       config.theme = dark ? 'dark' : 'default';
     }

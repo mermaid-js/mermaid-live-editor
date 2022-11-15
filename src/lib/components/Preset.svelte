@@ -104,7 +104,8 @@
       Mermaid`
   };
 
-  const loadSampleDiagram = (diagramType: string): void => {
+  type SampleTypes = keyof typeof samples;
+  const loadSampleDiagram = (diagramType: SampleTypes): void => {
     updateCode(samples[diagramType], {
       updateDiagram: true,
       resetPanZoom: true
@@ -113,8 +114,8 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: Array<keyof typeof samples> = ['Mindmap'];
-  const diagramOrder: Array<keyof typeof samples> = [
+  const newDiagrams: Array<SampleTypes> = ['Mindmap'];
+  const diagramOrder: Array<SampleTypes> = [
     'Sequence',
     'Flow',
     'Class',

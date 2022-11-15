@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { setTheme, themeStore } from '$lib/util/theme';
 
   const themes = [
@@ -24,6 +24,10 @@
     '💎 luxury',
     '🧛‍♂️ dracula'
   ];
+
+  function checkTheme(theme: string) {
+    return theme.includes($themeStore.theme);
+  }
 </script>
 
 <div class="hidden lg:block dropdown">
@@ -52,7 +56,7 @@
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <ul tabindex="0" class="p-4 menu compact">
       {#each themes as theme}
-        <li class={theme.includes($themeStore.theme) ? 'bordered' : ''}>
+        <li class:bordered={checkTheme(theme)}>
           <span
             class="btn btn-ghost justify-start"
             on:click={() => setTheme(theme)}

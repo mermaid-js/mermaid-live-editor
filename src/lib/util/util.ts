@@ -23,7 +23,7 @@ export const initHandler = async (): Promise<void> => {
   syncDiagram();
   initURLSubscription();
   await initAnalytics();
-  analytics?.page();
+  await analytics?.page();
 };
 
 export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;

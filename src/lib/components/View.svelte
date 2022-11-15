@@ -6,6 +6,7 @@
   import { logEvent } from '$lib/util/stats';
   import { AsyncQueue, cmdKey } from '$lib/util/util';
   import { render as renderDiagram } from '$lib/util/mermaid';
+  import type { MermaidConfig } from 'mermaid';
 
   let code = '';
   let config = '';
@@ -32,7 +33,7 @@
     hide = true;
     pzoom?.destroy();
     pzoom = undefined;
-    Promise.resolve().then(() => {
+    void Promise.resolve().then(() => {
       const graphDiv = document.getElementById('graph-div');
       pzoom = panzoom(graphDiv, {
         onPan: handlePanZoomChange,
@@ -73,7 +74,7 @@
         const scroll = view.parentElement.scrollTop;
         delete container.dataset.processed;
         await renderDiagram(
-          Object.assign({}, JSON.parse(state.mermaid)),
+          Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
           code,
           'graph-div',
           (svgCode, bindFunctions) => {
@@ -106,8 +107,8 @@
   const q = new AsyncQueue(handleStateChange);
 
   onMount(() => {
-    stateStore.subscribe(async (state) => {
-      await q.process(state);
+    stateStore.subscribe((state) => {
+      void q.process(state);
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {

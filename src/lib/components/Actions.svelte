@@ -166,8 +166,7 @@
   if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
     isNetlify = true;
   }
-  stateStore.subscribe(async (state) => {
-    const { code, serialized } = await state;
+  stateStore.subscribe(({ code, serialized }) => {
     iUrl = `${rendererUrl}/img/${serialized}?type=png`;
     svgUrl = `${rendererUrl}/svg/${serialized}`;
     krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`;

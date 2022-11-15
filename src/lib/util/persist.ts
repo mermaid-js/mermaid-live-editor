@@ -45,7 +45,7 @@ const alreadyWarnFor: Array<string> = [];
  * Add a log to indicate that the requested Storage have not been found.
  * @param {string} storageName
  */
-const warnStorageNotFound = (storageName) => {
+const warnStorageNotFound = (storageName: string) => {
   const isProduction = typeof process !== 'undefined' && process.env?.NODE_ENV === 'production';
 
   if (!noWarnings && alreadyWarnFor.indexOf(storageName) === -1 && !isProduction) {
@@ -237,7 +237,7 @@ function getBrowserStorage(
 
 /**
  * Storage implementation that use the browser local storage
- * @param {boolean} listenExternalChanges - Update the store if the localStorage is updated from another page
+ * @param listenExternalChanges - Update the store if the localStorage is updated from another page
  */
 export function localStorage<T>(listenExternalChanges = false): StorageInterface<T> {
   if (typeof window !== 'undefined' && window?.localStorage) {
@@ -250,7 +250,7 @@ export function localStorage<T>(listenExternalChanges = false): StorageInterface
 /**
  * Storage implementation that do nothing
  */
-export function noopStorage(): StorageInterface<any> {
+export function noopStorage<T>(): StorageInterface<T> {
   return {
     getValue(): null {
       return null;
