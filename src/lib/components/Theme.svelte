@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { setTheme, themeStore } from '$lib/util/theme';
 
   const themes = [
@@ -52,7 +52,7 @@
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <ul tabindex="0" class="p-4 menu compact">
       {#each themes as theme}
-        <li class={theme.includes($themeStore.theme) ? 'bordered' : ''}>
+        <li class:bordered={$themeStore.theme !== undefined && theme.includes($themeStore.theme)}>
           <span
             class="btn btn-ghost justify-start"
             on:click={() => setTheme(theme)}

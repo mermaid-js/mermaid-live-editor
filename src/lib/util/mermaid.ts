@@ -23,5 +23,5 @@ export const render = async (
 
 export const parse = async (code: string): Promise<boolean> => {
   await init();
-  return (await mermaid.parseAsync(code)) as boolean;
+  return await mermaid.parseAsync(code);
 };

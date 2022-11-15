@@ -6,6 +6,7 @@
   import { logEvent } from '$lib/util/stats';
   import { AsyncQueue, cmdKey } from '$lib/util/util';
   import { render as renderDiagram } from '$lib/util/mermaid';
+  import type { MermaidConfig } from 'mermaid';
 
   let code = '';
   let config = '';
@@ -16,9 +17,12 @@
   let hide = false;
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
-  let pzoom: SvgPanZoom.Instance;
+  let pzoom: typeof panzoom | undefined;
 
   const handlePanZoomChange = () => {
+    if (!pzoom) {
+      return;
+    }
     const pan = pzoom.getPan();
     const zoom = pzoom.getZoom();
     updateCodeStore({ pan, zoom });
@@ -32,8 +36,11 @@
     hide = true;
     pzoom?.destroy();
     pzoom = undefined;
-    Promise.resolve().then(() => {
+    void Promise.resolve().then(() => {
       const graphDiv = document.getElementById('graph-div');
+      if (!graphDiv) {
+        return;
+      }
       pzoom = panzoom(graphDiv, {
         onPan: handlePanZoomChange,
         onZoom: handlePanZoomChange,
@@ -70,10 +77,10 @@
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
-        const scroll = view.parentElement.scrollTop;
+        const scroll = view.parentElement!.scrollTop;
         delete container.dataset.processed;
         await renderDiagram(
-          Object.assign({}, JSON.parse(state.mermaid)),
+          Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
           code,
           'graph-div',
           (svgCode, bindFunctions) => {
@@ -82,6 +89,9 @@
               container.innerHTML = svgCode;
               // console.log(container.innerHTML);
               const graphDiv = document.getElementById('graph-div');
+              if (!graphDiv) {
+                throw new Error('graph-div not found');
+              }
               graphDiv.setAttribute('height', '100%');
               graphDiv.style.maxWidth = '100%';
               if (bindFunctions) {
@@ -90,7 +100,7 @@
             }
           }
         );
-        view.parentElement.scrollTop = scroll;
+        view.parentElement!.scrollTop = scroll;
         error = false;
       } else if (manualUpdate) {
         manualUpdate = false;
@@ -106,8 +116,8 @@
   const q = new AsyncQueue(handleStateChange);
 
   onMount(() => {
-    stateStore.subscribe(async (state) => {
-      await q.process(state);
+    stateStore.subscribe((state) => {
+      void q.process(state);
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {

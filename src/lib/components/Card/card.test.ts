@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/svelte';
 import { describe, expect, it, afterEach } from 'vitest';
-import Card from './card.svelte';
+import Card from './Card.svelte';
 
 describe('card.svelte', () => {
   // TODO: @testing-library/svelte claims to add this automatically but it doesn't work without explicit afterEach
@@ -10,8 +10,8 @@ describe('card.svelte', () => {
     const { container } = render(Card, {
       title: 'TabTest',
       tabs: [
-        { id: 't1', title: 'title1' },
-        { id: 't2', title: 'title2' }
+        { id: 't1', title: 'title1', icon: 'fab fa-git-alt' },
+        { id: 't2', title: 'title2', icon: 'far fa-bookmark' }
       ]
     });
     expect(container).toBeTruthy();

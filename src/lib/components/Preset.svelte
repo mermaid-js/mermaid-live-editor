@@ -1,6 +1,6 @@
 <script lang="ts">
   import { updateCode } from '$lib/util/state';
-  import Card from '$lib/components/card/card.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import { logEvent } from '$lib/util/stats';
 
   const samples = {
@@ -104,7 +104,8 @@
       Mermaid`
   };
 
-  const loadSampleDiagram = (diagramType: string): void => {
+  type SampleTypes = keyof typeof samples;
+  const loadSampleDiagram = (diagramType: SampleTypes): void => {
     updateCode(samples[diagramType], {
       updateDiagram: true,
       resetPanZoom: true
@@ -113,8 +114,8 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: Array<keyof typeof samples> = ['Mindmap'];
-  const diagramOrder: Array<keyof typeof samples> = [
+  const newDiagrams: SampleTypes[] = ['Mindmap'];
+  const diagramOrder: SampleTypes[] = [
     'Sequence',
     'Flow',
     'Class',

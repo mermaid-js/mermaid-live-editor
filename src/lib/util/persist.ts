@@ -39,16 +39,16 @@ let noWarnings = false;
 /**
  * List of storages where the warning have already been displayed.
  */
-const alreadyWarnFor: Array<string> = [];
+const alreadyWarnFor: string[] = [];
 
 /**
  * Add a log to indicate that the requested Storage have not been found.
  * @param {string} storageName
  */
-const warnStorageNotFound = (storageName) => {
-  const isProduction = typeof process !== 'undefined' && process.env?.NODE_ENV === 'production';
+const warnStorageNotFound = (storageName: string) => {
+  const isProduction = typeof process !== 'undefined' && process.env.NODE_ENV === 'production';
 
-  if (!noWarnings && alreadyWarnFor.indexOf(storageName) === -1 && !isProduction) {
+  if (!noWarnings && !alreadyWarnFor.includes(storageName) && !isProduction) {
     let message = `Unable to find the ${storageName}. No data will be persisted.`;
     if (typeof window === 'undefined') {
       message +=
@@ -60,17 +60,8 @@ const warnStorageNotFound = (storageName) => {
   }
 };
 
-const allowedClasses = [];
-/**
- * Add a class to the allowed list of classes to be serialized
- * @param classDef The class to add to the list
- */
-export const addSerializableClass = (classDef: () => unknown): void => {
-  allowedClasses.push(classDef);
-};
-
 const serialize = (value: unknown): string => ESSerializer.serialize(value);
-const deserialize = (value: string): unknown => {
+const deserialize = (value?: string | null): unknown => {
   // @TODO: to remove in the next major
   if (value === 'undefined') {
     return undefined;
@@ -78,7 +69,7 @@ const deserialize = (value: string): unknown => {
 
   if (value !== null && value !== undefined) {
     try {
-      return ESSerializer.deserialize(value, allowedClasses);
+      return ESSerializer.deserialize(value);
     } catch (e) {
       // Do nothing
       // use the value "as is"
@@ -162,7 +153,7 @@ export function persist<T>(
     store.set(initialValue);
   }
 
-  if ((storage as SelfUpdateStorageInterface<T>).addListener) {
+  if ('addListener' in storage) {
     (storage as SelfUpdateStorageInterface<T>).addListener(key, (newValue) => {
       store.set(newValue);
     });
@@ -184,7 +175,7 @@ function getBrowserStorage(
   browserStorage: Storage,
   listenExternalChanges = false
 ): SelfUpdateStorageInterface<any> {
-  const listeners: Array<{ key: string; listener: (newValue: any) => void }> = [];
+  const listeners: { key: string; listener: (newValue: any) => void }[] = [];
   const listenerFunction = (event: StorageEvent) => {
     const eventKey = event.key;
     if (event.storageArea === browserStorage) {
@@ -196,12 +187,14 @@ function getBrowserStorage(
     }
   };
   const connect = () => {
-    if (listenExternalChanges && typeof window !== 'undefined' && window?.addEventListener) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (listenExternalChanges && typeof window !== 'undefined' && window.addEventListener) {
       window.addEventListener('storage', listenerFunction);
     }
   };
   const disconnect = () => {
-    if (listenExternalChanges && typeof window !== 'undefined' && window?.removeEventListener) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (listenExternalChanges && typeof window !== 'undefined' && window.removeEventListener) {
       window.removeEventListener('storage', listenerFunction);
     }
   };
@@ -237,10 +230,11 @@ function getBrowserStorage(
 
 /**
  * Storage implementation that use the browser local storage
- * @param {boolean} listenExternalChanges - Update the store if the localStorage is updated from another page
+ * @param listenExternalChanges - Update the store if the localStorage is updated from another page
  */
 export function localStorage<T>(listenExternalChanges = false): StorageInterface<T> {
-  if (typeof window !== 'undefined' && window?.localStorage) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (typeof window !== 'undefined' && window.localStorage) {
     return getBrowserStorage(window.localStorage, listenExternalChanges);
   }
   warnStorageNotFound('window.localStorage');
@@ -250,7 +244,7 @@ export function localStorage<T>(listenExternalChanges = false): StorageInterface
 /**
  * Storage implementation that do nothing
  */
-export function noopStorage(): StorageInterface<any> {
+export function noopStorage<T>(): StorageInterface<T> {
   return {
     getValue(): null {
       return null;

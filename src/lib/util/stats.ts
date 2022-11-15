@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import type { AnalyticsInstance } from 'analytics';
-export let analytics: AnalyticsInstance;
+export let analytics: AnalyticsInstance | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
   if (browser && !analytics) {
@@ -27,7 +27,7 @@ export const initAnalytics = async (): Promise<void> => {
   }
 };
 
-export const detectType = (text: string): string => {
+export const detectType = (text: string): string | undefined => {
   const possibleDiagramTypes = [
     'classDiagram',
     'erDiagram',
@@ -49,7 +49,7 @@ export const detectType = (text: string): string => {
 };
 
 export const countLines = (code: string): number => {
-  return (code.match(/\n/g) || '').length + 1;
+  return (code.match(/\n/g)?.length ?? 0) + 1;
 };
 
 export const saveStatistics = (graph: string): void => {
@@ -80,19 +80,20 @@ const delaysPerEvent = {
   themeChange: defaultDelay
 };
 export type AnalyticsEvent = keyof typeof delaysPerEvent;
-const timeouts: Record<string, number> = {};
+const timeouts: Map<string, number> = new Map<string, number>();
 // manual debounce to reduce the number of events sent to analytics
 export const logEvent = (name: AnalyticsEvent, data?: unknown): void => {
   if (!analytics) {
     return;
   }
   const key = data ? JSON.stringify({ name, data }) : name;
-  if (timeouts[key] === undefined) {
+  if (!timeouts.has(key)) {
     void analytics.track(name, data);
   } else {
-    clearTimeout(timeouts[key]);
+    clearTimeout(timeouts.get(key));
   }
-  timeouts[key] = window.setTimeout(() => {
-    delete timeouts[key];
-  }, delaysPerEvent[name]);
+  timeouts.set(
+    key,
+    window.setTimeout(() => timeouts.delete(key), delaysPerEvent[name])
+  );
 };

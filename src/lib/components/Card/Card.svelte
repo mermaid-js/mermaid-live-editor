@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { Tab } from '$lib/types';
   import { slide } from 'svelte/transition';
-  import Tabs from './tabs.svelte';
+  import Tabs from './Tabs.svelte';
   export let isCloseable = true;
   export let isOpen = true;
   export let tabs: Tab[] = [];
-  export let activeTabID: string = '';
+  export let activeTabID = '';
   export let title: string;
   $: isOpen = isCloseable ? isOpen : true;
   $: isTabsShown = isOpen && tabs.length > 0;

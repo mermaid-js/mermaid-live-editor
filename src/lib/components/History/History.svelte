@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Card from '$lib/components/card/card.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import { inputStateStore, getStateString } from '$lib/util/state';
   import {
     addHistoryEntry,
@@ -14,7 +14,7 @@
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import moment from 'moment';
-  import type { HistoryType, State, Tab } from '$lib/types';
+  import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
   import { logEvent } from '$lib/util/stats';
 
   const HISTORY_SAVE_INTERVAL = 60000;
@@ -60,7 +60,7 @@
       }
       const reader = new FileReader();
       reader.onload = (e) => {
-        const data = JSON.parse(e.target.result as string);
+        const data: HistoryEntry[] = JSON.parse(e.target.result as string);
         restoreHistory(data);
       };
       reader.readAsText(file);

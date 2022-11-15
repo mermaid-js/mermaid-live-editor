@@ -9,7 +9,8 @@ declare global {
   namespace jest {
     interface Matchers<R = void>
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error
+      // eslint-disable-next-line no-undef
       extends TestingLibraryMatchers<typeof expect.stringContaining, R> {}
   }
 }

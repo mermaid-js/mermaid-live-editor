@@ -8,10 +8,11 @@ const loaders: Record<string, Loader> = {
 export const loadDataFromUrl = async (): Promise<void> => {
   const searchParams = new URLSearchParams(window.location.search);
   let state: Partial<State> = defaultState;
-  let code: string, config: string;
+  let code: string | undefined = undefined;
+  let config: string | undefined = undefined;
   let loaded = false;
-  const codeURL: string = searchParams.get('code');
-  const configURL: string = searchParams.get('config');
+  const codeURL: string | undefined = searchParams.get('code') ?? undefined;
+  const configURL: string | undefined = searchParams.get('config') ?? undefined;
 
   if (codeURL) {
     code = await (await fetch(codeURL)).text();
@@ -23,9 +24,6 @@ export const loadDataFromUrl = async (): Promise<void> => {
     config = defaultState.mermaid;
   }
   if (!code) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     for (const [key, value] of searchParams.entries()) {
       if (key in loaders) {
         try {
@@ -38,6 +36,9 @@ export const loadDataFromUrl = async (): Promise<void> => {
       }
     }
   } else {
+    if (!codeURL) {
+      throw new Error('Code URL is not defined');
+    }
     state = {
       code,
       mermaid: config,

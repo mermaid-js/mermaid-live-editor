@@ -8,9 +8,9 @@
   import initEditor from 'monaco-mermaid';
   import { logEvent } from '$lib/util/stats';
 
-  let divEl: HTMLDivElement = null;
-  let editor: monaco.editor.IStandaloneCodeEditor;
-  let Monaco: typeof monaco;
+  let divEl: HTMLDivElement | undefined = undefined;
+  let editor: monaco.editor.IStandaloneCodeEditor | undefined;
+  let Monaco: typeof monaco | undefined;
   let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     minimap: {
       enabled: false
@@ -22,7 +22,9 @@
 
   stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
     console.log('editor store subscription', { code, mermaid });
-    if (!editor) return;
+    if (!editor || !Monaco) {
+      return;
+    }
 
     // Update editor text if it's different
     const newText = editorMode === 'code' ? code : mermaid;
@@ -34,12 +36,17 @@
 
     // Update editor mode if it's different
     const language = editorMode === 'code' ? 'mermaid' : 'json';
-    if (editor.getModel().getLanguageId() !== language) {
-      Monaco?.editor.setModelLanguage(editor.getModel(), language);
+    const model = editor.getModel();
+    if (!model) {
+      console.error("editor model doesn't exist");
+      return;
+    }
+    if (model.getLanguageId() !== language) {
+      Monaco.editor.setModelLanguage(model, language);
     }
 
     // Display/clear errors
-    Monaco?.editor.setModelMarkers(editor.getModel(), 'mermaid', errorMarkers);
+    Monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
   });
 
   themeStore.subscribe(({ isDark }) => {
@@ -60,7 +67,7 @@
     // errorDebug();
     let i = 0;
     while (i++ < 500) {
-      // @ts-ignore : This is a hack to handle a svelte-kit error when importing monaco.
+      // @ts-expect-error : This is a hack to handle a svelte-kit error when importing monaco.
       Monaco = window.monaco;
       if (Monaco !== undefined) {
         return;
@@ -72,13 +79,20 @@
 
   onMount(async () => {
     await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
+    if (!Monaco) {
+      throw new Error('Monaco failed to load');
+    }
+    if (!divEl) {
+      throw new Error('divEl is undefined');
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     initEditor(Monaco);
     errorDebug(100);
     editor = Monaco.editor.create(divEl, editorOptions);
     editor.onDidChangeModelContent(({ isFlush, changes }) => {
-      const newText = editor.getValue();
+      const newText = editor?.getValue();
       console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
-      if (text === newText || isFlush) {
+      if (!newText || text === newText || isFlush) {
         return;
       }
       text = newText;
@@ -95,19 +109,21 @@
         });
       }
     });
-    Monaco?.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
+    Monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
-      editor.layout({
+      editor!.layout({
         height: entries[0].contentRect.height,
         width: entries[0].contentRect.width
       });
     });
 
-    resizeObserver.observe(divEl.parentElement);
+    if (divEl.parentElement) {
+      resizeObserver.observe(divEl.parentElement);
+    }
     console.log(`editor mounted`);
     return () => {
       console.log(`editor disposed`);
-      editor.dispose();
+      editor?.dispose();
     };
   });
 </script>

@@ -7,7 +7,7 @@ import {
   historyModeStore,
   historyStore
 } from './history';
-import { defaultState } from '../../util/state';
+import { defaultState } from '$lib/util/state';
 import { get } from 'svelte/store';
 
 describe('history', () => {
@@ -21,9 +21,9 @@ describe('history', () => {
       type: 'manual'
     });
 
-    const [manualEntry]: HistoryEntry[] = JSON.parse(
-      window.localStorage.getItem('manualHistoryStore')
-    );
+    const [manualEntry] = JSON.parse(
+      window.localStorage.getItem('manualHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
 
     expect(manualEntry.time).toBe(12345);
     expect(manualEntry.type).toBe('manual');
@@ -36,7 +36,9 @@ describe('history', () => {
       type: 'auto'
     });
 
-    const [autoEntry]: HistoryEntry[] = JSON.parse(window.localStorage.getItem('autoHistoryStore'));
+    const [autoEntry] = JSON.parse(
+      window.localStorage.getItem('autoHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
 
     expect(autoEntry.time).toBe(54321);
     expect(autoEntry.type).toBe('auto');
@@ -101,19 +103,23 @@ describe('history migration', () => {
       'autoHistoryStore',
       '[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"auto","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","name":"needy-mosquito"}]'
     );
-    let manualHistoryStore: HistoryEntry[] = JSON.parse(
-      window.localStorage.getItem('manualHistoryStore')
-    );
-    let autoHistoryStore: HistoryEntry[] = JSON.parse(
-      window.localStorage.getItem('autoHistoryStore')
-    );
+    let manualHistoryStore = JSON.parse(
+      window.localStorage.getItem('manualHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
+    let autoHistoryStore = JSON.parse(
+      window.localStorage.getItem('autoHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
     expect(manualHistoryStore.every(({ id }) => id !== undefined)).toBe(false);
     expect(autoHistoryStore.every(({ id }) => id !== undefined)).toBe(false);
 
     injectHistoryIDs();
 
-    manualHistoryStore = JSON.parse(window.localStorage.getItem('manualHistoryStore'));
-    autoHistoryStore = JSON.parse(window.localStorage.getItem('autoHistoryStore'));
+    manualHistoryStore = JSON.parse(
+      window.localStorage.getItem('manualHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
+    autoHistoryStore = JSON.parse(
+      window.localStorage.getItem('autoHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
     expect(manualHistoryStore.every(({ id }) => id !== undefined)).toBe(true);
     expect(autoHistoryStore.every(({ id }) => id !== undefined)).toBe(true);
   });
