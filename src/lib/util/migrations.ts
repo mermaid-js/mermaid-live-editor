@@ -1,13 +1,13 @@
 import { writable, get, type Writable } from 'svelte/store';
 import { persist, localStorage } from '$lib/util/persist';
-import { injectHistoryIDs } from '$lib/components/history/history';
+import { injectHistoryIDs } from '$lib/components/History/history';
 import { logEvent } from './stats';
 
 interface MigrationState {
   version: number;
 }
 
-const migrations: { [key: string]: () => void } = {
+const migrations: Record<string, () => void> = {
   injectHistoryIDs
 };
 

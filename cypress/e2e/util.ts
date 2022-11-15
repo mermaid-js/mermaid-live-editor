@@ -17,6 +17,7 @@ export const verifyFileSize = (
 ) => {
   const fileName = `mermaid-${fileType}-2022-01-01-000000.${extension}`;
   const filePath = `${downloadsFolder}/${fileName}`;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   cy.verifyDownload(fileName);
   cy.readFile(filePath, null, {
     log: false
@@ -31,6 +32,7 @@ export const verifyFileSnapshot = (
 ) => {
   const fileName = `mermaid-${fileType}-2022-01-01-000000.${extension}`;
   const filePath = `${downloadsFolder}/${fileName}`;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   cy.verifyDownload(fileName);
   cy.readFile(filePath, null, {
     log: false

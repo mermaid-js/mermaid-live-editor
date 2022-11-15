@@ -23,10 +23,10 @@ export const initHandler = async (): Promise<void> => {
   syncDiagram();
   initURLSubscription();
   await initAnalytics();
-  analytics?.page();
+  await analytics?.page();
 };
 
-export const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
 
 let count = 0;

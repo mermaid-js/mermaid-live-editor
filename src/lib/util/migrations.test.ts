@@ -16,18 +16,22 @@ describe('migrations', () => {
   it('should migrate from v0 to v1', async () => {
     const { applyMigrations } = await import('./migrations');
     let manualHistoryStore: HistoryEntry[] = JSON.parse(
-      window.localStorage.getItem('manualHistoryStore')
-    );
+      window.localStorage.getItem('manualHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
     let autoHistoryStore: HistoryEntry[] = JSON.parse(
-      window.localStorage.getItem('autoHistoryStore')
-    );
+      window.localStorage.getItem('autoHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
     expect(manualHistoryStore.every(({ id }) => id !== undefined)).toBe(false);
     expect(autoHistoryStore.every(({ id }) => id !== undefined)).toBe(false);
 
     applyMigrations();
 
-    manualHistoryStore = JSON.parse(window.localStorage.getItem('manualHistoryStore'));
-    autoHistoryStore = JSON.parse(window.localStorage.getItem('autoHistoryStore'));
+    manualHistoryStore = JSON.parse(
+      window.localStorage.getItem('manualHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
+    autoHistoryStore = JSON.parse(
+      window.localStorage.getItem('autoHistoryStore') ?? '[]'
+    ) as HistoryEntry[];
     expect(manualHistoryStore.every(({ id }) => id !== undefined)).toBe(true);
     expect(autoHistoryStore.every(({ id }) => id !== undefined)).toBe(true);
   });

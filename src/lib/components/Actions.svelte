@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment';
-  import Card from '$lib/components/card/card.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import { env } from '$lib/util/env';
   import { pakoSerde } from '$lib/util/serde';
   import { stateStore } from '$lib/util/state';
@@ -15,8 +15,8 @@
     `mermaid-diagram-${moment().format('YYYY-MM-DD-HHmmss')}.${ext}`;
 
   const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
-    svg?.setAttribute('height', `${height}px`);
-    svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+    height && svg?.setAttribute('height', `${height}px`);
+    width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
     if (!svg) {
       svg = getSvgEl();
     }
@@ -28,7 +28,10 @@
 
   const exportImage = (event: Event, exporter: Exporter) => {
     const canvas: HTMLCanvasElement = document.createElement('canvas');
-    const svg: HTMLElement = document.querySelector('#container svg');
+    const svg: HTMLElement | null = document.querySelector('#container svg');
+    if (!svg) {
+      throw new Error('svg not found');
+    }
     const box: DOMRect = svg.getBoundingClientRect();
     canvas.width = box.width;
     canvas.height = box.height;
@@ -43,6 +46,9 @@
     }
 
     const context = canvas.getContext('2d');
+    if (!context) {
+      throw new Error('context not found');
+    }
     context.fillStyle = 'white';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -56,12 +62,12 @@
 
   const getSvgEl = () => {
     const svgEl: HTMLElement = document
-      .querySelector('#container svg')
+      .querySelector('#container svg')!
       .cloneNode(true) as HTMLElement;
     svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
     const fontAwesomeCdnUrl = Array.from(document.head.getElementsByTagName('link'))
       .map((l) => l.href)
-      .find((h) => h && h.includes('font-awesome'));
+      .find((h) => h.includes('font-awesome'));
     if (fontAwesomeCdnUrl == null) {
       return svgEl;
     }
@@ -99,10 +105,10 @@
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       canvas.toBlob((blob) => {
         try {
-          // @ts-ignore: https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1004/files
+          if (!blob) {
+            throw new Error('blob is empty');
+          }
           void navigator.clipboard.write([
-            /* eslint-disable no-undef */
-            // @ts-ignore: https://github.com/microsoft/TypeScript/issues/43821
             new ClipboardItem({
               [blob.type]: blob
             })
@@ -142,7 +148,7 @@
   let gistURL = '';
   stateStore.subscribe(({ loader }) => {
     if (loader?.type === 'gist') {
-      // @ts-ignore Gist will have url
+      // @ts-expect-error Gist will have url
       gistURL = loader.config.url;
     }
   });
@@ -166,8 +172,7 @@
   if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
     isNetlify = true;
   }
-  stateStore.subscribe(async (state) => {
-    const { code, serialized } = await state;
+  stateStore.subscribe(({ code, serialized }) => {
     iUrl = `${rendererUrl}/img/${serialized}?type=png`;
     svgUrl = `${rendererUrl}/svg/${serialized}`;
     krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`;
