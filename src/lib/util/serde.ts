@@ -36,7 +36,7 @@ const serdes: { [key in SerdeType]: Serde } = {
 };
 
 export const serializeState = (state: State, serde: SerdeType = 'pako'): string => {
-  if (serdes[serde] === undefined) {
+  if (!(serde in serdes)) {
     throw new Error(`Unknown serde type: ${serde}`);
   }
   const json = JSON.stringify(state);

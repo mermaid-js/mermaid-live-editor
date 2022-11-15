@@ -5,7 +5,7 @@ import { serializeState, deserializeState } from './serde';
 import { cmdKey, errorDebug, AsyncQueue } from './util';
 import { parse } from './mermaid';
 
-import type { MarkerData, State, ValidatedState } from '$lib/types';
+import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
 import type { MermaidConfig } from 'mermaid';
 
 export const defaultState: State = {
@@ -52,7 +52,7 @@ export const currentState: ValidatedState = (() => {
   };
 })();
 
-let q: AsyncQueue<State>;
+let q: AsyncQueue<State> | undefined;
 
 const processState = async (state: State) => {
   const processed: ValidatedState = {
@@ -71,14 +71,19 @@ const processState = async (state: State) => {
     processed.error = e;
     errorDebug();
     console.error(e);
-    if (e.hash) {
+    if ('hash' in e) {
+      const {
+        loc: { first_line, last_line, first_column, last_column }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      } = e.hash as ErrorHash;
       try {
         const marker: MarkerData = {
           severity: 8, // Error
-          startLineNumber: e.hash.loc.first_line,
-          startColumn: e.hash.loc.first_column,
-          endLineNumber: e.hash.loc.last_line,
-          endColumn: (e.hash.loc.last_column as number) + 1,
+          startLineNumber: first_line,
+          startColumn: first_column,
+          endLineNumber: last_line,
+          endColumn: last_column + 1,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
           message: e.str
         };
         processed.errorMarkers = [marker];
@@ -111,8 +116,10 @@ export const loadState = (data: string): void => {
   console.log(`Loading '${data}'`);
   try {
     state = deserializeState(data);
-    const mermaidConfig: Record<string, string> =
-      typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
+    const mermaidConfig: MermaidConfig =
+      typeof state.mermaid === 'string'
+        ? (JSON.parse(state.mermaid) as MermaidConfig)
+        : state.mermaid;
     if (
       mermaidConfig.securityLevel &&
       mermaidConfig.securityLevel !== 'strict' &&
@@ -182,7 +189,7 @@ export const updateConfig = (config: string): void => {
 
 export const toggleDarkTheme = (dark: boolean): void => {
   inputStateStore.update((state) => {
-    const config: MermaidConfig = JSON.parse(state.mermaid);
+    const config = JSON.parse(state.mermaid) as MermaidConfig;
     if (!config.theme || ['dark', 'default'].includes(config.theme)) {
       config.theme = dark ? 'dark' : 'default';
     }
@@ -196,7 +203,7 @@ export const initURLSubscription = (): void => {
   stateStore.subscribe(({ serialized }) => {
     clearTimeout(urlDebounce);
     urlDebounce = window.setTimeout(() => {
-      history.replaceState(undefined, undefined, `#${serialized}`);
+      history.replaceState(undefined, '', `#${serialized}`);
     }, 250);
   });
 };

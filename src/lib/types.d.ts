@@ -85,3 +85,12 @@ export type EditorMode = 'code' | 'config';
 
 export type Loader = (url: string) => Promise<State>;
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+export interface ErrorHash {
+  loc: {
+    first_line: number;
+    last_line: number;
+    first_column: number;
+    last_column: number;
+  };
+}

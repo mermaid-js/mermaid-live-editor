@@ -42,15 +42,19 @@ interface GistResponse {
 }
 
 const getGistData = async (gistURL: string): Promise<GistData> => {
+  const path = gistURL.split('github.com').pop();
+  if (!path) {
+    throw new Error('Invalid GitHub URL' + gistURL);
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, __, gistID, revisionID] = gistURL.split('github.com').pop().split('/');
+  const [_, __, gistID, revisionID] = path.split('/');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { html_url, files, history }: GistResponse = await (
     await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
   ).json();
   if (isValidGist(files)) {
     const code = await getFileContent(files[codeFileName]);
-    let config: string;
+    let config = '{}';
     if (configFileName in files) {
       config = await getFileContent(files[configFileName]);
     }
@@ -65,7 +69,7 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
       version: currentItem.version.slice(-7)
     };
   } else {
-    throw 'Invalid gist provided';
+    throw new Error('Invalid gist provided');
   }
 };
 
@@ -85,35 +89,38 @@ const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => 
 };
 
 export const loadGistData = async (gistURL: string): Promise<State> => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, __, gistID, revisionID] = gistURL.split('github.com').pop().split('/');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { history }: GistResponse = await (
-      await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
-    ).json();
-    const gistHistory: GistData[] = [];
-    for (const entry of history) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const data: GistData = await getGistData(entry.url).catch(() => undefined);
-      data && gistHistory.push(data);
-    }
-    if (gistHistory.length === 0) {
-      throw 'Invalid gist provided';
-    }
-    gistHistory.reverse();
-    const state = getStateFromGist(gistHistory.slice(-1).pop(), gistURL);
-    for (const gist of gistHistory) {
-      addHistoryEntry({
-        state: getStateFromGist(gist),
-        time: gist.time,
-        type: 'loader',
-        url: gist.url,
-        name: `${gist.author} v${gist.version}`
-      });
-    }
-    return state;
-  } catch (err) {
-    console.error(err);
+  const path = gistURL.split('github.com').pop();
+  if (!path) {
+    throw new Error('Invalid GitHub URL' + gistURL);
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, __, gistID, revisionID] = path.split('/');
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { history }: GistResponse = await (
+    await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
+  ).json();
+  const gistHistory: GistData[] = [];
+  for (const entry of history) {
+    const data: GistData | undefined = await getGistData(entry.url).catch(() => undefined);
+    data && gistHistory.push(data);
+  }
+  if (gistHistory.length === 0) {
+    throw new Error('Invalid gist provided');
+  }
+  gistHistory.reverse();
+  const entry = gistHistory.slice(-1).pop();
+  if (!entry) {
+    throw new Error('Invalid gist provided');
+  }
+  const state = getStateFromGist(entry, gistURL);
+  for (const gist of gistHistory) {
+    addHistoryEntry({
+      state: getStateFromGist(gist),
+      time: gist.time,
+      type: 'loader',
+      url: gist.url,
+      name: `${gist.author} v${gist.version}`
+    });
+  }
+  return state;
 };

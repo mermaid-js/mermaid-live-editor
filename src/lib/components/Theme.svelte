@@ -24,10 +24,6 @@
     '💎 luxury',
     '🧛‍♂️ dracula'
   ];
-
-  function checkTheme(theme: string): boolean {
-    return $themeStore.theme !== undefined && theme.includes($themeStore.theme);
-  }
 </script>
 
 <div class="hidden lg:block dropdown">
@@ -56,7 +52,7 @@
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <ul tabindex="0" class="p-4 menu compact">
       {#each themes as theme}
-        <li class:bordered={checkTheme(theme)}>
+        <li class:bordered={$themeStore.theme !== undefined && theme.includes($themeStore.theme)}>
           <span
             class="btn btn-ghost justify-start"
             on:click={() => setTheme(theme)}

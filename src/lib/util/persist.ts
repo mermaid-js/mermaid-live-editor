@@ -153,7 +153,7 @@ export function persist<T>(
     store.set(initialValue);
   }
 
-  if ((storage as SelfUpdateStorageInterface<T>).addListener) {
+  if ('addListener' in storage) {
     (storage as SelfUpdateStorageInterface<T>).addListener(key, (newValue) => {
       store.set(newValue);
     });
