@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { State } from '$lib/types';
 import { defaultState } from '$lib/util/state';
-import { addHistoryEntry } from '$lib/components/History/History';
+import { addHistoryEntry } from '$lib/components/History/history';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
