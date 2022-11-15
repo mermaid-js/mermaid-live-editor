@@ -10,8 +10,8 @@ describe('card.svelte', () => {
     const { container } = render(Card, {
       title: 'TabTest',
       tabs: [
-        { id: 't1', title: 'title1' },
-        { id: 't2', title: 'title2' }
+        { id: 't1', title: 'title1', icon: 'fab fa-git-alt' },
+        { id: 't2', title: 'title2', icon: 'far fa-bookmark' }
       ]
     });
     expect(container).toBeTruthy();
