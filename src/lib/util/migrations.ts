@@ -7,7 +7,7 @@ interface MigrationState {
   version: number;
 }
 
-const migrations: { [key: string]: () => void } = {
+const migrations: Record<string, () => void> = {
   injectHistoryIDs
 };
 

@@ -73,12 +73,13 @@ export type HistoryEntry = { id: string; state: State; time: number; url?: strin
     }
 );
 
-export interface DocConfig {
-  [key: string]: {
+export type DocConfig = Record<
+  string,
+  {
     code: string;
     config?: string;
-  };
-}
+  }
+>;
 
 export type EditorMode = 'code' | 'config';
 

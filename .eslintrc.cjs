@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/strict',
     'prettier'
   ],
   plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es', 'vitest'],
@@ -19,7 +20,10 @@ module.exports = {
     'package.json',
     'tsconfig.json'
   ],
-  overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
+  overrides: [
+    { files: ['*.svelte'], processor: 'svelte3/svelte3' }
+    // { files: ['*.ts'], extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'] }
+  ],
   settings: {
     'svelte3/typescript': () => require('typescript')
   },

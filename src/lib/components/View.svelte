@@ -17,9 +17,12 @@
   let hide = false;
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
-  let pzoom: typeof panzoom;
+  let pzoom: typeof panzoom | undefined;
 
   const handlePanZoomChange = () => {
+    if (!pzoom) {
+      return;
+    }
     const pan = pzoom.getPan();
     const zoom = pzoom.getZoom();
     updateCodeStore({ pan, zoom });
@@ -35,6 +38,9 @@
     pzoom = undefined;
     void Promise.resolve().then(() => {
       const graphDiv = document.getElementById('graph-div');
+      if (!graphDiv) {
+        return;
+      }
       pzoom = panzoom(graphDiv, {
         onPan: handlePanZoomChange,
         onZoom: handlePanZoomChange,
@@ -71,7 +77,7 @@
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
-        const scroll = view.parentElement.scrollTop;
+        const scroll = view.parentElement!.scrollTop;
         delete container.dataset.processed;
         await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
@@ -83,6 +89,9 @@
               container.innerHTML = svgCode;
               // console.log(container.innerHTML);
               const graphDiv = document.getElementById('graph-div');
+              if (!graphDiv) {
+                throw new Error('graph-div not found');
+              }
               graphDiv.setAttribute('height', '100%');
               graphDiv.style.maxWidth = '100%';
               if (bindFunctions) {
@@ -91,7 +100,7 @@
             }
           }
         );
-        view.parentElement.scrollTop = scroll;
+        view.parentElement!.scrollTop = scroll;
         error = false;
       } else if (manualUpdate) {
         manualUpdate = false;

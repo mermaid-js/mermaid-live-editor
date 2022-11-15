@@ -25,7 +25,7 @@
     '🧛‍♂️ dracula'
   ];
 
-  function checkTheme(theme: string) {
+  function checkTheme(theme: string): boolean {
     return theme.includes($themeStore.theme);
   }
 </script>

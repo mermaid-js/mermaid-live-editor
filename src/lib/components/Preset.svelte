@@ -114,8 +114,8 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: Array<SampleTypes> = ['Mindmap'];
-  const diagramOrder: Array<SampleTypes> = [
+  const newDiagrams: SampleTypes[] = ['Mindmap'];
+  const diagramOrder: SampleTypes[] = [
     'Sequence',
     'Flow',
     'Class',
