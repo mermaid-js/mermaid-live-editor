@@ -16,7 +16,7 @@
   let hide = false;
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
-  let pzoom: SvgPanZoom.Instance;
+  let pzoom: typeof panzoom;
 
   const handlePanZoomChange = () => {
     const pan = pzoom.getPan();

@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-  import Theme from './theme.svelte';
+  import Theme from './Theme.svelte';
 
   interface Link {
     title: string;

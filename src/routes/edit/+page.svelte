@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Editor from '$lib/components/editor.svelte';
-  import Navbar from '$lib/components/navbar.svelte';
-  import Preset from '$lib/components/preset.svelte';
-  import Actions from '$lib/components/actions.svelte';
-  import View from '$lib/components/view.svelte';
-  import Card from '$lib/components/card/card.svelte';
-  import History from '$lib/components/history/history.svelte';
+  import Editor from '$lib/components/Editor.svelte';
+  import Navbar from '$lib/components/Navbar.svelte';
+  import Preset from '$lib/components/Preset.svelte';
+  import Actions from '$lib/components/Actions.svelte';
+  import View from '$lib/components/View.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
+  import History from '$lib/components/History/History.svelte';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Card from '$lib/components/card/card.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import { inputStateStore, getStateString } from '$lib/util/state';
   import {
     addHistoryEntry,

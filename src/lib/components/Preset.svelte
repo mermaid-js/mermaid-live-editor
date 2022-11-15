@@ -1,6 +1,6 @@
 <script lang="ts">
   import { updateCode } from '$lib/util/state';
-  import Card from '$lib/components/card/card.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import { logEvent } from '$lib/util/stats';
 
   const samples = {

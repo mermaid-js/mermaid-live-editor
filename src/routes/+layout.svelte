@@ -10,7 +10,7 @@
   // This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
   // Then move it into src and vite will bundle it automatically.
   onMount(() => {
-    window.addEventListener('hashchange', async (ev) => {
+    window.addEventListener('hashchange', async () => {
       await initHandler();
     });
     if ('serviceWorker' in navigator) {

@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { State } from '$lib/types';
-import { defaultState } from '../state';
-import { addHistoryEntry } from '../../components/history/history';
+import { defaultState } from '$lib/util/state';
+import { addHistoryEntry } from '$lib/components/History/History';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';

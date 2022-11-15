@@ -22,7 +22,9 @@
 
   stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
     console.log('editor store subscription', { code, mermaid });
-    if (!editor) return;
+    if (!editor) {
+      return;
+    }
 
     // Update editor text if it's different
     const newText = editorMode === 'code' ? code : mermaid;

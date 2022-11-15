@@ -7,7 +7,7 @@ import {
   historyModeStore,
   historyStore
 } from './history';
-import { defaultState } from '../../util/state';
+import { defaultState } from '$lib/util/state';
 import { get } from 'svelte/store';
 
 describe('history', () => {
