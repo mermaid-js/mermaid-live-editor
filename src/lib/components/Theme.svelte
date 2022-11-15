@@ -26,7 +26,7 @@
   ];
 
   function checkTheme(theme: string): boolean {
-    return theme.includes($themeStore.theme);
+    return $themeStore.theme !== undefined && theme.includes($themeStore.theme);
   }
 </script>
 

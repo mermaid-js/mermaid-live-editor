@@ -4,8 +4,8 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:@typescript-eslint/strict',
+    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    // 'plugin:@typescript-eslint/strict',
     'prettier'
   ],
   plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es', 'vitest'],

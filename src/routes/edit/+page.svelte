@@ -86,6 +86,10 @@
     await initHandler();
     const resizer = document.getElementById('resizeHandler');
     const element = document.getElementById('editorPane');
+    if (!resizer || !element) {
+      console.debug('Failed to find resize handler or editor pane', { resizer, element });
+      return;
+    }
     const resize = (e: { pageX: number }) => {
       const newWidth = e.pageX - element.getBoundingClientRect().left;
       if (newWidth > 50) {
