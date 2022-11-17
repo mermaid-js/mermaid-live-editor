@@ -3841,10 +3841,10 @@ monaco-editor@0.34.1:
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.34.1.tgz#1b75c4ad6bc4c1f9da656d740d98e0b850a22f87"
   integrity sha512-FKc80TyiMaruhJKKPz5SpJPIjL+dflGvz4CpuThaPMc94AyN7SeC9HQ8hrvaxX7EyHdJcUY5i4D0gNyJj1vSZQ==
 
-monaco-mermaid@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.6.tgz#2f0db5b38cb0c6539a28d5e5758dc24f88d931f3"
-  integrity sha512-ntPXb1DPQ9k4/3pV3GLXF39KZOXrpns9nfB5On77nFATuUwN81N/clOR9SvGnoQhcP7n8A0ppE8JVNeYfVF97g==
+monaco-mermaid@1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/monaco-mermaid/-/monaco-mermaid-1.0.8.tgz#6bc461c0529f5a8d707d03ad88c90425107fc127"
+  integrity sha512-D6v777Vkt62+ODZkoX9guv5Jlqe50tu+dZnnDQ86lAba4fIaFTjG3o8tbToniE1WCfIPGW6t+X/uXQuSPdkfMA==
 
 mri@^1.1.0:
   version "1.1.6"
