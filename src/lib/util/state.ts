@@ -70,11 +70,11 @@ const processState = async (state: State) => {
     errorDebug();
     console.error(e);
     if ('hash' in e) {
-      const {
-        loc: { first_line, last_line, first_column, last_column }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      } = e.hash as ErrorHash;
       try {
+        const {
+          loc: { first_line, last_line, first_column, last_column }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        } = e.hash as ErrorHash;
         const marker: MarkerData = {
           severity: 8, // Error
           startLineNumber: first_line,
