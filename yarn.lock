@@ -2503,6 +2503,11 @@ eslint-plugin-es@4.1.0:
     eslint-utils "^2.0.0"
     regexpp "^3.0.0"
 
+eslint-plugin-no-only-tests@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-no-only-tests/-/eslint-plugin-no-only-tests-3.1.0.tgz#f38e4935c6c6c4842bf158b64aaa20c366fe171b"
+  integrity sha512-Lf4YW/bL6Un1R6A76pRZyE1dl1vr31G/ev8UzIc/geCgFWyrKil8hVjYqWVKGB/UIGmb6Slzs9T0wNezdSVegw==
+
 eslint-plugin-postcss-modules@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-postcss-modules/-/eslint-plugin-postcss-modules-2.0.0.tgz#d136d6fb5bd9afa6ac73c22aea85212aa2531806"

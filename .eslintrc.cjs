@@ -8,7 +8,7 @@ module.exports = {
     'plugin:@typescript-eslint/strict',
     'prettier'
   ],
-  plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es', 'vitest'],
+  plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es', 'vitest', 'no-only-tests'],
   ignorePatterns: [
     'docs/*',
     '*.cjs',
@@ -58,6 +58,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     'es/no-regexp-lookbehind-assertions': 'error',
-    curly: ['error', 'all']
+    curly: ['error', 'all'],
+    'no-only-tests/no-only-tests': 'error'
   }
 };
