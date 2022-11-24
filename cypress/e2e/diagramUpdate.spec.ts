@@ -69,6 +69,14 @@ describe('Auto sync tests', () => {
       )
       .should('exist');
   });
+
+  it.only('should update diagram after entire text is removed', () => {
+    // https://github.com/mermaid-js/mermaid-live-editor/issues/1102
+    getEditor().type(`${cmd} a {backspace}`);
+    getEditor().type('graph LR');
+    getEditor().type(' {enter}  A-->Car');
+    cy.get('#view').contains('Car').should('exist');
+  });
 });
 
 describe('Pan and Zoom', () => {
