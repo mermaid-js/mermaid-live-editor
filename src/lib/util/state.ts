@@ -2,7 +2,7 @@ import { writable, get, type Readable, derived } from 'svelte/store';
 import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
-import { cmdKey, errorDebug, AsyncQueue } from './util';
+import { cmdKey, errorDebug } from './util';
 import { parse } from './mermaid';
 
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
@@ -52,8 +52,6 @@ export const currentState: ValidatedState = (() => {
   };
 })();
 
-let q: AsyncQueue<State> | undefined;
-
 const processState = async (state: State) => {
   const processed: ValidatedState = {
     ...state,
@@ -99,14 +97,7 @@ const processState = async (state: State) => {
 export const stateStore: Readable<ValidatedState> = derived(
   [inputStateStore],
   ([state], set) => {
-    if (!q) {
-      // Initialize the queue for first time.
-      q = new AsyncQueue(async (state: State) => {
-        const newState = await processState(state);
-        set(newState);
-      });
-    }
-    void q.process(state);
+    void processState(state).then(set);
   },
   currentState
 );

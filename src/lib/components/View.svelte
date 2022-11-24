@@ -4,7 +4,7 @@
   import panzoom from 'svg-pan-zoom';
   import type { State, ValidatedState } from '$lib/types';
   import { logEvent } from '$lib/util/stats';
-  import { AsyncQueue, cmdKey } from '$lib/util/util';
+  import { cmdKey } from '$lib/util/util';
   import { render as renderDiagram } from '$lib/util/mermaid';
   import type { MermaidConfig } from 'mermaid';
 
@@ -113,11 +113,9 @@
     }
   };
 
-  const q = new AsyncQueue(handleStateChange);
-
   onMount(() => {
     stateStore.subscribe((state) => {
-      void q.process(state);
+      void handleStateChange(state);
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {
