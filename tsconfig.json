@@ -1,16 +1,19 @@
 {
-	"include": [
-		"src/**/*.d.ts",
-		"src/**/*.ts",
-		"src/**/*.svelte",
-		"cypress/**/*.ts",
-		"cypress/**/*.js",
-		"static/**/*.js"
-	],
-	"compilerOptions": {
-		"resolveJsonModule": true,
-		"allowSyntheticDefaultImports": true,
-		"types": ["vitest/importMeta"]
-	},
-	"extends": "./.svelte-kit/tsconfig.json"
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.svelte",
+    "cypress/**/*.ts",
+    "cypress/**/*.js",
+    "cypress/**/*.json",
+    "static/**/*.js",
+    "static/**/*.json"
+  ],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "types": ["vitest/importMeta"]
+  },
+  "extends": "./.svelte-kit/tsconfig.json"
 }
