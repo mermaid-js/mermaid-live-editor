@@ -18,8 +18,7 @@ const config = {
       ? {
           base: `/mermaid-live-editor`
         }
-      : {},
-    trailingSlash: 'ignore'
+      : {}
   }
 };
 
