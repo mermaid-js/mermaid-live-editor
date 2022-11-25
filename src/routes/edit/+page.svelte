@@ -9,11 +9,11 @@
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
-  import type { Tab, DocConfig, EditorMode, ValidatedState } from '$lib/types';
+  import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
   import { base } from '$app/paths';
 
   const docURLBase = 'https://mermaid-js.github.io/mermaid';
-  const docMap: DocConfig = {
+  const docMap: DocumentationConfig = {
     graph: {
       code: '/#/flowchart',
       config: '/#/flowchart?id=configuration'

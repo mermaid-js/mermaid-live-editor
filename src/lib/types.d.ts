@@ -73,7 +73,7 @@ export type HistoryEntry = { id: string; state: State; time: number; url?: strin
     }
 );
 
-export type DocConfig = Record<
+export type DocumentationConfig = Record<
   string,
   {
     code: string;
