@@ -66,7 +66,7 @@ const processState = async (state: State) => {
     await parse(state.code);
     JSON.parse(state.mermaid);
   } catch (e) {
-    processed.error = e;
+    processed.error = e as Error;
     errorDebug();
     console.error(e);
     if ('hash' in e) {

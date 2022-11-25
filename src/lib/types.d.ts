@@ -1,11 +1,3 @@
-/**
- * Can be made globally available by placing this
- * inside `global.d.ts` and removing `export` keyword
- */
-export interface Locals {
-  userid: string;
-}
-
 export interface MarkerData {
   severity: number;
   message: string;
@@ -40,7 +32,7 @@ export interface State {
 
 export interface ValidatedState extends State {
   editorMode: EditorMode;
-  error: unknown;
+  error?: Error;
   errorMarkers: MarkerData[];
   serialized: string;
 }
