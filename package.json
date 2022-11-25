@@ -19,7 +19,8 @@
     "test:coverage": "vitest run --coverage",
     "test:browser": "cypress run",
     "test": "test:unit && test:browser",
-    "cy": "cypress open"
+    "cy": "cypress open",
+    "pw": "npx playwright test"
   },
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",

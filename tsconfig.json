@@ -6,8 +6,12 @@
     "cypress/**/*.ts",
     "cypress/**/*.js",
     "cypress/**/*.json",
+    "tests/**/*.ts",
+    "tests/**/*.js",
+    "tests/**/*.json",
     "static/**/*.js",
-    "static/**/*.json"
+    "static/**/*.json",
+    "./playwright.config.ts"
   ],
   "compilerOptions": {
     "resolveJsonModule": true,

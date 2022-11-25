@@ -1,0 +1,17 @@
+[
+  {
+    "origin": "http://localhost:3000",
+    "localStorage": [
+      { "name": "__anon_id", "value": "\"87f53493-b439-425c-961c-9a2014f0ced8\"" },
+      { "name": "manualHistoryStore", "value": "[]" },
+      { "name": "autoHistoryMode", "value": "\"manual\"" },
+      {
+        "name": "codeStore",
+        "value": "{\"code\":\"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n  \",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":true,\"updateDiagram\":true}"
+      },
+      { "name": "migrations", "value": "{\"version\":0}" },
+      { "name": "themeStore", "value": "{\"theme\":\"light\",\"isDark\":false}" },
+      { "name": "autoHistoryStore", "value": "[]" }
+    ]
+  }
+]
