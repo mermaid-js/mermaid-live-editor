@@ -40,7 +40,7 @@ export interface State {
 
 export interface ValidatedState extends State {
   editorMode: EditorMode;
-  error: unknown;
+  error: Error;
   errorMarkers: MarkerData[];
   serialized: string;
 }
