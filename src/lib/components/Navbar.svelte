@@ -21,7 +21,7 @@
     },
     {
       title: 'Tutorial',
-      href: 'https://github.com/mermaid-js/mermaid/blob/develop/docs/Tutorials.md'
+      href: 'https://mermaid-js.github.io/mermaid/#/./Tutorials'
     },
     {
       title: 'Mermaid',
