@@ -59,7 +59,8 @@ https://docs.github.com/en/get-started/quickstart/fork-a-repo
 
 ## Development
 
-```
+```sh
+yarn install
 yarn dev -- --open
 ```
 
