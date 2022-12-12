@@ -19,6 +19,5 @@ describe('card.svelte', () => {
     expect(container).toHaveTextContent('title1');
     expect(container).toHaveTextContent('title2');
     expect(container).not.toHaveTextContent('title3');
-    expect(container.innerHTML).toMatchSnapshot();
   });
 });
