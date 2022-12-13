@@ -1,4 +1,4 @@
-import { verifyFileSize } from './util';
+import { verifyFileSizeGreaterThan } from './util';
 describe('Check actions', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
@@ -28,20 +28,20 @@ describe('Check actions', () => {
     cy.clock(new Date(2022, 0, 1).getTime());
 
     cy.get(`#downloadPNG`).click();
-    verifyFileSize('diagram', 'png', 21_000);
+    verifyFileSizeGreaterThan('diagram', 'png', 21_000);
 
     cy.get(`#downloadSVG`).click();
-    verifyFileSize('diagram', 'svg', 10_000);
+    verifyFileSizeGreaterThan('diagram', 'svg', 10_000);
 
     // Verify downloaded file is different for different diagrams
     cy.contains('Sample Diagrams').click();
     cy.contains('ER').click();
 
     cy.get(`#downloadPNG`).click();
-    verifyFileSize('diagram', 'png', 46_000);
+    verifyFileSizeGreaterThan('diagram', 'png', 46_000);
 
     cy.get(`#downloadSVG`).click();
-    verifyFileSize('diagram', 'svg', 12_000);
+    verifyFileSizeGreaterThan('diagram', 'svg', 11_000);
 
     cy.clock().invoke('restore');
   });
