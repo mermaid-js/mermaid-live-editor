@@ -1841,10 +1841,10 @@ d3@^7.6.1:
     d3-transition "3"
     d3-zoom "3"
 
-dagre-d3-es@7.0.4:
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/dagre-d3-es/-/dagre-d3-es-7.0.4.tgz#3e0187ef4699e9da02069d8cc1062a87bec94200"
-  integrity sha512-fQL8ldFR9UYpecz48d1smrXNJ9zGUK38Vl5OzX6Fhn9LR+oQh0GzHRPQylP5kWawmMTKm1QtqcHMVySMJ5CYaQ==
+dagre-d3-es@7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/dagre-d3-es/-/dagre-d3-es-7.0.5.tgz#497e3481e97e2df63ee5ccea28af5819895fbb98"
+  integrity sha512-E42LEJ3KFzXCwNlYkY69HOlksJ2g+uuRIZkHd09Fe0yxOJqzHIzVn78Myjv8ZwFpFt9Izax2KHOK6B/GHfawTA==
   dependencies:
     d3 "^7.6.1"
     lodash-es "^4.17.21"
@@ -3544,14 +3544,14 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@9.3.0-rc.5:
-  version "9.3.0-rc.5"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.3.0-rc.5.tgz#a7118298a69df2f63be80a507b8728e0b1c0b1fa"
-  integrity sha512-eEqD0bW2Cy7hFPyzCS9XracD6DLrLS3makvwXJHiSUqmpTus4aKrjK5ECkfixfxEBk/Dl5UUvpjDbwIIXds7IQ==
+mermaid@9.3.0-rc.6:
+  version "9.3.0-rc.6"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.3.0-rc.6.tgz#67c9b33e7ce48ab1f353b033742b998c90fa2407"
+  integrity sha512-vEHL8iel9WNHul8TaKRtUjxvXmVbI+ANDhkNR8BQ7COpt141r8yIC+RZ6/m0sYxZWq1qgn0zI3T87I/Jyxat/Q==
   dependencies:
     "@braintree/sanitize-url" "^6.0.0"
     d3 "^7.0.0"
-    dagre-d3-es "7.0.4"
+    dagre-d3-es "7.0.5"
     dompurify "2.4.1"
     khroma "^2.0.0"
     lodash-es "^4.17.21"
