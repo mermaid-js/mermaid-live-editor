@@ -1,6 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-/** @type {import('vite').UserConfig} */
-const config = {
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
   plugins: [sveltekit()],
   envPrefix: 'MERMAID_',
   optimizeDeps: { include: ['mermaid'] },
@@ -22,5 +23,4 @@ const config = {
       reporter: ['text', 'json', 'html', 'lcov']
     }
   }
-};
-export default config;
+});

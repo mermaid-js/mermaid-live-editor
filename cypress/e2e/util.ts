@@ -10,7 +10,7 @@ export const getEditor = ({ bottom = true, newline = false } = {}) =>
 
 const downloadsFolder = Cypress.config('downloadsFolder');
 
-export const verifyFileSize = (
+export const verifyFileSizeGreaterThan = (
   fileType: 'history' | 'diagram',
   extension: string,
   size: number
@@ -21,7 +21,7 @@ export const verifyFileSize = (
   cy.verifyDownload(fileName);
   cy.readFile(filePath, null, {
     log: false
-  }).then((buffer) => expect((buffer as ArrayBuffer).byteLength).to.be.gt(size));
+  }).then((buffer: ArrayBuffer) => expect(buffer.byteLength).to.be.gt(size));
   cy.task('deleteFile', filePath);
 };
 
@@ -36,8 +36,8 @@ export const verifyFileSnapshot = (
   cy.verifyDownload(fileName);
   cy.readFile(filePath, null, {
     log: false
-  }).then((buffer) =>
-    expect(new TextDecoder('utf-8').decode(buffer as ArrayBuffer)).to.contain(content)
+  }).then((buffer: ArrayBuffer) =>
+    expect(new TextDecoder('utf-8').decode(buffer)).to.contain(content)
   );
   cy.task('deleteFile', filePath);
 };
