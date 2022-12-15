@@ -54,11 +54,12 @@
   };
   let docURL = docURLBase;
   let activeTabID = 'code';
+  let docKey = '';
   stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
     activeTabID = editorMode;
     const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
     if (codeTypeMatch && codeTypeMatch.length > 1) {
-      const docKey = codeTypeMatch[1];
+      docKey = codeTypeMatch[1];
       const docConfig = docMap[docKey] ?? { code: '' };
       docURL = docURLBase + (docConfig[editorMode] ?? docConfig.code ?? '');
     }
@@ -133,7 +134,9 @@
               on:click={syncDiagram}><i class="fas fa-sync" /></button>
           {/if}
 
-          <button class="btn btn-secondary btn-xs" title="View documentation">
+          <button
+            class="btn btn-secondary btn-xs"
+            title="View documentation for {docKey.replace('Diagram', '')} diagram">
             <a target="_blank" rel="noreferrer" href={docURL} data-cy="docs">
               <i class="fas fa-book mr-1" />Docs
             </a>

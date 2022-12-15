@@ -4,6 +4,7 @@ on:
     branches-ignore:
       - 'develop'
       - 'master'
+      - 'renovate/*'
 jobs:
   build:
     runs-on: ubuntu-latest
