@@ -29,9 +29,9 @@
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.0",
     "@types/uuid": "8.3.4",
-    "@typescript-eslint/eslint-plugin": "5.46.1",
-    "@typescript-eslint/parser": "5.46.1",
-    "@vitest/ui": "^0.25.3",
+    "@typescript-eslint/eslint-plugin": "5.47.1",
+    "@typescript-eslint/parser": "5.47.1",
+    "@vitest/ui": "^0.26.0",
     "autoprefixer": "^10.4.13",
     "c8": "7.12.0",
     "chai": "^4.3.7",
@@ -64,13 +64,13 @@
     "tslib": "^2.4.1",
     "typescript": "4.9.3",
     "vite": "^4.0.1",
-    "vitest": "^0.25.8"
+    "vitest": "^0.26.0"
   },
   "dependencies": {
     "@mermaid-js/mermaid-mindmap": "9.3.0",
     "analytics": "0.8.1",
     "analytics-plugin-plausible": "0.0.6",
-    "daisyui": "2.45.0",
+    "daisyui": "2.46.0",
     "js-base64": "3.7.3",
     "mermaid": "9.3.0",
     "moment": "2.29.4",
