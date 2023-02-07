@@ -1,47 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Online FlowChart &amp; Diagrams Editor - Mermaid Live Editor</title>
-		<meta
-			name="og:image"
-			content="https://github.com/mermaid-js/mermaid/raw/develop/img/header.png" />
-		<link rel="canonical" href="https://mermaid.live" />
-		<meta
-			name="description"
-			content="Simplify documentation and avoid heavy tools. Open source Visio Alternative. Commonly used for explaining your code! Mermaid is a simple markdown-like script language for generating charts from text via javascript." />
-		<link rel="icon" type="image/png" href="/favicon.png" />
-		<link rel="manifest" href="/manifest.json" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.min.css"
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer" />
-		<script>
-			var require = {
-				paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs' }
-			};
-		</script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/loader.min.js"
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.nls.min.js"
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.js"
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"></script>
-
-		%svelte.head%
-	</head>
-	<body>
-		<div id="svelte">%svelte.body%</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Online FlowChart &amp; Diagrams Editor - Mermaid Live Editor</title>
+    <meta
+      name="og:image"
+      content="https://github.com/mermaid-js/mermaid/raw/develop/img/header.png" />
+    <link rel="canonical" href="https://mermaid.live" />
+    <meta
+      name="description"
+      content="Simplify documentation and avoid heavy tools. Open source Visio Alternative. Commonly used for explaining your code! Mermaid is a simple markdown-like script language for generating charts from text via javascript." />
+    <link rel="icon" type="image/png" href="%sveltekit.assets%/favicon.svg" />
+    <link rel="mask-icon" href="%sveltekit.assets%/favicon.svg" color="#000000" />
+    <meta name="theme-color" content="#6366F1" />
+    <link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.min.css"
+      integrity="sha512-GzcoZD7y5zvBofYtImXPZaPVhoY7xLPt+ysmbPb/vU+quSKFkcngxaSrxuwprDZL4MALUqGFmnqCxQZqMozv1Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <script>
+      var require = {
+        paths: {
+          vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs'
+        }
+      };
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"
+      integrity="sha512-6bIYsGqvLpAiEBXPdRQeFf5cueeBECtAKJjIHer3BhBZNTV3WLcLA8Tm3pDfxUwTMIS+kAZwTUvJ1IrMdX8C5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.nls.min.js"
+      integrity="sha512-CCv+DKWw+yZhxf4Z+ExT6HC5G+3S45TeMTYcJyYbdrv4BpK2vyALJ4FoVR/KGWDIPu7w4tNCOC9MJQIkYPR5FA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.js"
+      integrity="sha512-BtSZPhzoyN8kq1axY6cgOFPSgLJgFwvAZ3WxeDGxEFXeFcFuK2s7Hr+zF75npVHASUY1dxudAfIVzwmgdR89Bw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    %sveltekit.head%
+  </head>
+  <body>
+    <div id="svelte">%sveltekit.body%</div>
+  </body>
 </html>

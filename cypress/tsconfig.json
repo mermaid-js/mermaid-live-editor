@@ -1,7 +1,7 @@
 {
-	"compilerOptions": {
-		"allowJs": true,
-		"types": ["cypress", "cypress-localstorage-commands"]
-	},
-	"include": ["**/*.ts"]
+  "compilerOptions": {
+    "allowJs": true,
+    "types": ["cypress", "cypress-localstorage-commands", "cy-verify-downloads", "node"]
+  },
+  "include": ["**/*.ts"]
 }

@@ -1,28 +1,30 @@
-import { writable, get, derived } from 'svelte/store';
-import type { Readable } from 'svelte/store';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
-import type { State } from '$lib/types';
-import { saveStatistics } from './stats';
+import { writable, get, type Readable, derived } from 'svelte/store';
+import { persist, localStorage } from './persist';
+import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
+import { cmdKey, errorDebug } from './util';
+import { parse } from './mermaid';
+
+import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
+import type { MermaidConfig } from 'mermaid';
 
 export const defaultState: State = {
-	code: `flowchart TD
+  code: `flowchart TD
     A[Christmas] -->|Get money| B(Go shopping)
     B --> C{Let me think}
     C -->|One| D[Laptop]
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]
   `,
-	mermaid: JSON.stringify(
-		{
-			theme: 'default'
-		},
-		null,
-		2
-	),
-	updateEditor: false,
-	autoSync: true,
-	updateDiagram: true
+  mermaid: JSON.stringify(
+    {
+      theme: 'default'
+    },
+    null,
+    2
+  ),
+  autoSync: true,
+  updateDiagram: true
 };
 
 const urlParseFailedState = `flowchart TD
@@ -36,90 +38,167 @@ const urlParseFailedState = `flowchart TD
     G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
-export const codeStore = persist(writable(defaultState), localStorage(), 'codeStore');
-export const serializedState: Readable<string> = derived([codeStore], ([code], set) => {
-	set(serializeState(code));
-});
+// inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
+export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
 
-export const loadState = (data: string): void => {
-	let state: State;
-	console.log('Loading', data);
-	try {
-		state = deserializeState(data);
-		const mermaidConfig: { [key: string]: string } =
-			typeof state.mermaid === 'string' ? JSON.parse(state.mermaid) : state.mermaid;
-		if (
-			mermaidConfig.securityLevel &&
-			mermaidConfig.securityLevel !== 'strict' &&
-			confirm(
-				`Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
-			)
-		) {
-			delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
-		}
+export const currentState: ValidatedState = (() => {
+  const state = get(inputStateStore);
+  return {
+    ...state,
+    serialized: serializeState(state),
+    errorMarkers: [],
+    error: undefined,
+    editorMode: state.editorMode ?? 'code'
+  };
+})();
 
-		state.mermaid = JSON.stringify(mermaidConfig, null, 2);
-	} catch (e) {
-		state = get(codeStore);
-		if (data) {
-			console.error('Init error', e);
-			state.code = urlParseFailedState;
-		}
-	}
-	updateCodeStore({ ...state, updateEditor: true });
+const processState = async (state: State) => {
+  const processed: ValidatedState = {
+    ...state,
+    serialized: '',
+    errorMarkers: [],
+    error: undefined,
+    editorMode: state.editorMode ?? 'code'
+  };
+  // No changes should be done to fields part of `state`.
+  try {
+    processed.serialized = serializeState(state);
+    await parse(state.code);
+    JSON.parse(state.mermaid);
+  } catch (e) {
+    processed.error = e as Error;
+    errorDebug();
+    console.error(e);
+    if ('hash' in e) {
+      try {
+        const {
+          loc: { first_line, last_line, first_column, last_column }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        } = e.hash as ErrorHash;
+        const marker: MarkerData = {
+          severity: 8, // Error
+          startLineNumber: first_line,
+          startColumn: first_column,
+          endLineNumber: last_line,
+          endColumn: last_column + 1,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+          message: e.str
+        };
+        processed.errorMarkers = [marker];
+      } catch (err) {
+        console.error('Error without line helper', err);
+      }
+    }
+  }
+  return processed;
 };
 
-export const updateCodeStore = (newState: State): void => {
-	codeStore.update((state) => {
-		return { ...state, ...newState };
-	});
+// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
+export const stateStore: Readable<ValidatedState> = derived(
+  [inputStateStore],
+  ([state], set) => {
+    void processState(state).then(set);
+  },
+  currentState
+);
+
+export const loadState = (data: string): void => {
+  let state: State;
+  console.log(`Loading '${data}'`);
+  try {
+    state = deserializeState(data);
+    const mermaidConfig: MermaidConfig =
+      typeof state.mermaid === 'string'
+        ? (JSON.parse(state.mermaid) as MermaidConfig)
+        : state.mermaid;
+    if (
+      mermaidConfig.securityLevel &&
+      mermaidConfig.securityLevel !== 'strict' &&
+      confirm(
+        `Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+      )
+    ) {
+      delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
+    }
+    state.mermaid = JSON.stringify(mermaidConfig, null, 2);
+  } catch (e) {
+    state = get(inputStateStore);
+    if (data) {
+      console.error('Init error', e);
+      state.code = urlParseFailedState;
+      state.mermaid = defaultState.mermaid;
+    }
+  }
+  updateCodeStore(state);
+};
+
+export const updateCodeStore = (newState: Partial<State>): void => {
+  inputStateStore.update((state) => {
+    return { ...state, ...newState };
+  });
 };
 
 let prompted = false;
-export const updateCode = (code: string, updateEditor: boolean, updateDiagram = false): void => {
-	saveStatistics(code);
-	const lines = (code.match(/\n/g) || '').length + 1;
+export const updateCode = (
+  code: string,
+  {
+    updateDiagram = false,
+    resetPanZoom = false
+  }: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
+): void => {
+  console.log('updateCode', code);
+  const lines = countLines(code);
+  saveStatistics(code);
+  errorDebug();
+  if (lines > 50 && !prompted && get(stateStore).autoSync) {
+    const turnOff = confirm(
+      `Long diagram detected. Turn off Auto Sync? Use ${cmdKey} + Enter or click the sync logo to manually sync.`
+    );
+    prompted = true;
+    if (turnOff) {
+      updateCodeStore({
+        autoSync: false
+      });
+    }
+  }
 
-	if (lines > 50 && !prompted && get(codeStore).autoSync) {
-		const turnOff = confirm(
-			'Long diagram detected. Turn off Auto Sync? Click the sync logo to manually sync.'
-		);
-		prompted = true;
-		if (turnOff) {
-			updateCodeStore({
-				autoSync: false
-			} as State);
-		}
-	}
-
-	codeStore.update((state) => {
-		return { ...state, code, updateEditor, updateDiagram };
-	});
+  inputStateStore.update((state) => {
+    if (resetPanZoom) {
+      state.pan = undefined;
+      state.zoom = undefined;
+    }
+    return { ...state, code, updateDiagram };
+  });
 };
 
-export const updateConfig = (config: string, updateEditor: boolean): void => {
-	codeStore.update((state) => {
-		return { ...state, mermaid: config, updateEditor };
-	});
+export const updateConfig = (config: string): void => {
+  console.log('updateConfig', config);
+  inputStateStore.update((state) => {
+    return { ...state, mermaid: config };
+  });
 };
 
 export const toggleDarkTheme = (dark: boolean): void => {
-	codeStore.update((state) => {
-		const config = JSON.parse(state.mermaid);
-		if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-			config.theme = dark ? 'dark' : 'default';
-		}
+  inputStateStore.update((state) => {
+    const config = JSON.parse(state.mermaid) as MermaidConfig;
+    if (!config.theme || ['dark', 'default'].includes(config.theme)) {
+      config.theme = dark ? 'dark' : 'default';
+    }
 
-		return { ...state, mermaid: JSON.stringify(config, null, 2), updateEditor: true };
-	});
+    return { ...state, mermaid: JSON.stringify(config, null, 2) };
+  });
 };
 
+let urlDebounce: number;
 export const initURLSubscription = (): void => {
-	serializedState.subscribe((state: string) => {
-		history.replaceState(undefined, undefined, `#${state}`);
-	});
+  stateStore.subscribe(({ serialized }) => {
+    clearTimeout(urlDebounce);
+    urlDebounce = window.setTimeout(() => {
+      history.replaceState(undefined, '', `#${serialized}`);
+    }, 250);
+  });
 };
 
 export const getStateString = (): string => {
-	return JSON.stringify(get(codeStore));
+  return JSON.stringify(get(inputStateStore));
 };

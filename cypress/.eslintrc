@@ -1,12 +1,10 @@
 {
-	"plugins": ["cypress", "mocha"],
-	"extends": ["plugin:cypress/recommended", "plugin:mocha/recommended"],
-	"rules": {
-		"jest/expect-expect": "off",
-		"mocha/no-mocha-arrows": "off"
-	},
-	"env": {
-		"cypress/globals": true,
-		"mocha": true
-	}
+  "plugins": ["cypress"],
+  "extends": ["plugin:cypress/recommended"],
+  "rules": {
+    "jest/expect-expect": "off"
+  },
+  "env": {
+    "cypress/globals": true
+  }
 }

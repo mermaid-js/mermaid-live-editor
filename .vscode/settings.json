@@ -1,4 +1,9 @@
 {
-	"editor.formatOnSave": true,
-	"cSpell.words": ["pako", "Serde", "serdes"]
+  "editor.formatOnSave": true,
+  "cSpell.words": ["asyncable", "KROKI", "mindmap", "pako", "Serde", "serdes", "tailwindcss"],
+  "vitest.commandLine": "yarn test:unit",
+  "vitest.enable": true,
+  "testing.autoRun.mode": "rerun",
+  "svelte.enable-ts-plugin": true,
+  "githubPullRequests.ignoredPullRequestBranches": ["develop"]
 }
