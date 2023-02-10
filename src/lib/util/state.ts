@@ -2,7 +2,7 @@ import { writable, get, type Readable, derived } from 'svelte/store';
 import { persist, localStorage } from './persist';
 import { saveStatistics, countLines } from './stats';
 import { serializeState, deserializeState } from './serde';
-import { cmdKey, errorDebug } from './util';
+import { cmdKey, errorDebug, formatJSON } from './util';
 import { parse } from './mermaid';
 
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
@@ -16,13 +16,9 @@ export const defaultState: State = {
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]
   `,
-  mermaid: JSON.stringify(
-    {
-      theme: 'default'
-    },
-    null,
-    2
-  ),
+  mermaid: formatJSON({
+    theme: 'default'
+  }),
   autoSync: true,
   updateDiagram: true
 };
@@ -65,16 +61,16 @@ const processState = async (state: State) => {
     processed.serialized = serializeState(state);
     await parse(state.code);
     JSON.parse(state.mermaid);
-  } catch (e) {
-    processed.error = e as Error;
+  } catch (error) {
+    processed.error = error as Error;
     errorDebug();
-    console.error(e);
-    if ('hash' in e) {
+    console.error(error);
+    if ('hash' in error) {
       try {
         const {
           loc: { first_line, last_line, first_column, last_column }
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        } = e.hash as ErrorHash;
+        } = error.hash as ErrorHash;
         const marker: MarkerData = {
           severity: 8, // Error
           startLineNumber: first_line,
@@ -82,11 +78,11 @@ const processState = async (state: State) => {
           endLineNumber: last_line,
           endColumn: last_column + 1,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-          message: e.str
+          message: error.str
         };
         processed.errorMarkers = [marker];
-      } catch (err) {
-        console.error('Error without line helper', err);
+      } catch (error) {
+        console.error('Error without line helper', error);
       }
     }
   }
@@ -120,11 +116,11 @@ export const loadState = (data: string): void => {
     ) {
       delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
     }
-    state.mermaid = JSON.stringify(mermaidConfig, null, 2);
-  } catch (e) {
+    state.mermaid = formatJSON(mermaidConfig);
+  } catch (error) {
     state = get(inputStateStore);
     if (data) {
-      console.error('Init error', e);
+      console.error('Init error', error);
       state.code = urlParseFailedState;
       state.mermaid = defaultState.mermaid;
     }
@@ -185,7 +181,7 @@ export const toggleDarkTheme = (dark: boolean): void => {
       config.theme = dark ? 'dark' : 'default';
     }
 
-    return { ...state, mermaid: JSON.stringify(config, null, 2) };
+    return { ...state, mermaid: formatJSON(config) };
   });
 };
 

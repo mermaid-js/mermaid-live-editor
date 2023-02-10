@@ -26,19 +26,27 @@ const manualHistoryStore: Writable<HistoryEntry[]> = persist(
   'manualHistoryStore'
 );
 
-export const loaderHistoryStore: Writable<HistoryEntry[]> = writable([] as HistoryEntry[]);
+export const loaderHistoryStore: Writable<HistoryEntry[]> = writable([]);
 
 export const historyStore: Readable<HistoryEntry[]> = derived(
   [historyModeStore, autoHistoryStore, manualHistoryStore, loaderHistoryStore],
   ([historyMode, autoHistories, manualHistories, loadedHistories], set) => {
-    if (historyMode === 'auto') {
-      set(autoHistories);
-    } else if (historyMode === 'manual') {
-      set(manualHistories);
-    } else if (historyMode === 'loader') {
-      set(loadedHistories);
-    } else {
-      set(autoHistories);
+    switch (historyMode) {
+      case 'auto': {
+        set(autoHistories);
+        break;
+      }
+      case 'manual': {
+        set(manualHistories);
+        break;
+      }
+      case 'loader': {
+        set(loadedHistories);
+        break;
+      }
+      default: {
+        set(autoHistories);
+      }
     }
   }
 );
@@ -90,7 +98,7 @@ export const getPreviousState = (auto: boolean): string => {
 };
 
 export const restoreHistory = (data: HistoryEntry[]) => {
-  const entries = data.filter(validateEntry);
+  const entries = data.filter((element) => validateEntry(element));
   const invalidEntryCount = data.length - entries.length;
   if (invalidEntryCount > 0) {
     console.error(`${invalidEntryCount} invalid history entries were removed.`);
@@ -122,20 +130,23 @@ export const restoreHistory = (data: HistoryEntry[]) => {
     alert('No valid entries found.');
   }
 };
+const setIDs = (entries: HistoryEntry[]) => {
+  for (const entry of entries) {
+    if (!entry.id) {
+      entry.id = uuidV4();
+    }
+  }
+  return entries;
+};
 
 export const injectHistoryIDs = (): void => {
-  const setIDs = (entries: HistoryEntry[]) => {
-    for (const entry of entries) {
-      if (!entry.id) {
-        entry.id = uuidV4();
-      }
-    }
-    return entries;
-  };
   autoHistoryStore.update(setIDs);
   manualHistoryStore.update(setIDs);
 };
 
 const validateEntry = (entry: HistoryEntry): boolean => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return entry.type && entry.state && entry.time && true;
 };

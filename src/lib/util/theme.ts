@@ -16,7 +16,7 @@ export const themeStore: Writable<ThemeConfig> = persist(
   'themeStore'
 );
 
-const darkThemes = [
+const darkThemes = new Set([
   'dark',
   'synthwave',
   'halloween',
@@ -25,13 +25,13 @@ const darkThemes = [
   'luxury',
   'black',
   'dracula'
-];
+]);
 
 export const setTheme = (theme: string): void => {
   if (theme.includes(' ')) {
     theme = theme.split(' ')[1].trim();
   }
-  const isDark = darkThemes.includes(theme);
+  const isDark = darkThemes.has(theme);
   console.log('Setting theme', theme);
   themeStore.set({ theme, isDark });
   logEvent('themeChange', { theme, isDark });

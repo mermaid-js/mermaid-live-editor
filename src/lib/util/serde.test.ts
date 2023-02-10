@@ -3,14 +3,14 @@ import { serializeState, deserializeState, type SerdeType } from './serde';
 import { defaultState } from './state';
 import type { State } from '$lib/types';
 
-describe('Serde tests', () => {
-  const verifySerde = (state: State, serde?: SerdeType): string => {
-    const serialized = serializeState(state, serde);
-    const deserialized = deserializeState(serialized);
-    expect(deserialized).to.deep.equal(state);
-    return serialized;
-  };
+const verifySerde = (state: State, serde?: SerdeType): string => {
+  const serialized = serializeState(state, serde);
+  const deserialized = deserializeState(serialized);
+  expect(deserialized).to.deep.equal(state);
+  return serialized;
+};
 
+describe('Serde tests', () => {
   it('should serialize and deserialize with default serde', () => {
     expect(verifySerde(defaultState)).toMatchInlineSnapshot(
       '"pako:eNpVjk2Lg0AMhv9KyGkL9Q94WGh1t5fCFurN6SFo7AztfDBGpKj_fcd62c0pvM_zhkzY-JYxx-7px0ZTFKhK5SDNoS50NL1Y6m-QZZ_ziQWsd_ya4fhx8tBrH4Jx993mH1cJium8agyijXssGyre_R_HM5T1mYL4cPtLqtHP8FWbi07n_xMdObW-647yjrKGIhQU3wru0XK0ZNr0_rQmCkWzZYV5WlvuaHiKQuWWpNIg_vpyDeYSB97jEFoSLg3dI9ktXH4B_cJWqw"'
