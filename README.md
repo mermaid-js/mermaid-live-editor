@@ -47,17 +47,20 @@ Then open http://localhost:8000
 
 ## Setup
 
-[Volta](https://volta.sh) is used for managing node and yarn versions.
+Below link will help you making a copy of the repository in your local system.
 
-This project is set up using [Yarn](https://classic.yarnpkg.com/en/docs/getting-started):
+https://docs.github.com/en/get-started/quickstart/fork-a-repo
 
-```
-yarn install
-```
+## Requirements
+
+- [volta](https://volta.sh/) to manage node versions.
+- [Node.js](https://nodejs.org/en/). `volta install node`
+- [yarn](https://yarnpkg.com/) package manager. `volta install yarn`
 
 ## Development
 
-```
+```sh
+yarn install
 yarn dev -- --open
 ```
 

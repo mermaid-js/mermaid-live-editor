@@ -17,11 +17,11 @@
   const links: Link[] = [
     {
       title: 'Documentation',
-      href: 'https://mermaid-js.github.io/mermaid/#/n00b-gettingStarted'
+      href: 'https://mermaid-js.github.io/mermaid/intro/n00b-gettingStarted.html'
     },
     {
       title: 'Tutorial',
-      href: 'https://github.com/mermaid-js/mermaid/blob/develop/docs/Tutorials.md'
+      href: 'https://mermaid-js.github.io/mermaid/config/Tutorials.html'
     },
     {
       title: 'Mermaid',
