@@ -1,6 +1,16 @@
 {
   "editor.formatOnSave": true,
-  "cSpell.words": ["asyncable", "KROKI", "mindmap", "pako", "Serde", "serdes", "tailwindcss"],
+  "cSpell.words": [
+    "asyncable",
+    "Browserslist",
+    "corg",
+    "KROKI",
+    "mindmap",
+    "pako",
+    "Serde",
+    "serdes",
+    "tailwindcss"
+  ],
   "vitest.commandLine": "yarn test:unit",
   "vitest.enable": true,
   "testing.autoRun.mode": "rerun",
