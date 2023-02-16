@@ -122,7 +122,7 @@
         pzoom.resize();
       }
     });
-    console.log('View mounted');
+    // console.log('View mounted');
   });
 </script>
 

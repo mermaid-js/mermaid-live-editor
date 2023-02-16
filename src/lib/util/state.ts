@@ -146,7 +146,7 @@ export const updateCode = (
     resetPanZoom = false
   }: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
 ): void => {
-  console.log('updateCode', code);
+  // console.log('updateCode', code);
   const lines = countLines(code);
   saveStatistics(code);
   errorDebug();
@@ -172,7 +172,7 @@ export const updateCode = (
 };
 
 export const updateConfig = (config: string): void => {
-  console.log('updateConfig', config);
+  // console.log('updateConfig', config);
   inputStateStore.update((state) => {
     return { ...state, mermaid: config };
   });
