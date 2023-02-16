@@ -20,8 +20,8 @@ export const initAnalytics = async (): Promise<void> => {
           })
         ]
       });
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
       console.info('Analytics blocked ;)');
     }
   }
@@ -87,10 +87,10 @@ export const logEvent = (name: AnalyticsEvent, data?: unknown): void => {
     return;
   }
   const key = data ? JSON.stringify({ name, data }) : name;
-  if (!timeouts.has(key)) {
-    void analytics.track(name, data);
-  } else {
+  if (timeouts.has(key)) {
     clearTimeout(timeouts.get(key));
+  } else {
+    void analytics.track(name, data);
   }
   timeouts.set(
     key,

@@ -1,15 +1,17 @@
 {
   "editor.formatOnSave": true,
   "cSpell.words": [
+    "Browserslist",
+    "KROKI",
+    "Serde",
     "asyncable",
+    "corg",
     "cssnano",
     "daisyui",
     "esserializer",
-    "KROKI",
     "localstorage",
     "mindmap",
     "pako",
-    "Serde",
     "serdes",
     "tailwindcss"
   ],

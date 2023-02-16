@@ -70,13 +70,13 @@ const deserialize = (value?: string | null): unknown => {
   if (value !== null && value !== undefined) {
     try {
       return ESSerializer.deserialize(value);
-    } catch (e) {
+    } catch {
       // Do nothing
       // use the value "as is"
     }
     try {
       return JSON.parse(value);
-    } catch (e) {
+    } catch {
       // Do nothing
       // use the value "as is"
     }
@@ -179,11 +179,9 @@ function getBrowserStorage(
   const listenerFunction = (event: StorageEvent) => {
     const eventKey = event.key;
     if (event.storageArea === browserStorage) {
-      listeners
-        .filter(({ key }) => key === eventKey)
-        .forEach(({ listener }) => {
-          listener(deserialize(event.newValue));
-        });
+      for (const { listener } of listeners.filter(({ key }) => key === eventKey)) {
+        listener(deserialize(event.newValue));
+      }
     }
   };
   const connect = () => {

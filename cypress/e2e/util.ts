@@ -37,7 +37,7 @@ export const verifyFileSnapshot = (
   cy.readFile(filePath, null, {
     log: false
   }).then((buffer: ArrayBuffer) =>
-    expect(new TextDecoder('utf-8').decode(buffer)).to.contain(content)
+    expect(new TextDecoder('utf8').decode(buffer)).to.contain(content)
   );
   cy.task('deleteFile', filePath);
 };

@@ -4,7 +4,7 @@
   import { logEvent } from '$lib/util/stats';
 
   const samples = {
-    Flow: `graph TD
+    Flow: `flowchart TD
     A[Christmas] -->|Get money| B(Go shopping)
     B --> C{Let me think}
     C -->|One| D[Laptop]

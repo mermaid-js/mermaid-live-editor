@@ -6,9 +6,18 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:@typescript-eslint/strict',
+    'plugin:unicorn/recommended',
     'prettier'
   ],
-  plugins: ['svelte3', 'tailwindcss', '@typescript-eslint', 'es', 'vitest', 'no-only-tests'],
+  plugins: [
+    'svelte3',
+    'tailwindcss',
+    '@typescript-eslint',
+    'es',
+    'vitest',
+    'no-only-tests',
+    'unicorn'
+  ],
   ignorePatterns: [
     'docs/*',
     '*.cjs',
@@ -59,6 +68,33 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'off',
     'es/no-regexp-lookbehind-assertions': 'error',
     curly: ['error', 'all'],
-    'no-only-tests/no-only-tests': 'error'
+    'no-only-tests/no-only-tests': 'error',
+    'unicorn/no-null': 'off',
+    'unicorn/filename-case': [
+      'error',
+      {
+        case: 'camelCase'
+      }
+    ],
+    'unicorn/prevent-abbreviations': [
+      'error',
+      {
+        allowList: {
+          ctx: true,
+          db: true,
+          doc: true,
+          env: true,
+          fn: true,
+          i: true,
+          param: true,
+          req: true,
+          res: true,
+          str: true,
+          searchParams: true,
+          temp: true,
+          ImportMetaEnv: true
+        }
+      }
+    ]
   }
 };

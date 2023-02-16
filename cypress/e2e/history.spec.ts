@@ -84,15 +84,15 @@ describe('Save History', () => {
   // TODO: Fix #639
   xit('should auto save history', () => {
     getEditor().type('  C --> HistoryTest');
-    cy.tick(70000);
+    cy.tick(70_000);
     cy.contains('Timeline').click();
     cy.get('#historyList').find('li').should('have.length', 1);
     cy.get('#editor').type('ing');
-    cy.tick(70000);
+    cy.tick(70_000);
     cy.get('#historyList').find('li').should('have.length', 2);
     for (let i = 0; i < 31; i++) {
       cy.get('#editor').type('.');
-      cy.tick(70000);
+      cy.tick(70_000);
     }
     cy.get('#historyList').find('li').should('have.length', 30);
   });
