@@ -38,3 +38,13 @@ export const errorDebug = (limit = 100) => {
     debugger;
   }
 };
+
+export const formatJSON = (data: unknown): string => JSON.stringify(data, undefined, 2);
+export const fetchJSON = async <T>(url: string): Promise<T> => {
+  const res = await fetch(url);
+  return res.json() as T;
+};
+export const fetchText = async (url: string): Promise<string> => {
+  const res = await fetch(url);
+  return res.text();
+};

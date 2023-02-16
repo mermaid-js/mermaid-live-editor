@@ -5,6 +5,7 @@
 import type { State } from '$lib/types';
 import { defaultState } from '$lib/util/state';
 import { addHistoryEntry } from '$lib/components/History/history';
+import { fetchJSON, fetchText } from '$lib/util/util';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
@@ -21,7 +22,7 @@ const isValidGist = (files: any): boolean => {
 
 const getFileContent = async (file: GithubFile): Promise<string> => {
   if (file.truncated) {
-    return await (await fetch(file.raw_url)).text();
+    return await fetchText(file.raw_url);
   }
   return file.content;
 };
@@ -49,9 +50,9 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, gistID, revisionID] = path.split('/');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { html_url, files, history }: GistResponse = await (
-    await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
-  ).json();
+  const { html_url, files, history }: GistResponse = await fetchJSON(
+    `https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`
+  );
   if (isValidGist(files)) {
     const code = await getFileContent(files[codeFileName]);
     let config = '{}';
@@ -96,12 +97,12 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, gistID, revisionID] = path.split('/');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { history }: GistResponse = await (
-    await fetch(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
-  ).json();
+  const { history }: GistResponse = await fetchJSON(
+    `https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`
+  );
   const gistHistory: GistData[] = [];
   for (const entry of history) {
-    const data: GistData | undefined = await getGistData(entry.url).catch(() => undefined);
+    const data: GistData | undefined = await getGistData(entry.url).catch();
     data && gistHistory.push(data);
   }
   if (gistHistory.length === 0) {
