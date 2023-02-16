@@ -87,7 +87,7 @@
             if (svgCode.length > 0) {
               handlePanZoom(state);
               container.innerHTML = svgCode;
-              // console.log(container.innerHTML);
+              console.log({ svgCode });
               const graphDiv = document.getElementById('graph-div');
               if (!graphDiv) {
                 throw new Error('graph-div not found');
@@ -133,7 +133,7 @@
       : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-center"
     id="errorContainer">
     {#if error}
-      {@html $stateStore.error.toString().replace(/\n/g, '<br />')}
+      {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
     {:else}
       Diagram out of sync. <br />
       Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
