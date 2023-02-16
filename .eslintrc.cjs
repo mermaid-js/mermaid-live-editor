@@ -16,7 +16,7 @@ module.exports = {
     'es',
     'vitest',
     'no-only-tests',
-    'unicorn'
+    'unicorn',
   ],
   ignorePatterns: [
     'docs/*',
@@ -25,6 +25,7 @@ module.exports = {
     '*.md',
     'snapshots.js',
     'svelte.config.js',
+    'src-tauri/tauri.conf.json',
     'renovate.json',
     'package.json',
     'tsconfig.json'
@@ -55,7 +56,8 @@ module.exports = {
   },
   env: {
     browser: true,
-    es2020: true
+    es2020: true,
+    node: true
   },
   rules: {
     '@typescript-eslint/ban-ts-comment': [
