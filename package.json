@@ -67,7 +67,6 @@
     "vitest": "^0.28.0"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-mindmap": "9.3.0",
     "analytics": "0.8.1",
     "analytics-plugin-plausible": "0.0.6",
     "daisyui": "2.49.0",
