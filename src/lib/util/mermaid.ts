@@ -1,16 +1,16 @@
-import mermaid, { type MermaidConfig } from 'mermaid';
+import mermaid from 'mermaid';
+import type { MermaidConfig, RenderResult } from 'mermaid';
 
 export const render = async (
   config: MermaidConfig,
   code: string,
-  id: string,
-  callback: Parameters<typeof mermaid.render>[2]
-): Promise<void> => {
+  id: string
+): Promise<RenderResult> => {
   // Should be able to call this multiple times without any issues.
   mermaid.initialize(config);
-  await mermaid.mermaidAPI.renderAsync(id, code, callback);
+  return await mermaid.render(id, code);
 };
 
-export const parse = async (code: string): Promise<boolean> => {
-  return await mermaid.parseAsync(code);
+export const parse = async (code: string): Promise<unknown> => {
+  return await mermaid.parse(code);
 };
