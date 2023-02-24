@@ -21,7 +21,10 @@ export const verifyFileSizeGreaterThan = (
   cy.verifyDownload(fileName);
   cy.readFile(filePath, null, {
     log: false
-  }).then((buffer: ArrayBuffer) => expect(buffer.byteLength).to.be.gt(size));
+  }).then((buffer: ArrayBuffer) => {
+    expect(buffer.byteLength).to.be.gt(size);
+    expect(buffer.byteLength).to.be.lt(size * 1.3);
+  });
   cy.task('deleteFile', filePath);
 };
 

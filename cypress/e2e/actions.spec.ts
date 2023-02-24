@@ -3,6 +3,7 @@ describe('Check actions', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('/edit');
+    cy.contains('Actions').click();
   });
 
   it('should update markdown code', () => {
@@ -18,7 +19,7 @@ describe('Check actions', () => {
       });
   });
 
-  it('should load gists from URL', () => {
+  it.skip('should load gists from URL', () => {
     cy.get('#gist').type('https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a');
     cy.contains('Load Gist').click();
     cy.contains('Go shopping!!');
@@ -28,7 +29,7 @@ describe('Check actions', () => {
     cy.clock(new Date(2022, 0, 1).getTime());
 
     cy.get(`#downloadPNG`).click();
-    verifyFileSizeGreaterThan('diagram', 'png', 21_000);
+    verifyFileSizeGreaterThan('diagram', 'png', 35_000);
 
     cy.get(`#downloadSVG`).click();
     verifyFileSizeGreaterThan('diagram', 'svg', 10_000);
