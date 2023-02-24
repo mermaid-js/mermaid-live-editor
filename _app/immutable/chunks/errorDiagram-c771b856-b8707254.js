@@ -1,0 +1,1 @@
+import{r}from"./errorRenderer-11917bdc-277af2cf.js";import"./transform-12111574.js";import"./utils-3cbdbddf-b0df7f51.js";const e=()=>"",t=e,p={db:{clear:()=>{}},styles:t,renderer:r,parser:{parser:{yy:{}},parse:()=>{}},init:()=>{}};export{p as diagram};
