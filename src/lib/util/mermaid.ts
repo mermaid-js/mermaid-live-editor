@@ -1,27 +1,16 @@
-import mermaid, { type MermaidConfig } from 'mermaid';
-import mindmap from '@mermaid-js/mermaid-mindmap';
-
-const initialize = mermaid.registerExternalDiagrams([mindmap]);
-
-export const init = async () => {
-  await initialize;
-};
+import mermaid from 'mermaid';
+import type { MermaidConfig, RenderResult } from 'mermaid';
 
 export const render = async (
   config: MermaidConfig,
   code: string,
-  id: string,
-  callback: Parameters<typeof mermaid.render>[2]
-): Promise<void> => {
+  id: string
+): Promise<RenderResult> => {
   // Should be able to call this multiple times without any issues.
   mermaid.initialize(config);
-  // console.log('Rendering', code);
-  // mermaid.mermaidAPI.render(id, code, callback);
-  await init();
-  await mermaid.mermaidAPI.renderAsync(id, code, callback);
+  return await mermaid.render(id, code);
 };
 
-export const parse = async (code: string): Promise<boolean> => {
-  await init();
-  return await mermaid.parseAsync(code);
+export const parse = async (code: string): Promise<unknown> => {
+  return await mermaid.parse(code);
 };

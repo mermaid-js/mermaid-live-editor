@@ -6,7 +6,6 @@ describe('Save History', () => {
     cy.clearLocalStorage();
     cy.visit('/edit');
 
-    cy.contains('Actions').click();
     cy.contains('History').click();
   });
 
@@ -24,7 +23,6 @@ describe('Save History', () => {
       '[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"auto","id":"69ea820e-522b-4a44-86cf-fd58acde09df","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"x749ffc6-21dd-418a-b984-7c1ffc3146b3","name":"needy-mosquito"}]'
     );
     cy.reload();
-    cy.contains('Actions').click();
     cy.contains('History').click();
     cy.get('#historyList').find('li').should('have.length', 2);
     cy.get('#historyList').find('No items in History').should('not.exist');

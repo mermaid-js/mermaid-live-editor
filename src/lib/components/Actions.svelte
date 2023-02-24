@@ -6,13 +6,13 @@
   import { stateStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { toBase64 } from 'js-base64';
-  import moment from 'moment';
+  import dayjs from 'dayjs';
   const { krokiRendererUrl, rendererUrl } = env;
 
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
   const getFileName = (ext: string) =>
-    `mermaid-diagram-${moment().format('YYYY-MM-DD-HHmmss')}.${ext}`;
+    `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${ext}`;
 
   const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
     height && svg?.setAttribute('height', `${height}px`);
@@ -180,7 +180,7 @@
   });
 </script>
 
-<Card title="Actions" isOpen={true}>
+<Card title="Actions" isOpen={false}>
   <div class="flex flex-wrap gap-2 m-2">
     {#if isClipboardAvailable()}
       <button class="action-btn w-full" on:click={onCopyClipboard}

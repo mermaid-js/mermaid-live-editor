@@ -68,13 +68,12 @@
     "vitest": "^0.28.0"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-mindmap": "9.3.0",
     "analytics": "0.8.1",
     "analytics-plugin-plausible": "0.0.6",
     "daisyui": "2.50.0",
+    "dayjs": "^1.11.7",
     "js-base64": "3.7.4",
-    "mermaid": "9.3.0",
-    "moment": "2.29.4",
+    "mermaid": "10.0.0",
     "monaco-editor": "0.34.1",
     "monaco-mermaid": "1.0.8",
     "pako": "2.1.0",

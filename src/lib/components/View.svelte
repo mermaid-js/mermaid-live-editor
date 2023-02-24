@@ -79,27 +79,27 @@
         panZoomEnabled = state.panZoom;
         const scroll = view.parentElement!.scrollTop;
         delete container.dataset.processed;
-        await renderDiagram(
+        const { svg, bindFunctions } = await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
           code,
-          'graph-div',
-          (svgCode, bindFunctions) => {
-            if (svgCode.length > 0) {
-              handlePanZoom(state);
-              container.innerHTML = svgCode;
-              // console.log(container.innerHTML);
-              const graphDiv = document.getElementById('graph-div');
-              if (!graphDiv) {
-                throw new Error('graph-div not found');
-              }
-              graphDiv.setAttribute('height', '100%');
-              graphDiv.style.maxWidth = '100%';
-              if (bindFunctions) {
-                bindFunctions(graphDiv);
-              }
-            }
-          }
+          'graph-div'
         );
+
+        if (svg.length > 0) {
+          handlePanZoom(state);
+          container.innerHTML = svg;
+          console.log({ svg });
+          const graphDiv = document.getElementById('graph-div');
+          if (!graphDiv) {
+            throw new Error('graph-div not found');
+          }
+          graphDiv.setAttribute('height', '100%');
+          graphDiv.style.maxWidth = '100%';
+          if (bindFunctions) {
+            bindFunctions(graphDiv);
+          }
+        }
+
         view.parentElement!.scrollTop = scroll;
         error = false;
       } else if (manualUpdate) {
@@ -122,7 +122,7 @@
         pzoom.resize();
       }
     });
-    console.log('View mounted');
+    // console.log('View mounted');
   });
 </script>
 
@@ -133,7 +133,7 @@
       : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-center"
     id="errorContainer">
     {#if error}
-      {@html $stateStore.error.toString().replace(/\n/g, '<br />')}
+      {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
     {:else}
       Diagram out of sync. <br />
       Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
