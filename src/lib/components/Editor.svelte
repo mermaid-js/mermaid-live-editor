@@ -21,7 +21,7 @@
   let text = '';
 
   stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
-    console.log('editor store subscription', { code, mermaid });
+    // console.log('editor store subscription', { code, mermaid });
     if (!editor || !Monaco) {
       return;
     }
@@ -29,7 +29,7 @@
     // Update editor text if it's different
     const newText = editorMode === 'code' ? code : mermaid;
     if (newText !== text) {
-      console.log('updating editor text', newText);
+      // console.log('updating editor text', newText);
       editor.setValue(newText);
       text = newText;
     }
@@ -54,7 +54,7 @@
   });
 
   const handleUpdate = (text: string, mode: EditorMode) => {
-    console.log('editor HandleUpdate', { text, mode });
+    // console.log('editor HandleUpdate', { text, mode });
     if (mode === 'code') {
       updateCode(text);
     } else {
@@ -91,7 +91,7 @@
     editor = Monaco.editor.create(divEl, editorOptions);
     editor.onDidChangeModelContent(({ isFlush, changes }) => {
       const newText = editor?.getValue();
-      console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
+      // console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
       if (!newText || text === newText || isFlush) {
         return;
       }
@@ -120,9 +120,9 @@
     if (divEl.parentElement) {
       resizeObserver.observe(divEl.parentElement);
     }
-    console.log(`editor mounted`);
+    // console.log(`editor mounted`);
     return () => {
-      console.log(`editor disposed`);
+      // console.log(`editor disposed`);
       editor?.dispose();
     };
   });

@@ -13,9 +13,12 @@
   import { notify, prompt } from '$lib/util/notify';
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
-  import moment from 'moment';
+  import dayjs from 'dayjs';
+  import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
   import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
   import { logEvent } from '$lib/util/stats';
+
+  dayjs.extend(dayjsRelativeTime);
 
   const HISTORY_SAVE_INTERVAL = 60000;
 
@@ -41,7 +44,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `mermaid-history-${moment().format('YYYY-MM-DD-HHmmss')}.json`;
+    a.download = `mermaid-history-${dayjs().format('YYYY-MM-DD-HHmmss')}.json`;
     a.click();
     URL.revokeObjectURL(url);
     logEvent('history', {
@@ -95,7 +98,7 @@
 
   const relativeTime = (time: number) => {
     const t = new Date(time);
-    return `${new Date(t).toLocaleString()} (${moment(t).fromNow()})`;
+    return `${new Date(t).toLocaleString()} (${dayjs(t).fromNow()})`;
   };
 
   onMount(() => {

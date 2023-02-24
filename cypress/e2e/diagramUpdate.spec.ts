@@ -49,7 +49,7 @@ describe('Auto sync tests', () => {
   });
 
   it('supports commenting code out/in', () => {
-    getEditor().type(`{uparrow}${cmd}/`);
+    getEditor({ bottom: true, newline: false }).type(`{uparrow}${cmd}/`);
     cy.get('#view').contains('Car').should('not.exist');
 
     getEditor().type(`{uparrow}${cmd}/`);
