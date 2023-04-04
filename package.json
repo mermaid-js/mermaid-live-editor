@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "1.0.6",
-    "@sveltejs/kit": "1.5.0",
+    "@sveltejs/kit": "1.15.1",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.0",
