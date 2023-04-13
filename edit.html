@@ -50,23 +50,33 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"></script>
     <meta http-equiv="content-security-policy" content="">
-		<link rel="modulepreload" href="./_app/immutable/start-f4d312cc.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/index-e871a861.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-1f15a4a1.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/paths-b72ece5c.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper-41c905a7.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.182d2feb.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.787ce9b5.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.2194a2f6.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.dfa28cb8.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.43914ff1.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.e62ef16d.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper.41c905a7.js">
   </head>
   <body>
     <div id="svelte">
-		<script type="module" data-sveltekit-hydrate="45h">
-			import { start } from "./_app/immutable/start-f4d312cc.js";
+			<script>
+				{
+					__sveltekit_2hlyhd = {
+						env: {},
+						assets: "/mermaid-live-editor",
+						base: new URL(".", location).pathname.slice(0, -1),
+						element: document.currentScript.parentElement
+					};
 
-			start({
-				assets: "",
-				env: {},
-				target: document.querySelector('[data-sveltekit-hydrate="45h"]').parentNode,
-				version: "1678907445425"
-			});
-		</script></div>
+					Promise.all([
+						import("./_app/immutable/entry/start.182d2feb.js"),
+						import("./_app/immutable/entry/app.e62ef16d.js")
+					]).then(([kit, app]) => {
+						kit.start(app, __sveltekit_2hlyhd.element);
+					});
+				}
+			</script>
+		</div>
   </body>
 </html>
