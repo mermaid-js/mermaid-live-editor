@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "2.0.2",
-    "@sveltejs/kit": "1.15.4",
+    "@sveltejs/kit": "1.15.5",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.0",
@@ -88,7 +88,7 @@
     ]
   },
   "volta": {
-    "node": "18.14.0",
+    "node": "18.14.2",
     "yarn": "1.22.19"
   },
   "engines": {
