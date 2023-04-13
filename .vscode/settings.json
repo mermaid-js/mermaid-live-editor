@@ -1,8 +1,10 @@
 {
   "editor.formatOnSave": true,
+  "cSpell.blockCheckingWhenLineLengthGreaterThan": 150,
   "cSpell.words": [
     "asyncable",
     "Browserslist",
+    "ckppp",
     "corg",
     "cssnano",
     "daisyui",
@@ -14,7 +16,8 @@
     "pako",
     "Serde",
     "serdes",
-    "tailwindcss"
+    "tailwindcss",
+    "uparrow"
   ],
   "vitest.commandLine": "yarn test:unit",
   "vitest.enable": true,

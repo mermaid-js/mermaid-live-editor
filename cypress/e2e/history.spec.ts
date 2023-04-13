@@ -1,4 +1,4 @@
-import { getEditor, verifyFileSnapshot } from './util';
+import { typeInEditor, verifyFileSnapshot } from './util';
 
 describe('Save History', () => {
   beforeEach(() => {
@@ -51,14 +51,14 @@ describe('Save History', () => {
       expect(str).to.equal('State already saved.');
     });
     cy.on('window:confirm', () => true);
-    getEditor().type('  C --> HistoryTest');
+    typeInEditor('  C --> HistoryTest');
     cy.get('#saveHistory').click();
     cy.get('#historyList').find('li').should('have.length', 2);
   });
 
   it('should be able to restore and delete', () => {
     cy.get('#saveHistory').click();
-    getEditor().type('  C --> HistoryTest');
+    typeInEditor('  C --> HistoryTest');
     cy.get('#historyList').find('No items in History').should('not.exist');
     cy.get('#historyList').find('li').should('have.length', 1);
     cy.contains('HistoryTest');
@@ -68,7 +68,7 @@ describe('Save History', () => {
     cy.get('#historyList').find('li').should('have.length', 0);
     cy.get('#historyList').contains('No items in History');
     cy.get('#saveHistory').click();
-    getEditor().type('  C --> HistoryTest');
+    typeInEditor('  C --> HistoryTest');
     cy.get('#saveHistory').click();
     cy.get('#editor').type('ing');
     cy.get('#clearHistory').click();
@@ -81,7 +81,7 @@ describe('Save History', () => {
 
   // TODO: Fix #639
   xit('should auto save history', () => {
-    getEditor().type('  C --> HistoryTest');
+    typeInEditor('  C --> HistoryTest');
     cy.tick(70_000);
     cy.contains('Timeline').click();
     cy.get('#historyList').find('li').should('have.length', 1);
