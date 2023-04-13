@@ -1,9 +1,10 @@
-import { typeInEditor, cmd } from './util';
+import { typeInEditor, cmd, getEditor } from './util';
 
 describe('Auto sync tests', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('/');
+    cy.url().should('contain', '/edit#pako');
   });
 
   it('should dim diagram when code is edited', () => {
@@ -49,7 +50,8 @@ describe('Auto sync tests', () => {
   });
 
   it('supports commenting code out/in', () => {
-    typeInEditor(`{uparrow}${cmd}/`, { bottom: true, newline: false });
+    getEditor().contains('Car').click();
+    getEditor().get('textarea').type(`${cmd}/`);
     cy.get('#view').contains('Car').should('not.exist');
 
     typeInEditor(`{uparrow}${cmd}/`);
