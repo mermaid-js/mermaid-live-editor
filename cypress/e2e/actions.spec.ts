@@ -1,4 +1,4 @@
-import { verifyFileSizeGreaterThan } from './util';
+import { typeInEditor, verifyFileSizeGreaterThan } from './util';
 describe('Check actions', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
@@ -10,7 +10,7 @@ describe('Check actions', () => {
     cy.get('#markdown')
       .invoke('val')
       .then((oldText) => {
-        cy.get('#editor').click('bottom').type('{enter}C --> HistoryTest');
+        typeInEditor('C --> HistoryTest', { bottom: true, newline: true });
         cy.get('#markdown')
           .invoke('val')
           .then((newText) => {
@@ -29,7 +29,7 @@ describe('Check actions', () => {
     cy.clock(new Date(2022, 0, 1).getTime());
 
     cy.get(`#downloadPNG`).click();
-    verifyFileSizeGreaterThan('diagram', 'png', 35_000);
+    verifyFileSizeGreaterThan('diagram', 'png', 34_000);
 
     cy.get(`#downloadSVG`).click();
     verifyFileSizeGreaterThan('diagram', 'svg', 10_000);

@@ -6,10 +6,10 @@ export default defineConfig({
   viewportWidth: 1440,
   viewportHeight: 768,
   snapshotFileName: './cypress/snapshots.js',
-  defaultCommandTimeout: 16000,
-  requestTimeout: 16000,
+  defaultCommandTimeout: 5000,
+  requestTimeout: 5000,
   retries: {
-    runMode: 4,
+    runMode: 2,
     openMode: 0
   },
   e2e: {
