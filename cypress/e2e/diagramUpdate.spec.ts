@@ -1,4 +1,4 @@
-import { typeInEditor, cmd, getEditor } from './util';
+import { typeInEditor, cmd } from './util';
 
 describe('Auto sync tests', () => {
   beforeEach(() => {
@@ -50,8 +50,8 @@ describe('Auto sync tests', () => {
   });
 
   it('supports commenting code out/in', () => {
-    getEditor().contains('Car').click();
-    getEditor().get('textarea').type(`${cmd}/`);
+    cy.get('#editor').contains('Car').click();
+    cy.get('#editor').get('textarea').type(`${cmd}/`);
     cy.get('#view').contains('Car').should('not.exist');
 
     typeInEditor(`{uparrow}${cmd}/`);
