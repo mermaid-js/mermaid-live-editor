@@ -9,7 +9,7 @@ export const typeInEditor = (
   text: string,
   { bottom = true, newline = false }: EditorOptions = {}
 ) => {
-  cy.get('#editor textarea:first').click();
+  cy.get('#editor').click();
   if (bottom) {
     cy.focused().type('{pageDown}');
   }
