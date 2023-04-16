@@ -30,6 +30,7 @@
     const newText = editorMode === 'code' ? code : mermaid;
     if (newText !== text) {
       // console.log('updating editor text', newText);
+      editor.setScrollTop(0);
       editor.setValue(newText);
       text = newText;
     }
