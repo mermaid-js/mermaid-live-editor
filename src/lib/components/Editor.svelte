@@ -144,12 +144,7 @@
     if (divEl.parentElement) {
       resizeObserver.observe(divEl.parentElement);
     }
-
-    // @ts-ignore
-    if (window.Cypress) {
-      // @ts-ignore
-      window.editorLoaded = true;
-    }
+    // console.log(`editor mounted`);
     return () => {
       // console.log(`editor disposed`);
       editor?.dispose();
