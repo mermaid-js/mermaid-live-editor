@@ -21,59 +21,32 @@
       integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.37.1/min/vs/editor/editor.main.min.css"
-      integrity="sha512-wB3xfL98hWg1bpkVYSyL0js/Jx9s7FsDg9aYO6nOMSJTgPuk/PFqxXQJKKSUjteZjeYrfgo9NFBOA1r9HwDuZw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer" />
-    <script>
-      var require = {
-        paths: {
-          vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs'
-        }
-      };
-    </script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.37.1/min/vs/loader.min.js"
-      integrity="sha512-A+6SvPGkIN9Rf0mUXmW4xh7rDvALXf/f0VtOUiHlDUSPknu2kcfz1KzLpOJyL2pO+nZS13hhIjLqVgiQExLJrw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.37.1/min/vs/editor/editor.main.nls.min.js"
-      integrity="sha512-rWneFgUi2AyxOdM2M4CqPQVSJOidtmUflUfKroRoxsX3qaQrXAZ17fiPXASJo12ta0RUO+lgQtRbEbRFaClJ6g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.37.1/min/vs/editor/editor.main.js"
-      integrity="sha512-y99DgzNm8N3flFl0hvmTFfWVtj6prXGxll7PUbNc51mKGFiyWqTBqBFr06N8k7mLKp7LqvitwaIz8sJOfdHM4A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"></script>
     <meta http-equiv="content-security-policy" content="">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.0a9e9b0b.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.5bf7e06a.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.787ce9b5.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.5ca2bce9.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.67770059.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.dfa28cb8.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/paths.1aad1925.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.a6c08c9d.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.1c1a3907.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.834c4eb8.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper.41c905a7.js">
   </head>
   <body>
     <div id="svelte">
 			<script>
 				{
-					__sveltekit_12h4w0r = {
-						env: {},
+					__sveltekit_13h0to5 = {
 						assets: "/mermaid-live-editor",
 						base: new URL(".", location).pathname.slice(0, -1),
-						element: document.currentScript.parentElement
+						env: {}
 					};
 
+					const element = document.currentScript.parentElement;
+
 					Promise.all([
-						import("./_app/immutable/entry/start.0a9e9b0b.js"),
-						import("./_app/immutable/entry/app.a6c08c9d.js")
+						import("./_app/immutable/entry/start.5bf7e06a.js"),
+						import("./_app/immutable/entry/app.834c4eb8.js")
 					]).then(([kit, app]) => {
-						kit.start(app, __sveltekit_12h4w0r.element);
+						kit.start(app, element);
 					});
 				}
 			</script>
