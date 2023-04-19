@@ -10,9 +10,10 @@
   import Theme from './Theme.svelte';
 
   interface Link {
-    title: string;
     href: string;
+    title?: string;
     icon?: string;
+    img?: string;
   }
   const links: Link[] = [
     {
@@ -32,9 +33,12 @@
       href: 'https://github.com/mermaid-js/mermaid-cli'
     },
     {
-      title: '',
       href: 'https://github.com/mermaid-js/mermaid-live-editor',
       icon: 'fab fa-github fa-lg'
+    },
+    {
+      href: 'https://mermaidchart.com',
+      img: '/mermaidchart-logo.svg'
     }
   ];
 </script>
@@ -59,13 +63,18 @@
   <Theme />
   <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
     <ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
-      {#each links as { title, href, icon }}
+      {#each links as { title, href, icon, img }}
         <li>
           <a class="btn btn-ghost" target="_blank" rel="noreferrer" {href}>
             {#if icon}
               <i class={icon} />
+            {:else if img}
+              <img src={img} alt={title} />
             {/if}
-            {title}</a>
+            {#if title}
+              {title}
+            {/if}
+          </a>
         </li>
       {/each}
     </ul>
@@ -78,5 +87,10 @@
   }
   .navbar {
     z-index: 10000;
+  }
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 </style>
