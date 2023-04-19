@@ -30,6 +30,7 @@
     const newText = editorMode === 'code' ? code : mermaid;
     if (newText !== text) {
       // console.log('updating editor text', newText);
+      editor.setScrollTop(0);
       editor.setValue(newText);
       text = newText;
     }
@@ -143,7 +144,12 @@
     if (divEl.parentElement) {
       resizeObserver.observe(divEl.parentElement);
     }
-    // console.log(`editor mounted`);
+
+    // @ts-ignore
+    if (window.Cypress) {
+      // @ts-ignore
+      window.editorLoaded = true;
+    }
     return () => {
       // console.log(`editor disposed`);
       editor?.dispose();

@@ -5,6 +5,7 @@ describe('Auto sync tests', () => {
     cy.clearLocalStorage();
     cy.visit('/');
     cy.url().should('contain', '/edit#pako');
+    cy.window().should('have.property', 'editorLoaded', true);
   });
 
   it('should dim diagram when code is edited', () => {
