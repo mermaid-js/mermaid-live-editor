@@ -1,7 +1,7 @@
 export const notify = (message: string): void => {
-	alert(message);
+  alert(message);
 };
 
 export const prompt = (message: string): boolean => {
-	return confirm(message);
+  return confirm(message);
 };

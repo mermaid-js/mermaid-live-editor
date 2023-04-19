@@ -21,8 +21,8 @@ require('cy-verify-downloads').addCustomCommand();
 // require('./commands')
 
 Cypress.on('uncaught:exception', (err) => {
-	/* returning false here prevents Cypress from failing the test */
-	if (err.message.includes('ResizeObserver loop limit exceeded')) {
-		return false;
-	}
+  /* returning false here prevents Cypress from failing the test */
+  if (err.message.includes('ResizeObserver loop limit exceeded')) {
+    return false;
+  }
 });

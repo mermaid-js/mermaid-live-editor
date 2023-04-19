@@ -27,12 +27,12 @@ import { register } from '@cypress/snapshot';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 register();
 declare global {
-	// eslint-disable-next-line @typescript-eslint/no-namespace
-	namespace Cypress {
-		interface Chainable {
-			snapshot(): void;
-		}
-	}
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      snapshot(): void;
+    }
+  }
 }
 
 import 'cypress-localstorage-commands';
