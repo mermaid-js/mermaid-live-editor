@@ -63,18 +63,41 @@
   };
 
   const loadMonaco = async () => {
-    console.log('Loading Monaco...');
-    // errorDebug();
-    let i = 0;
-    while (i++ < 500) {
-      // @ts-expect-error : This is a hack to handle a svelte-kit error when importing monaco.
-      Monaco = window.monaco;
-      if (Monaco !== undefined) {
-        return;
+    // @ts-ignore
+    self.MonacoEnvironment = {
+      getWorker: function (workerId: string, label: string) {
+        const getWorkerModule = (moduleUrl: string, label: string): Worker => {
+          // @ts-ignore
+          return new Worker(self.MonacoEnvironment.getWorkerUrl(moduleUrl), {
+            name: label,
+            type: 'module'
+          });
+        };
+
+        switch (label) {
+          case 'json':
+            return getWorkerModule('/monaco-editor/esm/vs/language/json/json.worker?worker', label);
+          case 'css':
+          case 'scss':
+          case 'less':
+            return getWorkerModule('/monaco-editor/esm/vs/language/css/css.worker?worker', label);
+          case 'html':
+          case 'handlebars':
+          case 'razor':
+            return getWorkerModule('/monaco-editor/esm/vs/language/html/html.worker?worker', label);
+          case 'typescript':
+          case 'javascript':
+            return getWorkerModule(
+              '/monaco-editor/esm/vs/language/typescript/ts.worker?worker',
+              label
+            );
+          default:
+            return getWorkerModule('/monaco-editor/esm/vs/editor/editor.worker?worker', label);
+        }
       }
-      await new Promise((r) => setTimeout(r, 100));
-    }
-    alert('Loading Monaco Editor failed. Please try refreshing the page.');
+    };
+
+    Monaco = await import('monaco-editor');
   };
 
   onMount(async () => {
@@ -111,7 +134,7 @@
     });
     Monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
-      editor!.layout({
+      editor?.layout({
         height: entries[0].contentRect.height,
         width: entries[0].contentRect.width
       });

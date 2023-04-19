@@ -28,7 +28,7 @@
 
 <div class="hidden lg:block dropdown">
   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-  <div tabindex="0" class="btn btn-ghost ">
+  <div tabindex="0" class="btn btn-ghost">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

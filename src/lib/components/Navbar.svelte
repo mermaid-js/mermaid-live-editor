@@ -51,7 +51,7 @@
   </div>
   <label for="menu-toggle" class="pointer-cursor lg:hidden block"
     ><svg
-      class="fill-current "
+      class="fill-current"
       xmlns="http://www.w3.org/2000/svg"
       width="20"
       height="20"
