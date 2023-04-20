@@ -4955,7 +4955,7 @@ robust-predicates@^3.0.0:
   resolved "https://registry.yarnpkg.com/robust-predicates/-/robust-predicates-3.0.1.tgz#ecde075044f7f30118682bd9fb3f123109577f9a"
   integrity sha512-ndEIpszUHiG4HtDsQLeIuMvRsDnn8c8rYStabochtUeCvfuvNptb5TUbVD68LRAILPX7p9nqQGh4xJgn3EHS/g==
 
-rollup@^3.18.0:
+rollup@^3.20.2:
   version "3.20.6"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.20.6.tgz#53c0fd73e397269d2ce5f0ec12851457dd53cacd"
   integrity sha512-2yEB3nQXp/tBQDN0hJScJQheXdvU2wFhh6ld7K/aiZ1vYcak6N/BKjY1QrU6BvO2JWYS8bEs14FRaxXosxy2zw==
@@ -5824,15 +5824,14 @@ vite-node@0.30.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vite@^4.2.1:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.2.2.tgz#014c30e5163844f6e96d7fe18fbb702236516dc6"
-  integrity sha512-PcNtT5HeDxb3QaSqFYkEum8f5sCVe0R3WK20qxgIvNBZPXU/Obxs/+ubBMeE7nLWeCo2LDzv+8hRYSlcaSehig==
+vite@^4.3.0-beta.8:
+  version "4.3.0-beta.8"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.0-beta.8.tgz#ee62d10b0efb298d30efa931f3430bbfa648f54f"
+  integrity sha512-dCYroE9jtHgjaZV9+ZINUNBZQg59JTDSmpWWldHO3X22P2RWrpTPQN57Kjv+WAA2WVRiXxyTXzQat+y0kJAy9g==
   dependencies:
     esbuild "^0.17.5"
     postcss "^8.4.21"
-    resolve "^1.22.1"
-    rollup "^3.18.0"
+    rollup "^3.20.2"
   optionalDependencies:
     fsevents "~2.3.2"
 
