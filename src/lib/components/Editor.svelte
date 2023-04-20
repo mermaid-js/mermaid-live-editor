@@ -66,15 +66,6 @@
   };
 
   onMount(async () => {
-    const getWorkerModule = (moduleUrl: string, label: string) => {
-      return new Worker(
-        new URL('monaco-editor/esm/vs/' + moduleUrl + '.js?worker', import.meta.url),
-        {
-          name: label,
-          type: 'module'
-        }
-      );
-    };
     self.MonacoEnvironment = {
       getWorker(_, label) {
         if (label === 'json') {
@@ -107,7 +98,7 @@
       run: function () {
         syncDiagram();
         logEvent('renderDiagram', {
-          method: 'keyboadShortcut'
+          method: 'keyboardShortcut'
         });
       }
     });
