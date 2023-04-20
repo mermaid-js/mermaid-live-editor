@@ -13,6 +13,12 @@ describe('Site Loads', () => {
     cy.getLocalStorage('codeStore').snapshot();
   });
 
+  it('should keep code after reload', () => {
+    cy.get('#editor').contains('Car');
+    cy.reload();
+    cy.get('#editor').contains('Car');
+  });
+
   it('Check Redirect from old URL', () => {
     cy.visit(
       '/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgICBBW0NocmlzdG1hc10gLS0-fEdldCBtb25leXwgQihHbyBzaG9wcGluZylcbiAgICBCIC0tPiBDe0xldCBtZSB0aGlua31cbiAgICBDIC0tPnxPbmV8IERbTGFwdG9wXVxuICAgIEMgLS0-fFR3b3wgRVtpUGhvbmVdXG4gICAgQyAtLT58VGhyZWV8IEZbZmE6ZmEtY2FyIENhcl0iLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ'
