@@ -9,6 +9,7 @@ export const typeInEditor = (
   text: string,
   { bottom = true, newline = false }: EditorOptions = {}
 ) => {
+  cy.window().should('have.property', 'editorLoaded', true);
   cy.get('#editor').click();
   if (bottom) {
     cy.focused().type('{pageDown}');
