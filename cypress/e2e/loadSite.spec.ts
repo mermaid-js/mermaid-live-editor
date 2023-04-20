@@ -1,4 +1,5 @@
 import { toBase64 } from 'js-base64';
+import { typeInEditor } from './util';
 
 describe('Site Loads', () => {
   beforeEach(() => {
@@ -11,6 +12,12 @@ describe('Site Loads', () => {
     cy.url().should('include', '/edit');
     cy.contains('History').click();
     cy.getLocalStorage('codeStore').snapshot();
+  });
+
+  it('should keep code after reload', () => {
+    cy.get('#editor').contains('Car');
+    cy.reload();
+    cy.get('#editor').contains('Car');
   });
 
   it('Check Redirect from old URL', () => {
