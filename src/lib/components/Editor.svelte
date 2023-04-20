@@ -3,14 +3,16 @@
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
   import { themeStore } from '$lib/util/theme';
   import { errorDebug, syncDiagram } from '$lib/util/util';
-  import type monaco from 'monaco-editor';
+  import * as monaco from 'monaco-editor';
+  import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+  import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+
   import { onMount } from 'svelte';
   import initEditor from 'monaco-mermaid';
   import { logEvent } from '$lib/util/stats';
 
   let divEl: HTMLDivElement | undefined = undefined;
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
-  let Monaco: typeof monaco | undefined;
   let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     minimap: {
       enabled: false
@@ -22,7 +24,7 @@
 
   stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
     // console.log('editor store subscription', { code, mermaid });
-    if (!editor || !Monaco) {
+    if (!editor) {
       return;
     }
 
@@ -43,15 +45,15 @@
       return;
     }
     if (model.getLanguageId() !== language) {
-      Monaco.editor.setModelLanguage(model, language);
+      monaco.editor.setModelLanguage(model, language);
     }
 
     // Display/clear errors
-    Monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
+    monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
   });
 
   themeStore.subscribe(({ isDark }) => {
-    editor && Monaco?.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
+    editor && monaco.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
   });
 
   const handleUpdate = (text: string, mode: EditorMode) => {
@@ -63,33 +65,23 @@
     }
   };
 
-  const loadMonaco = async () => {
-    console.log('Loading Monaco...');
-    // errorDebug();
-    let i = 0;
-    while (i++ < 500) {
-      // @ts-expect-error : This is a hack to handle a svelte-kit error when importing monaco.
-      Monaco = window.monaco;
-      if (Monaco !== undefined) {
-        return;
-      }
-      await new Promise((r) => setTimeout(r, 100));
-    }
-    alert('Loading Monaco Editor failed. Please try refreshing the page.');
-  };
-
   onMount(async () => {
-    await loadMonaco(); // Fix https://github.com/mermaid-js/mermaid-live-editor/issues/175
-    if (!Monaco) {
-      throw new Error('Monaco failed to load');
-    }
+    self.MonacoEnvironment = {
+      getWorker(_, label) {
+        if (label === 'json') {
+          return new monacoJsonWorker();
+        }
+        return new monacoEditorWorker();
+      }
+    };
+
     if (!divEl) {
       throw new Error('divEl is undefined');
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    initEditor(Monaco);
+    initEditor(monaco);
     errorDebug(100);
-    editor = Monaco.editor.create(divEl, editorOptions);
+    editor = monaco.editor.create(divEl, editorOptions);
     editor.onDidChangeModelContent(({ isFlush, changes }) => {
       const newText = editor?.getValue();
       // console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
@@ -102,17 +94,17 @@
     editor.addAction({
       id: 'mermaid-render-diagram',
       label: 'Render Diagram',
-      keybindings: [Monaco.KeyMod.CtrlCmd | Monaco.KeyCode.Enter],
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
       run: function () {
         syncDiagram();
         logEvent('renderDiagram', {
-          method: 'keyboadShortcut'
+          method: 'keyboardShortcut'
         });
       }
     });
-    Monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
+    monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
-      editor!.layout({
+      editor?.layout({
         height: entries[0].contentRect.height,
         width: entries[0].contentRect.width
       });
@@ -121,7 +113,12 @@
     if (divEl.parentElement) {
       resizeObserver.observe(divEl.parentElement);
     }
-    // console.log(`editor mounted`);
+
+    // @ts-ignore
+    if (window.Cypress) {
+      // @ts-ignore
+      window.editorLoaded = true;
+    }
     return () => {
       // console.log(`editor disposed`);
       editor?.dispose();
