@@ -5815,10 +5815,10 @@ vite-node@0.30.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vite@^4.3.0-beta.8:
-  version "4.3.0-beta.8"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.0-beta.8.tgz#ee62d10b0efb298d30efa931f3430bbfa648f54f"
-  integrity sha512-dCYroE9jtHgjaZV9+ZINUNBZQg59JTDSmpWWldHO3X22P2RWrpTPQN57Kjv+WAA2WVRiXxyTXzQat+y0kJAy9g==
+vite@^4.3.0:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.1.tgz#9badb1377f995632cdcf05f32103414db6fbb95a"
+  integrity sha512-EPmfPLAI79Z/RofuMvkIS0Yr091T2ReUoXQqc5ppBX/sjFRhHKiPPF/R46cTdoci/XgeQpB23diiJxq5w30vdg==
   dependencies:
     esbuild "^0.17.5"
     postcss "^8.4.21"
