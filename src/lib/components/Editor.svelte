@@ -6,9 +6,8 @@
   import * as monaco from 'monaco-editor';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-
   import { onMount } from 'svelte';
-  import initEditor from 'monaco-mermaid';
+  import { initEditor } from '$lib/util/monacoExtra';
   import { logEvent } from '$lib/util/stats';
 
   let divEl: HTMLDivElement | undefined = undefined;
@@ -50,6 +49,11 @@
 
     // Display/clear errors
     monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
+    monaco.languages.registerCompletionItemProvider('mermaid', {
+      provideCompletionItems: (model, position) => {
+        return { suggestions: [] };
+      }
+    });
   });
 
   themeStore.subscribe(({ isDark }) => {

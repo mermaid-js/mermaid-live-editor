@@ -64,7 +64,7 @@
     "tailwindcss": "^3.3.1",
     "tslib": "^2.5.0",
     "typescript": "5.0.4",
-    "vite": "^4.3.0",
+    "vite": "^4.3.1",
     "vitest": "^0.30.1"
   },
   "dependencies": {
@@ -75,7 +75,6 @@
     "js-base64": "3.7.5",
     "mermaid": "10.1.0",
     "monaco-editor": "0.37.1",
-    "monaco-mermaid": "1.0.8",
     "pako": "2.1.0",
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.1",
