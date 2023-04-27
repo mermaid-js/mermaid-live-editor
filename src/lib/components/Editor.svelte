@@ -49,11 +49,6 @@
 
     // Display/clear errors
     monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
-    monaco.languages.registerCompletionItemProvider('mermaid', {
-      provideCompletionItems: (model, position) => {
-        return { suggestions: [] };
-      }
-    });
   });
 
   themeStore.subscribe(({ isDark }) => {
