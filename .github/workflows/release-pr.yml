@@ -18,3 +18,4 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           branch: release-promotion
+          title: Release live editor
