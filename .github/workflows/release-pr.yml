@@ -14,4 +14,4 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           base: main
-          branch: develop
+          branch: release
