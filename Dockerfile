@@ -6,12 +6,12 @@
 # Stop               : press ctrl + c 
 #                                     or 
 #                                        docker stop mermaid-live-editor
-FROM node:19.9.0 as mermaid-live-editor-builder 
+FROM node:20.1.0 as mermaid-live-editor-builder 
 COPY --chown=node:node . /home
 WORKDIR /home
 RUN yarn install
 RUN yarn build
 
-FROM nginx:alpine as mermaid-live-editor-runner
+FROM nginxinc/nginx-unprivileged:alpine as mermaid-live-editor-runner
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=mermaid-live-editor-builder --chown=nginx:nginx /home/docs /usr/share/nginx/html
