@@ -1,6 +1,6 @@
 # Two-stage  docker container for mermaid-js/mermaid-live-editor
 # Build              : docker build -t mermaid-js/mermaid-live-editor .
-# Run                : docker run --name mermaid-live-editor --publish 8080:80 mermaid-js/mermaid-live-editor
+# Run                : docker run --name mermaid-live-editor --publish 8080:8080 mermaid-js/mermaid-live-editor
 # Start              : docker start mermaid-live-editor
 # Use webbrowser     : http://localhost:8080
 # Stop               : press ctrl + c 
