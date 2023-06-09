@@ -15,7 +15,7 @@ export const initAnalytics = async (): Promise<void> => {
           plausible({
             domain: 'mermaid.live',
             hashMode: false,
-            trackLocalhost: false, // By default 'false'
+            // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
             apiHost: 'https://p.mermaid.live'
           })
         ]
