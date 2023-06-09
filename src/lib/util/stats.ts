@@ -37,7 +37,9 @@ export const detectType = (text: string): string | undefined => {
     'graph',
     'journey',
     'pie',
-    'stateDiagram'
+    'stateDiagram',
+    'quadrantChart',
+    'mindmap'
   ];
   const firstLine = text
     .replace(/^\s*%%.*\n/g, '\n')
