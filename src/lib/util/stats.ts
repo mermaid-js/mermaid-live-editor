@@ -16,7 +16,7 @@ export const initAnalytics = async (): Promise<void> => {
             domain: 'mermaid.live',
             hashMode: false,
             trackLocalhost: false, // By default 'false'
-            apiHost: 'https://plausible.io'
+            apiHost: 'https://p.mermaid.live'
           })
         ]
       });
