@@ -12,7 +12,7 @@ describe('Test themes', () => {
             });
         }
       });
-      cy.contains('Change Theme').click();
+      cy.contains('Theme').click();
     });
 
     it('should set light theme as default', () => {
@@ -44,7 +44,7 @@ describe('Test themes', () => {
             });
         }
       });
-      cy.contains('Change Theme').click();
+      cy.contains('Theme').click();
     });
 
     it('should set dark theme as default', () => {
