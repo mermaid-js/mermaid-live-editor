@@ -122,7 +122,6 @@
         pzoom.resize();
       }
     });
-    // console.log('View mounted');
   });
 </script>
 
@@ -130,7 +129,7 @@
   <div
     class="absolute w-full p-2 z-10 font-mono {error
       ? 'text-red-600'
-      : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-center"
+      : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
     id="errorContainer">
     {#if error}
       {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
