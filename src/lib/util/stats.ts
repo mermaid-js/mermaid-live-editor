@@ -7,7 +7,7 @@ export const initAnalytics = async (): Promise<void> => {
     try {
       const [{ Analytics }, { default: plausible }] = await Promise.all([
         import('analytics'),
-        import('analytics-plugin-plausible')
+        import('./plausible')
       ]);
       analytics = Analytics({
         app: 'mermaid-live-editor',
@@ -16,7 +16,8 @@ export const initAnalytics = async (): Promise<void> => {
             domain: 'mermaid.live',
             hashMode: false,
             // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
-            apiHost: 'https://p.mermaid.live'
+            apiHost: 'https://p.mermaid.live',
+            outboundLinkTracking: true
           })
         ]
       });
