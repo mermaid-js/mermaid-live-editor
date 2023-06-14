@@ -9,9 +9,11 @@
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
-  import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
   import { base } from '$app/paths';
+  import { dev } from '$app/environment';
+  import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
 
+  const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
   const docURLBase = 'https://mermaid-js.github.io/mermaid';
   const docMap: DocumentationConfig = {
     graph: {
@@ -137,7 +139,7 @@
           <button
             class="btn btn-secondary btn-xs"
             title="View documentation for {docKey.replace('Diagram', '')} diagram">
-            <a target="_blank" rel="noreferrer" href={docURL} data-cy="docs">
+            <a target="_blank" href={docURL} data-cy="docs">
               <i class="fas fa-book mr-1" />Docs
             </a>
           </button>
@@ -155,22 +157,27 @@
     <div id="resizeHandler" class="hidden md:block" />
     <div class="flex-1 flex flex-col overflow-hidden">
       <Card title="Diagram" isCloseable={false}>
-        <div slot="actions" class="flex flex-row items-center">
+        <div slot="actions" class="flex flex-row items-center gap-2">
           <label class="cursor-pointer label py-0" for="panZoom">
             <span>Pan & Zoom</span>
             <input
               type="checkbox"
-              class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'} ml-1"
+              class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
               id="panZoom"
               bind:checked={$inputStateStore.panZoom} />
           </label>
           <a
             href={`${base}/view#${$stateStore.serialized}`}
             target="_blank"
-            rel="noreferrer"
-            class="btn btn-secondary btn-xs"
-            title="View diagram in new page"
-            ><i class="fas fa-external-link-alt mr-1" />Full screen</a>
+            class="btn btn-secondary btn-xs gap-1"
+            title="View diagram in new page"><i class="fas fa-external-link-alt" />Full screen</a>
+          <a
+            href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
+            target="_blank"
+            class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
+            title="Save diagram in Mermaid Chart"
+            ><img src="/mermaidchart-logo.svg" class="w-5 h-5" alt="Mermaid chart logo" />Save to
+            Mermaid Chart</a>
         </div>
 
         <div class="flex-1 overflow-auto">

@@ -164,7 +164,6 @@
                   <a
                     href={url}
                     target="_blank"
-                    rel="noreferrer"
                     title="Open revision in new tab"
                     class="hover:underline text-blue-500">{name}</a>
                 {:else}

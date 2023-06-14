@@ -65,7 +65,7 @@
     <ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
       {#each links as { title, href, icon, img }}
         <li>
-          <a class="btn btn-ghost" target="_blank" rel="noreferrer" {href}>
+          <a class="btn btn-ghost" target="_blank" {href}>
             {#if icon}
               <i class={icon} />
             {:else if img}
