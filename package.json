@@ -63,7 +63,7 @@
     "svelte-preprocess": "5.0.4",
     "tailwindcss": "^3.3.1",
     "tslib": "^2.5.0",
-    "typescript": "5.1.5",
+    "typescript": "5.1.6",
     "vite": "^4.3.9",
     "vitest": "^0.32.0"
   },
@@ -73,7 +73,7 @@
     "daisyui": "2.52.0",
     "dayjs": "^1.11.7",
     "js-base64": "3.7.5",
-    "mermaid": "10.2.3",
+    "mermaid": "10.2.4",
     "monaco-editor": "0.39.0",
     "pako": "2.1.0",
     "random-word-slugs": "0.1.7",
