@@ -43,7 +43,7 @@ Default is `https://kroki.io`
 docker compose up --build
 ```
 
-Then open http://localhost:8000
+Then open http://localhost:3000
 
 ## Setup
 
