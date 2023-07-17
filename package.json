@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "2.0.2",
-    "@sveltejs/kit": "1.22.1",
+    "@sveltejs/kit": "1.22.3",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.0",
@@ -37,7 +37,7 @@
     "chai": "^4.3.7",
     "cssnano": "^6.0.0",
     "cy-verify-downloads": "0.1.15",
-    "cypress": "12.17.0",
+    "cypress": "12.17.1",
     "cypress-localstorage-commands": "2.2.3",
     "eslint": "8.44.0",
     "eslint-config-prettier": "8.8.0",
