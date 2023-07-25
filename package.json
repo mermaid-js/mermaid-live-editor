@@ -37,7 +37,7 @@
     "chai": "^4.3.7",
     "cssnano": "^6.0.0",
     "cy-verify-downloads": "0.1.15",
-    "cypress": "12.17.1",
+    "cypress": "12.17.2",
     "cypress-localstorage-commands": "2.2.3",
     "eslint": "8.44.0",
     "eslint-config-prettier": "8.8.0",
