@@ -25,12 +25,12 @@
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "2.0.2",
     "@sveltejs/kit": "1.22.3",
-    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/jest-dom": "5.17.0",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.0",
     "@types/uuid": "9.0.2",
-    "@typescript-eslint/eslint-plugin": "5.61.0",
-    "@typescript-eslint/parser": "5.61.0",
+    "@typescript-eslint/eslint-plugin": "5.62.0",
+    "@typescript-eslint/parser": "5.62.0",
     "@vitest/ui": "^0.33.0",
     "autoprefixer": "^10.4.14",
     "c8": "7.14.0",
@@ -39,7 +39,7 @@
     "cy-verify-downloads": "0.1.15",
     "cypress": "12.17.2",
     "cypress-localstorage-commands": "2.2.3",
-    "eslint": "8.44.0",
+    "eslint": "8.45.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-cypress": "2.13.3",
     "eslint-plugin-es": "4.1.0",
@@ -73,7 +73,7 @@
     "daisyui": "2.52.0",
     "dayjs": "^1.11.7",
     "js-base64": "3.7.5",
-    "mermaid": "10.2.4",
+    "mermaid": "10.3.0",
     "monaco-editor": "0.40.0",
     "pako": "2.1.0",
     "random-word-slugs": "0.1.7",
@@ -87,7 +87,7 @@
     ]
   },
   "volta": {
-    "node": "18.16.1",
+    "node": "18.17.0",
     "yarn": "1.22.19"
   },
   "engines": {
