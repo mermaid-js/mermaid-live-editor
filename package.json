@@ -31,7 +31,7 @@
     "@types/uuid": "9.0.2",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
-    "@vitest/ui": "^0.33.0",
+    "@vitest/ui": "^0.34.0",
     "autoprefixer": "^10.4.14",
     "c8": "7.14.0",
     "chai": "^4.3.7",
@@ -39,8 +39,8 @@
     "cy-verify-downloads": "0.1.15",
     "cypress": "12.17.2",
     "cypress-localstorage-commands": "2.2.3",
-    "eslint": "8.45.0",
-    "eslint-config-prettier": "8.8.0",
+    "eslint": "8.46.0",
+    "eslint-config-prettier": "8.9.0",
     "eslint-plugin-cypress": "2.13.3",
     "eslint-plugin-es": "4.1.0",
     "eslint-plugin-no-only-tests": "^3.1.0",
@@ -65,7 +65,7 @@
     "tslib": "^2.5.0",
     "typescript": "5.1.6",
     "vite": "^4.3.9",
-    "vitest": "^0.33.0"
+    "vitest": "^0.34.0"
   },
   "dependencies": {
     "analytics": "0.8.9",
