@@ -149,7 +149,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
     pie: {
       typeKeywords: ['pie'],
       blockKeywords: [],
-      keywords: ['title', 'showData', 'title', 'accDescription']
+      keywords: ['showData', 'title', 'accDescr', 'accTitle']
     },
     c4Diagram: {
       typeKeywords: ['C4Context', 'C4Container', 'C4Component', 'C4Dynamic', 'C4Deployment'],
