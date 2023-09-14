@@ -12,12 +12,12 @@ export const typeInEditor = (
   cy.window().should('have.property', 'editorLoaded', true);
   cy.get('#editor').click();
   if (bottom) {
-    cy.focused().type('{pageDown}');
+    cy.type('{pageDown}');
   }
   if (newline) {
-    cy.focused().type('{enter}');
+    cy.type('{enter}');
   }
-  cy.focused().type(text);
+  cy.type(text);
 };
 
 const downloadsFolder = Cypress.config('downloadsFolder');

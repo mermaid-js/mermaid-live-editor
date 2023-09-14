@@ -52,7 +52,7 @@ describe('Auto sync tests', () => {
 
   it('supports commenting code out/in', () => {
     cy.get('#editor').contains('Car').click();
-    cy.focused().type(`${cmd}/`);
+    cy.type(`${cmd}/`);
     cy.get('#view').contains('Car').should('not.exist');
 
     typeInEditor(`{uparrow}${cmd}/`);
