@@ -28,7 +28,7 @@
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.0",
-    "@types/uuid": "9.0.3",
+    "@types/uuid": "9.0.4",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "@vitest/ui": "^0.34.0",
@@ -36,7 +36,7 @@
     "c8": "7.14.0",
     "chai": "^4.3.7",
     "cssnano": "^6.0.0",
-    "cy-verify-downloads": "0.1.16",
+    "cy-verify-downloads": "0.1.17",
     "cypress": "12.17.4",
     "cypress-localstorage-commands": "2.2.4",
     "eslint": "8.46.0",
@@ -78,7 +78,7 @@
     "pako": "2.1.0",
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.1",
-    "uuid": "9.0.0"
+    "uuid": "9.0.1"
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md,json}": [
