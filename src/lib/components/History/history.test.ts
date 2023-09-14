@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import type { HistoryEntry } from '$lib/types';
 import { describe, it, expect } from 'vitest';
 import {

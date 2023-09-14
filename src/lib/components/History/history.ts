@@ -73,10 +73,10 @@ export const addHistoryEntry = (entryToAdd: Optional<HistoryEntry, 'id'>): void 
       }
       return [entry, ...entries];
     });
-  } else if (entry.type === 'manual') {
-    manualHistoryStore.update((entries) => [entry, ...entries]);
-    logEvent('history', { action: 'save' });
   }
+
+  manualHistoryStore.update((entries) => [entry, ...entries]);
+  logEvent('history', { action: 'save' });
 };
 
 export const clearHistoryData = (idToClear?: string): void => {
