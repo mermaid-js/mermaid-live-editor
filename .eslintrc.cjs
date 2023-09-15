@@ -86,6 +86,8 @@ module.exports = {
           env: true,
           fn: true,
           i: true,
+          j: true,
+          k: true,
           param: true,
           req: true,
           res: true,
