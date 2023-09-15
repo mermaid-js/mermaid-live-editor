@@ -11,13 +11,15 @@ export const typeInEditor = (
 ) => {
   cy.window().should('have.property', 'editorLoaded', true);
   cy.get('#editor').click();
-  if (bottom) {
-    cy.focused().type('{pageDown}');
-  }
-  if (newline) {
-    cy.focused().type('{enter}');
-  }
-  cy.focused().type(text);
+  cy.get('#editor').within(($editor) => {
+    if (bottom) {
+      cy.get('textarea').type('{pageDown}', { force: true });
+    }
+    if (newline) {
+      cy.get('textarea').type('{enter}', { force: true });
+    }
+    cy.get('textarea').type(text, { force: true });
+  });
 };
 
 const downloadsFolder = Cypress.config('downloadsFolder');
