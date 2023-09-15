@@ -135,7 +135,7 @@
           <p class="text-sm">Diagram syntax error</p>
         </div>
       </div>
-      <div class="bg-red-600 font-mono max-h-28 overflow-auto p-2 text-sm">
+      <div class="bg-red-600 font-mono max-h-32 overflow-auto p-2 text-sm">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
       </div>
