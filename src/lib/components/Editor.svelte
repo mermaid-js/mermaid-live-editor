@@ -128,7 +128,7 @@
 <div class="flex flex-col h-full">
   <div bind:this={divEl} id="editor" class="overflow-hidden flex-grow h-full" />
   {#if $stateStore.error instanceof Error}
-    <div class="flex flex-col text-sm text-neutral-100" id="errorContainer">
+    <div class="flex flex-col text-sm text-neutral-100">
       <div class="flex gap-2 items-center bg-red-700 p-2">
         <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
         <p>Diagram syntax error</p>
