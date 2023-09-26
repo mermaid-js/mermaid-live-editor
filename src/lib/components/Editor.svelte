@@ -129,11 +129,9 @@
   <div bind:this={divEl} id="editor" class="overflow-hidden flex-grow h-full" />
   {#if $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm text-neutral-100">
-      <div class="bg-red-700 p-2">
-        <div class="flex gap-2 items-center">
-          <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
-          <p>Diagram syntax error</p>
-        </div>
+      <div class="flex gap-2 items-center bg-red-700 p-2">
+        <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
+        <p>Diagram syntax error</p>
       </div>
       <div class="bg-red-600 font-mono max-h-32 overflow-auto p-2">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
