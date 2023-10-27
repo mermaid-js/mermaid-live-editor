@@ -176,7 +176,7 @@
             target="_blank"
             class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
             title="Save diagram in Mermaid Chart"
-            ><img src="/mermaidchart-logo.svg" class="w-5 h-5" alt="Mermaid chart logo" />Save to
+            ><img src="./mermaidchart-logo.svg" class="w-5 h-5" alt="Mermaid chart logo" />Save to
             Mermaid Chart</a>
         </div>
 

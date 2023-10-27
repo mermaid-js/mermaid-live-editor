@@ -38,7 +38,7 @@
     },
     {
       href: 'https://mermaidchart.com',
-      img: '/mermaidchart-logo.svg'
+      img: './mermaidchart-logo.svg'
     }
   ];
 </script>
