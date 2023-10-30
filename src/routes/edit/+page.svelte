@@ -16,42 +16,49 @@
   const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
   const docURLBase = 'https://mermaid-js.github.io/mermaid';
   const docMap: DocumentationConfig = {
-    graph: {
-      code: '/#/flowchart',
-      config: '/#/flowchart?id=configuration'
-    },
-    flowchart: {
-      code: '/#/flowchart',
-      config: '/#/flowchart?id=configuration'
-    },
-    sequenceDiagram: {
-      code: '/#/sequenceDiagram',
-      config: '/#/sequenceDiagram?id=configuration'
-    },
     classDiagram: {
-      code: '/#/classDiagram',
-      config: '/#/classDiagram?id=configuration'
-    },
-    'stateDiagram-v2': {
-      code: '/#/stateDiagram'
-    },
-    gantt: {
-      code: '/#/gantt',
-      config: '/#/gantt?id=configuration'
-    },
-    pie: {
-      code: '/#/pie'
+      code: '/syntax/classDiagram',
+      config: '/syntax/classDiagram#configuration'
     },
     erDiagram: {
-      code: '/#/entityRelationshipDiagram',
-      config: '/#/entityRelationshipDiagram?id=styling'
+      code: '/syntax/entityRelationshipDiagram'
     },
-    journey: {
-      code: '/#/user-journey'
+    flowchart: {
+      code: '/syntax/flowchart',
+      config: '/syntax/flowchart#configuration'
+    },
+    gantt: {
+      code: '/syntax/gantt',
+      config: '/syntax/gantt#configuration'
     },
     gitGraph: {
-      code: '/#/gitgraph',
-      config: '/#/gitgraph?id=gitgraph-specific-configuration-options'
+      code: '/syntax/gitgraph',
+      config: '/syntax/gitgraph#gitgraph-specific-configuration-options'
+    },
+    graph: {
+      code: '/syntax/flowchart',
+      config: '/syntax/flowchart#configuration'
+    },
+    journey: {
+      code: '/syntax/userJourney'
+    },
+    mindmap: {
+      code: '/syntax/mindmap'
+    },
+    pie: {
+      code: '/syntax/pie',
+      config: '/syntax/pie#configuration'
+    },
+    quadrantChart: {
+      code: '/syntax/quadrantChart',
+      config: '/syntax/quadrantChart#chart-configurations'
+    },
+    sequenceDiagram: {
+      code: '/syntax/sequenceDiagram',
+      config: '/syntax/sequenceDiagram#configuration'
+    },
+    'stateDiagram-v2': {
+      code: '/syntax/stateDiagram'
     }
   };
   let docURL = docURLBase;
