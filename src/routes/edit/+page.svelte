@@ -17,41 +17,42 @@
   const docURLBase = 'https://mermaid-js.github.io/mermaid';
   const docMap: DocumentationConfig = {
     graph: {
-      code: '/#/flowchart',
-      config: '/#/flowchart?id=configuration'
+      code: '/syntax/.html',
+      config: '/syntax/.html#configuration'
     },
     flowchart: {
-      code: '/#/flowchart',
-      config: '/#/flowchart?id=configuration'
+      code: '/syntax/flowchart.html',
+      config: '/syntax/flowchart.html#configuration'
     },
     sequenceDiagram: {
-      code: '/#/sequenceDiagram',
-      config: '/#/sequenceDiagram?id=configuration'
+      code: '/syntax/sequenceDiagram.html',
+      config: '/syntax/sequenceDiagram.html#configuration'
     },
     classDiagram: {
-      code: '/#/classDiagram',
-      config: '/#/classDiagram?id=configuration'
+      code: '/syntax/classDiagram.html',
+      config: '/syntax/classDiagram.html#configuration'
     },
     'stateDiagram-v2': {
-      code: '/#/stateDiagram'
+      code: '/syntax/stateDiagram.html'
     },
     gantt: {
-      code: '/#/gantt',
-      config: '/#/gantt?id=configuration'
+      code: '/syntax/gantt.html',
+      config: '/syntax/gantt.html#configuration'
     },
     pie: {
-      code: '/#/pie'
+      code: '/syntax/pie.html',
+      config: '/syntax/pie.html#configuration'
     },
     erDiagram: {
-      code: '/#/entityRelationshipDiagram',
-      config: '/#/entityRelationshipDiagram?id=styling'
+      code: '/syntax/entityRelationshipDiagram.html',
+      config: '/syntax/entityRelationshipDiagram.html#styling'
     },
     journey: {
-      code: '/#/user-journey'
+      code: '/syntax/userJourney.html'
     },
     gitGraph: {
-      code: '/#/gitgraph',
-      config: '/#/gitgraph?id=gitgraph-specific-configuration-options'
+      code: '/syntax/gitgraph.html',
+      config: '/syntax/gitgraph.html#gitgraph-specific-configuration-options'
     }
   };
   let docURL = docURLBase;
