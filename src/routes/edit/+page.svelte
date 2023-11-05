@@ -74,7 +74,7 @@
     zenuml: {
       code: '/syntax/zenuml.html'
     },
-    sankey: {
+    'sankey-beta': {
       code: '/syntax/sankey.html',
       config: '/syntax/sankey.html#configuration'
     },
