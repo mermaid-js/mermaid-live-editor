@@ -53,6 +53,34 @@
     gitGraph: {
       code: '/syntax/gitgraph.html',
       config: '/syntax/gitgraph.html#gitgraph-specific-configuration-options'
+    },
+    quadrantChart: {
+      code: '/syntax/quadrantChart.html',
+      config: '/syntax/quadrantChart.html#chart-configurations'
+    },
+    requirementDiagram: {
+      code: '/syntax/requirementDiagram.html'
+    },
+    C4Context: {
+      code: '/syntax/c4.html'
+    },
+    mindmap: {
+      code: '/syntax/mindmap.html'
+    },
+    timeline: {
+      code: '/syntax/timeline.html',
+      config: '/syntax/timeline.html#themes'
+    },
+    zenuml: {
+      code: '/syntax/zenuml.html'
+    },
+    sankey: {
+      code: '/syntax/sankey.html',
+      config: '/syntax/sankey.html#configuration'
+    },
+    'xychart-beta': {
+      code: '/syntax/xyChart.html',
+      config: '/syntax/xyChart.html#chart-configurations'
     }
   };
   let docURL = docURLBase;
