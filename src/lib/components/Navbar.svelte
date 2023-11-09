@@ -18,7 +18,7 @@
   const links: Link[] = [
     {
       title: 'Documentation',
-      href: 'https://mermaid.js.org/intro/n00b-gettingStarted.html'
+      href: 'https://mermaid.js.org/intro/getting-started.html'
     },
     {
       title: 'Tutorial',
@@ -38,7 +38,7 @@
     },
     {
       href: 'https://mermaidchart.com',
-      img: '/mermaidchart-logo.svg'
+      img: './mermaidchart-logo.svg'
     }
   ];
 </script>
