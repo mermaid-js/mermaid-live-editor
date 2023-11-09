@@ -73,7 +73,7 @@
     "daisyui": "2.52.0",
     "dayjs": "^1.11.7",
     "js-base64": "3.7.5",
-    "mermaid": "10.5.0",
+    "mermaid": "10.5.1",
     "monaco-editor": "0.43.0",
     "pako": "2.1.0",
     "random-word-slugs": "0.1.7",
