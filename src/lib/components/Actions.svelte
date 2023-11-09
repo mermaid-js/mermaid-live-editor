@@ -53,7 +53,7 @@
     if (!context) {
       throw new Error('context not found');
     }
-    context.fillStyle = 'white';
+    context.fillStyle = `hsl(${window.getComputedStyle(document.body).getPropertyValue('--b1')})`;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     const image = new Image();
