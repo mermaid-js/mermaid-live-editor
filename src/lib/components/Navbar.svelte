@@ -8,6 +8,11 @@
 
 <script lang="ts">
   import Theme from './Theme.svelte';
+  let isMenuOpen = false;
+
+  function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+  }
 
   interface Link {
     href: string;
@@ -38,7 +43,7 @@
     },
     {
       href: 'https://mermaidchart.com',
-      img: '/mermaidchart-logo.svg'
+      img: './mermaidchart-logo.svg'
     }
   ];
 </script>
@@ -49,19 +54,48 @@
       <a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
     </span>
   </div>
-  <label for="menu-toggle" class="pointer-cursor lg:hidden block"
-    ><svg
-      class="fill-current"
+
+  <label
+    for="menu-toggle"
+    class={isMenuOpen ? 'hidden' : 'pointer-cursor lg:hidden fixed right-4 z-[1000]'}>
+    <svg
       xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      class="fill-current"
       width="20"
       height="20"
-      viewBox="0 0 20 20"
-      ><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg
-    ></label>
-  <input class="hidden" type="checkbox" id="menu-toggle" />
+      viewBox="0 0 20 20">
+      <title>Menu</title>
+      <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+    </svg>
+  </label>
 
-  <Theme />
+  <!-- Cross SVG -->
+  <label
+    for="menu-toggle"
+    class={isMenuOpen ? 'pointer-cursor lg:hidden fixed right-4 z-[1000]' : 'hidden'}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      class="fill-current"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20">
+      <title>Cross</title>
+      <line x1="5" y1="5" x2="15" y2="15" stroke="white" stroke-width="2" />
+      <line x1="5" y1="15" x2="15" y2="5" stroke="white" stroke-width="2" />
+    </svg>
+  </label>
+
+  <input
+    class="hidden"
+    type="checkbox"
+    id="menu-toggle"
+    bind:checked={isMenuOpen}
+    on:click={toggleMenu} />
+  
   <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
+    <Theme />
     <ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
       {#each links as { title, href, icon, img }}
         <li>
@@ -81,10 +115,16 @@
   </div>
 </div>
 
+
 <style>
   #menu-toggle:checked + #menu {
-    display: block;
+    position: absolute;
+    top: 2.5rem;
+    padding: 1rem 0;
+    background: #661ae6;
+    display: flex;
   }
+
   .navbar {
     z-index: 10000;
   }
