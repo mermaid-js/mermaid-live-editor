@@ -15,6 +15,10 @@
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${ext}`;
 
   const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
+    if (svg) {
+      // Prevents the SVG size of the interface from being changed
+      svg = svg.cloneNode(true) as HTMLElement;
+    }
     height && svg?.setAttribute('height', `${height}px`);
     width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
     if (!svg) {
