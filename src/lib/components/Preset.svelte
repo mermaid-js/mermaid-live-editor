@@ -115,7 +115,14 @@
     Campaign C: [0.57, 0.69]
     Campaign D: [0.78, 0.34]
     Campaign E: [0.40, 0.34]
-    Campaign F: [0.35, 0.78]`
+    Campaign F: [0.35, 0.78]`,
+    XYChart: `
+    xychart-beta
+    title "Sales Revenue"
+    x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+    y-axis "Revenue (in $)" 4000 --> 11000
+    bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]`
   };
 
   type SampleTypes = keyof typeof samples;
@@ -128,7 +135,7 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: SampleTypes[] = ['Mindmap', 'QuadrantChart'];
+  const newDiagrams: SampleTypes[] = ['Mindmap', 'QuadrantChart', 'XYChart'];
   const diagramOrder: SampleTypes[] = [
     'Sequence',
     'Flow',
@@ -140,7 +147,8 @@
     'Git',
     'Pie',
     'Mindmap',
-    'QuadrantChart'
+    'QuadrantChart',
+    'XYChart'
   ];
 </script>
 
