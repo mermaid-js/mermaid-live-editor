@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "2.0.3",
-    "@sveltejs/kit": "1.27.3",
+    "@sveltejs/kit": "1.27.6",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.3",
@@ -38,7 +38,7 @@
     "cssnano": "^6.0.0",
     "cy-verify-downloads": "0.2.2",
     "cypress": "12.17.4",
-    "cypress-localstorage-commands": "2.2.4",
+    "cypress-localstorage-commands": "2.2.5",
     "eslint": "8.54.0",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-cypress": "2.15.1",
@@ -88,7 +88,7 @@
   },
   "volta": {
     "node": "18.18.2",
-    "yarn": "1.22.19"
+    "yarn": "1.22.21"
   },
   "engines": {
     "node": ">=16.7"
