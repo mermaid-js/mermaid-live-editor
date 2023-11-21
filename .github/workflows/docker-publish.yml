@@ -39,6 +39,7 @@ jobs:
         with:
           images: ${IMAGE_BASE}
           # this will generate tags in the following format:
+          #
           # latest
           # 1.2.3
           tags: |
