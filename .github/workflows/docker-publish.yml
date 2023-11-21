@@ -47,7 +47,7 @@ jobs:
         with:
           context: .
           target: mermaid
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           pull: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
