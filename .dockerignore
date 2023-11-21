@@ -4,6 +4,10 @@
 **/dist
 **/docs
 
+**/.github
+**/.husky
+**/.vscode
+
 Dockerfile
 .dockerignore
 docker-compose.yml
