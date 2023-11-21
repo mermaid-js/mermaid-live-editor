@@ -16,9 +16,6 @@ on:
       - master
       - develop
 
-env:
-  IMAGE_BASE: ghcr.io/${{ github.repository }}
-
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -37,7 +34,7 @@ jobs:
         if: github.ref_type == 'tag'
         id: meta
         with:
-          images: $IMAGE_BASE
+          images: ghcr.io/${{ github.repository }}
           # this will generate tags in the following format:
           #
           # latest
@@ -58,7 +55,7 @@ jobs:
         if: github.ref_type == 'branch'
         id: meta-nightly
         with:
-          images: $IMAGE_BASE
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=nightly
       - uses: docker/build-push-action@v5
