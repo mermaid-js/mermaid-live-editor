@@ -3,3 +3,7 @@
 **/.svelte-kit
 **/dist
 **/docs
+
+Dockerfile
+.dockerignore
+docker-compose.yml
