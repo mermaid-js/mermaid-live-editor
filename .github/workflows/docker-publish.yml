@@ -37,7 +37,7 @@ jobs:
         if: github.ref_type == 'tag'
         id: meta
         with:
-          images: ${IMAGE_BASE}
+          images: $IMAGE_BASE
           # this will generate tags in the following format:
           #
           # latest
@@ -58,7 +58,7 @@ jobs:
         if: github.ref_type == 'branch'
         id: meta-nightly
         with:
-          images: ${IMAGE_BASE}
+          images: $IMAGE_BASE
           tags: |
             type=raw,value=nightly
       - uses: docker/build-push-action@v5
