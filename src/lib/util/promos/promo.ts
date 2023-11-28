@@ -12,8 +12,8 @@ interface Promotion {
 const promotions: Promotion[] = [
   {
     id: 'holiday-2023',
-    startDate: new Date('2023-11-28'),
-    endDate: new Date('2023-12-31'),
+    startDate: new Date('2023-11-27'),
+    endDate: new Date('2024-01-01'),
     component: Holiday2023
   }
 ];
