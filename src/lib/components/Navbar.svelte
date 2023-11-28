@@ -8,6 +8,7 @@
 
 <script lang="ts">
   import Theme from './Theme.svelte';
+  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   let isMenuOpen = false;
 
   function toggleMenu() {
@@ -46,7 +47,24 @@
       img: './mermaidchart-logo.svg'
     }
   ];
+
+  let activePromotion = getActivePromotion();
 </script>
+
+{#if activePromotion}
+  <div
+    class="z-10 w-full top-bar bg-gradient-to-r from-[#bd34fe] to-[#ff3670] flex items-center text-center justify-center p-1 text-white">
+    <svelte:component this={activePromotion.component} />
+    <button
+      title="Dismiss banner"
+      on:click={() => {
+        dismissPromotion(activePromotion?.id);
+        activePromotion = undefined;
+      }}>
+      <i class="fa fa-close px-2" />
+    </button>
+  </div>
+{/if}
 
 <div class="navbar shadow-lg bg-primary p-0">
   <div class="flex-1 px-2 mx-2">
@@ -93,7 +111,7 @@
     id="menu-toggle"
     bind:checked={isMenuOpen}
     on:click={toggleMenu} />
-  
+
   <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
     <Theme />
     <ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
@@ -114,7 +132,6 @@
     </ul>
   </div>
 </div>
-
 
 <style>
   #menu-toggle:checked + #menu {
