@@ -42,6 +42,6 @@ export const getActivePromotion = (): Promotion | undefined => {
       (p: Promotion) =>
         p.startDate <= now && p.endDate >= now && !dismissedPromotions.includes(p.id)
     )
-    .toSorted((a: Promotion, b: Promotion) => b.endDate.getTime() - a.endDate.getTime())
+    .sort((a: Promotion, b: Promotion) => b.endDate.getTime() - a.endDate.getTime())
     .pop();
 };
