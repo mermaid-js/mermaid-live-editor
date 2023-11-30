@@ -2,13 +2,11 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
+      # Publish `master` as Docker `latest` image.
       - master
-
-    # Publish `v1.2.3` tags as releases.
-    tags:
-      - v*
+      # Publish `nightly` as Docker `nightly` image.
+      - develop
 
   # Run tests for all PRs to master and develop.
   pull_request:
@@ -30,40 +28,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get release version
+        run: |
+          RELEASE_VERSION=$([ "${{ github.ref_name }}" = "master" ] && echo "latest" || echo "nightly")
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "${GITHUB_ENV}"
       - uses: docker/metadata-action@v5
-        if: github.ref_type == 'tag'
         id: meta
         with:
           images: ghcr.io/${{ github.repository }}
-          # this will generate tags in the following format:
-          #
-          # latest
-          # 1.2.3
           tags: |
-            type=raw,value=latest
-            type=semver,pattern={{version}}
+            type=raw,value=${{ env.RELEASE_VERSION }}
       - uses: docker/build-push-action@v5
-        if: github.ref_type == 'tag'
         with:
           context: .
           target: mermaid
-          push: true
+          push: ${{ github.event_name == 'push' }}
           pull: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - uses: docker/metadata-action@v5
-        if: github.ref_type == 'branch'
-        id: meta-nightly
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=nightly
-      - uses: docker/build-push-action@v5
-        if: github.ref_type == 'branch'
-        with:
-          context: .
-          target: mermaid
-          push: ${{ github.event_name != 'pull_request' }}
-          pull: true
-          tags: ${{ steps.meta-nightly.outputs.tags }}
-          labels: ${{ steps.meta-nightly.outputs.labels }}

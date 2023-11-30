@@ -29,12 +29,12 @@ docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid
 
 ### To configure renderer URL
 
-When building, Set the Environment variable MERMAID_RENDERER_URL to the rendering service.
+When building set the MERMAID_RENDERER_URL build argument to the rendering service.
 Default is `https://mermaid.ink`
 
 ### To configure Kroki Instance URL
 
-When building, Set the Environment variable MERMAID_KROKI_RENDERER_URL to your Kroki instance.
+When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki instance.
 Default is `https://kroki.io`
 
 ### Development
@@ -44,6 +44,28 @@ docker compose up --build
 ```
 
 Then open http://localhost:3000
+
+### Building and running images locally
+
+#### Build
+
+```bash
+docker build -t mermaid-js/mermaid-live-editor .
+```
+
+#### Run
+
+```bash
+docker run --detach --name mermaid-live-editor --publish 8080:8080 mermaid-js/mermaid-live-editor
+```
+
+Visit: <http://localhost:8080>
+
+#### Stop
+
+```bash
+docker stop mermaid-live-editor
+```
 
 ## Setup
 
