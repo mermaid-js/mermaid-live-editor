@@ -5,7 +5,7 @@ on:
     branches:
       # Publish `master` as Docker `latest` image.
       - master
-      # Publish `nightly` as Docker `nightly` image.
+      # Publish `develop` as Docker `nightly` image.
       - develop
 
   # Run tests for all PRs to master and develop.
