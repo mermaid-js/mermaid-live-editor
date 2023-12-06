@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   import { version } from 'mermaid/package.json';
-  import { analytics } from '$lib/util/stats';
+  import { analytics, logEvent } from '$lib/util/stats';
   void analytics?.track('version', {
     mermaidVersion: version
   });
@@ -49,12 +49,23 @@
   ];
 
   let activePromotion = getActivePromotion();
+
+  const trackBannerClick = () => {
+    if (!analytics || !activePromotion) {
+      return;
+    }
+    logEvent('bannerClick', {
+      promotion: activePromotion.id
+    });
+  };
 </script>
 
 {#if activePromotion}
   <div
     class="z-10 w-full top-bar bg-gradient-to-r from-[#bd34fe] to-[#ff3670] flex items-center text-center justify-center p-1 text-white">
-    <svelte:component this={activePromotion.component} />
+    <div class="flex flex-grow" on:click={trackBannerClick} on:keypress={trackBannerClick}>
+      <svelte:component this={activePromotion.component} />
+    </div>
     <button
       title="Dismiss banner"
       on:click={() => {
