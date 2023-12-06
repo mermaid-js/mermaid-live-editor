@@ -3,7 +3,7 @@ services:
   mermaid:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      target: mermaid-dev
     volumes:
       - ./src:/app/src
     ports:
