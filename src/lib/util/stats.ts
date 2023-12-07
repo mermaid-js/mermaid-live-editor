@@ -99,7 +99,8 @@ const delaysPerEvent = {
   renderDiagram: defaultDelay,
   history: defaultDelay,
   migration: defaultDelay,
-  themeChange: defaultDelay
+  themeChange: defaultDelay,
+  bannerClick: defaultDelay
 };
 export type AnalyticsEvent = keyof typeof delaysPerEvent;
 const timeouts: Map<string, number> = new Map<string, number>();
