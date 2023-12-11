@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "2.0.3",
-    "@sveltejs/kit": "1.27.6",
+    "@sveltejs/kit": "1.28.0",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/svelte": "3.2.2",
     "@types/pako": "2.0.3",
@@ -39,7 +39,7 @@
     "cy-verify-downloads": "0.2.2",
     "cypress": "12.17.4",
     "cypress-localstorage-commands": "2.2.5",
-    "eslint": "8.54.0",
+    "eslint": "8.55.0",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-cypress": "2.15.1",
     "eslint-plugin-es": "4.1.0",
@@ -74,7 +74,7 @@
     "dayjs": "^1.11.7",
     "js-base64": "3.7.5",
     "mermaid": "10.6.1",
-    "monaco-editor": "0.44.0",
+    "monaco-editor": "0.45.0",
     "pako": "2.1.0",
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.1",
@@ -87,7 +87,7 @@
     ]
   },
   "volta": {
-    "node": "18.18.2",
+    "node": "18.19.0",
     "yarn": "1.22.21"
   },
   "engines": {
