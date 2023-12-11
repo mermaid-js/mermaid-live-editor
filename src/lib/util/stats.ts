@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import type { AnalyticsInstance } from 'analytics';
+import { env } from './env';
 export let analytics: AnalyticsInstance | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
@@ -13,10 +14,10 @@ export const initAnalytics = async (): Promise<void> => {
         app: 'mermaid-live-editor',
         plugins: [
           plausible({
-            domain: 'mermaid.live',
+            domain: env.domain,
             hashMode: false,
             // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
-            apiHost: 'https://p.mermaid.live'
+            apiHost: env.analyticsUrl
           })
         ]
       });
