@@ -68,14 +68,13 @@
     "vitest": "^0.34.0"
   },
   "dependencies": {
-    "analytics": "0.8.9",
-    "analytics-plugin-plausible": "0.0.6",
     "daisyui": "2.52.0",
     "dayjs": "^1.11.7",
     "js-base64": "3.7.5",
     "mermaid": "10.6.1",
     "monaco-editor": "0.45.0",
     "pako": "2.1.0",
+    "plausible-tracker": "^0.3.8",
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.1",
     "uuid": "9.0.1"

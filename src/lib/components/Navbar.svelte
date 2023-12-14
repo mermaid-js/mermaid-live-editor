@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import { version } from 'mermaid/package.json';
-  import { analytics, logEvent } from '$lib/util/stats';
-  void analytics?.track('version', {
+  import { logEvent, plausible } from '$lib/util/stats';
+  void logEvent('version', {
     mermaidVersion: version
   });
 </script>
@@ -51,7 +51,7 @@
   let activePromotion = getActivePromotion();
 
   const trackBannerClick = () => {
-    if (!analytics || !activePromotion) {
+    if (!plausible || !activePromotion) {
       return;
     }
     logEvent('bannerClick', {
