@@ -1,5 +1,5 @@
 import { initURLSubscription, loadState, updateCodeStore } from './state';
-import { analytics, initAnalytics } from './stats';
+import { plausible, initAnalytics } from './stats';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
@@ -21,7 +21,7 @@ export const initHandler = async (): Promise<void> => {
   syncDiagram();
   initURLSubscription();
   await initAnalytics();
-  await analytics?.page();
+  plausible?.trackPageview({ url: window.location.origin + window.location.pathname });
 };
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
