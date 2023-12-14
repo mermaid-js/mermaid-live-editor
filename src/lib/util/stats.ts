@@ -1,24 +1,17 @@
 import { browser } from '$app/environment';
-import type { AnalyticsInstance } from 'analytics';
-export let analytics: AnalyticsInstance | undefined;
+import { env } from './env';
+import type PlausibleInstance from 'plausible-tracker';
+export let plausible: ReturnType<typeof PlausibleInstance> | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
-  if (browser && !analytics) {
+  if (browser && !plausible) {
     try {
-      const [{ Analytics }, { default: plausible }] = await Promise.all([
-        import('analytics'),
-        import('analytics-plugin-plausible')
-      ]);
-      analytics = Analytics({
-        app: 'mermaid-live-editor',
-        plugins: [
-          plausible({
-            domain: 'mermaid.live',
-            hashMode: false,
-            // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
-            apiHost: 'https://p.mermaid.live'
-          })
-        ]
+      const { default: Plausible } = await import('plausible-tracker');
+      plausible = Plausible({
+        domain: env.domain,
+        hashMode: false,
+        // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
+        apiHost: env.analyticsUrl
       });
     } catch (error) {
       console.log(error);
@@ -100,20 +93,28 @@ const delaysPerEvent = {
   history: defaultDelay,
   migration: defaultDelay,
   themeChange: defaultDelay,
-  bannerClick: defaultDelay
+  bannerClick: defaultDelay,
+  version: defaultDelay
 };
 export type AnalyticsEvent = keyof typeof delaysPerEvent;
 const timeouts: Map<string, number> = new Map<string, number>();
 // manual debounce to reduce the number of events sent to analytics
-export const logEvent = (name: AnalyticsEvent, data?: unknown): void => {
-  if (!analytics) {
+export const logEvent = (
+  name: AnalyticsEvent,
+  data?: Record<string, string | number | boolean>
+): void => {
+  if (!plausible) {
     return;
   }
   const key = data ? JSON.stringify({ name, data }) : name;
   if (timeouts.has(key)) {
     clearTimeout(timeouts.get(key));
   } else {
-    void analytics.track(name, data);
+    plausible.trackEvent(
+      name,
+      { props: data },
+      { url: window.location.origin + window.location.pathname }
+    );
   }
   timeouts.set(
     key,
