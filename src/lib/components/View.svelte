@@ -125,18 +125,12 @@
   });
 </script>
 
-{#if (error && $stateStore.error instanceof Error) || outOfSync}
+{#if outOfSync}
   <div
-    class="absolute w-full p-2 z-10 font-mono {error
-      ? 'text-red-600'
-      : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
+    class="absolute w-full p-8 z-10 font-mono text-yellow-600 bg-base-100 bg-opacity-80 text-center"
     id="errorContainer">
-    {#if error}
-      {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
-    {:else}
-      Diagram out of sync. <br />
-      Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
-    {/if}
+    Diagram out of sync. <br />
+    Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
   </div>
 {/if}
 

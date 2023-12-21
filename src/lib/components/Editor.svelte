@@ -6,7 +6,7 @@
   import * as monaco from 'monaco-editor';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { initEditor } from '$lib/util/monacoExtra';
   import { logEvent } from '$lib/util/stats';
 
@@ -110,7 +110,7 @@
     });
 
     if (divEl.parentElement) {
-      resizeObserver.observe(divEl.parentElement);
+      resizeObserver.observe(divEl);
     }
 
     // @ts-ignore
@@ -118,11 +118,25 @@
       // @ts-ignore
       window.editorLoaded = true;
     }
-    return () => {
-      // console.log(`editor disposed`);
-      editor?.dispose();
-    };
+  });
+
+  onDestroy(() => {
+    editor?.dispose();
   });
 </script>
 
-<div bind:this={divEl} id="editor" class="overflow-hidden" />
+<div class="flex flex-col h-full">
+  <div bind:this={divEl} id="editor" class="overflow-hidden flex-grow h-full" />
+  {#if $stateStore.error instanceof Error}
+    <div class="flex flex-col text-sm text-neutral-100">
+      <div class="flex gap-2 items-center bg-red-700 p-2">
+        <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
+        <p>Diagram syntax error</p>
+      </div>
+      <div class="bg-red-600 font-mono max-h-32 overflow-auto p-2">
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+        {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
+      </div>
+    </div>
+  {/if}
+</div>
