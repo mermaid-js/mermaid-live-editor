@@ -3,5 +3,7 @@
   "svelteSortOrder": "options-scripts-markup-styles",
   "bracketSameLine": true,
   "trailingComma": "none",
-  "printWidth": 100
+  "printWidth": 100,
+  "tailwindConfig": "./tailwind.config.cjs",
+  "plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"]
 }

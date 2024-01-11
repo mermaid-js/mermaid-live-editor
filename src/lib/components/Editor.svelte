@@ -64,7 +64,7 @@
     }
   };
 
-  onMount(async () => {
+  onMount(() => {
     self.MonacoEnvironment = {
       getWorker(_, label) {
         if (label === 'json') {

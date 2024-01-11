@@ -109,7 +109,7 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
     throw new Error('Invalid gist provided');
   }
   gistHistory.reverse();
-  const entry = gistHistory.slice(-1).pop();
+  const entry = gistHistory.at(-1);
   if (!entry) {
     throw new Error('Invalid gist provided');
   }

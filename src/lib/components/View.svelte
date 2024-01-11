@@ -127,12 +127,12 @@
 
 {#if (error && $stateStore.error instanceof Error) || outOfSync}
   <div
-    class="absolute w-full p-2 z-10 font-mono {error
+    class="absolute z-10 w-full p-2 font-mono {error
       ? 'text-red-600'
       : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
     id="errorContainer">
     {#if error}
-      {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
+      {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
     {:else}
       Diagram out of sync. <br />
       Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
@@ -140,7 +140,7 @@
   </div>
 {/if}
 
-<div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
+<div id="view" bind:this={view} class="h-full p-2" class:error class:outOfSync>
   <div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
 </div>
 
