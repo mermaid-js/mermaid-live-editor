@@ -1,6 +1,7 @@
 import { writable, type Writable, get } from 'svelte/store';
 import { persist, localStorage } from '../persist';
 import Holiday2023 from './Holiday2023.svelte';
+import Jan2024 from './Jan2024.svelte';
 
 interface Promotion {
   id: string;
@@ -13,8 +14,14 @@ const promotions: Promotion[] = [
   {
     id: 'holiday-2023',
     startDate: new Date('2023-11-27'),
-    endDate: new Date('2024-01-01'),
+    endDate: new Date('2024-01-9'),
     component: Holiday2023
+  },
+  {
+    id: 'jan-2024',
+    startDate: new Date('2024-01-10'),
+    endDate: new Date('2024-06-01'),
+    component: Jan2024
   }
 ];
 
