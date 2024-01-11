@@ -47,8 +47,8 @@
 
 {#if $loadingStateStore.loading}
   <div
-    class="w-screen h-screen z-50 absolute left-0 top-0 bg-gray-600 opacity-50 flex align-middle justify-center">
-    <div class="text-indigo-100 text-4xl font-bold my-auto">
+    class="absolute left-0 top-0 z-50 flex h-screen w-screen justify-center bg-gray-600 align-middle opacity-50">
+    <div class="my-auto text-4xl font-bold text-indigo-100">
       <div class="loader mx-auto" />
       <div>{$loadingStateStore.message}</div>
     </div>

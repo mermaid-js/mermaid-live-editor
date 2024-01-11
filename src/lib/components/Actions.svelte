@@ -185,7 +185,7 @@
 </script>
 
 <Card title="Actions" isOpen={false}>
-  <div class="flex flex-wrap gap-2 m-2">
+  <div class="m-2 flex flex-wrap gap-2">
     {#if isClipboardAvailable()}
       <button class="action-btn w-full" on:click={onCopyClipboard}
         ><i class="far fa-copy mr-2" /> Copy Image to clipboard
@@ -213,7 +213,7 @@
       </button>
     </a>
 
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       PNG size
       <label for="autosize">
         <input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} /> Auto
@@ -238,7 +238,7 @@
       {/if}
     </div>
 
-    <div class="w-full flex gap-2 items-center">
+    <div class="flex w-full items-center gap-2">
       <input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
       <label for="markdown">
         <button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
@@ -247,7 +247,7 @@
       </label>
     </div>
 
-    <div class="w-full flex gap-2 items-center">
+    <div class="flex w-full items-center gap-2">
       <input
         class="input"
         id="gist"
@@ -259,8 +259,8 @@
       </label>
     </div>
     {#if isNetlify}
-      <div class="w-full flex items-center justify-center">
-        <a class="link underline text-gray-500 text-sm" href="https://netlify.com">
+      <div class="flex w-full items-center justify-center">
+        <a class="link text-sm text-gray-500 underline" href="https://netlify.com">
           This site is powered by Netlify
         </a>
       </div>

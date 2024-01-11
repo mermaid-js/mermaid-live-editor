@@ -62,8 +62,13 @@
 
 {#if activePromotion}
   <div
-    class="z-10 w-full top-bar bg-gradient-to-r from-[#bd34fe] to-[#ff3670] flex items-center text-center justify-center p-1 text-white">
-    <div class="flex flex-grow" on:click={trackBannerClick} on:keypress={trackBannerClick}>
+    class="top-bar z-10 flex w-full items-center justify-center bg-gradient-to-r from-[#bd34fe] to-[#ff3670] p-1 text-center text-white">
+    <div
+      class="flex flex-grow"
+      role="button"
+      tabindex="0"
+      on:click={trackBannerClick}
+      on:keypress={trackBannerClick}>
       <svelte:component this={activePromotion.component} />
     </div>
     <button
@@ -77,8 +82,8 @@
   </div>
 {/if}
 
-<div class="navbar shadow-lg bg-primary p-0">
-  <div class="flex-1 px-2 mx-2">
+<div class="navbar bg-primary p-0 shadow-lg">
+  <div class="mx-2 flex-1 px-2">
     <span class="text-lg font-bold">
       <a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
     </span>
@@ -86,7 +91,7 @@
 
   <label
     for="menu-toggle"
-    class={isMenuOpen ? 'hidden' : 'pointer-cursor lg:hidden fixed right-4 z-[1000]'}>
+    class={isMenuOpen ? 'hidden' : 'pointer-cursor fixed right-4 z-[1000] lg:hidden'}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -102,7 +107,7 @@
   <!-- Cross SVG -->
   <label
     for="menu-toggle"
-    class={isMenuOpen ? 'pointer-cursor lg:hidden fixed right-4 z-[1000]' : 'hidden'}>
+    class={isMenuOpen ? 'pointer-cursor fixed right-4 z-[1000] lg:hidden' : 'hidden'}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -123,9 +128,9 @@
     bind:checked={isMenuOpen}
     on:click={toggleMenu} />
 
-  <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
+  <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
     <Theme />
-    <ul class="lg:flex items-center justify-between text-base pt-4 lg:pt-0">
+    <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
       {#each links as { title, href, icon, img }}
         <li>
           <a class="btn btn-ghost" target="_blank" {href}>
