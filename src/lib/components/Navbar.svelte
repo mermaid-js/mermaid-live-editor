@@ -62,7 +62,7 @@
 
 {#if activePromotion}
   <div
-    class="z-10 w-full top-bar bg-gradient-to-r from-[#bd34fe] to-[#ff3670] flex items-center text-center justify-center p-1 text-white">
+    class="z-10 w-full h-fit top-bar bg-gradient-to-r from-[#bd34fe] to-[#ff3670] flex items-center text-center justify-center p-1 text-white">
     <div class="flex flex-grow" on:click={trackBannerClick} on:keypress={trackBannerClick}>
       <svelte:component this={activePromotion.component} />
     </div>
