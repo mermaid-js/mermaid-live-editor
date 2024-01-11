@@ -57,13 +57,13 @@
     input.type = 'file';
     input.accept = 'application/json';
     input.addEventListener('change', ({ target }: Event) => {
-      const file = (<HTMLInputElement>target).files[0];
+      const file = (target as HTMLInputElement)?.files?.[0];
       if (!file) {
         return;
       }
       const reader = new FileReader();
       reader.onload = (e) => {
-        const data: HistoryEntry[] = JSON.parse(e.target.result as string);
+        const data: HistoryEntry[] = JSON.parse(e.target?.result as string);
         restoreHistory(data);
       };
       reader.readAsText(file);
@@ -129,34 +129,34 @@
   <div slot="actions">
     <button
       id="uploadHistory"
-      class="btn btn-xs btn-secondary w-12"
+      class="btn btn-secondary btn-xs w-12"
       on:click|stopPropagation={() => uploadHistory()}
       title="Upload history"><i class="fa fa-upload" /></button>
     {#if $historyStore.length > 0}
       <button
         id="downloadHistory"
-        class="btn btn-xs btn-secondary w-12"
+        class="btn btn-secondary btn-xs w-12"
         on:click|stopPropagation={() => downloadHistory()}
         title="Download history"><i class="fa fa-download" /></button>
     {/if}
     |
     <button
       id="saveHistory"
-      class="btn btn-xs btn-success w-12"
+      class="btn btn-success btn-xs w-12"
       on:click|stopPropagation={() => saveHistory()}
       title="Save current state"><i class="far fa-save" /></button>
     {#if $historyModeStore !== 'loader'}
       <button
         id="clearHistory"
-        class="btn btn-xs btn-error w-12"
+        class="btn btn-error btn-xs w-12"
         on:click|stopPropagation={() => clearHistory()}
         title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
     {/if}
   </div>
-  <ul class="p-2 space-y-2 overflow-auto h-56" id="historyList">
+  <ul class="h-56 space-y-2 overflow-auto p-2" id="historyList">
     {#if $historyStore.length > 0}
       {#each $historyStore as { id, state, time, name, url, type }}
-        <li class="rounded p-2 shadow flex-col">
+        <li class="flex-col rounded p-2 shadow">
           <div class="flex">
             <div class="flex-1">
               <div class="flex flex-col text-base-content">
@@ -165,14 +165,14 @@
                     href={url}
                     target="_blank"
                     title="Open revision in new tab"
-                    class="hover:underline text-blue-500">{name}</a>
+                    class="text-blue-500 hover:underline">{name}</a>
                 {:else}
                   <span>{name}</span>
                 {/if}
-                <span class="text-gray-400 text-sm">{relativeTime(time)}</span>
+                <span class="text-sm text-gray-400">{relativeTime(time)}</span>
               </div>
             </div>
-            <div class="flex gap-2 content-center">
+            <div class="flex content-center gap-2">
               <button class="btn btn-success" on:click={() => restoreHistoryItem(state)}
                 ><i class="fas fa-undo mr-1" />Restore</button>
               {#if type !== 'loader'}

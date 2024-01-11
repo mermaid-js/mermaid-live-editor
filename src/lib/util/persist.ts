@@ -213,7 +213,7 @@ function getBrowserStorage(
         disconnect();
       }
     },
-    getValue(key: string): any | null {
+    getValue(key: string): any {
       const value = browserStorage.getItem(key);
       return deserialize(value);
     },

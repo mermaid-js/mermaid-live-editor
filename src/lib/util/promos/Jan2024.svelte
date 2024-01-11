@@ -9,7 +9,7 @@
 <a
   href="https://www.mermaidchart.com/"
   target="_blank"
-  class="tracking-wide flex-grow justify-center align-middle flex gap-6">
+  class="flex flex-grow justify-center gap-6 align-middle tracking-wide">
   {taglines[Math.floor(Math.random() * taglines.length)]}
-  <button class="font-light text-sm p-1 rounded bg-gray-800 px-4">Try it now</button>
+  <button class="rounded bg-gray-800 p-1 px-4 text-sm font-light">Try it now</button>
 </a>

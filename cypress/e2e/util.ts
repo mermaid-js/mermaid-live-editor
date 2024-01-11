@@ -11,7 +11,7 @@ export const typeInEditor = (
 ) => {
   cy.window().should('have.property', 'editorLoaded', true);
   cy.get('#editor').click();
-  cy.get('#editor').within(($editor) => {
+  cy.get('#editor').within(() => {
     if (bottom) {
       cy.get('textarea').type('{pageDown}', { force: true });
     }
