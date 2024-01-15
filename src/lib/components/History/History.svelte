@@ -20,7 +20,7 @@
 
   dayjs.extend(dayjsRelativeTime);
 
-  const HISTORY_SAVE_INTERVAL = 60000;
+  const HISTORY_SAVE_INTERVAL = 60_000;
 
   const tabSelectHandler = (message: CustomEvent<Tab>) => {
     historyModeStore.set(message.detail.id as HistoryType);
@@ -56,17 +56,13 @@
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/json';
-    input.addEventListener('change', ({ target }: Event) => {
+    input.addEventListener('change', async ({ target }: Event) => {
       const file = (target as HTMLInputElement)?.files?.[0];
       if (!file) {
         return;
       }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data: HistoryEntry[] = JSON.parse(e.target?.result as string);
-        restoreHistory(data);
-      };
-      reader.readAsText(file);
+      const data: HistoryEntry[] = JSON.parse(await file.text());
+      restoreHistory(data);
     });
     input.click();
   };
