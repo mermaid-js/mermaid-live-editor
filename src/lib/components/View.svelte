@@ -13,6 +13,7 @@
   let container: HTMLDivElement;
   let view: HTMLDivElement;
   let error = false;
+  let errorLines: string[] = [];
   let outOfSync = false;
   let hide = false;
   let manualUpdate = true;
@@ -60,6 +61,7 @@
   const handleStateChange = async (state: ValidatedState) => {
     if (state.error !== undefined) {
       error = true;
+      errorLines = state.error.toString().split('\n');
       return;
     }
     error = false;
@@ -133,7 +135,9 @@
       : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
     id="errorContainer">
     {#if error}
-      {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
+      {#each errorLines as line}
+        {line}<br />
+      {/each}
     {:else}
       Diagram out of sync. <br />
       Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
