@@ -37,7 +37,7 @@
     pzoom?.destroy();
     pzoom = undefined;
     void Promise.resolve().then(() => {
-      const graphDiv = document.getElementById('graph-div');
+      const graphDiv = document.querySelector<HTMLElement>('#graph-div');
       if (!graphDiv) {
         return;
       }
@@ -77,7 +77,7 @@
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
-        const scroll = view.parentElement!.scrollTop;
+        const scroll = view.parentElement?.scrollTop;
         delete container.dataset.processed;
         const { svg, bindFunctions } = await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
@@ -89,7 +89,7 @@
           handlePanZoom(state);
           container.innerHTML = svg;
           console.log({ svg });
-          const graphDiv = document.getElementById('graph-div');
+          const graphDiv = document.querySelector<HTMLElement>('#graph-div');
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
@@ -99,16 +99,17 @@
             bindFunctions(graphDiv);
           }
         }
-
-        view.parentElement!.scrollTop = scroll;
+        if (view.parentElement && scroll) {
+          view.parentElement.scrollTop = scroll;
+        }
         error = false;
       } else if (manualUpdate) {
         manualUpdate = false;
       } else if (code !== state.code || config !== state.mermaid) {
         outOfSync = true;
       }
-    } catch (e) {
-      console.error('view fail', e);
+    } catch (error_) {
+      console.error('view fail', error_);
       error = true;
     }
   };

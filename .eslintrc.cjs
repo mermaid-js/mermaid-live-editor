@@ -7,17 +7,11 @@ module.exports = {
     // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:@typescript-eslint/strict',
     'plugin:unicorn/recommended',
+    'plugin:svelte/recommended',
+    'plugin:svelte/prettier',
     'prettier'
   ],
-  plugins: [
-    'svelte3',
-    'tailwindcss',
-    '@typescript-eslint',
-    'es',
-    'vitest',
-    'no-only-tests',
-    'unicorn'
-  ],
+  plugins: ['tailwindcss', '@typescript-eslint', 'es', 'vitest', 'no-only-tests', 'unicorn'],
   ignorePatterns: [
     'docs/*',
     '*.cjs',
@@ -30,7 +24,13 @@ module.exports = {
     'tsconfig.json'
   ],
   overrides: [
-    { files: ['*.svelte'], processor: 'svelte3/svelte3' },
+    {
+      files: ['*.svelte'],
+      parser: 'svelte-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser'
+      }
+    },
     {
       files: ['*.ts'],
       extends: [
@@ -42,16 +42,12 @@ module.exports = {
       ]
     }
   ],
-  settings: {
-    'svelte3/typescript': () => require('typescript')
-  },
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2020,
     tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
-    extraFileExtensions: ['.svelte'],
-    allowAutomaticSingleRunInference: true
+    project: './tsconfig.json',
+    extraFileExtensions: ['.svelte']
   },
   env: {
     browser: true,
@@ -76,6 +72,7 @@ module.exports = {
         case: 'camelCase'
       }
     ],
+    'unicorn/filename-case': 'off',
     'unicorn/prevent-abbreviations': [
       'error',
       {
