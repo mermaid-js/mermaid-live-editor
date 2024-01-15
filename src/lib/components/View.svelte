@@ -13,6 +13,7 @@
   let container: HTMLDivElement;
   let view: HTMLDivElement;
   let error = false;
+  let errorLines: string[] = [];
   let outOfSync = false;
   let hide = false;
   let manualUpdate = true;
@@ -37,7 +38,7 @@
     pzoom?.destroy();
     pzoom = undefined;
     void Promise.resolve().then(() => {
-      const graphDiv = document.getElementById('graph-div');
+      const graphDiv = document.querySelector<HTMLElement>('#graph-div');
       if (!graphDiv) {
         return;
       }
@@ -60,6 +61,7 @@
   const handleStateChange = async (state: ValidatedState) => {
     if (state.error !== undefined) {
       error = true;
+      errorLines = state.error.toString().split('\n');
       return;
     }
     error = false;
@@ -77,7 +79,7 @@
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
-        const scroll = view.parentElement!.scrollTop;
+        const scroll = view.parentElement?.scrollTop;
         delete container.dataset.processed;
         const { svg, bindFunctions } = await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
@@ -89,7 +91,7 @@
           handlePanZoom(state);
           container.innerHTML = svg;
           console.log({ svg });
-          const graphDiv = document.getElementById('graph-div');
+          const graphDiv = document.querySelector<HTMLElement>('#graph-div');
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
@@ -99,16 +101,17 @@
             bindFunctions(graphDiv);
           }
         }
-
-        view.parentElement!.scrollTop = scroll;
+        if (view.parentElement && scroll) {
+          view.parentElement.scrollTop = scroll;
+        }
         error = false;
       } else if (manualUpdate) {
         manualUpdate = false;
       } else if (code !== state.code || config !== state.mermaid) {
         outOfSync = true;
       }
-    } catch (e) {
-      console.error('view fail', e);
+    } catch (error_) {
+      console.error('view fail', error_);
       error = true;
     }
   };
@@ -132,7 +135,9 @@
       : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
     id="errorContainer">
     {#if error}
-      {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
+      {#each errorLines as line}
+        {line}<br />
+      {/each}
     {:else}
       Diagram out of sync. <br />
       Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.

@@ -59,7 +59,7 @@
   let docKey = '';
   stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
     activeTabID = editorMode;
-    const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
+    const codeTypeMatch = /(\S+)\s/.exec(code);
     if (codeTypeMatch && codeTypeMatch.length > 1) {
       docKey = codeTypeMatch[1];
       const docConfig = docMap[docKey] ?? { code: '' };
@@ -87,14 +87,14 @@
 
   onMount(async () => {
     await initHandler();
-    const resizer = document.getElementById('resizeHandler');
-    const element = document.getElementById('editorPane');
+    const resizer = document.querySelector<HTMLElement>('#resizeHandler');
+    const element = document.querySelector<HTMLElement>('#editorPane');
     if (!resizer || !element) {
       console.debug('Failed to find resize handler or editor pane', { resizer, element });
       return;
     }
-    const resize = (e: { pageX: number }) => {
-      const newWidth = e.pageX - element.getBoundingClientRect().left;
+    const resize = ({ pageX }: { pageX: number }) => {
+      const newWidth = pageX - element.getBoundingClientRect().left;
       if (newWidth > 50) {
         element.style.width = `${newWidth}px`;
       }
@@ -103,8 +103,8 @@
     const stopResize = () => {
       window.removeEventListener('mousemove', resize);
     };
-    resizer.addEventListener('mousedown', (e) => {
-      e.preventDefault();
+    resizer.addEventListener('mousedown', (event) => {
+      event.preventDefault();
       window.addEventListener('mousemove', resize);
       window.addEventListener('mouseup', stopResize);
     });

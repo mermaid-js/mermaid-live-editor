@@ -1,3 +1,12 @@
+<script lang="ts" context="module">
+  declare global {
+    interface Window {
+      Cypress: boolean;
+      editorLoaded: boolean;
+    }
+  }
+</script>
+
 <script lang="ts">
   import type { EditorMode } from '$lib/types';
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
@@ -10,7 +19,7 @@
   import { initEditor } from '$lib/util/monacoExtra';
   import { logEvent } from '$lib/util/stats';
 
-  let divEl: HTMLDivElement | undefined = undefined;
+  let divElement: HTMLDivElement | undefined;
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
   let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     minimap: {
@@ -74,16 +83,15 @@
       }
     };
 
-    if (!divEl) {
+    if (!divElement) {
       throw new Error('divEl is undefined');
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     initEditor(monaco);
     errorDebug(100);
-    editor = monaco.editor.create(divEl, editorOptions);
-    editor.onDidChangeModelContent(({ isFlush, changes }) => {
+    editor = monaco.editor.create(divElement, editorOptions);
+    editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      // console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
       if (!newText || text === newText || isFlush) {
         return;
       }
@@ -109,20 +117,17 @@
       });
     });
 
-    if (divEl.parentElement) {
-      resizeObserver.observe(divEl.parentElement);
+    if (divElement.parentElement) {
+      resizeObserver.observe(divElement.parentElement);
     }
 
-    // @ts-ignore
     if (window.Cypress) {
-      // @ts-ignore
       window.editorLoaded = true;
     }
     return () => {
-      // console.log(`editor disposed`);
       editor?.dispose();
     };
   });
 </script>
 
-<div bind:this={divEl} id="editor" class="overflow-hidden" />
+<div bind:this={divElement} id="editor" class="overflow-hidden" />
