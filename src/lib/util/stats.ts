@@ -47,33 +47,45 @@ export const countLines = (code: string): number => {
   return (code.match(/\n/g)?.length ?? 0) + 1;
 };
 
-export const saveStatistics = (graph: string): void => {
+export const saveStatistics = (graph: string, renderTime: number): void => {
   const graphType = detectType(graph);
   if (!graphType) {
     return;
   }
   const length = countLines(graph);
-  const lengthBucket =
-    length < 10
-      ? '0-10'
-      : length < 25
-        ? '10-25'
-        : length < 50
-          ? '25-50'
-          : length < 100
-            ? '50-100'
-            : length < 200
-              ? '100-200'
-              : length < 500
-                ? '200-500'
-                : length < 700
-                  ? '500-700'
-                  : length < 1000
-                    ? '700-1000'
-                    : length < 1500
-                      ? '1000-1500'
-                      : '1500+';
-  logEvent('render', { graphType, length, lengthBucket });
+  const lengthBucket = getBucket(length);
+  const renderTimeMsBucket = getBucket(renderTime);
+  logEvent('render', { graphType, length, lengthBucket, renderTimeMsBucket });
+};
+
+const getBucket = (length: number): string => {
+  return length < 10
+    ? '0-10'
+    : length < 25
+      ? '10-25'
+      : length < 50
+        ? '25-50'
+        : length < 100
+          ? '50-100'
+          : length < 200
+            ? '100-200'
+            : length < 500
+              ? '200-500'
+              : length < 700
+                ? '500-700'
+                : length < 1000
+                  ? '700-1000'
+                  : length < 1500
+                    ? '1000-1500'
+                    : length < 2500
+                      ? '1500-2500'
+                      : length < 4500
+                        ? '2500-4500'
+                        : length < 7000
+                          ? '4500-7000'
+                          : length < 10_000
+                            ? '7000-10000'
+                            : '10000+';
 };
 
 const minutesToMilliSeconds = (minutes: number): number => {

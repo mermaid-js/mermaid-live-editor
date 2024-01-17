@@ -5,7 +5,6 @@ import { derived, get, writable, type Readable } from 'svelte/store';
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, serializeState } from './serde';
-import { saveStatistics } from './stats';
 import { errorDebug, formatJSON } from './util';
 
 export const defaultState: State = {
@@ -141,7 +140,6 @@ export const updateCode = (
     resetPanZoom = false
   }: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
 ): void => {
-  saveStatistics(code);
   errorDebug();
 
   inputStateStore.update((state) => {

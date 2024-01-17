@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
   import panzoom from 'svg-pan-zoom';
   import type { State, ValidatedState } from '$lib/types';
-  import { logEvent } from '$lib/util/stats';
+  import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
   import { render as renderDiagram } from '$lib/util/mermaid';
   import type { MermaidConfig } from 'mermaid';
@@ -123,6 +123,8 @@
       error = true;
     }
     const timeTaken = Date.now() - startTime;
+    console.log({ timeTaken });
+    saveStatistics(code, timeTaken);
     recordRenderTime(timeTaken, () => {
       $inputStateStore.updateDiagram = true;
     });

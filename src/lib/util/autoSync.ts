@@ -5,7 +5,7 @@ import { stateStore } from './state';
 let shouldSync = true;
 let updater: () => void;
 const renderDelay = 1000;
-const slowRenderThreshold = 250;
+const slowRenderThreshold = 150;
 
 const debouncedRender = debounce(() => {
   shouldSync = true;
