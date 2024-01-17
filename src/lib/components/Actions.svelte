@@ -7,12 +7,12 @@
   import { logEvent } from '$lib/util/stats';
   import { toBase64 } from 'js-base64';
   import dayjs from 'dayjs';
-  const { krokiRendererUrl, rendererUrl } = env;
 
+  const { krokiRendererUrl, rendererUrl } = env;
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
-  const getFileName = (ext: string) =>
-    `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${ext}`;
+  const getFileName = (extension: string) =>
+    `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
   const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
     if (svg) {
@@ -22,7 +22,7 @@
     height && svg?.setAttribute('height', `${height}px`);
     width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
     if (!svg) {
-      svg = getSvgEl();
+      svg = getSvgElement();
     }
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
@@ -32,7 +32,7 @@
 
   const exportImage = (event: Event, exporter: Exporter) => {
     const canvas: HTMLCanvasElement = document.createElement('canvas');
-    const svg: HTMLElement | null = document.querySelector('#container svg');
+    const svg = document.querySelector<HTMLElement>('#container svg');
     if (!svg) {
       throw new Error('svg not found');
     }
@@ -57,28 +57,26 @@
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     const image = new Image();
-    image.onload = exporter(context, image);
+    image.addEventListener('load', exporter(context, image));
     image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
 
     event.stopPropagation();
     event.preventDefault();
   };
 
-  const getSvgEl = () => {
-    const svgEl: HTMLElement = document
-      .querySelector('#container svg')!
-      .cloneNode(true) as HTMLElement;
-    svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    const fontAwesomeCdnUrl = Array.from(document.head.getElementsByTagName('link'))
-      .map((l) => l.href)
-      .find((h) => h.includes('font-awesome'));
+  const getSvgElement = () => {
+    const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
+    svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    const fontAwesomeCdnUrl = [...document.head.querySelectorAll('link')]
+      .map((link) => link.href)
+      .find((url) => url.includes('font-awesome'));
     if (fontAwesomeCdnUrl == null) {
-      return svgEl;
+      return svgElement;
     }
-    const styleEl = document.createElement('style');
-    styleEl.innerText = `@import url("${fontAwesomeCdnUrl}");'`;
-    svgEl.prepend(styleEl);
-    return svgEl;
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `@import url("${fontAwesomeCdnUrl}");'`;
+    svgElement.prepend(styleElement);
+    return svgElement;
   };
 
   const simulateDownload = (download: string, href: string): void => {
@@ -144,7 +142,7 @@
   };
 
   const onCopyMarkdown = () => {
-    (document.getElementById('markdown') as HTMLInputElement).select();
+    document.querySelector<HTMLInputElement>('#markdown')?.select();
     document.execCommand('Copy');
     logEvent('copyMarkdown');
   };
@@ -185,7 +183,7 @@
 </script>
 
 <Card title="Actions" isOpen={false}>
-  <div class="flex flex-wrap gap-2 m-2">
+  <div class="m-2 flex flex-wrap gap-2">
     {#if isClipboardAvailable()}
       <button class="action-btn w-full" on:click={onCopyClipboard}
         ><i class="far fa-copy mr-2" /> Copy Image to clipboard
@@ -213,7 +211,7 @@
       </button>
     </a>
 
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       PNG size
       <label for="autosize">
         <input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} /> Auto
@@ -238,7 +236,7 @@
       {/if}
     </div>
 
-    <div class="w-full flex gap-2 items-center">
+    <div class="flex w-full items-center gap-2">
       <input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
       <label for="markdown">
         <button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
@@ -247,7 +245,7 @@
       </label>
     </div>
 
-    <div class="w-full flex gap-2 items-center">
+    <div class="flex w-full items-center gap-2">
       <input
         class="input"
         id="gist"
@@ -259,8 +257,8 @@
       </label>
     </div>
     {#if isNetlify}
-      <div class="w-full flex items-center justify-center">
-        <a class="link underline text-gray-500 text-sm" href="https://netlify.com">
+      <div class="flex w-full items-center justify-center">
+        <a class="link text-sm text-gray-500 underline" href="https://netlify.com">
           This site is powered by Netlify
         </a>
       </div>

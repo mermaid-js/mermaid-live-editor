@@ -35,7 +35,7 @@ export const detectType = (text: string): string | undefined => {
     'mindmap'
   ];
   const firstLine = text
-    .replace(/^\s*%%.*\n/g, '\n')
+    .replaceAll(/^\s*%%.*\n/g, '\n')
     .trimStart()
     .split(' ')[0]
     .toLowerCase();
@@ -57,22 +57,22 @@ export const saveStatistics = (graph: string): void => {
     length < 10
       ? '0-10'
       : length < 25
-      ? '10-25'
-      : length < 50
-      ? '25-50'
-      : length < 100
-      ? '50-100'
-      : length < 200
-      ? '100-200'
-      : length < 500
-      ? '200-500'
-      : length < 700
-      ? '500-700'
-      : length < 1000
-      ? '700-1000'
-      : length < 1500
-      ? '1000-1500'
-      : '1500+';
+        ? '10-25'
+        : length < 50
+          ? '25-50'
+          : length < 100
+            ? '50-100'
+            : length < 200
+              ? '100-200'
+              : length < 500
+                ? '200-500'
+                : length < 700
+                  ? '500-700'
+                  : length < 1000
+                    ? '700-1000'
+                    : length < 1500
+                      ? '1000-1500'
+                      : '1500+';
   logEvent('render', { graphType, length, lengthBucket });
 };
 
