@@ -32,7 +32,7 @@ export const verifyFileSizeGreaterThan = (
   cy.get('#view').should('not.have.class', 'outOfSync');
   cy.task('readAndDeleteFile', {
     folder: downloadsFolder,
-    fileNamePattern: `mermaid-${fileType}-.*.${extension}`,
+    fileNamePattern: `^mermaid-${fileType}-.*.${extension}$`,
     mode: 'size'
   }).then((fileSize: number) => {
     expect(fileSize).to.be.gt(size);
@@ -47,7 +47,7 @@ export const verifyFileSnapshot = (
 ) => {
   cy.task('readAndDeleteFile', {
     folder: downloadsFolder,
-    fileNamePattern: `mermaid-${fileType}-.*.${extension}`,
+    fileNamePattern: `^mermaid-${fileType}-.*.${extension}$`,
     mode: 'content'
   }).then((fileContent: number) => {
     expect(fileContent).to.contain(content);
