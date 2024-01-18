@@ -1,12 +1,13 @@
 <script lang="ts">
   import { browser } from '$app/environment';
   import Card from '$lib/components/Card/Card.svelte';
+  import { waitForRender } from '$lib/util/autoSync';
   import { env } from '$lib/util/env';
   import { pakoSerde } from '$lib/util/serde';
   import { stateStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
-  import { toBase64 } from 'js-base64';
   import dayjs from 'dayjs';
+  import { toBase64 } from 'js-base64';
 
   const { krokiRendererUrl, rendererUrl } = env;
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
@@ -30,14 +31,8 @@
     return toBase64(svgString);
   };
 
-  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const exportImage = async (event: Event, exporter: Exporter) => {
-    let tries = 50;
-    while (document.querySelector('.outOfSync') && tries > 0) {
-      await sleep(100);
-      tries--;
-    }
+    await waitForRender();
     if (document.querySelector('.outOfSync')) {
       throw new Error('Diagram is out of sync');
     }
@@ -132,13 +127,13 @@
     };
   };
 
-  const onCopyClipboard = (event: Event) => {
-    exportImage(event, clipboardCopy);
+  const onCopyClipboard = async (event: Event) => {
+    await exportImage(event, clipboardCopy);
     logEvent('copyClipboard');
   };
 
-  const onDownloadPNG = (event: Event) => {
-    exportImage(event, downloadImage);
+  const onDownloadPNG = async (event: Event) => {
+    await exportImage(event, downloadImage);
     logEvent('download', {
       type: 'png'
     });
