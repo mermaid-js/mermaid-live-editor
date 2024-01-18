@@ -30,7 +30,14 @@
     return toBase64(svgString);
   };
 
-  const exportImage = (event: Event, exporter: Exporter) => {
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const exportImage = async (event: Event, exporter: Exporter) => {
+    let tries = 50;
+    while (document.querySelector('.outOfSync') && tries > 0) {
+      await sleep(100);
+      tries--;
+    }
     if (document.querySelector('.outOfSync')) {
       throw new Error('Diagram is out of sync');
     }
