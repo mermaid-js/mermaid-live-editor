@@ -29,6 +29,7 @@ export const verifyFileSizeGreaterThan = (
   extension: string,
   size: number
 ) => {
+  cy.get('#view').should('not.have.class', 'outOfSync');
   cy.task('readAndDeleteFile', {
     folder: downloadsFolder,
     fileNamePattern: `mermaid-${fileType}-.*.${extension}`,
