@@ -31,6 +31,9 @@
   };
 
   const exportImage = (event: Event, exporter: Exporter) => {
+    if (document.querySelector('.outOfSync')) {
+      throw new Error('Diagram is out of sync');
+    }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
     const svg = document.querySelector<HTMLElement>('#container svg');
     if (!svg) {
