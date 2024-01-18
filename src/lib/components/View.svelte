@@ -123,7 +123,6 @@
       error = true;
     }
     const timeTaken = Date.now() - startTime;
-    console.log({ timeTaken });
     saveStatistics(code, timeTaken);
     recordRenderTime(timeTaken, () => {
       $inputStateStore.updateDiagram = true;

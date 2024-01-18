@@ -1651,11 +1651,6 @@ cssstyle@^3.0.0:
   dependencies:
     rrweb-cssom "^0.6.0"
 
-cy-verify-downloads@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/cy-verify-downloads/-/cy-verify-downloads-0.2.2.tgz#c5eb96724f1abdaf3456a3ca5669030be52da01c"
-  integrity sha512-Cr4U38xg5z8AK8XiYuEcbAy1rfgtkZTdUFTWkG5NM+BxKSjRlpGt6LpylLpHp9B6ikKCBPotpeewW7fOuBFKlA==
-
 cypress-localstorage-commands@2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-2.2.5.tgz#81c8f53a06e2ed93c1e068c1101da85f80f27f61"
