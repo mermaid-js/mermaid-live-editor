@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "3.0.1",
-    "@sveltejs/kit": "2.3.0",
+    "@sveltejs/kit": "2.4.1",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/svelte": "4.0.5",
     "@types/pako": "2.0.3",
