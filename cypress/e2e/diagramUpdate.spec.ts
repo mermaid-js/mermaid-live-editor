@@ -50,6 +50,24 @@ describe('Auto sync tests', () => {
     cy.getLocalStorage('codeStore').snapshot();
   });
 
+  it('should automatically defer rendering when complex diagrams are edited', () => {
+    cy.get('#view').should('not.have.class', 'outOfSync');
+    typeInEditor(`
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i
+A & B & C & D & E --> F & G & K & Z & i`);
+    cy.get('#view').should('have.class', 'outOfSync');
+    cy.get('#errorContainer').should('contain.text', 'It will be updated automatically.');
+    // The class should be removed automatically after 1 second.
+    cy.get('#view').should('not.have.class', 'outOfSync');
+  });
+
   it('supports commenting code out/in', () => {
     cy.get('#editor').contains('Car').click();
     cy.get('#editor').get('textarea').type(`${cmd}/`, { force: true });

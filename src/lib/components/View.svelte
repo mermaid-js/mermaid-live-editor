@@ -3,10 +3,11 @@
   import { onMount } from 'svelte';
   import panzoom from 'svg-pan-zoom';
   import type { State, ValidatedState } from '$lib/types';
-  import { logEvent } from '$lib/util/stats';
+  import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
   import { render as renderDiagram } from '$lib/util/mermaid';
   import type { MermaidConfig } from 'mermaid';
+  import { recordRenderTime, shouldRefreshView } from '$lib/util/autoSync';
 
   let code = '';
   let config = '';
@@ -59,6 +60,7 @@
   };
 
   const handleStateChange = async (state: ValidatedState) => {
+    const startTime = Date.now();
     if (state.error !== undefined) {
       error = true;
       errorLines = state.error.toString().split('\n');
@@ -76,6 +78,12 @@
         if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
           return;
         }
+
+        if (!shouldRefreshView()) {
+          outOfSync = true;
+          return;
+        }
+
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
@@ -114,6 +122,11 @@
       console.error('view fail', error_);
       error = true;
     }
+    const timeTaken = Date.now() - startTime;
+    saveStatistics(code, timeTaken);
+    recordRenderTime(timeTaken, () => {
+      $inputStateStore.updateDiagram = true;
+    });
   };
 
   onMount(() => {
@@ -140,7 +153,11 @@
       {/each}
     {:else}
       Diagram out of sync. <br />
-      Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      {#if $stateStore.autoSync}
+        It will be updated automatically.
+      {:else}
+        Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      {/if}
     {/if}
   </div>
 {/if}

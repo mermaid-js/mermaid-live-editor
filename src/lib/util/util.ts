@@ -28,7 +28,7 @@ export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
 
 let count = 0;
-export const errorDebug = (limit = 100) => {
+export const errorDebug = (limit = 1000) => {
   count += 1;
   if (count > limit) {
     console.log(count, limit);
