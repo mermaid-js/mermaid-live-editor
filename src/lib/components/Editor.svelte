@@ -88,7 +88,7 @@
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     initEditor(monaco);
-    errorDebug(100);
+    errorDebug();
     editor = monaco.editor.create(divElement, editorOptions);
     editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();

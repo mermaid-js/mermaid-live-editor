@@ -14,7 +14,7 @@ const promotions: Promotion[] = [
   {
     id: 'holiday-2023',
     startDate: new Date('2023-11-27'),
-    endDate: new Date('2024-01-9'),
+    endDate: new Date('2024-01-09'),
     component: Holiday2023
   },
   {
