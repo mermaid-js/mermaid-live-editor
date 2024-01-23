@@ -141,6 +141,13 @@
     C --> db
     D --> C
     style m fill:#d6d,stroke:#333,stroke-width:4px
+    `,
+    ZenUML: `zenuml
+    title Sync message
+    A.SyncMessage
+    A.SyncMessage(with, parameters) {
+      B.nestedSyncMessage()
+    }
     `
   };
 
@@ -154,7 +161,7 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: SampleTypes[] = ['QuadrantChart', 'XYChart', 'Block'];
+  const newDiagrams: SampleTypes[] = ['QuadrantChart', 'XYChart', 'Block', 'ZenUML'];
   const diagramOrder: SampleTypes[] = [
     'Flow',
     'Sequence',
@@ -168,7 +175,8 @@
     'Mindmap',
     'QuadrantChart',
     'XYChart',
-    'Block'
+    'Block',
+    'ZenUML'
   ];
 </script>
 

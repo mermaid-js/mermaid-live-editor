@@ -1,5 +1,10 @@
 import mermaid from 'mermaid';
 import type { MermaidConfig, RenderResult } from 'mermaid';
+import zenuml from '@mermaid-js/mermaid-zenuml';
+
+await mermaid.registerExternalDiagrams([zenuml]).catch((error) => {
+  console.error('Error registering external diagrams:', error);
+});
 
 export const render = async (
   config: MermaidConfig,
