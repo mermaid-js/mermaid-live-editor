@@ -153,14 +153,14 @@
 </script>
 
 <Card title="Sample Diagrams" isOpen={false}>
-  <div class="flex flex-wrap p-2 gap-2">
+  <div class="flex flex-wrap gap-2 p-2">
     {#each diagramOrder as sample}
       <button
-        class="btn btn-sm btn-primary w-28 normal-case flex-grow"
+        class="btn btn-primary btn-sm w-28 flex-grow normal-case"
         on:click={() => loadSampleDiagram(sample)}>
         {sample}
         {#if newDiagrams.includes(sample)}
-          <span class="ml-2 fa fa-heart" />
+          <span class="fa fa-heart ml-2" />
         {/if}
       </button>
     {/each}

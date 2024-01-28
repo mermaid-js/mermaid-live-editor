@@ -3,16 +3,18 @@
   import { onMount } from 'svelte';
   import panzoom from 'svg-pan-zoom';
   import type { State, ValidatedState } from '$lib/types';
-  import { logEvent } from '$lib/util/stats';
+  import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
   import { render as renderDiagram } from '$lib/util/mermaid';
   import type { MermaidConfig } from 'mermaid';
+  import { recordRenderTime, shouldRefreshView } from '$lib/util/autoSync';
 
   let code = '';
   let config = '';
   let container: HTMLDivElement;
   let view: HTMLDivElement;
   let error = false;
+  let errorLines: string[] = [];
   let outOfSync = false;
   let hide = false;
   let manualUpdate = true;
@@ -37,7 +39,7 @@
     pzoom?.destroy();
     pzoom = undefined;
     void Promise.resolve().then(() => {
-      const graphDiv = document.getElementById('graph-div');
+      const graphDiv = document.querySelector<HTMLElement>('#graph-div');
       if (!graphDiv) {
         return;
       }
@@ -58,8 +60,10 @@
   };
 
   const handleStateChange = async (state: ValidatedState) => {
+    const startTime = Date.now();
     if (state.error !== undefined) {
       error = true;
+      errorLines = state.error.toString().split('\n');
       return;
     }
     error = false;
@@ -74,10 +78,16 @@
         if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
           return;
         }
+
+        if (!shouldRefreshView()) {
+          outOfSync = true;
+          return;
+        }
+
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
-        const scroll = view.parentElement!.scrollTop;
+        const scroll = view.parentElement?.scrollTop;
         delete container.dataset.processed;
         const { svg, bindFunctions } = await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
@@ -89,7 +99,7 @@
           handlePanZoom(state);
           container.innerHTML = svg;
           console.log({ svg });
-          const graphDiv = document.getElementById('graph-div');
+          const graphDiv = document.querySelector<HTMLElement>('#graph-div');
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
@@ -99,18 +109,24 @@
             bindFunctions(graphDiv);
           }
         }
-
-        view.parentElement!.scrollTop = scroll;
+        if (view.parentElement && scroll) {
+          view.parentElement.scrollTop = scroll;
+        }
         error = false;
       } else if (manualUpdate) {
         manualUpdate = false;
       } else if (code !== state.code || config !== state.mermaid) {
         outOfSync = true;
       }
-    } catch (e) {
-      console.error('view fail', e);
+    } catch (error_) {
+      console.error('view fail', error_);
       error = true;
     }
+    const timeTaken = Date.now() - startTime;
+    saveStatistics(code, timeTaken);
+    recordRenderTime(timeTaken, () => {
+      $inputStateStore.updateDiagram = true;
+    });
   };
 
   onMount(() => {
@@ -127,20 +143,26 @@
 
 {#if (error && $stateStore.error instanceof Error) || outOfSync}
   <div
-    class="absolute w-full p-2 z-10 font-mono {error
+    class="absolute z-10 w-full p-2 font-mono {error
       ? 'text-red-600'
       : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
     id="errorContainer">
     {#if error}
-      {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
+      {#each errorLines as line}
+        {line}<br />
+      {/each}
     {:else}
       Diagram out of sync. <br />
-      Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      {#if $stateStore.autoSync}
+        It will be updated automatically.
+      {:else}
+        Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      {/if}
     {/if}
   </div>
 {/if}
 
-<div id="view" bind:this={view} class="p-2 h-full" class:error class:outOfSync>
+<div id="view" bind:this={view} class="h-full p-2" class:error class:outOfSync>
   <div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
 </div>
 

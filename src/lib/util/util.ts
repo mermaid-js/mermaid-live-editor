@@ -1,5 +1,5 @@
 import { initURLSubscription, loadState, updateCodeStore } from './state';
-import { analytics, initAnalytics } from './stats';
+import { plausible, initAnalytics } from './stats';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
@@ -21,14 +21,14 @@ export const initHandler = async (): Promise<void> => {
   syncDiagram();
   initURLSubscription();
   await initAnalytics();
-  await analytics?.page();
+  plausible?.trackPageview({ url: window.location.origin + window.location.pathname });
 };
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
 
 let count = 0;
-export const errorDebug = (limit = 100) => {
+export const errorDebug = (limit = 1000) => {
   count += 1;
   if (count > limit) {
     console.log(count, limit);

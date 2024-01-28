@@ -37,6 +37,12 @@ Default is `https://mermaid.ink`
 When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki instance.
 Default is `https://kroki.io`
 
+### To configure Analytics
+
+When building set the MERMAID_ANALYTICS_URL build argument to your plausible instance, and MERMAID_DOMAIN to your domain.
+
+Default is empty, disabling analytics.
+
 ### Development
 
 ```bash

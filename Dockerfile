@@ -16,6 +16,8 @@ FROM mermaid-live-editor-dependencies AS mermaid-live-editor-builder
 
 ARG MERMAID_RENDERER_URL
 ARG MERMAID_KROKI_RENDERER_URL
+ARG MERMAID_ANALYTICS_URL
+ARG MERMAID_DOMAIN
 
 COPY . ./
 

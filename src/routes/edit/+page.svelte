@@ -88,7 +88,7 @@
   let docKey = '';
   stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
     activeTabID = editorMode;
-    const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
+    const codeTypeMatch = /(\S+)\s/.exec(code);
     if (codeTypeMatch && codeTypeMatch.length > 1) {
       docKey = codeTypeMatch[1];
       const docConfig = docMap[docKey] ?? { code: '' };
@@ -116,14 +116,14 @@
 
   onMount(async () => {
     await initHandler();
-    const resizer = document.getElementById('resizeHandler');
-    const element = document.getElementById('editorPane');
+    const resizer = document.querySelector<HTMLElement>('#resizeHandler');
+    const element = document.querySelector<HTMLElement>('#editorPane');
     if (!resizer || !element) {
       console.debug('Failed to find resize handler or editor pane', { resizer, element });
       return;
     }
-    const resize = (e: { pageX: number }) => {
-      const newWidth = e.pageX - element.getBoundingClientRect().left;
+    const resize = ({ pageX }: { pageX: number }) => {
+      const newWidth = pageX - element.getBoundingClientRect().left;
       if (newWidth > 50) {
         element.style.width = `${newWidth}px`;
       }
@@ -132,22 +132,22 @@
     const stopResize = () => {
       window.removeEventListener('mousemove', resize);
     };
-    resizer.addEventListener('mousedown', (e) => {
-      e.preventDefault();
+    resizer.addEventListener('mousedown', (event) => {
+      event.preventDefault();
       window.addEventListener('mousemove', resize);
       window.addEventListener('mouseup', stopResize);
     });
   });
 </script>
 
-<div class="h-full flex flex-col overflow-hidden">
+<div class="flex h-full flex-col overflow-hidden">
   <Navbar />
-  <div class="flex-1 flex overflow-hidden">
-    <div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
+  <div class="flex flex-1 overflow-hidden">
+    <div class="hidden flex-col md:flex" id="editorPane" style="width: 40%">
       <Card on:select={tabSelectHandler} {tabs} isCloseable={false} {activeTabID} title="Mermaid">
         <div slot="actions" class="flex flex-row items-center">
           <div class="form-control flex-row items-center">
-            <label class="cursor-pointer label" for="autoSync">
+            <label class="label cursor-pointer" for="autoSync">
               <span> Auto sync</span>
               <input
                 type="checkbox"
@@ -184,10 +184,10 @@
       </div>
     </div>
     <div id="resizeHandler" class="hidden md:block" />
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div class="flex flex-1 flex-col overflow-hidden">
       <Card title="Diagram" isCloseable={false}>
         <div slot="actions" class="flex flex-row items-center gap-2">
-          <label class="cursor-pointer label py-0" for="panZoom">
+          <label class="label cursor-pointer py-0" for="panZoom">
             <span>Pan & Zoom</span>
             <input
               type="checkbox"
@@ -205,7 +205,7 @@
             target="_blank"
             class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
             title="Save diagram in Mermaid Chart"
-            ><img src="./mermaidchart-logo.svg" class="w-5 h-5" alt="Mermaid chart logo" />Save to
+            ><img src="./mermaidchart-logo.svg" class="h-5 w-5" alt="Mermaid chart logo" />Save to
             Mermaid Chart</a>
         </div>
 
@@ -213,7 +213,7 @@
           <View />
         </div>
       </Card>
-      <div class="md:hidden rounded shadow p-2 mx-2">
+      <div class="mx-2 rounded p-2 shadow md:hidden">
         Code editing not supported on mobile. Please use a desktop browser.
       </div>
     </div>
