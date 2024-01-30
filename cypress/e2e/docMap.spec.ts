@@ -14,23 +14,23 @@ describe('Editor docs tests', () => {
 
   it('Test to see if the correct URL loads when changing from one diagram to other', () => {
     cy.contains('Flow').click();
-    cy.get(`[data-cy=docs][href$="/#/flowchart"]`).should('exist');
+    cy.get(`[data-cy=docs][href$="/syntax/flowchart.html"]`).should('exist');
 
     cy.contains('Config').click();
-    cy.get(`[data-cy=docs][href$="/#/flowchart?id=configuration"]`).should('exist');
+    cy.get(`[data-cy=docs][href$="/syntax/flowchart.html#configuration"]`).should('exist');
 
     cy.contains('Sequence').click();
-    cy.get(`[data-cy=docs][href$="/#/sequenceDiagram?id=configuration"]`).should('exist');
+    cy.get(`[data-cy=docs][href$="/syntax/sequenceDiagram.html#configuration"]`).should('exist');
 
     cy.contains('Code').click();
-    cy.get(`[data-cy=docs][href$="/#/sequenceDiagram"]`).should('exist');
+    cy.get(`[data-cy=docs][href$="/syntax/sequenceDiagram.html"]`).should('exist');
   });
 
   it("Test to check URLs for a case where config URL doesn't exist", () => {
     cy.contains('State').click();
-    cy.get(`[data-cy=docs][href$="/#/stateDiagram"]`).should('exist');
+    cy.get(`[data-cy=docs][href$="/syntax/stateDiagram.html"]`).should('exist');
 
     cy.contains('Config').click();
-    cy.get(`[data-cy=docs][href$="/#/stateDiagram"]`).should('exist');
+    cy.get(`[data-cy=docs][href$="/syntax/stateDiagram.html"]`).should('exist');
   });
 });
