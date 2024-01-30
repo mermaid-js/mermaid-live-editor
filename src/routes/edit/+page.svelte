@@ -14,7 +14,7 @@
   import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
 
   const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
-  const docURLBase = 'https://mermaid-js.github.io/mermaid';
+  const docURLBase = 'https://mermaid.js.org';
   const docMap: DocumentationConfig = {
     graph: {
       code: '/syntax/.html',
