@@ -9,7 +9,7 @@ describe('Editor docs tests', () => {
   });
 
   it('Test default loading', () => {
-    cy.get(`[data-cy=docs][href^="https://mermaid-js.github.io/mermaid"]`).should('exist');
+    cy.get(`[data-cy=docs][href^="https://mermaid.js.org/"]`).should('exist');
   });
 
   it('Test to see if the correct URL loads when changing from one diagram to other', () => {
