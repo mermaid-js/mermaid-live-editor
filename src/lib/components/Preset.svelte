@@ -124,20 +124,24 @@
     bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
     line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]`,
     Block: `block-beta
-columns 1
-  db(("DB"))
-  blockArrow<["&nbsp;&nbsp;&nbsp;"]>(down)
-  block:ID
     columns 3
-    A
-    B["A wide one in the middle"]
-    C
+    doc>"Document"]:3
+    space down1<[" "]>(down) space
+
+  block:e:3
+          l["left"]
+          m("A wide one in the middle")
+          r["right"]
   end
-  space
-  D
-  ID --> D
-  C --> D
-  style B fill:#f9F,stroke:#333,stroke-width:4px`
+    space down2<[" "]>(down) space
+    db[("DB")]:3
+    space:3
+    D space C
+    db --> D
+    C --> db
+    D --> C
+    style m fill:#d6d,stroke:#333,stroke-width:4px
+    `
   };
 
   type SampleTypes = keyof typeof samples;
