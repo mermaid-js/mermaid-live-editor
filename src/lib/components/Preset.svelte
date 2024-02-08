@@ -122,7 +122,26 @@
     x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
     y-axis "Revenue (in $)" 4000 --> 11000
     bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
-    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]`
+    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]`,
+    Block: `block-beta
+    columns 3
+    doc>"Document"]:3
+    space down1<[" "]>(down) space
+
+  block:e:3
+          l["left"]
+          m("A wide one in the middle")
+          r["right"]
+  end
+    space down2<[" "]>(down) space
+    db[("DB")]:3
+    space:3
+    D space C
+    db --> D
+    C --> db
+    D --> C
+    style m fill:#d6d,stroke:#333,stroke-width:4px
+    `
   };
 
   type SampleTypes = keyof typeof samples;
@@ -135,10 +154,10 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: SampleTypes[] = ['Mindmap', 'QuadrantChart', 'XYChart'];
+  const newDiagrams: SampleTypes[] = ['QuadrantChart', 'XYChart', 'Block'];
   const diagramOrder: SampleTypes[] = [
-    'Sequence',
     'Flow',
+    'Sequence',
     'Class',
     'State',
     'ER',
@@ -148,7 +167,8 @@
     'Pie',
     'Mindmap',
     'QuadrantChart',
-    'XYChart'
+    'XYChart',
+    'Block'
   ];
 </script>
 
@@ -156,7 +176,7 @@
   <div class="flex flex-wrap gap-2 p-2">
     {#each diagramOrder as sample}
       <button
-        class="btn btn-primary btn-sm w-28 flex-grow normal-case"
+        class="btn btn-primary btn-sm w-fit min-w-20 flex-grow normal-case"
         on:click={() => loadSampleDiagram(sample)}>
         {sample}
         {#if newDiagrams.includes(sample)}
