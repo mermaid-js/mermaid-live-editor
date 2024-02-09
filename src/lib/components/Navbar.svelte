@@ -9,6 +9,7 @@
 <script lang="ts">
   import Theme from './Theme.svelte';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
+  import Privacy from './Privacy.svelte';
   let isMenuOpen = false;
 
   function toggleMenu() {
@@ -131,6 +132,9 @@
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
     <Theme />
     <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
+      <li>
+        <Privacy />
+      </li>
       {#each links as { title, href, icon, img }}
         <li>
           <a class="btn btn-ghost" target="_blank" {href}>
