@@ -29,7 +29,7 @@
     },
     {
       title: 'Tutorial',
-      href: 'https://mermaid.js.org/config/Tutorials.html'
+      href: 'https://mermaid.js.org/ecosystem/tutorials.html'
     },
     {
       title: 'Mermaid',
