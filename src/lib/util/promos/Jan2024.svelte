@@ -8,7 +8,7 @@
   const taglineKey = taglineKeys[Math.floor(Math.random() * taglineKeys.length)];
   const tagline = taglines[taglineKey];
   const url =
-    'https://www.mermaidchart.com/?' +
+    'https://www.mermaidchart.com/landing/?' +
     new URLSearchParams({
       utm_source: 'mermaid_live_editor',
       utm_medium: taglineKey,
