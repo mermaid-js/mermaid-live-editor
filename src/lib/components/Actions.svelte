@@ -72,14 +72,8 @@
   const getSvgElement = () => {
     const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
     svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    const fontAwesomeCdnUrl = [...document.head.querySelectorAll('link')]
-      .map((link) => link.href)
-      .find((url) => url.includes('font-awesome'));
-    if (fontAwesomeCdnUrl == null) {
-      return svgElement;
-    }
     const styleElement = document.createElement('style');
-    styleElement.textContent = `@import url("${fontAwesomeCdnUrl}");'`;
+    styleElement.textContent = "@import '@fortawesome/fontawesome-free/css/all.min.css';";
     svgElement.prepend(styleElement);
     return svgElement;
   };
