@@ -72,9 +72,7 @@
   const getSvgElement = () => {
     const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
     svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    const styleElement = document.createElement('style');
-    styleElement.textContent = "@import '@fortawesome/fontawesome-free/css/all.min.css';";
-    svgElement.prepend(styleElement);
+    // TODO(#681) - Render Font Awesome Icons in SVG
     return svgElement;
   };
 
