@@ -8,6 +8,9 @@
   import { logEvent } from '$lib/util/stats';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
+  import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
+
+  const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
   const { krokiRendererUrl, rendererUrl } = env;
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
@@ -28,7 +31,10 @@
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
-    return toBase64(svgString);
+
+    return toBase64(`<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
+${svgString}`);
   };
 
   const exportImage = async (event: Event, exporter: Exporter) => {
@@ -72,7 +78,6 @@
   const getSvgElement = () => {
     const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
     svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    // TODO(#681) - Render Font Awesome Icons in SVG
     return svgElement;
   };
 
