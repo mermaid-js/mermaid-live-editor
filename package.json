@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "3.0.1",
-    "@sveltejs/kit": "2.5.0",
+    "@sveltejs/kit": "2.5.2",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/svelte": "4.1.0",
     "@types/lodash-es": "^4.17.12",
@@ -55,7 +55,7 @@
     "lint-staged": "^15.2.0",
     "node-html-parser": "^6.1.5",
     "postcss": "^8.4.33",
-    "postcss-load-config": "5.0.2",
+    "postcss-load-config": "5.0.3",
     "prettier": "^3.1.0",
     "prettier-plugin-svelte": "^3.1.2",
     "prettier-plugin-tailwindcss": "^0.5.11",
@@ -71,9 +71,9 @@
   "dependencies": {
     "daisyui": "2.52.0",
     "dayjs": "^1.11.7",
-    "js-base64": "3.7.6",
+    "js-base64": "3.7.7",
     "lodash-es": "^4.17.21",
-    "mermaid": "10.8.0",
+    "mermaid": "10.9.0",
     "monaco-editor": "0.45.0",
     "pako": "2.1.0",
     "plausible-tracker": "^0.3.8",
@@ -88,7 +88,7 @@
     ]
   },
   "volta": {
-    "node": "18.19.0",
+    "node": "18.19.1",
     "yarn": "1.22.21"
   },
   "engines": {
