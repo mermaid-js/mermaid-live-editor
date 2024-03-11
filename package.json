@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "3.0.1",
-    "@sveltejs/kit": "2.5.2",
+    "@sveltejs/kit": "2.5.3",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/svelte": "4.1.0",
     "@types/lodash-es": "^4.17.12",
@@ -89,7 +89,7 @@
   },
   "volta": {
     "node": "18.19.1",
-    "yarn": "1.22.21"
+    "yarn": "1.22.22"
   },
   "engines": {
     "node": ">=16.7"
