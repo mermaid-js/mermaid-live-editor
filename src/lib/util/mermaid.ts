@@ -8,7 +8,19 @@ export const render = async (
 ): Promise<RenderResult> => {
   // Should be able to call this multiple times without any issues.
   mermaid.initialize(config);
-  return await mermaid.render(id, code);
+
+  try {
+    const result = await mermaid.render(id, code);
+    return result;
+  } catch {
+    const errorDiv = document.querySelector(`#d${id}`);
+    const svg = errorDiv?.innerHTML ?? '';
+    errorDiv?.remove();
+    return {
+      svg,
+      bindFunctions: undefined
+    };
+  }
 };
 
 export const parse = async (code: string): Promise<unknown> => {
