@@ -69,7 +69,7 @@ A & B & C & D & E --> F & G & K & Z & i`);
   });
 
   it('supports commenting code out/in', () => {
-    cy.get('#editor').contains('Car').click();
+    cy.get('#editor').contains('Car').click({ force: true });
     cy.get('#editor').get('textarea').type(`${cmd}/`, { force: true });
     cy.get('#view').contains('Car').should('not.exist');
 
