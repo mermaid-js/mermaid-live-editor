@@ -69,6 +69,7 @@
     "vitest-dom": "^0.1.1"
   },
   "dependencies": {
+    "@mermaid-js/mermaid-zenuml": "^0.2.0",
     "daisyui": "2.52.0",
     "dayjs": "^1.11.7",
     "js-base64": "3.7.7",
