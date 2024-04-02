@@ -1,0 +1,1 @@
+import{R as r,q as e,S as l}from"./zenuml-definition-ddfc84a5.BiteK5hG.js";const n={xmlns:"http://www.w3.org/2000/svg","xml:space":"preserve",fill:"none",viewBox:"0 0 20 20"},t=l("circle",{cx:"10",cy:"10",r:"10",fill:"#000","fill-opacity":".1"},null,-1),o=[t];function s(c,i){return r(),e("svg",n,o)}const f={render:s};export{f as default,s as render};
