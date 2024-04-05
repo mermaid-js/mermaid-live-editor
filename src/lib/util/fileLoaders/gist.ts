@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { addHistoryEntry } from '$lib/components/History/history';
 import type { State } from '$lib/types';
 import { defaultState } from '$lib/util/state';
-import { addHistoryEntry } from '$lib/components/History/history';
 import { fetchJSON, fetchText } from '$lib/util/util';
 
 const codeFileName = 'code.mmd';
@@ -102,8 +102,12 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
   );
   const gistHistory: GistData[] = [];
   for (const entry of history) {
-    const data: GistData | undefined = await getGistData(entry.url).catch();
-    data && gistHistory.push(data);
+    try {
+      const data: GistData = await getGistData(entry.url);
+      gistHistory.push(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
   if (gistHistory.length === 0) {
     throw new Error('Invalid gist provided');
