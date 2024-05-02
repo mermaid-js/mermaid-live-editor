@@ -24,7 +24,7 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@sveltejs/adapter-static": "3.0.1",
-    "@sveltejs/kit": "2.5.5",
+    "@sveltejs/kit": "2.5.7",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/svelte": "4.1.0",
     "@types/lodash-es": "^4.17.12",
@@ -41,7 +41,7 @@
     "cypress-localstorage-commands": "2.2.5",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-cypress": "2.15.1",
+    "eslint-plugin-cypress": "2.15.2",
     "eslint-plugin-es": "^4.1.0",
     "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-postcss-modules": "^2.0.0",
