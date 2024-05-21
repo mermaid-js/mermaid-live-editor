@@ -74,7 +74,7 @@
     "dayjs": "^1.11.7",
     "js-base64": "3.7.7",
     "lodash-es": "^4.17.21",
-    "mermaid": "10.9.0",
+    "mermaid": "10.9.1",
     "monaco-editor": "0.48.0",
     "pako": "2.1.0",
     "plausible-tracker": "^0.3.8",
