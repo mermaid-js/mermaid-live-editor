@@ -1,17 +1,19 @@
 <script lang="ts">
-  import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
-  import { onMount } from 'svelte';
-  import panzoom from 'svg-pan-zoom';
   import type { State, ValidatedState } from '$lib/types';
+  import { recordRenderTime, shouldRefreshView } from '$lib/util/autoSync';
+  import { render as renderDiagram } from '$lib/util/mermaid';
+  import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
-  import { render as renderDiagram } from '$lib/util/mermaid';
   import type { MermaidConfig } from 'mermaid';
-  import { recordRenderTime, shouldRefreshView } from '$lib/util/autoSync';
+  import { onMount } from 'svelte';
+  import panzoom from 'svg-pan-zoom';
+  import { Svg2Roughjs } from 'svg2roughjs';
 
   let code = '';
   let config = '';
   let container: HTMLDivElement;
+  let rough: boolean;
   let view: HTMLDivElement;
   let error = false;
   let errorLines: string[] = [];
@@ -75,7 +77,12 @@
         outOfSync = false;
         manualUpdate = true;
         // Do not render if there is no change in Code/Config/PanZoom
-        if (code === state.code && config === state.mermaid && panZoomEnabled === state.panZoom) {
+        if (
+          code === state.code &&
+          config === state.mermaid &&
+          panZoomEnabled === state.panZoom &&
+          rough === state.rough
+        ) {
           return;
         }
 
@@ -87,6 +94,7 @@
         code = state.code;
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
+        rough = state.rough;
         const scroll = view.parentElement?.scrollTop;
         delete container.dataset.processed;
         const { svg, bindFunctions } = await renderDiagram(
@@ -98,15 +106,31 @@
         if (svg.length > 0) {
           handlePanZoom(state);
           container.innerHTML = svg;
-          console.log({ svg });
-          const graphDiv = document.querySelector<HTMLElement>('#graph-div');
+          const graphDiv = document.querySelector<SVGSVGElement>('#graph-div');
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
-          graphDiv.setAttribute('height', '100%');
-          graphDiv.style.maxWidth = '100%';
-          if (bindFunctions) {
-            bindFunctions(graphDiv);
+          if (state.rough) {
+            const svg2roughjs = new Svg2Roughjs('#container');
+            svg2roughjs.svg = graphDiv;
+            await svg2roughjs.sketch();
+            graphDiv.remove();
+            const sketch = document.querySelector<HTMLElement>('#container > svg');
+            if (!sketch) {
+              throw new Error('sketch not found');
+            }
+            const height = sketch.getAttribute('height');
+            const width = sketch.getAttribute('width');
+            sketch.setAttribute('height', '100%');
+            sketch.setAttribute('width', '100%');
+            sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            sketch.style.maxWidth = '100%';
+          } else {
+            graphDiv.setAttribute('height', '100%');
+            graphDiv.style.maxWidth = '100%';
+            if (bindFunctions) {
+              bindFunctions(graphDiv);
+            }
           }
         }
         if (view.parentElement && scroll) {
@@ -122,9 +146,9 @@
       console.error('view fail', error_);
       error = true;
     }
-    const timeTaken = Date.now() - startTime;
-    saveStatistics(code, timeTaken);
-    recordRenderTime(timeTaken, () => {
+    const renderTime = Date.now() - startTime;
+    saveStatistics({ code, renderTime, isRough: state.rough });
+    recordRenderTime(renderTime, () => {
       $inputStateStore.updateDiagram = true;
     });
   };

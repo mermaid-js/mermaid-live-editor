@@ -19,6 +19,7 @@ export const defaultState: State = {
     theme: 'default'
   }),
   autoSync: true,
+  rough: false,
   updateDiagram: true
 };
 

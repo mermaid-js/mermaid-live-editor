@@ -80,6 +80,7 @@
     "plausible-tracker": "^0.3.8",
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.1",
+    "svg2roughjs": "^3.2.0",
     "uuid": "9.0.1"
   },
   "lint-staged": {

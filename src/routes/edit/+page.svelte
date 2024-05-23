@@ -1,17 +1,17 @@
 <script lang="ts">
+  import { dev } from '$app/environment';
+  import { base } from '$app/paths';
+  import Actions from '$lib/components/Actions.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
+  import History from '$lib/components/History/History.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
-  import Actions from '$lib/components/Actions.svelte';
   import View from '$lib/components/View.svelte';
-  import Card from '$lib/components/Card/Card.svelte';
-  import History from '$lib/components/History/History.svelte';
+  import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
-  import { base } from '$app/paths';
-  import { dev } from '$app/environment';
-  import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
 
   const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
   const docURLBase = 'https://mermaid.js.org';
@@ -187,12 +187,27 @@
     <div class="flex flex-1 flex-col overflow-hidden">
       <Card title="Diagram" isCloseable={false}>
         <div slot="actions" class="flex flex-row items-center gap-2">
-          <label class="label cursor-pointer py-0" for="panZoom">
+          <label
+            class="label flex cursor-pointer gap-1 py-0"
+            title="Rough mode is in beta. Features like clickable nodes, Pan & Zoom, will be disabled."
+            for="rough">
+            <span>Rough</span>
+            <input
+              type="checkbox"
+              class="toggle {$stateStore.rough ? 'btn-secondary' : 'toggle-primary'}"
+              id="rough"
+              bind:checked={$inputStateStore.rough} />
+          </label>
+          <label
+            class="label flex cursor-pointer gap-1 py-0"
+            title={$stateStore.rough ? 'Pan & Zoom is disabled in rough mode.' : ''}
+            for="panZoom">
             <span>Pan & Zoom</span>
             <input
               type="checkbox"
               class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
               id="panZoom"
+              disabled={$stateStore.rough}
               bind:checked={$inputStateStore.panZoom} />
           </label>
           <a
