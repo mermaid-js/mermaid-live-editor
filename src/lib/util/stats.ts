@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
-import { env } from './env';
 import type PlausibleInstance from 'plausible-tracker';
+import { env } from './env';
 export let plausible: ReturnType<typeof PlausibleInstance> | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
@@ -47,15 +47,23 @@ export const countLines = (code: string): number => {
   return (code.match(/\n/g)?.length ?? 0) + 1;
 };
 
-export const saveStatistics = (graph: string, renderTime: number): void => {
-  const graphType = detectType(graph);
+export const saveStatistics = ({
+  code,
+  renderTime,
+  isRough
+}: {
+  code: string;
+  renderTime: number;
+  isRough: boolean;
+}): void => {
+  const graphType = detectType(code);
   if (!graphType) {
     return;
   }
-  const length = countLines(graph);
+  const length = countLines(code);
   const lengthBucket = getBucket(length);
   const renderTimeMsBucket = getBucket(renderTime);
-  logEvent('render', { graphType, length, lengthBucket, renderTimeMsBucket });
+  logEvent('render', { graphType, length, lengthBucket, renderTimeMsBucket, isRough });
 };
 
 const getBucket = (length: number): string => {

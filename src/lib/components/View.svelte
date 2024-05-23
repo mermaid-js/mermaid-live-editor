@@ -114,7 +114,7 @@
             const svg2roughjs = new Svg2Roughjs('#container');
             svg2roughjs.svg = graphDiv;
             await svg2roughjs.sketch();
-            graphDiv?.remove();
+            graphDiv.remove();
             const sketch = document.querySelector<HTMLElement>('#container > svg');
             if (!sketch) {
               throw new Error('sketch not found');
@@ -146,9 +146,9 @@
       console.error('view fail', error_);
       error = true;
     }
-    const timeTaken = Date.now() - startTime;
-    saveStatistics(code, timeTaken);
-    recordRenderTime(timeTaken, () => {
+    const renderTime = Date.now() - startTime;
+    saveStatistics({ code, renderTime, isRough: state.rough });
+    recordRenderTime(renderTime, () => {
       $inputStateStore.updateDiagram = true;
     });
   };
