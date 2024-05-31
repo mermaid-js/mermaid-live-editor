@@ -66,7 +66,6 @@
     if (state.error !== undefined) {
       error = true;
       errorLines = state.error.toString().split('\n');
-      return;
     }
     error = false;
     try {
