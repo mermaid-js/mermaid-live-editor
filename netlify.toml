@@ -1,0 +1,3 @@
+[build.environment]
+	MERMAID_ANALYTICS_URL = 'https://p.mermaid.live'
+	MERMAID_DOMAIN = 'mermaid.live'

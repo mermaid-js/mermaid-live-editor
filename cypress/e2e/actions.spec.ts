@@ -26,8 +26,6 @@ describe('Check actions', () => {
   });
 
   it('should download png and svg', () => {
-    cy.clock(new Date(2022, 0, 1).getTime());
-
     cy.get(`#downloadPNG`).click();
     verifyFileSizeGreaterThan('diagram', 'png', 34_000);
 
@@ -43,7 +41,5 @@ describe('Check actions', () => {
 
     cy.get(`#downloadSVG`).click();
     verifyFileSizeGreaterThan('diagram', 'svg', 11_000);
-
-    cy.clock().invoke('restore');
   });
 });
