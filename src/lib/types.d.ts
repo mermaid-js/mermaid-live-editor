@@ -23,6 +23,7 @@ export interface State {
   mermaid: string;
   updateDiagram: boolean;
   autoSync: boolean;
+  rough: boolean;
   editorMode?: EditorMode;
   panZoom?: boolean;
   pan?: { x: number; y: number };
