@@ -20,6 +20,8 @@
 
 <div class="flex cursor-default">
   <span
+    role="menubar"
+    tabindex="0"
     class="mr-2 font-semibold"
     on:click|stopPropagation={() => (isOpen = !isOpen)}
     on:keypress|stopPropagation={() => (isOpen = !isOpen)}>
@@ -31,6 +33,8 @@
     <ul class="tabs" transition:fade>
       {#each tabs as tab}
         <div
+          role="tab"
+          tabindex="0"
           class="tab tab-lifted {activeTabID === tab.id ? 'tab-active' : 'text-primary-content'}"
           on:click|stopPropagation={() => toggleTabs(tab)}
           on:keypress|stopPropagation={() => toggleTabs(tab)}>

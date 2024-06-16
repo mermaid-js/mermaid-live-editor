@@ -204,6 +204,11 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         'Rel_Back',
         'RelIndex'
       ]
+    },
+    sankey: {
+      typeKeywords: ['sankey-beta'],
+      blockKeywords: [],
+      keywords: []
     }
   };
 
@@ -248,6 +253,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/^\s*stateDiagram(-v2)?/, 'typeKeyword', 'stateDiagram'],
         [/^\s*er(Diagram)?/, 'typeKeyword', 'erDiagram'],
         [/^\s*requirement(Diagram)?/, 'typeKeyword', 'requirementDiagram'],
+        [/^\s*sankey-beta/m, 'typeKeyword', 'sankey'],
         [
           /^\s*(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)/m,
           'typeKeyword',
@@ -535,6 +541,16 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/,/, 'delimiter.bracket'],
         [/\)/, { next: '@pop', token: 'delimiter.bracket' }],
         [/[^),]/, 'string']
+      ],
+      sankey: [
+        configDirectiveHandler,
+        [/(title)(.*)/, ['keyword', 'string']],
+        [/(accTitle|accDescr)(\s*:)(\s*[^\n\r]+$)/, ['keyword', 'delimiter.bracket', 'string']],
+        [/".*?"/, 'string'],
+        [/[A-Za-z]+/, 'string'],
+        [/\s*\d+/, 'number'],
+        [/,/, 'delimiter.bracket'],
+        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
       ]
     }
   });

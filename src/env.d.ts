@@ -3,9 +3,8 @@
 interface ImportMetaEnv {
   readonly MERMAID_RENDERER_URL?: string;
   readonly MERMAID_KROKI_RENDERER_URL?: string;
-  readonly MERMAID_CDN_URL?: string;
-  readonly MERMAID_BASE_URL?: string;
-  readonly MERMAID_LOCAL?: boolean;
+  readonly MERMAID_ANALYTICS_URL?: string;
+  readonly MERMAID_DOMAIN?: string;
   // more env variables...
 }
 

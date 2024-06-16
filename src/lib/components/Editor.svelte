@@ -1,16 +1,25 @@
+<script lang="ts" context="module">
+  declare global {
+    interface Window {
+      Cypress: boolean;
+      editorLoaded: boolean;
+    }
+  }
+</script>
+
 <script lang="ts">
   import type { EditorMode } from '$lib/types';
+  import { initEditor } from '$lib/util/monacoExtra';
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
+  import { logEvent } from '$lib/util/stats';
   import { themeStore } from '$lib/util/theme';
   import { errorDebug, syncDiagram } from '$lib/util/util';
   import * as monaco from 'monaco-editor';
-  import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-  import { onMount, onDestroy } from 'svelte';
-  import { initEditor } from '$lib/util/monacoExtra';
-  import { logEvent } from '$lib/util/stats';
+  import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+  import { onDestroy, onMount } from 'svelte';
 
-  let divEl: HTMLDivElement | undefined = undefined;
+  let divElement: HTMLDivElement | undefined;
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
   let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     minimap: {
@@ -64,7 +73,7 @@
     }
   };
 
-  onMount(async () => {
+  onMount(() => {
     self.MonacoEnvironment = {
       getWorker(_, label) {
         if (label === 'json') {
@@ -74,16 +83,15 @@
       }
     };
 
-    if (!divEl) {
+    if (!divElement) {
       throw new Error('divEl is undefined');
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     initEditor(monaco);
-    errorDebug(100);
-    editor = monaco.editor.create(divEl, editorOptions);
-    editor.onDidChangeModelContent(({ isFlush, changes }) => {
+    errorDebug();
+    editor = monaco.editor.create(divElement, editorOptions);
+    editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      // console.log('editor onDidChangeModelContent', { text, newText, isFlush, changes });
       if (!newText || text === newText || isFlush) {
         return;
       }
@@ -109,13 +117,11 @@
       });
     });
 
-    if (divEl.parentElement) {
-      resizeObserver.observe(divEl);
+    if (divElement.parentElement) {
+      resizeObserver.observe(divElement);
     }
 
-    // @ts-ignore
     if (window.Cypress) {
-      // @ts-ignore
       window.editorLoaded = true;
     }
   });
@@ -125,17 +131,17 @@
   });
 </script>
 
-<div class="flex flex-col h-full">
-  <div bind:this={divEl} id="editor" class="overflow-hidden flex-grow h-full" />
+<div class="flex h-full flex-col">
+  <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden" />
   {#if $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm text-neutral-100">
-      <div class="flex gap-2 items-center bg-red-700 p-2">
+      <div class="flex items-center gap-2 bg-red-700 p-2">
         <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
         <p>Diagram syntax error</p>
       </div>
-      <div class="bg-red-600 font-mono max-h-32 overflow-auto p-2">
+      <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html $stateStore.error?.toString().replace(/\n/g, '<br />')}
+        {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
       </div>
     </div>
   {/if}
