@@ -24,8 +24,8 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@fortawesome/fontawesome-free": "^6.5.1",
-    "@sveltejs/adapter-static": "3.0.1",
-    "@sveltejs/kit": "2.5.9",
+    "@sveltejs/adapter-static": "3.0.2",
+    "@sveltejs/kit": "2.5.16",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/svelte": "4.2.3",
     "@types/lodash-es": "^4.17.12",
@@ -91,7 +91,7 @@
     ]
   },
   "volta": {
-    "node": "18.20.2",
+    "node": "18.20.3",
     "yarn": "1.22.22"
   },
   "engines": {
