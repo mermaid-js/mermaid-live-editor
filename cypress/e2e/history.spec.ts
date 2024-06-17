@@ -5,7 +5,10 @@ describe('Save History', () => {
     cy.clock(new Date(2022, 0, 1).getTime());
     cy.clearLocalStorage();
     cy.visit('/edit');
-
+    cy.on('uncaught:exception', (error) => {
+      // Skip the error from inside monaco.
+      return !error.message.includes('duration');
+    });
     cy.contains('History').click();
   });
 

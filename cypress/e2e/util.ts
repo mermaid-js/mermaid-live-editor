@@ -13,12 +13,12 @@ export const typeInEditor = (
   cy.get('#editor').click();
   cy.get('#editor').within(() => {
     if (bottom) {
-      cy.get('textarea').type('{pageDown}', { force: true });
+      cy.get('textarea').type('{pageDown}');
     }
     if (newline) {
-      cy.get('textarea').type('{enter}', { force: true });
+      cy.get('textarea').type('{enter}');
     }
-    cy.get('textarea').type(text, { force: true });
+    cy.get('textarea').type(text);
   });
 };
 

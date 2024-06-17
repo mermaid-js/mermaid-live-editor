@@ -16,7 +16,6 @@
   let rough: boolean;
   let view: HTMLDivElement;
   let error = false;
-  let errorLines: string[] = [];
   let outOfSync = false;
   let hide = false;
   let manualUpdate = true;
@@ -65,7 +64,6 @@
     const startTime = Date.now();
     if (state.error !== undefined) {
       error = true;
-      errorLines = state.error.toString().split('\n');
       return;
     }
     error = false;
@@ -165,23 +163,15 @@
   });
 </script>
 
-{#if (error && $stateStore.error instanceof Error) || outOfSync}
+{#if outOfSync}
   <div
-    class="absolute z-10 w-full p-2 font-mono {error
-      ? 'text-red-600'
-      : 'text-yellow-600'} bg-base-100 bg-opacity-80 text-left"
+    class="font-monotext-yellow-600 absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left"
     id="errorContainer">
-    {#if error}
-      {#each errorLines as line}
-        {line}<br />
-      {/each}
+    Diagram out of sync. <br />
+    {#if $stateStore.autoSync}
+      It will be updated automatically.
     {:else}
-      Diagram out of sync. <br />
-      {#if $stateStore.autoSync}
-        It will be updated automatically.
-      {:else}
-        Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
-      {/if}
+      Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
     {/if}
   </div>
 {/if}

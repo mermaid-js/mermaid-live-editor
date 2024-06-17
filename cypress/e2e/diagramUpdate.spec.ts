@@ -81,14 +81,12 @@ A & B & C & D & E --> F & G & K & Z & i`);
     cy.visit(
       '/edit#pako:eNpljjEKwzAMRa8SNOcEnlt6gK5eVFvYJsgOqkwpIXevg9smEE1PnyfxF3DFExgISW-CczQ2D21cYU7a-SGYXRwyvTp9jUhuKlVP-eHy7zA-leQsMEmg_QOM0BLG5FujZVMsaCQmC6ahR5ks2Lw2r84ela4-aREwKpVGwKrl_s7ut3fnkjAIcg_XDzuaUhs'
     );
-    cy.get('#errorContainer').should('not.exist');
+    cy.contains('Diagram syntax error').should('not.exist');
     typeInEditor(`branch test`, { bottom: true, newline: true });
     cy.get('#editor').contains('branch test').should('exist');
-    cy.get('#errorContainer')
-      .contains(
-        'Error: Trying to checkout branch which is not yet created. (Help try using "branch master")'
-      )
-      .should('exist');
+    cy.contains(
+      'Error: Trying to checkout branch which is not yet created. (Help try using "branch master")'
+    ).should('exist');
   });
 
   it('should update diagram after entire text is removed', () => {
