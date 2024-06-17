@@ -9,15 +9,15 @@
 
 <script lang="ts">
   import type { EditorMode } from '$lib/types';
+  import { initEditor } from '$lib/util/monacoExtra';
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
+  import { logEvent } from '$lib/util/stats';
   import { themeStore } from '$lib/util/theme';
   import { errorDebug, syncDiagram } from '$lib/util/util';
   import * as monaco from 'monaco-editor';
-  import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-  import { onMount } from 'svelte';
-  import { initEditor } from '$lib/util/monacoExtra';
-  import { logEvent } from '$lib/util/stats';
+  import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+  import { onDestroy, onMount } from 'svelte';
 
   let divElement: HTMLDivElement | undefined;
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
@@ -118,16 +118,31 @@
     });
 
     if (divElement.parentElement) {
-      resizeObserver.observe(divElement.parentElement);
+      resizeObserver.observe(divElement);
     }
 
     if (window.Cypress) {
       window.editorLoaded = true;
     }
-    return () => {
-      editor?.dispose();
-    };
+  });
+
+  onDestroy(() => {
+    editor?.dispose();
   });
 </script>
 
-<div bind:this={divElement} id="editor" class="overflow-hidden" />
+<div class="flex h-full flex-col">
+  <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden" />
+  {#if $stateStore.error instanceof Error}
+    <div class="flex flex-col text-sm text-neutral-100">
+      <div class="flex items-center gap-2 bg-red-700 p-2">
+        <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
+        <p>Diagram syntax error</p>
+      </div>
+      <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+        {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
+      </div>
+    </div>
+  {/if}
+</div>
