@@ -1,10 +1,17 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .input {
-  @apply flex-1 border-primary border-solid border-2 rounded;
+  @apply flex-1 rounded border-2 border-solid border-primary;
 }
 .action-btn {
   @apply btn btn-primary;
+}
+#graph-div sub,
+#graph-div sup {
+  position: initial;
+  vertical-align: revert;
 }

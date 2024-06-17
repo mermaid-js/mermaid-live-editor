@@ -1,34 +1,49 @@
 <script lang="ts">
   import { browser } from '$app/environment';
   import Card from '$lib/components/Card/Card.svelte';
+  import { waitForRender } from '$lib/util/autoSync';
   import { env } from '$lib/util/env';
   import { pakoSerde } from '$lib/util/serde';
   import { stateStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
-  import { toBase64 } from 'js-base64';
   import dayjs from 'dayjs';
-  const { krokiRendererUrl, rendererUrl } = env;
+  import { toBase64 } from 'js-base64';
+  import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
 
+  const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
+
+  const { krokiRendererUrl, rendererUrl } = env;
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
-  const getFileName = (ext: string) =>
-    `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${ext}`;
+  const getFileName = (extension: string) =>
+    `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
   const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
+    if (svg) {
+      // Prevents the SVG size of the interface from being changed
+      svg = svg.cloneNode(true) as HTMLElement;
+    }
     height && svg?.setAttribute('height', `${height}px`);
     width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
     if (!svg) {
-      svg = getSvgEl();
+      svg = getSvgElement();
     }
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
-    return toBase64(svgString);
+
+    return toBase64(`<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
+${svgString}`);
   };
 
-  const exportImage = (event: Event, exporter: Exporter) => {
+  const exportImage = async (event: Event, exporter: Exporter) => {
+    await waitForRender();
+    if (document.querySelector('.outOfSync')) {
+      throw new Error('Diagram is out of sync');
+    }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
-    const svg: HTMLElement | null = document.querySelector('#container svg');
+    const svg = document.querySelector<HTMLElement>('#container svg');
     if (!svg) {
       throw new Error('svg not found');
     }
@@ -49,32 +64,21 @@
     if (!context) {
       throw new Error('context not found');
     }
-    context.fillStyle = 'white';
+    context.fillStyle = `hsl(${window.getComputedStyle(document.body).getPropertyValue('--b1')})`;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     const image = new Image();
-    image.onload = exporter(context, image);
+    image.addEventListener('load', exporter(context, image));
     image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
 
     event.stopPropagation();
     event.preventDefault();
   };
 
-  const getSvgEl = () => {
-    const svgEl: HTMLElement = document
-      .querySelector('#container svg')!
-      .cloneNode(true) as HTMLElement;
-    svgEl.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    const fontAwesomeCdnUrl = Array.from(document.head.getElementsByTagName('link'))
-      .map((l) => l.href)
-      .find((h) => h.includes('font-awesome'));
-    if (fontAwesomeCdnUrl == null) {
-      return svgEl;
-    }
-    const styleEl = document.createElement('style');
-    styleEl.innerText = `@import url("${fontAwesomeCdnUrl}");'`;
-    svgEl.prepend(styleEl);
-    return svgEl;
+  const getSvgElement = () => {
+    const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
+    svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    return svgElement;
   };
 
   const simulateDownload = (download: string, href: string): void => {
@@ -120,13 +124,13 @@
     };
   };
 
-  const onCopyClipboard = (event: Event) => {
-    exportImage(event, clipboardCopy);
+  const onCopyClipboard = async (event: Event) => {
+    await exportImage(event, clipboardCopy);
     logEvent('copyClipboard');
   };
 
-  const onDownloadPNG = (event: Event) => {
-    exportImage(event, downloadImage);
+  const onDownloadPNG = async (event: Event) => {
+    await exportImage(event, downloadImage);
     logEvent('download', {
       type: 'png'
     });
@@ -140,7 +144,7 @@
   };
 
   const onCopyMarkdown = () => {
-    (document.getElementById('markdown') as HTMLInputElement).select();
+    document.querySelector<HTMLInputElement>('#markdown')?.select();
     document.execCommand('Copy');
     logEvent('copyMarkdown');
   };
@@ -181,7 +185,7 @@
 </script>
 
 <Card title="Actions" isOpen={false}>
-  <div class="flex flex-wrap gap-2 m-2">
+  <div class="m-2 flex flex-wrap gap-2">
     {#if isClipboardAvailable()}
       <button class="action-btn w-full" on:click={onCopyClipboard}
         ><i class="far fa-copy mr-2" /> Copy Image to clipboard
@@ -209,7 +213,7 @@
       </button>
     </a>
 
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       PNG size
       <label for="autosize">
         <input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} /> Auto
@@ -234,7 +238,7 @@
       {/if}
     </div>
 
-    <div class="w-full flex gap-2 items-center">
+    <div class="flex w-full items-center gap-2">
       <input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
       <label for="markdown">
         <button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
@@ -243,7 +247,7 @@
       </label>
     </div>
 
-    <div class="w-full flex gap-2 items-center">
+    <div class="flex w-full items-center gap-2">
       <input
         class="input"
         id="gist"
@@ -255,8 +259,8 @@
       </label>
     </div>
     {#if isNetlify}
-      <div class="w-full flex items-center justify-center">
-        <a class="link underline text-gray-500 text-sm" href="https://netlify.com">
+      <div class="flex w-full items-center justify-center">
+        <a class="link text-sm text-gray-500 underline" href="https://netlify.com">
           This site is powered by Netlify
         </a>
       </div>

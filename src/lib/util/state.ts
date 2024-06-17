@@ -1,17 +1,16 @@
-import { writable, get, type Readable, derived } from 'svelte/store';
-import { persist, localStorage } from './persist';
-import { saveStatistics, countLines } from './stats';
-import { serializeState, deserializeState } from './serde';
-import { cmdKey, errorDebug, formatJSON } from './util';
-import { parse } from './mermaid';
-
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
+import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
+import { derived, get, writable, type Readable } from 'svelte/store';
 import {
-  findMostRelevantLineNumber,
   extractErrorLineText,
+  findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
+import { parse } from './mermaid';
+import { localStorage, persist } from './persist';
+import { deserializeState, serializeState } from './serde';
+import { errorDebug, formatJSON } from './util';
 
 export const defaultState: State = {
   code: `flowchart TD
@@ -25,6 +24,7 @@ export const defaultState: State = {
     theme: 'default'
   }),
   autoSync: true,
+  rough: false,
   updateDiagram: true
 };
 
@@ -155,7 +155,6 @@ export const updateCodeStore = (newState: Partial<State>): void => {
   });
 };
 
-let prompted = false;
 export const updateCode = (
   code: string,
   {
@@ -163,21 +162,7 @@ export const updateCode = (
     resetPanZoom = false
   }: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
 ): void => {
-  // console.log('updateCode', code);
-  const lines = countLines(code);
-  saveStatistics(code);
   errorDebug();
-  if (lines > 50 && !prompted && get(stateStore).autoSync) {
-    const turnOff = confirm(
-      `Long diagram detected. Turn off Auto Sync? Use ${cmdKey} + Enter or click the sync logo to manually sync.`
-    );
-    prompted = true;
-    if (turnOff) {
-      updateCodeStore({
-        autoSync: false
-      });
-    }
-  }
 
   inputStateStore.update((state) => {
     if (resetPanZoom) {
@@ -206,13 +191,13 @@ export const toggleDarkTheme = (dark: boolean): void => {
   });
 };
 
-let urlDebounce: number;
 export const initURLSubscription = (): void => {
+  const updateHash = debounce((hash) => {
+    history.replaceState(undefined, '', `#${hash}`);
+  }, 250);
+
   stateStore.subscribe(({ serialized }) => {
-    clearTimeout(urlDebounce);
-    urlDebounce = window.setTimeout(() => {
-      history.replaceState(undefined, '', `#${serialized}`);
-    }, 250);
+    updateHash(serialized);
   });
 };
 

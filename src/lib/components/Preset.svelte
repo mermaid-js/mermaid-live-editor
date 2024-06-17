@@ -115,7 +115,57 @@
     Campaign C: [0.57, 0.69]
     Campaign D: [0.78, 0.34]
     Campaign E: [0.40, 0.34]
-    Campaign F: [0.35, 0.78]`
+    Campaign F: [0.35, 0.78]`,
+    XYChart: `
+    xychart-beta
+    title "Sales Revenue"
+    x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+    y-axis "Revenue (in $)" 4000 --> 11000
+    bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]`,
+    Block: `block-beta
+    columns 3
+    doc>"Document"]:3
+    space down1<[" "]>(down) space
+
+  block:e:3
+          l["left"]
+          m("A wide one in the middle")
+          r["right"]
+  end
+    space down2<[" "]>(down) space
+    db[("DB")]:3
+    space:3
+    D space C
+    db --> D
+    C --> db
+    D --> C
+    style m fill:#d6d,stroke:#333,stroke-width:4px
+    `,
+    ZenUML: `zenuml
+    title Order Service
+    @Actor Client #FFEBE6
+    @Boundary OrderController #0747A6
+    @EC2 <<BFF>> OrderService #E3FCEF
+    group BusinessService {
+      @Lambda PurchaseService
+      @AzureFunction InvoiceService
+    }
+
+    @Starter(Client)
+    // \`POST /orders\`
+    OrderController.post(payload) {
+      OrderService.create(payload) {
+        order = new Order(payload)
+        if(order != null) {
+          par {
+            PurchaseService.createPO(order)
+            InvoiceService.createInvoice(order)      
+          }      
+        }
+      }
+    }
+    `
   };
 
   type SampleTypes = keyof typeof samples;
@@ -128,10 +178,10 @@
   };
 
   // Adding in this array will add an icon to the preset menu
-  const newDiagrams: SampleTypes[] = ['Mindmap', 'QuadrantChart'];
+  const newDiagrams: SampleTypes[] = ['QuadrantChart', 'XYChart', 'Block', 'ZenUML'];
   const diagramOrder: SampleTypes[] = [
-    'Sequence',
     'Flow',
+    'Sequence',
     'Class',
     'State',
     'ER',
@@ -140,19 +190,22 @@
     'Git',
     'Pie',
     'Mindmap',
-    'QuadrantChart'
+    'QuadrantChart',
+    'XYChart',
+    'Block',
+    'ZenUML'
   ];
 </script>
 
 <Card title="Sample Diagrams" isOpen={false}>
-  <div class="flex flex-wrap p-2 gap-2">
+  <div class="flex flex-wrap gap-2 p-2">
     {#each diagramOrder as sample}
       <button
-        class="btn btn-sm btn-primary w-28 normal-case flex-grow"
+        class="btn btn-primary btn-sm w-fit min-w-20 flex-grow normal-case"
         on:click={() => loadSampleDiagram(sample)}>
         {sample}
         {#if newDiagrams.includes(sample)}
-          <span class="ml-2 fa fa-heart" />
+          <span class="fa fa-heart ml-2" />
         {/if}
       </button>
     {/each}

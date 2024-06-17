@@ -1,57 +1,86 @@
 <script lang="ts">
+  import { dev } from '$app/environment';
+  import { base } from '$app/paths';
+  import Actions from '$lib/components/Actions.svelte';
+  import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
+  import History from '$lib/components/History/History.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
-  import Actions from '$lib/components/Actions.svelte';
   import View from '$lib/components/View.svelte';
-  import Card from '$lib/components/Card/Card.svelte';
-  import History from '$lib/components/History/History.svelte';
+  import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
-  import { base } from '$app/paths';
-  import { dev } from '$app/environment';
-  import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
 
   const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
-  const docURLBase = 'https://mermaid-js.github.io/mermaid';
+  const docURLBase = 'https://mermaid.js.org';
   const docMap: DocumentationConfig = {
     graph: {
-      code: '/#/flowchart',
-      config: '/#/flowchart?id=configuration'
+      code: '/syntax/.html',
+      config: '/syntax/.html#configuration'
     },
     flowchart: {
-      code: '/#/flowchart',
-      config: '/#/flowchart?id=configuration'
+      code: '/syntax/flowchart.html',
+      config: '/syntax/flowchart.html#configuration'
     },
     sequenceDiagram: {
-      code: '/#/sequenceDiagram',
-      config: '/#/sequenceDiagram?id=configuration'
+      code: '/syntax/sequenceDiagram.html',
+      config: '/syntax/sequenceDiagram.html#configuration'
     },
     classDiagram: {
-      code: '/#/classDiagram',
-      config: '/#/classDiagram?id=configuration'
+      code: '/syntax/classDiagram.html',
+      config: '/syntax/classDiagram.html#configuration'
     },
     'stateDiagram-v2': {
-      code: '/#/stateDiagram'
+      code: '/syntax/stateDiagram.html'
     },
     gantt: {
-      code: '/#/gantt',
-      config: '/#/gantt?id=configuration'
+      code: '/syntax/gantt.html',
+      config: '/syntax/gantt.html#configuration'
     },
     pie: {
-      code: '/#/pie'
+      code: '/syntax/pie.html',
+      config: '/syntax/pie.html#configuration'
     },
     erDiagram: {
-      code: '/#/entityRelationshipDiagram',
-      config: '/#/entityRelationshipDiagram?id=styling'
+      code: '/syntax/entityRelationshipDiagram.html',
+      config: '/syntax/entityRelationshipDiagram.html#styling'
     },
     journey: {
-      code: '/#/user-journey'
+      code: '/syntax/userJourney.html'
     },
     gitGraph: {
-      code: '/#/gitgraph',
-      config: '/#/gitgraph?id=gitgraph-specific-configuration-options'
+      code: '/syntax/gitgraph.html',
+      config: '/syntax/gitgraph.html#gitgraph-specific-configuration-options'
+    },
+    quadrantChart: {
+      code: '/syntax/quadrantChart.html',
+      config: '/syntax/quadrantChart.html#chart-configurations'
+    },
+    requirementDiagram: {
+      code: '/syntax/requirementDiagram.html'
+    },
+    C4Context: {
+      code: '/syntax/c4.html'
+    },
+    mindmap: {
+      code: '/syntax/mindmap.html'
+    },
+    timeline: {
+      code: '/syntax/timeline.html',
+      config: '/syntax/timeline.html#themes'
+    },
+    zenuml: {
+      code: '/syntax/zenuml.html'
+    },
+    'sankey-beta': {
+      code: '/syntax/sankey.html',
+      config: '/syntax/sankey.html#configuration'
+    },
+    'xychart-beta': {
+      code: '/syntax/xyChart.html',
+      config: '/syntax/xyChart.html#chart-configurations'
     }
   };
   let docURL = docURLBase;
@@ -59,7 +88,7 @@
   let docKey = '';
   stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
     activeTabID = editorMode;
-    const codeTypeMatch = /([\S]+)[\s\n]/.exec(code);
+    const codeTypeMatch = /(\S+)\s/.exec(code);
     if (codeTypeMatch && codeTypeMatch.length > 1) {
       docKey = codeTypeMatch[1];
       const docConfig = docMap[docKey] ?? { code: '' };
@@ -87,14 +116,14 @@
 
   onMount(async () => {
     await initHandler();
-    const resizer = document.getElementById('resizeHandler');
-    const element = document.getElementById('editorPane');
+    const resizer = document.querySelector<HTMLElement>('#resizeHandler');
+    const element = document.querySelector<HTMLElement>('#editorPane');
     if (!resizer || !element) {
       console.debug('Failed to find resize handler or editor pane', { resizer, element });
       return;
     }
-    const resize = (e: { pageX: number }) => {
-      const newWidth = e.pageX - element.getBoundingClientRect().left;
+    const resize = ({ pageX }: { pageX: number }) => {
+      const newWidth = pageX - element.getBoundingClientRect().left;
       if (newWidth > 50) {
         element.style.width = `${newWidth}px`;
       }
@@ -103,22 +132,22 @@
     const stopResize = () => {
       window.removeEventListener('mousemove', resize);
     };
-    resizer.addEventListener('mousedown', (e) => {
-      e.preventDefault();
+    resizer.addEventListener('mousedown', (event) => {
+      event.preventDefault();
       window.addEventListener('mousemove', resize);
       window.addEventListener('mouseup', stopResize);
     });
   });
 </script>
 
-<div class="h-full flex flex-col overflow-hidden">
+<div class="flex h-full flex-col overflow-hidden">
   <Navbar />
-  <div class="flex-1 flex overflow-hidden">
-    <div class="hidden md:flex flex-col" id="editorPane" style="width: 40%">
+  <div class="flex flex-1 overflow-hidden">
+    <div class="hidden flex-col md:flex" id="editorPane" style="width: 40%">
       <Card on:select={tabSelectHandler} {tabs} isCloseable={false} {activeTabID} title="Mermaid">
         <div slot="actions" class="flex flex-row items-center">
           <div class="form-control flex-row items-center">
-            <label class="cursor-pointer label" for="autoSync">
+            <label class="label cursor-pointer" for="autoSync">
               <span> Auto sync</span>
               <input
                 type="checkbox"
@@ -155,15 +184,30 @@
       </div>
     </div>
     <div id="resizeHandler" class="hidden md:block" />
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div class="flex flex-1 flex-col overflow-hidden">
       <Card title="Diagram" isCloseable={false}>
         <div slot="actions" class="flex flex-row items-center gap-2">
-          <label class="cursor-pointer label py-0" for="panZoom">
+          <label
+            class="label flex cursor-pointer gap-1 py-0"
+            title="Rough mode is in beta. Features like clickable nodes, Pan & Zoom, will be disabled."
+            for="rough">
+            <span>Rough</span>
+            <input
+              type="checkbox"
+              class="toggle {$stateStore.rough ? 'btn-secondary' : 'toggle-primary'}"
+              id="rough"
+              bind:checked={$inputStateStore.rough} />
+          </label>
+          <label
+            class="label flex cursor-pointer gap-1 py-0"
+            title={$stateStore.rough ? 'Pan & Zoom is disabled in rough mode.' : ''}
+            for="panZoom">
             <span>Pan & Zoom</span>
             <input
               type="checkbox"
               class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
               id="panZoom"
+              disabled={$stateStore.rough}
               bind:checked={$inputStateStore.panZoom} />
           </label>
           <a
@@ -176,7 +220,7 @@
             target="_blank"
             class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
             title="Save diagram in Mermaid Chart"
-            ><img src="/mermaidchart-logo.svg" class="w-5 h-5" alt="Mermaid chart logo" />Save to
+            ><img src="./mermaidchart-logo.svg" class="h-5 w-5" alt="Mermaid chart logo" />Save to
             Mermaid Chart</a>
         </div>
 
@@ -184,7 +228,7 @@
           <View />
         </div>
       </Card>
-      <div class="md:hidden rounded shadow p-2 mx-2">
+      <div class="mx-2 rounded p-2 shadow md:hidden">
         Code editing not supported on mobile. Please use a desktop browser.
       </div>
     </div>

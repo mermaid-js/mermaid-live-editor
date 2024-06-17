@@ -20,6 +20,9 @@ jobs:
           cache: yarn
 
       - name: Build & Deploy
+        env:
+          MERMAID_DOMAIN: 'mermaid.live'
+          MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
         run: |
           export DEPLOY=true
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
