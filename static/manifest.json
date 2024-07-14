@@ -8,10 +8,10 @@
 			"sizes": "512x512"
 		}
 	],
-	"start_url": "/edit/",
+	"start_url": "/edit",
 	"background_color": "#6366F1",
 	"display": "standalone",
-	"scope": "/edit/",
+	"scope": "/edit",
 	"theme_color": "#6366F1",
 	"description": "FlowChart & Diagrams Editor.",
 	"orientation": "landscape"
