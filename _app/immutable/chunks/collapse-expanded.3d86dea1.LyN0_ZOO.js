@@ -1,0 +1,1 @@
+import{D as r,t as n,N as t}from"./zenuml-definition-ddfc84a5.DtWujIuw.js";const o={xmlns:"http://www.w3.org/2000/svg",fill:"none",stroke:"currentColor","stroke-linecap":"round",viewBox:"0 0 24 24"},e=t("path",{d:"m14 10 7-7M20 10h-6V4M3 21l7-7M4 14h6v6"},null,-1),s=[e];function l(a,c){return r(),n("svg",o,[...s])}const d={render:l};export{d as default,l as render};
