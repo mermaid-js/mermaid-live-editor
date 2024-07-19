@@ -62,8 +62,11 @@
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
 
     const res = toBase64(`<?xml version="1.0" encoding="UTF-8"?>
-    <?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
-    ${svgString}`);
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <style>@import url('${FONT_AWESOME_URL}');</style>
+      ${svgString}
+    </svg>`);
 
     return res;
   };
