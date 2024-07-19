@@ -18,23 +18,54 @@
   const getFileName = (extension: string) =>
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
-  const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
-    if (svg) {
-      // Prevents the SVG size of the interface from being changed
-      svg = svg.cloneNode(true) as HTMLElement;
+  async function embedFontAwesomeAndImages(svg: HTMLElement) {
+    const images = svg.querySelectorAll('img');
+
+    for (let img of images) {
+      const source = img.getAttribute('src');
+      try {
+        const response = await fetch(source as string);
+        const blob = await response.blob();
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+        img.setAttribute('src', dataUrl as string);
+      } catch (error) {
+        console.error(`Failed to fetch image: ${source}`, error);
+      }
     }
+
+    return svg;
+  }
+
+  const getBase64SVG = async (
+    svg?: HTMLElement,
+    width?: number,
+    height?: number
+  ): Promise<string> => {
+    if (svg) {
+      svg = svg.cloneNode(true) as HTMLElement;
+      svg = await embedFontAwesomeAndImages(svg);
+    }
+
     height && svg?.setAttribute('height', `${height}px`);
-    width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+    width && svg?.setAttribute('width', `${width}px`);
+
     if (!svg) {
       svg = getSvgElement();
     }
+
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
 
-    return toBase64(`<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
-${svgString}`);
+    const res = toBase64(`<?xml version="1.0" encoding="UTF-8"?>
+    <?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
+    ${svgString}`);
+
+    return res;
   };
 
   const exportImage = async (event: Event, exporter: Exporter) => {
@@ -44,6 +75,7 @@ ${svgString}`);
     }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
     const svg = document.querySelector<HTMLElement>('#container svg');
+
     if (!svg) {
       throw new Error('svg not found');
     }
@@ -69,7 +101,8 @@ ${svgString}`);
 
     const image = new Image();
     image.addEventListener('load', exporter(context, image));
-    image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
+    const res = await getBase64SVG(svg, canvas.width, canvas.height);
+    image.src = `data:image/svg+xml;base64,${res}`;
 
     event.stopPropagation();
     event.preventDefault();
@@ -88,6 +121,7 @@ ${svgString}`);
     a.click();
     a.remove();
   };
+
   const downloadImage: Exporter = (context, image) => {
     return () => {
       const { canvas } = context;
@@ -136,8 +170,9 @@ ${svgString}`);
     });
   };
 
-  const onDownloadSVG = () => {
-    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
+  const onDownloadSVG = async () => {
+    const res = await getBase64SVG();
+    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${res}`);
     logEvent('download', {
       type: 'svg'
     });
