@@ -18,29 +18,26 @@
   const getFileName = (extension: string) =>
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
-  async function fetchImageAsBase64(imageUrl) {
-    try {
-      const response = await fetch(imageUrl);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+  async function embedFontAwesomeAndImages(svg: HTMLElement) {
+    const images = svg.querySelectorAll('img');
+
+    for (let img of images) {
+      const source = img.getAttribute('src');
+      try {
+        const response = await fetch(source as string);
+        const blob = await response.blob();
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+        img.setAttribute('src', dataUrl as string);
+      } catch (error) {
+        console.error(`Failed to fetch image: ${source}`, error);
       }
-
-      const blob = await response.blob();
-      const base64 = await blobToBase64(blob);
-
-      return base64;
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
     }
-  }
 
-  function blobToBase64(blob) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.addEventListener('error', reject);
-      reader.readAsDataURL(blob);
-    });
+    return svg;
   }
 
   const getBase64SVG = async (
@@ -50,6 +47,9 @@
   ): Promise<string> => {
     if (svg) {
       svg = svg.cloneNode(true) as HTMLElement;
+      svg = await embedFontAwesomeAndImages(svg);
+
+      console.log(svg);
     }
 
     height && svg?.setAttribute('height', `${height}px`);
@@ -124,6 +124,17 @@
     a.remove();
   };
 
+  const downloadImage: Exporter = (context, image) => {
+    return () => {
+      const { canvas } = context;
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      simulateDownload(
+        getFileName('png'),
+        canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+      );
+    };
+  };
+
   const isClipboardAvailable = (): boolean => {
     return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem') as boolean;
   };
@@ -154,15 +165,8 @@
     logEvent('copyClipboard');
   };
 
-  const downloadImage = async () => {
-    const base64Image = await fetchImageAsBase64(iUrl);
-    if (base64Image) {
-      simulateDownload(getFileName('png'), base64Image as string);
-    }
-  };
-
-  const onDownloadPNG = async () => {
-    await downloadImage();
+  const onDownloadPNG = async (event: Event) => {
+    await exportImage(event, downloadImage);
     logEvent('download', {
       type: 'png'
     });

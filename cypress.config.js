@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress';
 import fs from 'fs';
 import path from 'path';
+
 export default defineConfig({
   projectId: '2ckppp',
   viewportWidth: 1440,
