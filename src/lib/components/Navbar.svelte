@@ -88,17 +88,23 @@
     <span class="text-lg font-bold">
       <a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
     </span>
-    <span class="ml-4">
+    <div class="ml-8 flex items-center gap-4">
       <a
-        href="https://www.producthunt.com/products/mermaid-chart?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-mermaid&#0045;chart"
+        href="https://www.producthunt.com/posts/mermaid-ai-2"
         target="_blank"
-        ><img
-          src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=552855&theme=light&size=small"
-          alt="Mermaid&#0032;Chart - A&#0032;smarter&#0032;way&#0032;to&#0032;create&#0032;diagrams | Product Hunt"
-          style="width: 86px; height: 32px;"
-          width="86"
-          height="32" /></a>
-    </span>
+        class="decoration font-semibold underline decoration-orange-500 decoration-2 underline-offset-4">
+        We're live on Product Hunt!
+      </a>
+      <span>
+        <a
+          href="https://www.producthunt.com/posts/mermaid-ai-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-mermaid&#0045;ai&#0045;2"
+          target="_blank"
+          ><img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=465568&theme=light"
+            alt="Mermaid&#0032;AI - Maximize&#0032;your&#0032;diagramming&#0032;efficiency&#0032;with&#0032;Mermaid&#0032;AI | Product Hunt"
+            style="width: 150px; height: 54px;" /></a>
+      </span>
+    </div>
   </div>
 
   <label
