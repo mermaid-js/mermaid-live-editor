@@ -10,6 +10,7 @@
 <script lang="ts">
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
+  import { sanitizeText } from '$lib/util/sanitize';
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { themeStore } from '$lib/util/theme';
@@ -141,7 +142,7 @@
       </div>
       <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
+        {@html sanitizeText($stateStore.error?.toString().replaceAll('\n', '<br />'))}
       </div>
     </div>
   {/if}
