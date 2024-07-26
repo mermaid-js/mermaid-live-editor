@@ -139,10 +139,9 @@
         <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
         <p>Diagram syntax error</p>
       </div>
-      <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html $stateStore.error?.toString().replaceAll('\n', '<br />')}
-      </div>
+      <output class="max-h-32 overflow-auto bg-red-600 p-2" name="mermaid-error" for="editor">
+        <pre>{$stateStore.error?.toString()}</pre>
+      </output>
     </div>
   {/if}
 </div>
