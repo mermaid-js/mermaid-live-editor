@@ -10,7 +10,6 @@
 <script lang="ts">
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
-  import { sanitizeText } from '$lib/util/sanitize';
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { themeStore } from '$lib/util/theme';
@@ -140,10 +139,9 @@
         <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
         <p>Diagram syntax error</p>
       </div>
-      <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html sanitizeText($stateStore.error?.toString().replaceAll('\n', '<br />'))}
-      </div>
+      <output class="max-h-32 overflow-auto bg-red-600 p-2" name="mermaid-error" for="editor">
+        <pre>{$stateStore.error?.toString()}</pre>
+      </output>
     </div>
   {/if}
 </div>
