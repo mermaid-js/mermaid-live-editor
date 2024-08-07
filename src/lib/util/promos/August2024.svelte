@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import { fade } from 'svelte/transition';
 
   interface Taglines {
     label: string;
@@ -23,16 +24,10 @@
 
   let index = Math.floor(Math.random() * taglines.length);
   let currentTagline = taglines[index];
-  let isFadingOut = false;
 
   const interval = setInterval(() => {
-    isFadingOut = true;
-
-    setTimeout(() => {
-      isFadingOut = false;
-      index = (index + 1) % taglines.length;
-      currentTagline = taglines[index];
-    }, 1000);
+    index = (index + 1) % taglines.length;
+    currentTagline = taglines[index];
   }, 60_000);
 
   onDestroy(() => {
@@ -40,15 +35,18 @@
   });
 </script>
 
-{#key currentTagline}
-  <a
-    href={currentTagline.url}
-    target="_blank"
-    class="flex-grow animate-fadeIn no-underline {isFadingOut ? 'animate-fadeOut' : ''}">
-    <span class="text-surface-50 dark:text-surface-50 text-sm tracking-wider transition-opacity"
-      >{currentTagline.label}</span>
-    <button
-      class="border:surface-50 dark:hover:surface-50 dark:white text-surface-50 ml-4 rounded border px-3 py-1 text-sm tracking-wide hover:border-[#00237A] hover:bg-[#00237A]"
-      >Try it now</button>
-  </a>
-{/key}
+<div class="grid w-full">
+  {#key currentTagline}
+    <a
+      href={currentTagline.url}
+      target="_blank"
+      class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
+      in:fade={{ delay: 750 }}
+      out:fade={{ duration: 1000 }}>
+      <span class="text-sm tracking-wider">{currentTagline.label}</span>
+      <button
+        class="border:surface-50 dark:hover:surface-50 dark:white text-surface-50 rounded border px-3 py-1 text-sm tracking-wide hover:border-[#00237A] hover:bg-[#00237A]"
+        >Try it now</button>
+    </a>
+  {/key}
+</div>
