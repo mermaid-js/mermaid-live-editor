@@ -462,6 +462,14 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@mermaid-js/layout-elk@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@mermaid-js/layout-elk/-/layout-elk-0.1.2.tgz#0255dfcf3c88cc84e2bead48d06b36b7ea0a0058"
+  integrity sha512-a5WbVHAXv+lMAeccex3zPwmJYmnuH8z7cdJkuunwzdhvmFKYwGPx7ggr2gIIxUR2lMMLALiEorwFx8/OAkrdUQ==
+  dependencies:
+    d3 "^7.9.0"
+    elkjs "^0.9.3"
+
 "@mermaid-js/mermaid-zenuml@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@mermaid-js/mermaid-zenuml/-/mermaid-zenuml-0.2.0.tgz#6a418409804e25039d2a5c3ec7df0679cf53ed30"
@@ -2752,6 +2760,11 @@ electron-to-chromium@^1.4.668, electron-to-chromium@^1.5.4:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.5.tgz#03bfdf422bdd2c05ee2657efedde21264a1a566b"
   integrity sha512-QR7/A7ZkMS8tZuoftC/jfqNkZLQO779SSW3YuZHP4eXpj3EffGLFcB/Xu9AAZQzLccTiCV+EmUo3ha4mQ9wnlA==
+
+elkjs@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/elkjs/-/elkjs-0.9.3.tgz#16711f8ceb09f1b12b99e971b138a8384a529161"
+  integrity sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==
 
 emoji-regex@^10.3.0:
   version "10.3.0"

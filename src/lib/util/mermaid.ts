@@ -1,7 +1,9 @@
-import mermaid from 'mermaid';
-import type { MermaidConfig, RenderResult } from 'mermaid';
+import elkLayouts from '@mermaid-js/layout-elk';
 import zenuml from '@mermaid-js/mermaid-zenuml';
+import type { MermaidConfig, RenderResult } from 'mermaid';
+import mermaid from 'mermaid';
 
+mermaid.registerLayoutLoaders(elkLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
 export const render = async (
