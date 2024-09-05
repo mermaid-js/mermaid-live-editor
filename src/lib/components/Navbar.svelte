@@ -73,6 +73,7 @@
       <svelte:component this={activePromotion.component} />
     </div>
     <button
+      class="rounded hover:text-black"
       title="Dismiss banner"
       on:click={() => {
         dismissPromotion(activePromotion?.id);
