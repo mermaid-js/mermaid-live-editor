@@ -44,8 +44,7 @@
       in:fade={{ delay: 750 }}
       out:fade={{ duration: 1000 }}>
       <span class="text-sm tracking-wider">{currentTagline.label}</span>
-      <button
-        class="border:surface-50 dark:hover:surface-50 dark:white text-surface-50 rounded border px-3 py-1 text-sm tracking-wide hover:border-[#00237A] hover:bg-[#00237A]"
+      <button class="rounded bg-[#111113] p-1 px-2 text-sm font-semibold tracking-wide"
         >Try it now</button>
     </a>
   {/key}
