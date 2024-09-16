@@ -4579,10 +4579,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@^11.2.0:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-11.2.0.tgz#b9703e23155c70853925590dcd849fa5ffed0728"
-  integrity sha512-ZinOa063lk81lujX8vkINNqmFaNMk1A95Z4kCL7fE6QLAi01CxeiUJVw+tpXU+lAM73utO39G+2PLjxS2GYS/w==
+mermaid@^11.2.1:
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-11.2.1.tgz#b168c6f862268f77a0d3559926b193926ddc60bc"
+  integrity sha512-F8TEaLVVyxTUmvKswVFyOkjPrlJA5h5vNR1f7ZnSWSpqxgEZG1hggtn/QCa7znC28bhlcrNh10qYaIiill7q4A==
   dependencies:
     "@braintree/sanitize-url" "^7.0.1"
     "@iconify/utils" "^2.1.32"
