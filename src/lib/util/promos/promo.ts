@@ -36,8 +36,7 @@ const dismissedPromotionsStore: Writable<string[]> = persist(
 );
 
 export const getActivePromotion = (): Promotion | undefined => {
-  const { isEnabledMermaidChartLinks } = env;
-  if (!isEnabledMermaidChartLinks) {
+  if (!env.isEnabledMermaidChartLinks) {
     return;
   }
 
