@@ -218,7 +218,7 @@
             target="_blank"
             class="btn btn-secondary btn-xs gap-1"
             title="View diagram in new page"><i class="fas fa-external-link-alt" />Full screen</a>
-          {#if isEnabledMermaidChartLinks}
+          {#if env.isEnabledMermaidChartLinks}
             <a
               href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
               target="_blank"
