@@ -1,6 +1,7 @@
 <script lang="ts">
   import { dev } from '$app/environment';
   import { base } from '$app/paths';
+  import { env } from '$lib/util/env';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
@@ -12,6 +13,8 @@
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
+
+  const { isEnabledMermaidChartLinks } = env;
 
   const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
   const docURLBase = 'https://mermaid.js.org';
@@ -215,13 +218,15 @@
             target="_blank"
             class="btn btn-secondary btn-xs gap-1"
             title="View diagram in new page"><i class="fas fa-external-link-alt" />Full screen</a>
-          <a
-            href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
-            target="_blank"
-            class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
-            title="Save diagram in Mermaid Chart"
-            ><img src="./mermaidchart-logo.svg" class="h-5 w-5" alt="Mermaid chart logo" />Save to
-            Mermaid Chart</a>
+          {#if isEnabledMermaidChartLinks}
+            <a
+              href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
+              target="_blank"
+              class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
+              title="Save diagram in Mermaid Chart"
+              ><img src="./mermaidchart-logo.svg" class="h-5 w-5" alt="Mermaid chart logo" />Save to
+              Mermaid Chart</a>
+          {/if}
         </div>
 
         <div class="flex-1 overflow-auto">

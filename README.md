@@ -29,19 +29,36 @@ docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid
 
 ### To configure renderer URL
 
-When building set the MERMAID_RENDERER_URL build argument to the rendering service.
-Default is `https://mermaid.ink`
+When building set the MERMAID_RENDERER_URL build argument to the rendering
+service.
+Example:
+Default is`https://mermaid.ink`.
+Set to empty string to disable PNG and SVG links under Actions
 
 ### To configure Kroki Instance URL
 
-When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki instance.
+When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki
+instance.
 Default is `https://kroki.io`
+Set to empty string to disable Kroki link under Actions
 
 ### To configure Analytics
 
 When building set the MERMAID_ANALYTICS_URL build argument to your plausible instance, and MERMAID_DOMAIN to your domain.
 
 Default is empty, disabling analytics.
+
+### To enable Mermaid Chart links and promotion
+
+When building set the MERMAID_IS_ENABLED_MERMAID_CHART_LINKS build argument to `true`
+
+Default is empty, disabling button to save to Mermaid Chart and promotional banner.
+
+### To update the Security modal
+
+The modal shown on clicking the security link assumes analytics, renderer, Kroki
+and Mermaid chart are enabled. You can update it by modifying `Privacy.svelte`
+if you wish.
 
 ### Development
 
