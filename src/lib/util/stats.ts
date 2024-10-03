@@ -4,6 +4,10 @@ import { env } from './env';
 export let plausible: ReturnType<typeof PlausibleInstance> | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
+  if (env.analyticsUrl.length === 0) {
+    return;
+  }
+
   if (browser && !plausible) {
     try {
       const { default: Plausible } = await import('plausible-tracker');
