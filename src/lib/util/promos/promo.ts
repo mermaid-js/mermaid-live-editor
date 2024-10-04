@@ -1,6 +1,7 @@
 import { writable, type Writable, get } from 'svelte/store';
 import { persist, localStorage } from '../persist';
 import August2024 from './August2024.svelte';
+import { env } from '$lib/util/env';
 
 interface Promotion {
   id: string;
@@ -35,6 +36,10 @@ const dismissedPromotionsStore: Writable<string[]> = persist(
 );
 
 export const getActivePromotion = (): Promotion | undefined => {
+  if (!env.isEnabledMermaidChartLinks) {
+    return;
+  }
+
   const dismissedPromotions = get(dismissedPromotionsStore);
   const now = new Date();
   return promotions

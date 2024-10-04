@@ -23,6 +23,9 @@ jobs:
         env:
           MERMAID_DOMAIN: 'mermaid.live'
           MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
+          MERMAID_RENDERER_URL: 'https://mermaid.ink'
+          MERMAID_KROKI_RENDERER_URL: 'https://kroki.io'
+          MERMAID_IS_ENABLED_MERMAID_CHART_LINKS: 'true'
         run: |
           export DEPLOY=true
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
