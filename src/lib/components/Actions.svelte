@@ -197,21 +197,25 @@ ${svgString}`);
     <button id="downloadSVG" class="action-btn flex-grow" on:click={onDownloadSVG}>
       <i class="fas fa-download mr-2" /> SVG
     </button>
-    <a target="_blank" rel="noreferrer" class="flex-grow" href={iUrl}>
-      <button class="action-btn w-full">
-        <i class="fas fa-external-link-alt mr-2" /> PNG
-      </button>
-    </a>
-    <a target="_blank" rel="noreferrer" class="flex-grow" href={svgUrl}>
-      <button class="action-btn w-full">
-        <i class="fas fa-external-link-alt mr-2" /> SVG
-      </button>
-    </a>
-    <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
-      <button class="action-btn w-full">
-        <i class="fas fa-external-link-alt mr-2" /> Kroki
-      </button>
-    </a>
+    {#if rendererUrl}
+      <a target="_blank" rel="noreferrer" class="flex-grow" href={iUrl}>
+        <button class="action-btn w-full">
+          <i class="fas fa-external-link-alt mr-2" /> PNG
+        </button>
+      </a>
+      <a target="_blank" rel="noreferrer" class="flex-grow" href={svgUrl}>
+        <button class="action-btn w-full">
+          <i class="fas fa-external-link-alt mr-2" /> SVG
+        </button>
+      </a>
+    {/if}
+    {#if krokiRendererUrl}
+      <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
+        <button class="action-btn w-full">
+          <i class="fas fa-external-link-alt mr-2" /> Kroki
+        </button>
+      </a>
+    {/if}
 
     <div class="flex items-center gap-2">
       PNG size
@@ -238,14 +242,16 @@ ${svgString}`);
       {/if}
     </div>
 
-    <div class="flex w-full items-center gap-2">
-      <input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
-      <label for="markdown">
-        <button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
-          Copy Markdown
-        </button>
-      </label>
-    </div>
+    {#if rendererUrl}
+      <div class="flex w-full items-center gap-2">
+        <input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+        <label for="markdown">
+          <button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
+            Copy Markdown
+          </button>
+        </label>
+      </div>
+    {/if}
 
     <div class="flex w-full items-center gap-2">
       <input

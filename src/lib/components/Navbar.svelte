@@ -7,9 +7,13 @@
 </script>
 
 <script lang="ts">
+  import { env } from '$lib/util/env';
   import Theme from './Theme.svelte';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import Privacy from './Privacy.svelte';
+
+  const { isEnabledMermaidChartLinks } = env;
+
   let isMenuOpen = false;
 
   function toggleMenu() {
@@ -22,7 +26,8 @@
     icon?: string;
     img?: string;
   }
-  const links: Link[] = [
+
+  let links: Link[] = [
     {
       title: 'Documentation',
       href: 'https://mermaid.js.org/intro/getting-started.html'
@@ -42,12 +47,15 @@
     {
       href: 'https://github.com/mermaid-js/mermaid-live-editor',
       icon: 'fab fa-github fa-lg'
-    },
-    {
-      href: 'https://mermaidchart.com',
-      img: './mermaidchart-logo.svg'
     }
   ];
+
+  if (isEnabledMermaidChartLinks) {
+    links.push({
+      href: 'https://mermaidchart.com',
+      img: './mermaidchart-logo.svg'
+    });
+  }
 
   let activePromotion = getActivePromotion();
 
