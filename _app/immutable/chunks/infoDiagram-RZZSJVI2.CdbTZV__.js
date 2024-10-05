@@ -1,0 +1,2 @@
+import{_ as e,n as s,K as o,o as i,L as g}from"./state.JD-5GtIk.js";import{p}from"./gitGraph-YCYPL57B.DUn9nYLp.js";var v={parse:e(async r=>{const a=await p("info",r);s.debug(a)},"parse")},d={version:g},m=e(()=>d.version,"getVersion"),c={getVersion:m},f=e((r,a,n)=>{s.debug(`rendering info diagram
+`+r);const t=o(a);i(t,100,400,!0),t.append("g").append("text").attr("x",100).attr("y",40).attr("class","version").attr("font-size",32).style("text-anchor","middle").text(`v${n}`)},"draw"),l={draw:f},b={parser:v,db:c,renderer:l};export{b as diagram};
