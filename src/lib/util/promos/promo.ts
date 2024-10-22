@@ -15,12 +15,12 @@ const promotions: Promotion[] = [
   {
     id: 'promo-2024',
     startDate: new Date('2024-08-01'),
-    endDate: new Date('2024-10-20'),
+    endDate: new Date('2024-10-21'),
     component: August2024
   },
   {
     id: 'promo-october-2024',
-    startDate: new Date('2024-10-21'),
+    startDate: new Date('2024-10-22'),
     endDate: new Date('2024-12-31'),
     component: October2024
   }
