@@ -1,0 +1,52 @@
+flowchart TD
+    Start([Start])
+    Start --> A{Is ROIC > Cost of Capital by ≥ 2%?}
+    A -- Yes --> B{Is ROE ≥ 15%\nand stable/growing?}
+    A -- No --> Reject1[Reject Company]
+
+    B -- Yes --> C{Is Debt to Equity Ratio < 1.0?}
+    B -- No --> Reject2[Reject Company]
+
+    C -- Yes --> D{Is OCF positive\nand growing?}
+    C -- No --> Reject3[Reject Company]
+
+    D -- Yes --> E{Is FCF positive\nand consistent?}
+    D -- No --> Reject4[Reject or Further Analysis]
+
+    E -- Yes --> F{Is Reinvestment Rate appropriate\nfor growth stage?}
+    E -- No --> Reject5[Reject or Investigate]
+
+    F -- Yes --> G{Does Intrinsic Value > Market Price\n(DCF Analysis)?}
+    F -- No --> Reject6[Reject or Additional Analysis]
+
+    G -- Yes --> H{Is Dividend Discount Model favorable?}
+    G -- No --> Reject7[Reject or Reassess Assumptions]
+
+    H -- Yes --> I{Is P/E Ratio lower\nthan industry peers?}
+    H -- No --> Reject8[Reject or Reassess]
+
+    I -- Yes --> J{Is Free-Float high\n(indicating good liquidity)?}
+    I -- No --> K[Consider Implications]
+
+    J -- Yes --> L{Is Dividend Yield above\nindustry average?}
+    J -- No --> M[Caution: Potential Liquidity Issues]
+
+    L -- Yes --> N{Is Dividend Payout Ratio < 60%?}
+    L -- No --> O[Consider Overall Return]
+
+    N -- Yes --> P{Meets all critical metrics?}
+    N -- No --> Q[Caution: Dividend Sustainability]
+
+    P -- Yes --> Invest[[**Invest**]]
+    P -- Mostly Yes --> Hold[[**Hold**\nFurther Analysis]]
+    P -- No --> Avoid[[**Avoid**]]
+
+    K --> J
+    M --> L
+    O --> N
+    Q --> P
+
+    Reject1 & Reject2 & Reject3 & Reject4 & Reject5 & Reject6 & Reject7 & Reject8 --> End([End])
+    Avoid --> End
+    Invest --> End
+    Hold --> End
