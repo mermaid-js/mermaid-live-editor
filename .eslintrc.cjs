@@ -86,7 +86,7 @@ module.exports = {
           j: true,
           k: true,
           param: true,
-          props: true,
+          Props: true,
           req: true,
           res: true,
           str: true,

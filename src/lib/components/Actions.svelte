@@ -6,9 +6,9 @@
   import { pakoSerde } from '$lib/util/serde';
   import { stateStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
+  import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
-  import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
@@ -149,7 +149,7 @@ ${svgString}`);
     logEvent('copyMarkdown');
   };
 
-  let gistURL = '';
+  let gistURL = $state('');
   stateStore.subscribe(({ loader }) => {
     if (loader?.type === 'gist') {
       // @ts-expect-error Gist will have url
@@ -165,14 +165,14 @@ ${svgString}`);
     logEvent('loadGist');
   };
 
-  let iUrl: string;
-  let svgUrl: string;
-  let krokiUrl: string;
-  let mdCode: string;
-  let imagemodeselected = 'auto';
-  let userimagesize = 1080;
+  let iUrl: string | undefined = $state();
+  let svgUrl: string | undefined = $state();
+  let krokiUrl: string | undefined = $state();
+  let mdCode: string | undefined = $state();
+  let imagemodeselected = $state('auto');
+  let userimagesize = $state(1080);
 
-  let isNetlify = false;
+  let isNetlify = $state(false);
   if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
     isNetlify = true;
   }
@@ -187,32 +187,32 @@ ${svgString}`);
 <Card title="Actions" isOpen={false}>
   <div class="m-2 flex flex-wrap gap-2">
     {#if isClipboardAvailable()}
-      <button class="action-btn w-full" on:click={onCopyClipboard}
-        ><i class="far fa-copy mr-2" /> Copy Image to clipboard
+      <button class="action-btn w-full" onclick={onCopyClipboard}
+        ><i class="far fa-copy mr-2"></i> Copy Image to clipboard
       </button>
     {/if}
-    <button id="downloadPNG" class="action-btn flex-grow" on:click={onDownloadPNG}>
-      <i class="fas fa-download mr-2" /> PNG
+    <button id="downloadPNG" class="action-btn flex-grow" onclick={onDownloadPNG}>
+      <i class="fas fa-download mr-2"></i> PNG
     </button>
-    <button id="downloadSVG" class="action-btn flex-grow" on:click={onDownloadSVG}>
-      <i class="fas fa-download mr-2" /> SVG
+    <button id="downloadSVG" class="action-btn flex-grow" onclick={onDownloadSVG}>
+      <i class="fas fa-download mr-2"></i> SVG
     </button>
     {#if rendererUrl}
       <a target="_blank" rel="noreferrer" class="flex-grow" href={iUrl}>
         <button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2" /> PNG
+          <i class="fas fa-external-link-alt mr-2"></i> PNG
         </button>
       </a>
       <a target="_blank" rel="noreferrer" class="flex-grow" href={svgUrl}>
         <button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2" /> SVG
+          <i class="fas fa-external-link-alt mr-2"></i> SVG
         </button>
       </a>
     {/if}
     {#if krokiRendererUrl}
       <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
         <button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2" /> Kroki
+          <i class="fas fa-external-link-alt mr-2"></i> Kroki
         </button>
       </a>
     {/if}
@@ -244,9 +244,9 @@ ${svgString}`);
 
     {#if rendererUrl}
       <div class="flex w-full items-center gap-2">
-        <input class="input" id="markdown" type="text" value={mdCode} on:click={onCopyMarkdown} />
+        <input class="input" id="markdown" type="text" value={mdCode} onclick={onCopyMarkdown} />
         <label for="markdown">
-          <button class="btn btn-primary btn-md flex-auto" on:click={onCopyMarkdown}>
+          <button class="btn btn-primary btn-md flex-auto" onclick={onCopyMarkdown}>
             Copy Markdown
           </button>
         </label>
@@ -261,7 +261,7 @@ ${svgString}`);
         bind:value={gistURL}
         placeholder="Enter Gist URL" />
       <label for="gist">
-        <button class="btn btn-primary btn-md flex-auto" on:click={loadGist}> Load Gist </button>
+        <button class="btn btn-primary btn-md flex-auto" onclick={loadGist}> Load Gist </button>
       </label>
     </div>
     {#if isNetlify}

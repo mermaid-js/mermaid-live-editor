@@ -1,6 +1,6 @@
-<script context="module" lang="ts">
-  import { version } from 'mermaid/package.json';
+<script module lang="ts">
   import { logEvent, plausible } from '$lib/util/stats';
+  import { version } from 'mermaid/package.json';
   void logEvent('version', {
     mermaidVersion: version
   });
@@ -8,13 +8,13 @@
 
 <script lang="ts">
   import { env } from '$lib/util/env';
-  import Theme from './Theme.svelte';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import Privacy from './Privacy.svelte';
+  import Theme from './Theme.svelte';
 
   const { isEnabledMermaidChartLinks } = env;
 
-  let isMenuOpen = false;
+  let isMenuOpen = $state(false);
 
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
@@ -57,7 +57,7 @@
     });
   }
 
-  let activePromotion = getActivePromotion();
+  let activePromotion = $state(getActivePromotion());
 
   const trackBannerClick = () => {
     if (!plausible || !activePromotion) {
@@ -76,18 +76,19 @@
       class="flex flex-grow"
       role="button"
       tabindex="0"
-      on:click={trackBannerClick}
-      on:keypress={trackBannerClick}>
-      <svelte:component this={activePromotion.component} />
+      onclick={trackBannerClick}
+      onkeypress={trackBannerClick}>
+      <activePromotion.component />
     </div>
     <button
       class="rounded hover:text-black"
       title="Dismiss banner"
-      on:click={() => {
+      aria-label="Dismiss banner"
+      onclick={() => {
         dismissPromotion(activePromotion?.id);
         activePromotion = undefined;
       }}>
-      <i class="fa fa-close px-2" />
+      <i class="fa fa-close px-2"></i>
     </button>
   </div>
 {/if}
@@ -136,7 +137,7 @@
     type="checkbox"
     id="menu-toggle"
     bind:checked={isMenuOpen}
-    on:click={toggleMenu} />
+    onclick={toggleMenu} />
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
     <Theme />
@@ -148,7 +149,7 @@
         <li>
           <a class="btn btn-ghost" target="_blank" {href}>
             {#if icon}
-              <i class={icon} />
+              <i class={icon}></i>
             {:else if img}
               <img src={img} alt={title} />
             {/if}

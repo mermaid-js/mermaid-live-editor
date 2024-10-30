@@ -1,31 +1,33 @@
 <script lang="ts">
+  import { stopPropagation } from 'svelte/legacy';
+
   import Card from '$lib/components/Card/Card.svelte';
-  import { inputStateStore, getStateString } from '$lib/util/state';
+  import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
+  import { notify, prompt } from '$lib/util/notify';
+  import { getStateString, inputStateStore } from '$lib/util/state';
+  import { logEvent } from '$lib/util/stats';
+  import dayjs from 'dayjs';
+  import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
+  import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
   import {
     addHistoryEntry,
-    historyModeStore,
     clearHistoryData,
     getPreviousState,
+    historyModeStore,
     historyStore,
     loaderHistoryStore,
     restoreHistory
   } from './history';
-  import { notify, prompt } from '$lib/util/notify';
-  import { onMount } from 'svelte';
-  import { get } from 'svelte/store';
-  import dayjs from 'dayjs';
-  import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
-  import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
-  import { logEvent } from '$lib/util/stats';
 
   dayjs.extend(dayjsRelativeTime);
 
   const HISTORY_SAVE_INTERVAL = 60_000;
 
-  const tabSelectHandler = (message: CustomEvent<Tab>) => {
-    historyModeStore.set(message.detail.id as HistoryType);
+  const tabSelectHandler = (tab: Tab) => {
+    historyModeStore.set(tab.id as HistoryType);
   };
-  let tabs: Tab[] = [
+  let tabs: Tab[] = $state([
     {
       id: 'manual',
       title: 'Saved',
@@ -36,7 +38,7 @@
       title: 'Timeline',
       icon: 'fas fa-history'
     }
-  ];
+  ]);
 
   const downloadHistory = () => {
     const data = get(historyStore);
@@ -117,38 +119,42 @@
       historyModeStore.set('loader');
     }
   });
-
-  let isOpen = false;
 </script>
 
-<Card on:select={tabSelectHandler} bind:isOpen {tabs} title="History">
-  <div slot="actions">
-    <button
-      id="uploadHistory"
-      class="btn btn-secondary btn-xs w-12"
-      on:click|stopPropagation={() => uploadHistory()}
-      title="Upload history"><i class="fa fa-upload" /></button>
-    {#if $historyStore.length > 0}
+<Card onselect={tabSelectHandler} isOpen={false} {tabs} title="History">
+  {#snippet actions()}
+    <div>
       <button
-        id="downloadHistory"
+        id="uploadHistory"
         class="btn btn-secondary btn-xs w-12"
-        on:click|stopPropagation={() => downloadHistory()}
-        title="Download history"><i class="fa fa-download" /></button>
-    {/if}
-    |
-    <button
-      id="saveHistory"
-      class="btn btn-success btn-xs w-12"
-      on:click|stopPropagation={() => saveHistory()}
-      title="Save current state"><i class="far fa-save" /></button>
-    {#if $historyModeStore !== 'loader'}
+        onclick={stopPropagation(() => uploadHistory())}
+        title="Upload history"
+        aria-label="Upload history"><i class="fa fa-upload"></i></button>
+      {#if $historyStore.length > 0}
+        <button
+          id="downloadHistory"
+          class="btn btn-secondary btn-xs w-12"
+          onclick={stopPropagation(() => downloadHistory())}
+          title="Download history"
+          aria-label="Download history"><i class="fa fa-download"></i></button>
+      {/if}
+      |
       <button
-        id="clearHistory"
-        class="btn btn-error btn-xs w-12"
-        on:click|stopPropagation={() => clearHistory()}
-        title="Delete all saved states"><i class="fas fa-trash-alt" /></button>
-    {/if}
-  </div>
+        id="saveHistory"
+        class="btn btn-success btn-xs w-12"
+        onclick={stopPropagation(() => saveHistory())}
+        title="Save current state"
+        aria-label="Save current state"><i class="far fa-save"></i></button>
+      {#if $historyModeStore !== 'loader'}
+        <button
+          id="clearHistory"
+          class="btn btn-error btn-xs w-12"
+          onclick={stopPropagation(() => clearHistory())}
+          title="Delete all saved states"
+          aria-label="Delete all saved states"><i class="fas fa-trash-alt"></i></button>
+      {/if}
+    </div>
+  {/snippet}
   <ul class="h-56 space-y-2 overflow-auto p-2" id="historyList">
     {#if $historyStore.length > 0}
       {#each $historyStore as { id, state, time, name, url, type }}
@@ -169,11 +175,11 @@
               </div>
             </div>
             <div class="flex content-center gap-2">
-              <button class="btn btn-success" on:click={() => restoreHistoryItem(state)}
-                ><i class="fas fa-undo mr-1" />Restore</button>
+              <button class="btn btn-success" onclick={() => restoreHistoryItem(state)}
+                ><i class="fas fa-undo mr-1"></i>Restore</button>
               {#if type !== 'loader'}
-                <button class="btn btn-error" on:click={() => clearHistory(id)}
-                  ><i class="fas fa-trash-alt mr-1" />Delete</button>
+                <button class="btn btn-error" onclick={() => clearHistory(id)}
+                  ><i class="fas fa-trash-alt mr-1"></i>Delete</button>
               {/if}
             </div>
           </div>

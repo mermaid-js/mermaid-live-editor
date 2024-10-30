@@ -23,7 +23,7 @@
   ];
 
   let index = Math.floor(Math.random() * taglines.length);
-  let currentTagline = taglines[index];
+  let currentTagline = $state(taglines[index]);
 
   const interval = setInterval(() => {
     index = (index + 1) % taglines.length;

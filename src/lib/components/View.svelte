@@ -12,12 +12,12 @@
 
   let code = '';
   let config = '';
-  let container: HTMLDivElement;
+  let container: HTMLDivElement | undefined = $state();
   let rough: boolean;
-  let view: HTMLDivElement;
-  let error = false;
-  let outOfSync = false;
-  let hide = false;
+  let view: HTMLDivElement | undefined = $state();
+  let error = $state(false);
+  let outOfSync = $state(false);
+  let hide = $state(false);
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
   let pzoom: typeof panzoom | undefined;
@@ -93,7 +93,7 @@
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
         rough = state.rough;
-        const scroll = view.parentElement?.scrollTop;
+        const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
         const { svg, bindFunctions } = await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
@@ -131,7 +131,7 @@
             }
           }
         }
-        if (view.parentElement && scroll) {
+        if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
         }
         error = false;
@@ -171,13 +171,13 @@
     {#if $stateStore.autoSync}
       It will be updated automatically.
     {:else}
-      Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      Press <i class="fas fa-sync"></i> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
     {/if}
   </div>
 {/if}
 
 <div id="view" bind:this={view} class="h-full p-2" class:error class:outOfSync>
-  <div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
+  <div id="container" bind:this={container} class="h-full overflow-auto" class:hide></div>
 </div>
 
 <style>
