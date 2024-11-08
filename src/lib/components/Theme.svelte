@@ -27,7 +27,7 @@
 </script>
 
 <div class="dropdown hidden lg:block">
-  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div tabindex="0" class="btn btn-ghost">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@
   </div>
   <div
     class="dropdown-content top-px mt-14 h-96 w-56 overflow-y-auto bg-base-200 text-base-content shadow-2xl">
-    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <ul tabindex="0" class="menu compact p-4">
       {#each themes as theme}
         <li class:bordered={$themeStore.theme !== undefined && theme.includes($themeStore.theme)}>
@@ -57,8 +57,8 @@
             role="menuitem"
             tabindex="0"
             class="btn btn-ghost justify-start"
-            on:click={() => setTheme(theme)}
-            on:keypress={() => setTheme(theme)}>{theme}</span>
+            onclick={() => setTheme(theme)}
+            onkeypress={() => setTheme(theme)}>{theme}</span>
         </li>
       {/each}
     </ul>
