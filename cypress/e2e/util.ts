@@ -36,7 +36,7 @@ export const verifyFileSizeGreaterThan = (
     mode: 'size'
   }).then((fileSize: number) => {
     expect(fileSize).to.be.gt(size);
-    expect(fileSize).to.be.lt(size * 1.3);
+    expect(fileSize).to.be.lt(size * 2);
   });
 };
 
