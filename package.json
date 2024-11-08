@@ -24,8 +24,8 @@
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
     "@fortawesome/fontawesome-free": "^6.5.1",
-    "@sveltejs/adapter-static": "3.0.4",
-    "@sveltejs/kit": "2.5.26",
+    "@sveltejs/adapter-static": "3.0.6",
+    "@sveltejs/kit": "2.5.28",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/svelte": "4.2.3",
     "@types/dompurify": "^3.0.5",
@@ -41,7 +41,7 @@
     "cssnano": "^6.0.0",
     "cypress": "12.17.4",
     "cypress-localstorage-commands": "2.2.6",
-    "eslint": "8.57.0",
+    "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-cypress": "2.15.2",
     "eslint-plugin-es": "^4.1.0",
@@ -83,7 +83,7 @@
     "pako": "2.1.0",
     "plausible-tracker": "^0.3.8",
     "random-word-slugs": "0.1.7",
-    "svg-pan-zoom": "3.6.1",
+    "svg-pan-zoom": "3.6.2",
     "svg2roughjs": "^3.2.0",
     "uuid": "9.0.1"
   },
