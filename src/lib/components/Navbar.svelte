@@ -9,6 +9,7 @@
 <script lang="ts">
   import { env } from '$lib/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
+  import { stateStore } from '$lib/util/state';
   import Privacy from './Privacy.svelte';
   import Theme from './Theme.svelte';
 
@@ -95,8 +96,21 @@
 
 <div class="navbar bg-primary p-0 shadow-lg">
   <div class="mx-2 flex-1 px-2">
-    <span class="text-lg font-bold">
-      <a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
+    <span class="flex items-center justify-center gap-2 font-bold">
+      <a href="/">Mermaid Live Editor</a>
+      {#if isEnabledMermaidChartLinks}
+        <input
+          type="checkbox"
+          class="toggle toggle-primary"
+          id="editorMode"
+          onclick={() => {
+            logEvent('playgroundToggle');
+            window.location.href = `https://mermaidchart.com/play#${$stateStore.serialized}`;
+          }} />
+        <a href="https://mermaidchart.com/play#{$stateStore.serialized}">
+          Mermaid Chart Playground
+        </a>
+      {/if}
     </span>
   </div>
 
@@ -140,6 +154,7 @@
     onclick={toggleMenu} />
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
+    <span class="text-xs font-thin">v{version}</span>
     <Theme />
     <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
       <li>
