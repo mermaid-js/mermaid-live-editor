@@ -24,18 +24,18 @@
         d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" /></svg>
   </button>
   <div
-    class="dropdown-content menu top-px mt-14 h-fit w-fit overflow-y-auto bg-base-200 text-base-content shadow-2xl">
+    class="dropdown-content menu top-14 size-fit overflow-y-auto bg-base-200 text-base-content shadow-2xl">
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <ul tabindex="0" class="menu compact p-4">
-      {#each links as link}
+      {#each links as { href, title }}
         <li>
           <a
             role="menuitem"
             tabindex="0"
             class="whitespace-nowrap underline"
             target="_blank"
-            href={link.href}>
-            {link.title}
+            {href}>
+            {title}
           </a>
         </li>
       {/each}
