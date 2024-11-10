@@ -10,6 +10,8 @@
   import { env } from '$lib/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import { stateStore } from '$lib/util/state';
+  import type { ComponentProps } from 'svelte';
+  import DropdownNavMenu from './DropdownNavMenu.svelte';
   import Privacy from './Privacy.svelte';
   import Theme from './Theme.svelte';
 
@@ -21,42 +23,28 @@
     isMenuOpen = !isMenuOpen;
   }
 
-  interface Link {
-    href: string;
-    title?: string;
-    icon?: string;
-    img?: string;
-  }
+  type Links = ComponentProps<typeof DropdownNavMenu>['links'];
 
-  let links: Link[] = [
+  const githubLinks: Links = [
+    { title: 'Mermaid JS', href: 'https://github.com/mermaid-js/mermaid' },
     {
-      title: 'Documentation',
-      href: 'https://mermaid.js.org/intro/getting-started.html'
+      title: 'Mermaid Live Editor',
+      href: 'https://github.com/mermaid-js/mermaid-live-editor'
     },
     {
-      title: 'Tutorial',
-      href: 'https://mermaid.js.org/ecosystem/tutorials.html'
-    },
-    {
-      title: 'Mermaid',
-      href: 'https://github.com/mermaid-js/mermaid'
-    },
-    {
-      title: 'CLI',
+      title: 'Mermaid CLI',
       href: 'https://github.com/mermaid-js/mermaid-cli'
-    },
-    {
-      href: 'https://github.com/mermaid-js/mermaid-live-editor',
-      icon: 'fab fa-github fa-lg'
     }
   ];
 
-  if (isEnabledMermaidChartLinks) {
-    links.push({
-      href: 'https://mermaidchart.com',
-      img: './mermaidchart-logo.svg'
-    });
-  }
+  const documentationLinks: Links = [
+    { title: 'Getting started', href: 'https://mermaid.js.org/intro/getting-started.html' },
+    { title: 'Tutorials', href: 'https://mermaid.js.org/ecosystem/tutorials.html' },
+    {
+      title: 'Integrations',
+      href: 'https://mermaid.js.org/ecosystem/integrations-community.html'
+    }
+  ];
 
   let activePromotion = $state(getActivePromotion());
 
@@ -94,7 +82,7 @@
   </div>
 {/if}
 
-<div class="navbar bg-primary p-0 shadow-lg">
+<div class="navbar z-50 bg-primary p-0 shadow-lg">
   <div class="mx-2 flex-1 px-2">
     <span class="flex items-center justify-center gap-2 font-bold">
       <a href="/">Mermaid Live Editor</a>
@@ -154,26 +142,28 @@
     onclick={toggleMenu} />
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
-    <span class="text-xs font-thin">v{version}</span>
-    <Theme />
+    <span class="text-sm">v{version}</span>
     <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
       <li>
         <Privacy />
       </li>
-      {#each links as { title, href, icon, img }}
+      <li>
+        <Theme />
+      </li>
+      <li>
+        <DropdownNavMenu label="Documentation" links={documentationLinks} />
+      </li>
+      <li>
+        <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
+      </li>
+
+      {#if isEnabledMermaidChartLinks}
         <li>
-          <a class="btn btn-ghost" target="_blank" {href}>
-            {#if icon}
-              <i class={icon}></i>
-            {:else if img}
-              <img src={img} alt={title} />
-            {/if}
-            {#if title}
-              {title}
-            {/if}
+          <a class="btn btn-ghost" target="_blank" href="https://mermaidchart.com">
+            <img class="size-6" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
           </a>
         </li>
-      {/each}
+      {/if}
     </ul>
   </div>
 </div>
@@ -185,14 +175,5 @@
     padding: 1rem 0;
     background: #661ae6;
     display: flex;
-  }
-
-  .navbar {
-    z-index: 10000;
-  }
-
-  img {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 </style>
