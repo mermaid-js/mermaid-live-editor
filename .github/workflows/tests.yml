@@ -17,9 +17,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: yarn-and-build-cache
         with:
           path: |
@@ -30,21 +30,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version-file: '.node-version'
           cache: 'yarn'
 
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v6
         with:
           build: yarn build
           start: yarn preview
           wait-on: 'http://localhost:3000'
           record: true
-          headless: true
           parallel: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

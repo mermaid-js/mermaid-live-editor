@@ -225,10 +225,10 @@ packet-beta
     {#each diagramOrder as sample}
       <button
         class="btn btn-primary btn-sm w-fit min-w-20 flex-grow normal-case"
-        on:click={() => loadSampleDiagram(sample)}>
+        onclick={() => loadSampleDiagram(sample)}>
         {sample}
         {#if newDiagrams.includes(sample)}
-          <span class="fa fa-heart ml-2" />
+          <span class="fa fa-heart ml-2"></span>
         {/if}
       </button>
     {/each}
