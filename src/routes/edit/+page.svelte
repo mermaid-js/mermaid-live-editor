@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { dev } from '$app/environment';
   import { base } from '$app/paths';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
@@ -11,10 +10,9 @@
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
   import { env } from '$lib/util/env';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
-  import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
+  import { cmdKey, initHandler, MCBaseURL, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
 
-  const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
   const docURLBase = 'https://mermaid.js.org';
   const docMap: DocumentationConfig = {
     graph: {

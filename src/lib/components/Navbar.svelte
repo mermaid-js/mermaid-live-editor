@@ -10,6 +10,7 @@
   import { env } from '$lib/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import { stateStore } from '$lib/util/state';
+  import { MCBaseURL } from '$lib/util/util';
   import type { ComponentProps } from 'svelte';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
   import Privacy from './Privacy.svelte';
@@ -18,7 +19,7 @@
   const { isEnabledMermaidChartLinks } = env;
 
   let isMenuOpen = $state(false);
-
+  const isReferral = document.referrer.includes(MCBaseURL);
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
   }
@@ -83,23 +84,30 @@
 {/if}
 
 <div class="navbar z-50 bg-primary p-0 shadow-lg">
-  <div class="mx-2 flex-1 px-2">
-    <span class="flex items-center justify-center gap-2 font-bold">
+  <div class="mx-2 flex flex-1 gap-2 px-2">
+    <a href="/"><img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" /></a>
+    <div
+      class="flex items-center justify-center gap-2 font-bold"
+      class:flex-row-reverse={isReferral}>
       <a href="/">Mermaid Live Editor</a>
       {#if isEnabledMermaidChartLinks}
         <input
           type="checkbox"
           class="toggle toggle-primary"
           id="editorMode"
+          checked={isReferral}
           onclick={() => {
-            logEvent('playgroundToggle');
-            window.location.href = `https://mermaidchart.com/play#${$stateStore.serialized}`;
+            logEvent('playgroundToggle', { isReferred: isReferral });
+            window.open(
+              `${MCBaseURL}/play#${$stateStore.serialized}`,
+              '_self',
+              // Do not send referrer header, if the user already came from playground
+              isReferral ? 'noreferrer' : ''
+            );
           }} />
-        <a href="https://mermaidchart.com/play#{$stateStore.serialized}">
-          Mermaid Chart Playground
-        </a>
+        <a href="{MCBaseURL}/play#{$stateStore.serialized}">Mermaid Chart Playground</a>
       {/if}
-    </span>
+    </div>
   </div>
 
   <label
