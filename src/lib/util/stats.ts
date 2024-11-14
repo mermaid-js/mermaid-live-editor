@@ -104,6 +104,7 @@ const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
   render: minutesToMilliSeconds(5),
   panZoom: minutesToMilliSeconds(10),
+  playgroundToggle: defaultDelay,
   copyClipboard: defaultDelay,
   download: defaultDelay,
   copyMarkdown: defaultDelay,

@@ -1,8 +1,8 @@
-import { initURLSubscription, loadState, updateCodeStore } from './state';
-import { plausible, initAnalytics } from './stats';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
+import { initURLSubscription, loadState, updateCodeStore } from './state';
+import { initAnalytics, plausible } from './stats';
 
 export const loadStateFromURL = (): void => {
   loadState(window.location.hash.slice(1));
@@ -26,6 +26,7 @@ export const initHandler = async (): Promise<void> => {
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
+export const MCBaseURL = 'https://mermaidchart.com'; // 'http://localhost:5174'
 
 let count = 0;
 export const errorDebug = (limit = 1000) => {
