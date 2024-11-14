@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
@@ -27,7 +26,7 @@ export const initHandler = async (): Promise<void> => {
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
-export const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
+export const MCBaseURL = 'https://mermaidchart.com'; // 'http://localhost:5174'
 
 let count = 0;
 export const errorDebug = (limit = 1000) => {
