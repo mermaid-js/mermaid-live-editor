@@ -87,9 +87,15 @@
   <div class="mx-2 flex flex-1 gap-2 px-2">
     <a href="/"><img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" /></a>
     <div
+      id="switcher"
       class="flex items-center justify-center gap-2 font-bold"
       class:flex-row-reverse={isReferral}>
-      <a href="/">Mermaid Live Editor</a>
+      <a href="/">
+        {#if !isReferral}
+          Mermaid
+        {/if}
+        Live Editor
+      </a>
       {#if isEnabledMermaidChartLinks}
         <input
           type="checkbox"
@@ -105,7 +111,7 @@
               isReferral ? 'noreferrer' : ''
             );
           }} />
-        <a href="{MCBaseURL}/play#{$stateStore.serialized}">Mermaid Chart Playground</a>
+        <a href="{MCBaseURL}/play#{$stateStore.serialized}">Playground</a>
       {/if}
     </div>
   </div>
