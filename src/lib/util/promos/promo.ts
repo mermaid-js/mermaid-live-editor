@@ -14,7 +14,7 @@ const promotions: Promotion[] = [
   {
     id: 'promo-january-2025',
     startDate: new Date('2025-01-01'),
-    endDate: new Date('2025-12-31'),
+    endDate: new Date('2028-12-31'),
     component: January2025
   }
 ];
