@@ -1,21 +1,21 @@
 import { writable, type Writable, get } from 'svelte/store';
 import { persist, localStorage } from '../persist';
-import October2024 from './October2024.svelte';
+import January2025 from './January2025.svelte';
 import { env } from '$lib/util/env';
 
 interface Promotion {
   id: string;
   startDate: Date;
   endDate: Date;
-  component: ConstructorOfATypedSvelteComponent;
+  component: typeof January2025;
 }
 
 const promotions: Promotion[] = [
   {
-    id: 'promo-october-2024',
-    startDate: new Date('2024-10-22'),
-    endDate: new Date('2024-12-31'),
-    component: October2024
+    id: 'promo-january-2025',
+    startDate: new Date('2025-01-01'),
+    endDate: new Date('2028-12-31'),
+    component: January2025
   }
 ];
 
