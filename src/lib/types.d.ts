@@ -87,3 +87,7 @@ export interface ErrorHash {
     last_column: number;
   };
 }
+
+export interface APIResponse {
+  code: string;
+}

@@ -8,7 +8,14 @@ export default defineConfig({
   optimizeDeps: { include: ['mermaid'] },
   server: {
     port: 3000,
-    host: true
+    host: true,
+    proxy: {
+      '/api': {
+        target: 'https://internal-questions-api-dadcb4023286.herokuapp.com',
+        changeOrigin: true
+        // rewrite: (path) => path.replace(/^\/api/, '') // Optional: rewrite the path
+      }
+    }
   },
   preview: {
     port: 3000,

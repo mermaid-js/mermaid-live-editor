@@ -1,4 +1,4 @@
-import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
+import type { APIResponse, ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
@@ -206,4 +206,44 @@ export const initURLSubscription = (): void => {
 
 export const getStateString = (): string => {
   return JSON.stringify(get(inputStateStore));
+};
+
+export const loadStateFromJson = (data: APIResponse): void => {
+  let state: State;
+  try {
+    state = {
+      code: data.code,
+      mermaid: formatJSON({
+        theme: 'default'
+      }),
+      autoSync: true,
+      rough: false,
+      updateDiagram: true
+    };
+    if (!state.mermaid) {
+      state.mermaid = defaultState.mermaid;
+    }
+    const mermaidConfig: MermaidConfig =
+      typeof state.mermaid === 'string'
+        ? (JSON.parse(state.mermaid) as MermaidConfig)
+        : state.mermaid;
+    if (
+      mermaidConfig.securityLevel &&
+      mermaidConfig.securityLevel !== 'strict' &&
+      confirm(
+        `Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+      )
+    ) {
+      delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
+    }
+    state.mermaid = formatJSON(mermaidConfig);
+  } catch (error) {
+    state = get(inputStateStore);
+    if (data) {
+      console.error('Init error', error);
+      state.code = urlParseFailedState;
+      state.mermaid = defaultState.mermaid;
+    }
+  }
+  updateCodeStore(state);
 };

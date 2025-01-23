@@ -1,7 +1,8 @@
+import type { APIResponse } from '$lib/types';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
-import { initURLSubscription, loadState, updateCodeStore } from './state';
+import { initURLSubscription, loadState, updateCodeStore, loadStateFromJson } from './state';
 import { initAnalytics, plausible } from './stats';
 
 export const loadStateFromURL = (): void => {
@@ -17,6 +18,16 @@ export const syncDiagram = (): void => {
 export const initHandler = async (): Promise<void> => {
   applyMigrations();
   loadStateFromURL();
+  await initLoading('Loading Gist...', loadDataFromUrl().catch(console.error));
+  syncDiagram();
+  initURLSubscription();
+  await initAnalytics();
+  plausible?.trackPageview({ url: window.location.origin + window.location.pathname });
+};
+
+export const initHandlerV2 = async (apiData: APIResponse): Promise<void> => {
+  applyMigrations();
+  loadStateFromJson(apiData);
   await initLoading('Loading Gist...', loadDataFromUrl().catch(console.error));
   syncDiagram();
   initURLSubscription();
