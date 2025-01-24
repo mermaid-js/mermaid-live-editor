@@ -21,7 +21,7 @@ jobs:
 
       - name: Build & Deploy
         env:
-          MERMAID_DOMAIN: 'mermaid.live'
+          MERMAID_DOMAIN: 'https://noobtolinux.github.io/mermaid-live-editor/'
           MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
           MERMAID_RENDERER_URL: 'https://mermaid.ink'
           MERMAID_KROKI_RENDERER_URL: 'https://kroki.io'
@@ -37,7 +37,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/develop' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
