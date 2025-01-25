@@ -32,7 +32,7 @@ interface UrlObject {
 function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
     console.log('------');
-    console.log(url);
+    console.log(JSON.parse(url));
     console.log(url.icons);
     console.log('------');
   
