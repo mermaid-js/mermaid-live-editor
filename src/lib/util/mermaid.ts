@@ -6,20 +6,50 @@ import mermaid from 'mermaid';
 mermaid.registerLayoutLoaders(elkLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
-
+/*
 function UrlsToRegisterObject(UrlOb){
-    const name = UrlOb.name;
-    const url = UrlOb.url;
+    const name = UrlOb.name as string;
+    const url = UrlOb.url as string;
     return {
         name: name,
         loader: () => import(url).then((module) => module.icons),
     }
 }
-
+*/
+//This with chat gpt to pass the type thing, idk about typescript
+interface UrlObject {
+    name: string;
+    url: string;
+  }
+  
+  // Tipo para el módulo importado
+  interface IconsModule {
+    icons: Record<string, unknown>; // Esto asume que icons es un objeto JSON con claves de tipo string
+  }
+  
+  function UrlsToRegisterObject(UrlOb: UrlObject) {
+    const name = UrlOb.name;
+    const url = UrlOb.url;
+  
+    return {
+      name: name,
+      loader: async () => {
+        const module = await import(url);
+        // Aseguramos que el módulo tiene la propiedad 'icons' que es un objeto
+        return (module as IconsModule).icons;
+      },
+    };
+  }
 
 
 function loadInputs() {
-    const data = JSON.parse(document.getElementById('extension-data').innerText);
+    if (document.querySelector('#extension-data')){
+        return JSON.parse(document.querySelector('#extension-data').textContent);
+    }
+    else {
+        return null;
+    }
+
     //extension-data doesn't exist by itself, but should exist if the extension is installed
     /*
     data has the shape:
@@ -30,17 +60,14 @@ function loadInputs() {
         }
     ]
     */
-    return data;
 }
 
 function mermaidRegisterProcess(){
-    let inputs = loadInputs();
-    if (inputs){
+    if (loadInputs()){
         mermaid.registerIconPacks(
             loadInputs().map(UrlsToRegisterObject)
         )
     }
-    return undefined;
 }
 
 mermaidRegisterProcess();
