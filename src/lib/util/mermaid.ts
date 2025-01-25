@@ -33,14 +33,14 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
     console.log('------');
     console.log(JSON.parse(url));
-    console.log(url.icons);
+    console.log(JSON.parse(url.icons) as Record<string, unknown>);
     console.log('------');
   
     return {
       name,
       loader: () => {
-        const module = JSON.parse(url) as Record<string, unknown>;
-        return module.icons; // Aseguramos que module tiene la propiedad icons
+        const icons = JSON.parse(url.icons) as Record<string, unknown>;
+        return icons; // Aseguramos que module tiene la propiedad icons
       },
     };
   }
