@@ -39,7 +39,7 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     return {
       name,
       loader: () => {
-        const module = url;
+        const module = JSON.parse(url);
         return module.icons; // Aseguramos que module tiene la propiedad icons
       },
     };
