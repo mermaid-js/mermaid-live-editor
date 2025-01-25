@@ -47,6 +47,9 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   // Tipar la función loadInputs correctamente
   function loadInputs(): UrlObject[] | null {
     const dataElement = document.querySelector('#extension-data');
+    console.log('----- INPUTS DATA ELEMENT -----')
+    console.log(dataElement);
+    console.log('----- INPUTS DATA ELEMENT -----')
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
       const parsedData = JSON.parse(dataElement.textContent) as UrlObject[];
