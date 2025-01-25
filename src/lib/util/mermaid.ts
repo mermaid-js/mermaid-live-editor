@@ -28,7 +28,7 @@ interface UrlObject {
   }
   
   // Definir la función correctamente tipada
-  function UrlsToRegisterObject(UrlOb: UrlObject) {
+  async function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
   
     return {
@@ -52,10 +52,10 @@ interface UrlObject {
   }
   
   // La función mermaidRegisterProcess
-  function mermaidRegisterProcess() {
+  async function mermaidRegisterProcess() {
     const inputs = loadInputs();
     if (inputs) {
-      mermaid.registerIconPacks(inputs.map((x) => UrlsToRegisterObject(x)));
+      await mermaid.registerIconPacks(inputs.map(async (x) => await UrlsToRegisterObject(x)));
     }
 }
 
