@@ -34,15 +34,15 @@ interface UrlObject {
     return {
       name,
       loader: async () => {
-        const module = await import(url);
-        return (module as IconsModule).icons; // Aseguramos que module tiene la propiedad icons
+        const module = await import(url) as IconsModule;
+        return module.icons; // Aseguramos que module tiene la propiedad icons
       },
     };
   }
   
   // Tipar la función loadInputs correctamente
   function loadInputs(): UrlObject[] | null {
-    const dataElement = document.querySelector('#extension-data');
+    const dataElement = document.querySelector('#extension-data') as HTMLElement | null;
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
       const parsedData: UrlObject[] = JSON.parse(dataElement.textContent || '[]');
