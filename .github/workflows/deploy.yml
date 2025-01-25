@@ -41,4 +41,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
+          publish_branch: gh-pages  # Especificamos la rama de despliegue, en este caso 'gh-pages'
           keep_files: true
