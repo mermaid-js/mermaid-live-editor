@@ -55,7 +55,7 @@ interface UrlObject {
   function mermaidRegisterProcess() {
     const inputs = loadInputs();
     if (inputs) {
-      mermaid.registerIconPacks(inputs.map(UrlsToRegisterObject));
+      mermaid.registerIconPacks(inputs.map((x) => UrlsToRegisterObject(x)));
     }
 }
 
