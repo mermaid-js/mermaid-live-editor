@@ -34,7 +34,7 @@ interface UrlObject {
     return {
       name,
       loader: async () => {
-        const module = await import(url) as IconsModule;
+        const module = await fetch(url).then((res) => res.json()) as IconsModule;
         return module.icons; // Aseguramos que module tiene la propiedad icons
       },
     };
@@ -52,10 +52,10 @@ interface UrlObject {
   }
   
   // La función mermaidRegisterProcess
-  async function mermaidRegisterProcess() {
+function mermaidRegisterProcess() {
     const inputs = loadInputs();
     if (inputs) {
-      await mermaid.registerIconPacks(inputs.map(async (x) => await UrlsToRegisterObject(x)));
+      mermaid.registerIconPacks(inputs.map((x) => UrlsToRegisterObject(x)));
     }
 }
 
