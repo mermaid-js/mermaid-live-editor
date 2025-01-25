@@ -42,7 +42,7 @@ interface UrlObject {
   
   // Tipar la función loadInputs correctamente
   function loadInputs(): UrlObject[] | null {
-    const dataElement = document.querySelector('#extension-data') as HTMLElement | null;
+    const dataElement = document.querySelector('#extension-data');
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
       const parsedData: UrlObject[] = JSON.parse(dataElement.textContent || '[]');
