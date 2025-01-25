@@ -84,11 +84,11 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     const dataElement = document.querySelector('#extension-data');
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
-      let datastring = dataElement.textContent as string;
-      let parsedData: UrlObject;
+      const datastring = dataElement.textContent as string;
+      let parsedData;
       while (datastring === 'default string for extension check'){
         //Loop till data loads if extension is present
-        parsedData = JSON.parse(datastring);
+        parsedData = JSON.parse(datastring) as UrlObject;
       }
       return parsedData.length > 0 ? parsedData : null;
     }
