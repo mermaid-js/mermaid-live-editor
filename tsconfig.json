@@ -14,7 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
     "types": ["vitest/importMeta"],
-    "lib": [ "es2015" ]
+    "lib": [ "es2015", "dom" ]
   },
   "extends": "./.svelte-kit/tsconfig.json"
 }
