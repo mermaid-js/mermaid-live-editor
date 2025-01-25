@@ -24,53 +24,44 @@ interface UrlObject {
   
   // Tipo para el módulo importado
   interface IconsModule {
-    icons: Record<string, unknown>; // Esto asume que icons es un objeto JSON con claves de tipo string
+    icons: Record<string, unknown>; // Asumiendo que icons es un objeto JSON con claves de tipo string
   }
   
+  // Definir la función correctamente tipada
   function UrlsToRegisterObject(UrlOb: UrlObject) {
-    const name = UrlOb.name;
-    const url = UrlOb.url;
+    const { name, url } = UrlOb;
   
     return {
-      name: name,
+      name,
       loader: async () => {
         const module = await import(url);
-        // Aseguramos que el módulo tiene la propiedad 'icons' que es un objeto
-        return (module as IconsModule).icons;
+        return (module as IconsModule).icons; // Aseguramos que module tiene la propiedad icons
       },
     };
   }
-
-
-function loadInputs() {
-    if (document.querySelector('#extension-data')){
-        return JSON.parse(document.querySelector('#extension-data').textContent);
+  
+  // Tipar la función loadInputs correctamente
+  function loadInputs(): UrlObject[] | null {
+    const dataElement = document.querySelector('#extension-data');
+    if (dataElement) {
+      // Parseamos los datos asumiendo que siempre son correctos
+      const parsedData: UrlObject[] = JSON.parse(dataElement.textContent || '[]');
+      return parsedData.length > 0 ? parsedData : null;
     }
-    else {
-        return null;
-    }
-
-    //extension-data doesn't exist by itself, but should exist if the extension is installed
-    /*
-    data has the shape:
-    [
-        {
-            url: part of url for lazy loading of icons (example: @iconify-json/logos)
-            name: 'some name all minus no spaces no numbers, just lower case lyrics'
-        }
-    ]
-    */
-}
-
-function mermaidRegisterProcess(){
-    if (loadInputs()){
-        mermaid.registerIconPacks(
-            loadInputs().map(UrlsToRegisterObject)
-        )
+    return null;
+  }
+  
+  // La función mermaidRegisterProcess
+  function mermaidRegisterProcess() {
+    const inputs = loadInputs();
+    if (inputs) {
+      mermaid.registerIconPacks(inputs.map(UrlsToRegisterObject));
     }
 }
 
+// Llamar al proceso
 mermaidRegisterProcess();
+
 
 
 export const render = async (
