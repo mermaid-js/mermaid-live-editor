@@ -31,6 +31,9 @@ interface UrlObject {
   // Definir la función correctamente tipada
 function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
+    console.log('------');
+    console.log(url);
+    console.log('------');
   
     return {
       name,
