@@ -13,7 +13,8 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
-    "types": ["vitest/importMeta"]
+    "types": ["vitest/importMeta"],
+    "lib": [ "es2015" ]
   },
   "extends": "./.svelte-kit/tsconfig.json"
 }

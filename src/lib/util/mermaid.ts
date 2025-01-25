@@ -6,6 +6,7 @@ import mermaid from 'mermaid';
 mermaid.registerLayoutLoaders(elkLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
+
 function UrlsToRegisterObject(UrlOb){
     let name = UrlOb.name;
     let url = UrlOb.url;
@@ -14,6 +15,8 @@ function UrlsToRegisterObject(UrlOb){
         loader: () => import(url).then((module) => module.icons),
     }
 }
+
+
 
 function loadInputs() {
     const data = JSON.parse(document.getElementById('extension-data').innerText);
@@ -41,7 +44,6 @@ function mermaidRegisterProcess(){
 }
 
 mermaidRegisterProcess();
-
 
 
 export const render = async (
