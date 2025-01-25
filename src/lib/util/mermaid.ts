@@ -88,7 +88,7 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
       let parsedData;
       while (datastring === 'default string for extension check'){
         //Loop till data loads if extension is present
-        parsedData = JSON.parse(datastring) as UrlObject;
+        parsedData = JSON.parse(datastring) as UrlObject[];
       }
       return parsedData.length > 0 ? parsedData : null;
     }
