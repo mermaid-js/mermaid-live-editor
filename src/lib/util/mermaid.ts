@@ -58,6 +58,9 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   // La función mermaidRegisterProcess
 function mermaidRegisterProcess() {
     const inputs = loadInputs();
+    console.log('----- INPUTS -----')
+    console.log(inputs);
+    console.log('----- INPUTS -----')
     if (inputs) {
       mermaid.registerIconPacks(inputs.map((x) => UrlsToRegisterObject(x)));
     }
