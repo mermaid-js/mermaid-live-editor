@@ -16,11 +16,34 @@ function UrlsToRegisterObject(UrlOb){
     }
 }
 */
-  
-  // Tipo para el módulo importado
-  interface IconsModule {
-    icons: Record<string, unknown>; // Asumiendo que icons es un objeto JSON con claves de tipo string
-  }
+
+interface Dummy {
+  parent: string
+}
+
+interface DummyParent {
+  [x:string]: Dummy
+}
+
+interface IconType {
+  body: string;
+  width: number;
+  height: number;
+}
+
+interface IconKeyVal {
+  [x: string]: IconType
+}
+
+interface IconsModule {
+  aliases: DummyParent;
+  height: number;
+  icons: IconKeyVal[];
+  lastModified: number;
+  prefix: string;
+  width: number;
+}
+
 
   //This with chat gpt to pass the type thing, idk about typescript
 interface UrlObject {
@@ -32,14 +55,14 @@ interface UrlObject {
 function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
     console.log('------');
-    console.log(JSON.parse(url));
-    console.log(JSON.parse(url.icons) as Record<string, unknown>);
+    console.log(url);
+    console.log(url.icons);
     console.log('------');
   
     return {
       name,
       loader: () => {
-        const icons = JSON.parse(url.icons) as Record<string, unknown>;
+        const icons = url.icons;
         return icons; // Aseguramos que module tiene la propiedad icons
       },
     };
