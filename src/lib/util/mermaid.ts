@@ -32,7 +32,7 @@ interface UrlObject {
 function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
     console.log('------');
-    console.log(url);
+    console.log(url.icons);
     console.log('------');
   
     return {
@@ -56,9 +56,6 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   function loadInputs(): UrlObject[] | null {
     waitSync(500); //Just to try to see if it loads the data
     const dataElement = document.querySelector('#extension-data');
-    console.log('----- INPUTS DATA ELEMENT -----')
-    console.log(dataElement);
-    console.log('----- INPUTS DATA ELEMENT -----')
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
       const parsedData = JSON.parse(dataElement.textContent) as UrlObject[];
@@ -70,9 +67,6 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   // La función mermaidRegisterProcess
 function mermaidRegisterProcess() {
     const inputs = loadInputs();
-    console.log('----- INPUTS -----')
-    console.log(inputs);
-    console.log('----- INPUTS -----')
     if (inputs) {
       mermaid.registerIconPacks(inputs.map((x) => UrlsToRegisterObject(x)));
     }
