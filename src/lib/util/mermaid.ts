@@ -28,7 +28,7 @@ interface UrlObject {
   }
   
   // Definir la función correctamente tipada
-  async function UrlsToRegisterObject(UrlOb: UrlObject) {
+function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
   
     return {
