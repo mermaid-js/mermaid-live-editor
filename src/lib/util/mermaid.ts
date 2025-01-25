@@ -44,8 +44,17 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     };
   }
   
+  function waitSync(milliseconds) {
+    const start = Date.now();
+    while (Date.now() - start < milliseconds) {
+      // Bucle vacío para bloquear el tiempo
+    }
+  }
+  
+
   // Tipar la función loadInputs correctamente
   function loadInputs(): UrlObject[] | null {
+    waitSync(500); //Just to try to see if it loads the data
     const dataElement = document.querySelector('#extension-data');
     console.log('----- INPUTS DATA ELEMENT -----')
     console.log(dataElement);
