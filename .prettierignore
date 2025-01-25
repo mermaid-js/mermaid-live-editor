@@ -8,5 +8,5 @@ __snapshots__/**
 snapshots.js
 
 tsconfig.json
-/src/lib/utils/mermaid.ts
+src/lib/util/mermaid.ts
 /.github/workflows/deploy.yml
