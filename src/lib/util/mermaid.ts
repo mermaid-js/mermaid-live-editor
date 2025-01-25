@@ -16,16 +16,17 @@ function UrlsToRegisterObject(UrlOb){
     }
 }
 */
-//This with chat gpt to pass the type thing, idk about typescript
-interface UrlObject {
-    name: string;
-    url: string;
-  }
   
   // Tipo para el módulo importado
   interface IconsModule {
     icons: Record<string, unknown>; // Asumiendo que icons es un objeto JSON con claves de tipo string
   }
+
+  //This with chat gpt to pass the type thing, idk about typescript
+interface UrlObject {
+  name: string;
+  url: IconsModule;
+}
   
   // Definir la función correctamente tipada
 function UrlsToRegisterObject(UrlOb: UrlObject) {
@@ -34,7 +35,7 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     return {
       name,
       loader: async () => {
-        const module = await fetch(url).then((res) => res.json()) as IconsModule;
+        const module = url;
         return module.icons; // Aseguramos que module tiene la propiedad icons
       },
     };
