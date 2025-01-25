@@ -69,13 +69,14 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     };
   }
   
+  /*
   function waitSync(milliseconds) {
     const start = Date.now();
     while (Date.now() - start < milliseconds) {
       // Bucle vacío para bloquear el tiempo
     }
   }
-  
+  */
 
   // Tipar la función loadInputs correctamente
   function loadInputs(): UrlObject[] | null {
