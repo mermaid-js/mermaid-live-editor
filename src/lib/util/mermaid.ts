@@ -31,14 +31,14 @@ interface IconType {
   height: number;
 }
 
-interface IconKeyVal {
+interface IconKeyValue {
   [x: string]: IconType
 }
 
 interface IconsModule {
   aliases: DummyParent;
   height: number;
-  icons: IconKeyVal[];
+  icons: IconKeyValue[];
   lastModified: number;
   prefix: string;
   width: number;
