@@ -45,7 +45,7 @@ interface UrlObject {
     const dataElement = document.querySelector('#extension-data');
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
-      const parsedData: UrlObject[] = JSON.parse(dataElement.textContent || '[]');
+      const parsedData = JSON.parse(dataElement.textContent) as UrlObject[];
       return parsedData.length > 0 ? parsedData : null;
     }
     return null;
