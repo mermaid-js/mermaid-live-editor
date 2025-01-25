@@ -8,8 +8,8 @@ const init = mermaid.registerExternalDiagrams([zenuml]);
 
 
 function UrlsToRegisterObject(UrlOb){
-    let name = UrlOb.name;
-    let url = UrlOb.url;
+    const name = UrlOb.name;
+    const url = UrlOb.url;
     return {
         name: name,
         loader: () => import(url).then((module) => module.icons),
