@@ -6,136 +6,100 @@ import mermaid from 'mermaid';
 mermaid.registerLayoutLoaders(elkLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
-/*
-function UrlsToRegisterObject(UrlOb){
-    const name = UrlOb.name as string;
-    const url = UrlOb.url as string;
-    return {
-        name: name,
-        loader: () => import(url).then((module) => module.icons),
-    }
-}
-*/
 
-class Dummy {
-  parent: string
+
+
+
+//-----------------------------------------
+
+class ExtensionData {
+  name: string;
+  url: string;
 }
 
-class DummyParent {
-  [x:string]: Dummy[]
+class alias {
+  parent: string;
+}
+class Aliases {
+  [x: string] : alias;
 }
 
-class IconType {
+class Icon {
   body: string;
   width: number;
   height: number;
 }
 
-class IconKeyValue {
-  [x: string]: IconType
+class IconNameData {
+  [x: string] : Icon;
 }
 
-class IconsModule {
-  aliases: DummyParent;
-  height: number;
-  icons: IconKeyValue;
+class Module {
   lastModified: number;
-  prefix: string;
+  height: number;
   width: number;
+  prefix: string;
+  icons: IconNameData;
+  aliases: Aliases;
 }
 
-
-  //This with chat gpt to pass the type thing, idk about typescript
-  class UrlObject {
+class MermaidRegisterObject {
   name: string;
-  url: IconsModule;
+  loader: Function;
 }
-  
-  // Definir la función correctamente tipada
-function UrlsToRegisterObject(UrlOb: UrlObject) {
-    const { name, url } = UrlOb;
 
-    /*
-    console.log('------');
-    console.log(name);
-    console.log(url);
-    console.log(typeof url);
-    console.log('------');
-    */
-    //const iconsM = url;//JSON.parse(url) as IconsModule;
-    const icons = url.icons;//JSON.parse(iconsM.icons) as IconKeyValue;
+function UrlsToRegisterObject(extension_value: ExtensionData): MermaidRegisterObject {
+    const name = extension_value.name as string;
+    const url = extension_value.url as string;
 
-    /*
-    console.log('---- AAAAAAA -----');
-    console.log(iconsM);
-    console.log(icons);
-    console.log('---- AAAAAAA -----');
-    */
-    
+    async function loader_function(url){
+      const module = await import(url) as Module;
+      return module.icons;
+    }
+
+    async function wrap(){await loader_function(url);}
+
     return {
-      name,
-      loader: () => {
-        return icons; // Aseguramos que module tiene la propiedad icons
-      },
-    };
+        name: name,
+        loader: wrap,
+    }
+}
+
+function checkIfExtensionIsPresent(){
+  //Just to have true false value instead of null document
+  if (document.querySelector('#extension-data')){return true;}
+  else {return false;}
+}
+
+// Tipar la función loadInputs correctamente
+function loadInputs(): MermaidRegisterObject[] | null {
+  //waitSync(1000); //Just to try to see if it loads the data
+  if (!checkIfExtensionIsPresent()){return null;}
+
+  const dataElement = document.querySelector('#extension-data');
+  const extension_data = JSON.parse(dataElement.textContent) as ExtensionData[];
+
+  let data: MermaidRegisterObject[] = [];
+  for (let i = 0; i < extension_data.length; i++) {
+    const mermaidRegister = UrlsToRegisterObject(extension_data[i]);
+    data.push(mermaidRegister);
   }
+  //
   
-  /*
-  function waitSync(milliseconds) {
-    const start = Date.now();
-    while (Date.now() - start < milliseconds) {
-      // Bucle vacío para bloquear el tiempo
-    }
-  }
-  */
-
-  function dummyFunction(number: number){
-    return number++;
-  }
-
-  function print(whatever:number){console.log(whatever)};
-
-  // Tipar la función loadInputs correctamente
-  function loadInputs(): UrlObject[] | null {
-    //waitSync(1000); //Just to try to see if it loads the data
-    const dataElement = document.querySelector('#extension-data');
-    
-    if (dataElement) {
-      // Parseamos los datos asumiendo que siempre son correctos
-      const datastring = dataElement.textContent as string;
-      
-      let i = 0 as number;
-      while (datastring === 'default string for extension check'){
-        //Loop till data loads if extension is present
-        i++; //Trash attempting to avoid the compiler from deleting this code
-      }
-      print(dummyFunction(i));//More trash to avoid compiler removal;
-      const parsedData = JSON.parse(datastring) as UrlObject[];
-      /*
-      console.log('--- PARSED DATA ---');
-      console.log(parsedData);
-      console.log('--- PARSED DATA ---');
-      */
-      if (parsedData){
-        return parsedData.length > 0 ? parsedData : null;
-      }
-      else {return null;}
-    }
-    return null;
-  }
+  return data;
+}
   
   // La función mermaidRegisterProcess
-function mermaidRegisterProcess() {
+async function mermaidRegisterProcess() {
     const inputs = loadInputs();
     if (inputs) {
-      mermaid.registerIconPacks(inputs.map((x) => UrlsToRegisterObject(x)));
+      await mermaid.registerIconPacks(inputs);
     }
 }
 
-// Llamar al proceso
-mermaidRegisterProcess();
 
 
+//-------
 
 export const render = async (
   config: MermaidConfig,
@@ -146,6 +110,7 @@ export const render = async (
 
   // Should be able to call this multiple times without any issues.
   mermaid.initialize(config);
+  await mermaidRegisterProcess();
   return await mermaid.render(id, code);
 };
 
