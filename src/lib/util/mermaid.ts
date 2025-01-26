@@ -38,7 +38,7 @@ interface IconKeyValue {
 interface IconsModule {
   aliases: DummyParent;
   height: number;
-  icons: string;
+  icons: IconKeyValue[];
   lastModified: number;
   prefix: string;
   width: number;
@@ -48,7 +48,7 @@ interface IconsModule {
   //This with chat gpt to pass the type thing, idk about typescript
 interface UrlObject {
   name: string;
-  url: string;
+  url: IconsModule;
 }
   
   // Definir la función correctamente tipada
@@ -58,9 +58,10 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     console.log('------');
     console.log(name);
     console.log(url);
+    console.log(typeof url);
     console.log('------');
-    const iconsM = JSON.parse(url) as IconsModule;
-    const icons = JSON.parse(iconsM.icons) as IconKeyValue[];
+    const iconsM = url as IconsModule;
+    const icons = iconsM.icons as IconKeyValue[];
 
     console.log('---- AAAAAAA -----');
     console.log(iconsM);
