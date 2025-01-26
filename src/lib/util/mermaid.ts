@@ -57,6 +57,7 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
 
     console.log('------');
     console.log(name);
+    console.log(url);
     console.log(url.icons);
     console.log('------');
   
@@ -91,6 +92,9 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
         //Loop till data loads if extension is present
       }
       const parsedData = JSON.parse(datastring) as UrlObject[];
+      console.log('--- PARSED DATA ---');
+      console.log(parsedData);
+      console.log('--- PARSED DATA ---');
       if (parsedData){
         return parsedData.length > 0 ? parsedData : null;
       }
