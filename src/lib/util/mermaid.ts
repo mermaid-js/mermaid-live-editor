@@ -22,7 +22,7 @@ interface Dummy {
 }
 
 interface DummyParent {
-  [x:string]: Dummy
+  [x:string]: Dummy[]
 }
 
 interface IconType {
@@ -38,7 +38,7 @@ interface IconKeyValue {
 interface IconsModule {
   aliases: DummyParent;
   height: number;
-  icons: IconKeyValue;
+  icons: string;
   lastModified: number;
   prefix: string;
   width: number;
@@ -48,7 +48,7 @@ interface IconsModule {
   //This with chat gpt to pass the type thing, idk about typescript
 interface UrlObject {
   name: string;
-  url: IconsModule;
+  url: string;
 }
   
   // Definir la función correctamente tipada
@@ -58,14 +58,14 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     console.log('------');
     console.log(name);
     console.log(url);
-    console.log(url.icons);
     console.log('------');
   
     return {
       name,
       loader: () => {
-        const icons = url;
-        return icons.icons; // Aseguramos que module tiene la propiedad icons
+        const iconsM = JSON.parse(url) as IconsModule;
+        const icons = JSON.parse(iconsM.icons) as IconKeyValue[];
+        return icons; // Aseguramos que module tiene la propiedad icons
       },
     };
   }
