@@ -82,6 +82,9 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   function loadInputs(): UrlObject[] | null {
     //waitSync(1000); //Just to try to see if it loads the data
     const dataElement = document.querySelector('#extension-data');
+    console.log('---- DATA ELEMENT ----');
+    console.log(dataElement);
+    console.log('---- DATA ELEMENT ----');
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
       const datastring = dataElement.textContent as string;
