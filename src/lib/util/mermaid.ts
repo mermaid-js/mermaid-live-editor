@@ -82,17 +82,15 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   function loadInputs(): UrlObject[] | null {
     //waitSync(1000); //Just to try to see if it loads the data
     const dataElement = document.querySelector('#extension-data');
-    console.log('---- DATA ELEMENT ----');
-    console.log(dataElement);
-    console.log('---- DATA ELEMENT ----');
+    
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
       const datastring = dataElement.textContent as string;
-      let parsedData: UrlObject[] | null = null; // Especificar el tipo inicial
+      
       while (datastring === 'default string for extension check'){
         //Loop till data loads if extension is present
-        parsedData = JSON.parse(datastring) as UrlObject[];
       }
+      const parsedData = JSON.parse(datastring) as UrlObject[];
       if (parsedData){
         return parsedData.length > 0 ? parsedData : null;
       }
