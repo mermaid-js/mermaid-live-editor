@@ -55,19 +55,22 @@ class IconsModule {
 function UrlsToRegisterObject(UrlOb: UrlObject) {
     const { name, url } = UrlOb;
 
+    /*
     console.log('------');
     console.log(name);
     console.log(url);
     console.log(typeof url);
     console.log('------');
-    const iconsM = JSON.parse(url) as IconsModule;
-    const icons = JSON.parse(iconsM.icons) as IconKeyValue;
+    */
+    //const iconsM = url;//JSON.parse(url) as IconsModule;
+    const icons = url.icons;//JSON.parse(iconsM.icons) as IconKeyValue;
 
+    /*
     console.log('---- AAAAAAA -----');
     console.log(iconsM);
     console.log(icons);
     console.log('---- AAAAAAA -----');
-
+    */
     
     return {
       name,
@@ -99,9 +102,11 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
         //Loop till data loads if extension is present
       }
       const parsedData = JSON.parse(datastring) as UrlObject[];
+      /*
       console.log('--- PARSED DATA ---');
       console.log(parsedData);
       console.log('--- PARSED DATA ---');
+      */
       if (parsedData){
         return parsedData.length > 0 ? parsedData : null;
       }
