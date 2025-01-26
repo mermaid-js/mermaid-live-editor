@@ -82,22 +82,13 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   function loadInputs(): UrlObject[] | null {
     //waitSync(1000); //Just to try to see if it loads the data
     const dataElement = document.querySelector('#extension-data');
-    let parsedData: UrlObject[] | null = null; // Especificar el tipo inicial
     if (dataElement) {
       // Parseamos los datos asumiendo que siempre son correctos
-      // Loop till data loads if extension is present
-      try {
-        const tempData = JSON.parse(datastring); // Intentar parsear
-        if (Array.isArray(tempData) && tempData.every(isUrlObject)) {
-          // Validar que el resultado sea un array de UrlObject
-          parsedData = tempData as UrlObject[];
-        } else {
-          throw new Error("Invalid data structure");
-        }
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
-        parsedData = null;
-        //break; // Salir del loop si hay un error
+      const datastring = dataElement.textContent as string;
+      let parsedData: UrlObject[] | null = null; // Especificar el tipo inicial
+      while (datastring === 'default string for extension check'){
+        //Loop till data loads if extension is present
+        parsedData = JSON.parse(datastring) as UrlObject[];
       }
       return parsedData.length > 0 ? parsedData : null;
     }
