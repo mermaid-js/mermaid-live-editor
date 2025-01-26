@@ -70,7 +70,7 @@ async function UrlsToRegisterObject(extension_value: ExtensionData): Promise<Mer
         name: name,
         loader: wrap,
     }
-}
+} //Comment for commit, you can ignore this
 
 function checkIfExtensionIsPresent(){
   //Just to have true false value instead of null document
