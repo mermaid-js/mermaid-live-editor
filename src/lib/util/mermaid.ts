@@ -60,8 +60,8 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     console.log(url);
     console.log(typeof url);
     console.log('------');
-    const iconsM = url as IconsModule;
-    const icons = iconsM.icons as IconKeyValue[];
+    const iconsM = url// as IconsModule;
+    const icons = iconsM.icons// as IconKeyValue[];
 
     console.log('---- AAAAAAA -----');
     console.log(iconsM);
