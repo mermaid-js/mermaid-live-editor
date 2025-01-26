@@ -51,8 +51,9 @@ class MermaidRegisterObject {
 }
 
 async function loader_function(url): Promise<Module>{
-  const module = await import(url) as Module;
-  return module;
+  //const module = await import(url) as Module;
+  const module = await fetch('your-json-file-url');
+  return module.json();
 }
 
 async function UrlsToRegisterObject(extension_value: ExtensionData): Promise<MermaidRegisterObject> {
