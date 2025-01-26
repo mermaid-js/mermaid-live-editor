@@ -53,7 +53,7 @@ async function loader_function(url){
   return module;
 }
 
-async function UrlsToRegisterObject(extension_value: ExtensionData): MermaidRegisterObject {
+async function UrlsToRegisterObject(extension_value: ExtensionData): Promise<MermaidRegisterObject> {
     const name = extension_value.name// as string;
     const url = extension_value.url// as string;
 
@@ -69,12 +69,11 @@ async function UrlsToRegisterObject(extension_value: ExtensionData): MermaidRegi
 
 function checkIfExtensionIsPresent(){
   //Just to have true false value instead of null document
-  if (document.querySelector('#extension-data')){return true;}
-  else {return false;}
+  return document.querySelector('#extension-data') ? true : false;
 }
 
 // Tipar la función loadInputs correctamente
-async function loadInputs(): MermaidRegisterObject[] | null {
+async function loadInputs(): Promise<MermaidRegisterObject[] | null> {
   //waitSync(1000); //Just to try to see if it loads the data
   if (!checkIfExtensionIsPresent()){return null;}
 
