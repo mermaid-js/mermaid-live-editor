@@ -89,6 +89,12 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
   }
   */
 
+  function dummyFunction(number: number){
+    return number++;
+  }
+
+  function print(whatever:number){console.log(whatever)};
+
   // Tipar la función loadInputs correctamente
   function loadInputs(): UrlObject[] | null {
     //waitSync(1000); //Just to try to see if it loads the data
@@ -98,9 +104,12 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
       // Parseamos los datos asumiendo que siempre son correctos
       const datastring = dataElement.textContent as string;
       
+      let i = 0 as number;
       while (datastring === 'default string for extension check'){
         //Loop till data loads if extension is present
+        i++; //Trash attempting to avoid the compiler from deleting this code
       }
+      print(dummyFunction(i));//More trash to avoid compiler removal;
       const parsedData = JSON.parse(datastring) as UrlObject[];
       /*
       console.log('--- PARSED DATA ---');
