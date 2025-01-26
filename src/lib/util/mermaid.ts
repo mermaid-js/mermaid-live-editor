@@ -59,12 +59,18 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     console.log(name);
     console.log(url);
     console.log('------');
-  
+    const iconsM = JSON.parse(url) as IconsModule;
+    const icons = JSON.parse(iconsM.icons) as IconKeyValue[];
+
+    console.log('---- AAAAAAA -----');
+    console.log(iconsM);
+    console.log(icons);
+    console.log('---- AAAAAAA -----');
+
+    
     return {
       name,
       loader: () => {
-        const iconsM = JSON.parse(url) as IconsModule;
-        const icons = JSON.parse(iconsM.icons) as IconKeyValue[];
         return icons; // Aseguramos que module tiene la propiedad icons
       },
     };
