@@ -38,7 +38,7 @@ class IconKeyValue {
 class IconsModule {
   aliases: DummyParent;
   height: number;
-  icons: IconKeyValue[];
+  icons: IconKeyValue;
   lastModified: number;
   prefix: string;
   width: number;
@@ -60,8 +60,8 @@ function UrlsToRegisterObject(UrlOb: UrlObject) {
     console.log(url);
     console.log(typeof url);
     console.log('------');
-    const iconsM = url// as IconsModule;
-    const icons = iconsM.icons// as IconKeyValue[];
+    const iconsM = JSON.parse(url) as IconsModule;
+    const icons = JSON.parse(iconsM.icons) as IconKeyValue;
 
     console.log('---- AAAAAAA -----');
     console.log(iconsM);
