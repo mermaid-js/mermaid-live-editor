@@ -17,25 +17,25 @@ function UrlsToRegisterObject(UrlOb){
 }
 */
 
-interface Dummy {
+class Dummy {
   parent: string
 }
 
-interface DummyParent {
+class DummyParent {
   [x:string]: Dummy[]
 }
 
-interface IconType {
+class IconType {
   body: string;
   width: number;
   height: number;
 }
 
-interface IconKeyValue {
+class IconKeyValue {
   [x: string]: IconType
 }
 
-interface IconsModule {
+class IconsModule {
   aliases: DummyParent;
   height: number;
   icons: IconKeyValue[];
@@ -46,7 +46,7 @@ interface IconsModule {
 
 
   //This with chat gpt to pass the type thing, idk about typescript
-interface UrlObject {
+  class UrlObject {
   name: string;
   url: IconsModule;
 }
