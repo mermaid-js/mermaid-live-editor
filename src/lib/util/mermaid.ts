@@ -43,7 +43,7 @@ class Module {
   aliases: Aliases;
 }
 
-type WrapFunction = () => IconNameData; 
+type WrapFunction = () => Module; 
 
 class MermaidRegisterObject {
   name: string;
@@ -64,7 +64,7 @@ async function UrlsToRegisterObject(extension_value: ExtensionData): Promise<Mer
 
     const module = await loader_function(url);
 
-    function wrap(): IconNameData {return module.icons;}
+    function wrap(): Module {return module;}
 
     return {
         name: name,
