@@ -50,10 +50,12 @@ class MermaidRegisterObject {
   loader: WrapFunction;
 }
 
-async function loader_function(url): Promise<Module>{
-  //const module = await import(url) as Module;
-  const module = await fetch('your-json-file-url');
-  return module.json();
+async function loader_function(url: string): Promise<Module> {
+  const response = await fetch(url);  // Tipo: Response
+  const module = await response.json();  // El tipo de `json()` es `any`, pero lo asignamos a `Module`
+  
+  // Asegurándonos de que el JSON tenga la forma correcta de `Module`
+  return module as Module;  // Aquí estamos afirmando que el JSON tiene la forma de `Module`
 }
 
 async function UrlsToRegisterObject(extension_value: ExtensionData): Promise<MermaidRegisterObject> {
