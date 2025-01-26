@@ -48,16 +48,18 @@ class MermaidRegisterObject {
   loader: Function;
 }
 
-function UrlsToRegisterObject(extension_value: ExtensionData): MermaidRegisterObject {
-    const name = extension_value.name as string;
-    const url = extension_value.url as string;
+async function loader_function(url){
+  const module = await import(url) as Module;
+  return module;
+}
 
-    async function loader_function(url){
-      const module = await import(url) as Module;
-      return module.icons;
-    }
+async function UrlsToRegisterObject(extension_value: ExtensionData): MermaidRegisterObject {
+    const name = extension_value.name// as string;
+    const url = extension_value.url// as string;
 
-    async function wrap(){await loader_function(url);}
+    const module = await loader_function(url);
+
+    function wrap(){return module.icons;}
 
     return {
         name: name,
@@ -72,16 +74,16 @@ function checkIfExtensionIsPresent(){
 }
 
 // Tipar la función loadInputs correctamente
-function loadInputs(): MermaidRegisterObject[] | null {
+async function loadInputs(): MermaidRegisterObject[] | null {
   //waitSync(1000); //Just to try to see if it loads the data
   if (!checkIfExtensionIsPresent()){return null;}
 
   const dataElement = document.querySelector('#extension-data');
   const extension_data = JSON.parse(dataElement.textContent) as ExtensionData[];
 
-  let data: MermaidRegisterObject[] = [];
-  for (let i = 0; i < extension_data.length; i++) {
-    const mermaidRegister = UrlsToRegisterObject(extension_data[i]);
+  const data: MermaidRegisterObject[] = [];
+  for (const item of extension_data) {
+    const mermaidRegister = await UrlsToRegisterObject(item);
     data.push(mermaidRegister);
   }
   //
@@ -91,9 +93,9 @@ function loadInputs(): MermaidRegisterObject[] | null {
   
   // La función mermaidRegisterProcess
 async function mermaidRegisterProcess() {
-    const inputs = loadInputs();
+    const inputs = await loadInputs();
     if (inputs) {
-      await mermaid.registerIconPacks(inputs);
+      mermaid.registerIconPacks(inputs);
     }
 }
 
