@@ -59,8 +59,8 @@ async function loader_function(url: string): Promise<Module> {
 }
 
 async function UrlsToRegisterObject(extension_value: ExtensionData): Promise<MermaidRegisterObject> {
-    const name = extension_value.name// as string;
-    const url = extension_value.url// as string;
+    const name = extension_value.name
+    const url = extension_value.url
 
     const module = await loader_function(url);
 
