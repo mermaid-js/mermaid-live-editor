@@ -12,7 +12,7 @@ interface Promotion {
   startDate: Date;
   endDate: Date;
   component: Component;
-  hideDuration: number;
+  hideDurationMs: number;
 }
 
 const promotions: Record<string, Promotion> = {
@@ -20,7 +20,7 @@ const promotions: Record<string, Promotion> = {
     startDate: new Date('2025-01-01'),
     endDate: new Date('2028-12-31'),
     component: January2025,
-    hideDuration: dayjs.duration(1, 'week').asMilliseconds()
+    hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
   }
 };
 
@@ -29,7 +29,7 @@ export const dismissPromotion = (id?: string): void => {
     return;
   }
   hiddenPromotionsStore.update((dismissedIDs) => {
-    dismissedIDs[id] = dayjs().add(promotions[id].hideDuration).valueOf();
+    dismissedIDs[id] = dayjs().add(promotions[id].hideDurationMs).valueOf();
     return dismissedIDs;
   });
 };
@@ -45,14 +45,14 @@ export const getActivePromotion = (): (Promotion & { id: string }) | undefined =
     return;
   }
 
-  const hiddenPromotions = get(hiddenPromotionsStore);
+  const hidePromotionsUntil = get(hiddenPromotionsStore);
   const now = new Date();
   const promotionWithID = Object.entries(promotions)
     .filter(
       ([id, p]) =>
         dayjs(p.startDate).isBefore(now) &&
         dayjs(p.endDate).isAfter(now) &&
-        (!hiddenPromotions[id] || dayjs(hiddenPromotions[id]).isBefore(now))
+        (!hidePromotionsUntil[id] || dayjs(hidePromotionsUntil[id]).isBefore(now))
     )
     .sort(([, a], [, b]) => dayjs(b.endDate).diff(dayjs(a.endDate)))
     .pop();
