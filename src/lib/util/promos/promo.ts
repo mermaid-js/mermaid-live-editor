@@ -1,52 +1,66 @@
-import { writable, type Writable, get } from 'svelte/store';
-import { persist, localStorage } from '../persist';
-import January2025 from './January2025.svelte';
 import { env } from '$lib/util/env';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import type { Component } from 'svelte';
+import { get, writable, type Writable } from 'svelte/store';
+import { localStorage, persist } from '../persist';
+import January2025 from './January2025.svelte';
+
+dayjs.extend(duration);
 
 interface Promotion {
-  id: string;
   startDate: Date;
   endDate: Date;
-  component: typeof January2025;
+  component: Component;
+  hideDurationMs: number;
 }
 
-const promotions: Promotion[] = [
-  {
-    id: 'promo-january-2025',
+const promotions: Record<string, Promotion> = {
+  'promo-january-2025': {
     startDate: new Date('2025-01-01'),
     endDate: new Date('2028-12-31'),
-    component: January2025
+    component: January2025,
+    hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
   }
-];
+};
 
 export const dismissPromotion = (id?: string): void => {
-  if (!id) {
+  if (!id || !promotions[id]) {
     return;
   }
-  dismissedPromotionsStore.update((dismissedIDs: string[]) => {
-    dismissedIDs.push(id);
+  hiddenPromotionsStore.update((dismissedIDs) => {
+    dismissedIDs[id] = dayjs().add(promotions[id].hideDurationMs).valueOf();
     return dismissedIDs;
   });
 };
 
-const dismissedPromotionsStore: Writable<string[]> = persist(
-  writable([]),
+const hiddenPromotionsStore: Writable<Record<string, number>> = persist(
+  writable({}),
   localStorage(),
-  'dismissedPromotions'
+  'hiddenPromotions'
 );
 
-export const getActivePromotion = (): Promotion | undefined => {
+export const getActivePromotion = (): (Promotion & { id: string }) | undefined => {
   if (!env.isEnabledMermaidChartLinks) {
     return;
   }
 
-  const dismissedPromotions = get(dismissedPromotionsStore);
+  const hidePromotionsUntil = get(hiddenPromotionsStore);
   const now = new Date();
-  return promotions
+  const promotionWithID = Object.entries(promotions)
     .filter(
-      (p: Promotion) =>
-        p.startDate <= now && p.endDate >= now && !dismissedPromotions.includes(p.id)
+      ([id, p]) =>
+        dayjs(p.startDate).isBefore(now) &&
+        dayjs(p.endDate).isAfter(now) &&
+        (!hidePromotionsUntil[id] || dayjs(hidePromotionsUntil[id]).isBefore(now))
     )
-    .sort((a: Promotion, b: Promotion) => b.endDate.getTime() - a.endDate.getTime())
+    .sort(([, a], [, b]) => dayjs(b.endDate).diff(dayjs(a.endDate)))
     .pop();
+
+  if (!promotionWithID) {
+    return;
+  }
+
+  const [id, promotion] = promotionWithID;
+  return { ...promotion, id };
 };
