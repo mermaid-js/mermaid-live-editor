@@ -2,14 +2,13 @@ name: Deploy Live Editor
 on:
   push:
     branches:
-      - master
+      - develop
   pull_request:
     branches:
-      - master
       - develop
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,7 +20,7 @@ jobs:
 
       - name: Build & Deploy
         env:
-          MERMAID_DOMAIN: 'mermaid.live'
+          MERMAID_DOMAIN: 'https://noobtolinux.github.io/mermaid-live-editor/'
           MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
           MERMAID_RENDERER_URL: 'https://mermaid.ink'
           MERMAID_KROKI_RENDERER_URL: 'https://kroki.io'
@@ -37,8 +36,9 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/develop' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
+          publish_branch: gh-pages  # Especificamos la rama de despliegue, en este caso 'gh-pages'
           keep_files: true

@@ -6,3 +6,7 @@ node_modules/**
 coverage/**
 __snapshots__/**
 snapshots.js
+
+tsconfig.json
+src/lib/util/mermaid.ts
+/.github/workflows/deploy.yml
