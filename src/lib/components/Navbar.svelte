@@ -60,7 +60,7 @@
 </script>
 
 {#if activePromotion}
-  <div class="top-bar z-10 flex h-fit w-full">
+  <div class="top-bar z-10 flex h-fit w-full bg-primary">
     <div
       class="flex flex-grow"
       role="button"
