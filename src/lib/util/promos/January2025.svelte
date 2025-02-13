@@ -13,98 +13,98 @@
     {
       name: 'A AI Bundle',
       design: '1',
-      label: '1 Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
-      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=AIbundle_A'
+      label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
+      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=AIbundle_A'
     },
     {
       name: 'B AI Bundle',
       design: '2',
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=AIbundle_B'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=AIbundle_B'
     },
     {
       name: 'C AI Bundle',
       design: '1',
-      label: '1 Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Pro',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=AIbundle_C'
+      label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Pro',
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=AIbundle_C'
     },
     {
       name: 'D AI Bundle',
       design: '2',
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Pro',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=AIbundle_D'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=AIbundle_D'
     },
     {
       name: 'A Teams',
       design: '1',
-      label: '1 Diagram live with teammates in Mermaid Chart',
-      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=teams_A'
+      label: 'Diagram live with teammates in Mermaid Chart',
+      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=teams_A'
     },
     {
       name: 'B Teams',
       design: '2',
       label: 'Diagram live with teammates in Mermaid Chart',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=teams_B'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=teams_B'
     },
     {
       name: 'C Teams',
       design: '1',
-      label: '1 Diagram live with teammates in Mermaid Pro',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=teams_C'
+      label: 'Diagram live with teammates in Mermaid Pro',
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=teams_C'
     },
     {
       name: 'D Teams',
       design: '2',
       label: 'Diagram live with teammates in Mermaid Pro',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=teams_D'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=teams_D'
     },
     {
       name: 'A Visual Editor',
       design: '1',
-      label: '1 Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=visual_editor_A'
+      label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
+      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor_A'
     },
     {
       name: 'B Visual Editor',
       design: '2',
       label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=visual_editor_B'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor_B'
     },
     {
       name: 'C Visual Editor',
       design: '1',
-      label: '1 Use the Visual Editor in Mermaid Pro to design and build diagrams',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=visual_editor_C'
+      label: 'Use the Visual Editor in Mermaid Pro to design and build diagrams',
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor_C'
     },
     {
       name: 'D Visual Editor',
       design: '2',
       label: 'Use the Visual Editor in Mermaid Pro to design and build diagrams',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=visual_editor_D'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor_D'
     },
     {
       name: 'A Whiteboard',
       design: '1',
-      label: '1 Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=whiteboard_A'
+      label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
+      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_A'
     },
     {
       name: 'B Whiteboard',
       design: '2',
       label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=whiteboard_A'
+      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_A'
     },
     {
       name: 'C Whiteboard',
       design: '1',
-      label: '1 Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=whiteboard_B'
+      label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
+      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_B'
     },
     {
       name: 'D Whiteboard',
       design: '2',
       label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_js&utm_medium=banner_ad&utm_campaign=whiteboard_B'
+      url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_B'
     }
   ];
 
