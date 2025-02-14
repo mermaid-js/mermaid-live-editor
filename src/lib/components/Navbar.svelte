@@ -60,8 +60,7 @@
 </script>
 
 {#if activePromotion}
-  <div
-    class="top-bar z-10 flex h-fit w-full items-center justify-center bg-gradient-to-r from-[#bd34fe] to-[#ff3670] p-1 text-center text-white">
+  <div class="top-bar z-10 flex h-fit w-full bg-primary">
     <div
       class="flex flex-grow"
       role="button"
