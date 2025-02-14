@@ -103,7 +103,7 @@
   const interval = setInterval(() => {
     index = (index + 1) % taglines.length;
     currentTagline = taglines[index];
-  }, 2000);
+  }, 5000);
 
   onDestroy(() => {
     clearInterval(interval);
