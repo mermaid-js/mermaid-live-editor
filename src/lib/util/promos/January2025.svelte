@@ -112,18 +112,18 @@
 
 <div
   class="grid w-full {design === 1
-    ? 'bg-gradient-to-r from-[#bd34fe] to-[#ff3670] '
+    ? 'bg-gradient-to-r from-[#bd34fe] to-[#ff3670]'
     : 'bg-[#2E2183]'} ">
   {#key currentTagline}
     <a
       href={currentTagline.url}
       target="_blank"
-      class="col-start-1 row-start-1 flex w-full items-center justify-center gap-4 no-underline"
+      class="col-start-1 row-start-1 flex items-center justify-center gap-4 p-0.5 no-underline"
       in:fade={{ delay: 750 }}
       out:fade={{ duration: 1000 }}>
       <span class="text-sm tracking-wider">{currentTagline.label}</span>
       <button
-        class="rounded p-1 px-2 text-sm font-semibold tracking-wide {design === 1
+        class="rounded p-0.5 px-2 text-sm font-semibold tracking-wide {design === 1
           ? 'bg-[#2E2183]'
           : design === 2
             ? 'bg-[#E0095F]'
