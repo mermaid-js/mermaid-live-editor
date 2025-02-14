@@ -123,11 +123,9 @@
       out:fade={{ duration: 1000 }}>
       <span class="text-sm tracking-wider">{currentTagline.label}</span>
       <button
-        class="rounded p-0.5 px-2 text-sm font-semibold tracking-wide {design === 1
-          ? 'bg-[#2E2183]'
-          : design === 2
-            ? 'bg-[#E0095F]'
-            : ''}">Try now</button>
+        class="rounded p-0.5 px-2 text-sm font-semibold tracking-wide"
+        class:bg-[#2E2183]={design === 1}
+        class:bg-[#E0095F]={design === 2}>Try now</button>
     </a>
   {/key}
 </div>
