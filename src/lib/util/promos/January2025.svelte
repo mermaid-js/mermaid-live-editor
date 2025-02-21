@@ -113,20 +113,24 @@
 </script>
 
 <div
-  class="h-50 flex w-full justify-between {design === 1
+  class="flex w-full p-1.5 {design === 1
     ? 'bg-gradient-to-r from-[#bd34fe] to-[#ff3670]'
     : 'bg-[#E0095F]'} ">
-  {#key currentTagline}
-    <a
-      href={currentTagline.url}
-      target="_blank"
-      class="col-start-1 row-start-1 flex items-center justify-center gap-4 p-0.5 no-underline"
-      in:fade={{ delay: 750 }}
-      out:fade={{ duration: 1000 }}>
-      <span class="text-sm tracking-wider">{currentTagline.label}</span>
-      <button class="shrink-0 rounded-lg bg-[#1E1A2E] px-3 py-2 text-sm font-semibold tracking-wide"
-        >Try now</button>
-    </a>
-  {/key}
+  <div class="grid grow">
+    {#key currentTagline}
+      <a
+        href={currentTagline.url}
+        target="_blank"
+        class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
+        in:fade={{ delay: 750 }}
+        out:fade={{ duration: 1000 }}>
+        <span class="text-sm tracking-wider">{currentTagline.label}</span>
+        <button
+          class="shrink-0 rounded-lg bg-[#1E1A2E] px-3 py-1.5 text-sm font-semibold tracking-wide">
+          Try now
+        </button>
+      </a>
+    {/key}
+  </div>
   {@render closeBanner()}
 </div>
