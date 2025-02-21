@@ -13,15 +13,15 @@
       taglines: [
         {
           label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
-          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=AIbundle_A'
+          url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=AIbundle_A'
         },
         {
           label: 'Diagram live with teammates in Mermaid Chart',
-          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=teams_A'
+          url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=teams_A'
         },
         {
           label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor_A'
+          url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor_A'
         },
         {
           label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
@@ -46,7 +46,7 @@
         },
         {
           label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_A'
+          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_B'
         }
       ]
     },
@@ -67,7 +67,7 @@
         },
         {
           label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_B'
+          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_A'
         }
       ]
     },
@@ -88,7 +88,7 @@
         },
         {
           label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-          url: 'https://www.mermaidchart.com/play?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_B'
+          url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard_B'
         }
       ]
     }
@@ -111,9 +111,9 @@
 </script>
 
 <div
-  class="grid w-full {design === 1
+  class="grid h-12 w-full {design === 1
     ? 'bg-gradient-to-r from-[#bd34fe] to-[#ff3670]'
-    : 'bg-[#2E2183]'} ">
+    : 'bg-[#E0095F]'} ">
   {#key currentTagline}
     <a
       href={currentTagline.url}
@@ -122,10 +122,8 @@
       in:fade={{ delay: 750 }}
       out:fade={{ duration: 1000 }}>
       <span class="text-sm tracking-wider">{currentTagline.label}</span>
-      <button
-        class="rounded p-0.5 px-2 text-sm font-semibold tracking-wide"
-        class:bg-[#2E2183]={design === 1}
-        class:bg-[#E0095F]={design === 2}>Try now</button>
+      <button class="rounded-lg bg-[#1E1A2E] px-3 py-2 text-sm font-semibold tracking-wide"
+        >Try now</button>
     </a>
   {/key}
 </div>
