@@ -1,6 +1,12 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, type Snippet } from 'svelte';
   import { fade } from 'svelte/transition';
+
+  interface Props {
+    closeBanner: Snippet;
+  }
+
+  let { closeBanner }: Props = $props();
 
   interface Taglines {
     label: string;
@@ -101,21 +107,26 @@
   let currentTagline = $state(taglines[index]);
 
   const interval = setInterval(() => {
-    index = (index + 1) % taglines.length;
-    currentTagline = taglines[index];
+    if (shouldAnimate) {
+      index = (index + 1) % taglines.length;
+      currentTagline = taglines[index];
+    }
   }, 5000);
 
   onDestroy(() => {
     clearInterval(interval);
   });
 
-  let { closeBanner } = $props();
+  let shouldAnimate = $state(true);
 </script>
 
 <div
   class="flex w-full p-1.5 {design === 1
     ? 'bg-gradient-to-r from-[#bd34fe] to-[#ff3670]'
-    : 'bg-[#E0095F]'} ">
+    : 'bg-[#E0095F]'}"
+  role="banner"
+  onmouseenter={() => (shouldAnimate = false)}
+  onmouseleave={() => (shouldAnimate = true)}>
   <div class="grid grow">
     {#key currentTagline}
       <a
