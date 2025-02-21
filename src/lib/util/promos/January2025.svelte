@@ -108,10 +108,12 @@
   onDestroy(() => {
     clearInterval(interval);
   });
+
+  let { closeBanner } = $props();
 </script>
 
 <div
-  class="grid h-12 w-full {design === 1
+  class="h-50 flex w-full justify-between {design === 1
     ? 'bg-gradient-to-r from-[#bd34fe] to-[#ff3670]'
     : 'bg-[#E0095F]'} ">
   {#key currentTagline}
@@ -122,8 +124,9 @@
       in:fade={{ delay: 750 }}
       out:fade={{ duration: 1000 }}>
       <span class="text-sm tracking-wider">{currentTagline.label}</span>
-      <button class="rounded-lg bg-[#1E1A2E] px-3 py-2 text-sm font-semibold tracking-wide"
+      <button class="shrink-0 rounded-lg bg-[#1E1A2E] px-3 py-2 text-sm font-semibold tracking-wide"
         >Try now</button>
     </a>
   {/key}
+  {@render closeBanner()}
 </div>

@@ -67,18 +67,19 @@
       tabindex="0"
       onclick={trackBannerClick}
       onkeypress={trackBannerClick}>
-      <activePromotion.component />
+      <activePromotion.component {closeBanner} />
     </div>
-    <button
-      class="rounded hover:text-black"
-      title="Dismiss banner"
-      aria-label="Dismiss banner"
-      onclick={() => {
-        dismissPromotion(activePromotion?.id);
-        activePromotion = undefined;
-      }}>
-      <i class="fa fa-close px-2"></i>
-    </button>
+    {#snippet closeBanner()}
+      <button
+        title="Dismiss banner"
+        aria-label="Dismiss banner"
+        onclick={() => {
+          dismissPromotion(activePromotion?.id);
+          activePromotion = undefined;
+        }}>
+        <i class="fa fa-close px-2"></i>
+      </button>
+    {/snippet}
   </div>
 {/if}
 
