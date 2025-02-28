@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { onDestroy, type Snippet } from 'svelte';
-  import { fade } from 'svelte/transition';
+    import { Button } from '$/components/ui/button';
+    import { onDestroy, type Snippet } from 'svelte';
+    import { fade } from 'svelte/transition';
 
   interface Props {
     closeBanner: Snippet;
@@ -135,11 +136,8 @@
         class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
         in:fade={{ delay: 750 }}
         out:fade={{ duration: 1000 }}>
-        <span class="text-sm tracking-wider">{currentTagline.label}</span>
-        <button
-          class="shrink-0 rounded-lg bg-[#1E1A2E] px-3 py-1.5 text-sm font-semibold tracking-wide">
-          Try now
-        </button>
+        <span class="text-sm text-white tracking-wider">{currentTagline.label}</span>
+        <Button size="sm" class="bg-[#1E1A2E] font-semibold tracking-wider">Try now</Button>
       </a>
     {/key}
   </div>
