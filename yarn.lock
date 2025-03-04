@@ -81,9 +81,9 @@
   integrity sha512-9uUYRm6OqQrCqQdG1iCBwBPZgN8ciDBro2nIOFaiRz1/BCxaI7CNvQbDHvsArAC7Tw9Hda/B3U+6ui9u4HWXPw==
 
 "@babel/runtime@^7.12.5":
-  version "7.26.0"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.0.tgz#8600c2f595f277c60815256418b85356a65173c1"
-  integrity sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==
+  version "7.26.9"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.9.tgz#aa4c6facc65b9cb3f87d75125ffd47781b475433"
+  integrity sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -662,10 +662,10 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-3.0.8.tgz#f23ee99a9678dbaec58b79d183bc3defbfe99f1a"
   integrity sha512-YaDrquRpZwfcXbnlDsSrBQNCChVOT9MGuSg+dMAyfsAa1SmiAhrA5jUYUiIMC59G92kIbY/AaQOWcBdq+lh+zg==
 
-"@sveltejs/kit@2.17.1":
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-2.17.1.tgz#24a55dc164f2c88511daac6fcc8bb7db6802d1ba"
-  integrity sha512-CpoGSLqE2MCmcQwA2CWJvOsZ9vW+p/1H3itrFykdgajUNAEyQPbsaSn7fZb6PLHQwe+07njxje9ss0fjZoCAyw==
+"@sveltejs/kit@2.17.3":
+  version "2.17.3"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-2.17.3.tgz#523dc5aace2f016e02ef4ecaccc0f9cf2e8eaada"
+  integrity sha512-GcNaPDr0ti4O/TonPewkML2DG7UVXkSxPN3nPMlpmx0Rs4b2kVP4gymz98WEHlfzPXdd4uOOT1Js26DtieTNBQ==
   dependencies:
     "@types/cookie" "^0.6.0"
     cookie "^0.6.0"
@@ -738,9 +738,9 @@
     redent "^3.0.0"
 
 "@testing-library/svelte@^5.2.4":
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/@testing-library/svelte/-/svelte-5.2.6.tgz#fdbb1a8950d8b57c75602e4fda8b4627e7c37eac"
-  integrity sha512-1Y8cEg/BtV4J6g9irkY0ksz+ueDFYLiikjTLiqvQPkOUeDzR4gg2zECBf8yrOrCy3e2TAOYMcaysFa0bQMyk1w==
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/@testing-library/svelte/-/svelte-5.2.7.tgz#c759401cd186ad85ab30a981f8c82de3997b994f"
+  integrity sha512-aGhUaFmEXEVost4QOsbHUUbHLwi7ZZRRxAHFDO2Cmr0BZD3/3+XvaYEPq70Rdw0NRNjdqZHdARBEcrCOkPuAqw==
   dependencies:
     "@testing-library/dom" "^10.0.0"
 
@@ -1844,9 +1844,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001565, caniuse-lite@^1.0.30001587, caniuse-lite@^1.0.30001646:
-  version "1.0.30001696"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001696.tgz"
-  integrity sha512-pDCPkvzfa39ehJtJ+OwGT/2yvT2SbjfHhiIW2LWOAcMQ7BzwxT/XuyUp4OTOd0XFWA6BKw0JalnBHgSi5DGJBQ==
+  version "1.0.30001701"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001701.tgz"
+  integrity sha512-faRs/AW3jA9nTwmJBSO1PQ6L/EOgsB5HMQQq4iCu5zhPgVVgO/pZRHlmatwijZKetFw8/Pr4q6dEN8sJuq8qTw==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -3238,9 +3238,9 @@ esquery@^1.4.2, esquery@^1.5.0:
     estraverse "^5.1.0"
 
 esrap@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/esrap/-/esrap-1.4.3.tgz#456ed3c97cf0e6b58b952d351c7c78fe27116576"
-  integrity sha512-Xddc1RsoFJ4z9nR7W7BFaEPIp4UXoeQ0+077UdWLxbafMQFyU79sQJMk7kxNgRwQ9/aVgaKacCHC2pUACGwmYw==
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/esrap/-/esrap-1.4.5.tgz#45469ad75773fd948d0eb190c2677e4807ba2483"
+  integrity sha512-CjNMjkBWWZeHn+VX+gS8YvFwJ5+NDhg8aWZBSFJPR8qQduDNjbJodA2WcwCm7uQa5Rjqj+nZvVmceg1RbHFB9g==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.15"
 
@@ -5393,9 +5393,9 @@ postcss@^8.3.0:
     source-map-js "^1.0.2"
 
 postcss@^8.4.23, postcss@^8.4.33, postcss@^8.4.38, postcss@^8.4.39, postcss@^8.4.4, postcss@^8.4.43, postcss@^8.4.47:
-  version "8.5.1"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.1.tgz#e2272a1f8a807fafa413218245630b5db10a3214"
-  integrity sha512-6oz2beyjc5VMn/KV1pPw8fliQkhBXrVn1Z3TVyqZxU8kZpzEKhBdmCFqI6ZbmGtamQvQGuU1sgPTk8ZrXDD7jQ==
+  version "8.5.3"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.3.tgz#1463b6f1c7fb16fe258736cba29a2de35237eafb"
+  integrity sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==
   dependencies:
     nanoid "^3.3.8"
     picocolors "^1.1.1"
@@ -5426,9 +5426,9 @@ prettier-plugin-tailwindcss@^0.6.0:
   integrity sha512-YxaYSIvZPAqhrrEpRtonnrXdghZg1irNg4qrjboCXrpybLWVs55cW2N3juhspVJiO0JBvYJT8SYsJpc8OQSnsA==
 
 prettier@^3.1.0:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.4.2.tgz#a5ce1fb522a588bf2b78ca44c6e6fe5aa5a2b13f"
-  integrity sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.5.3.tgz#4fc2ce0d657e7a02e602549f053b239cb7dfe1b5"
+  integrity sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==
 
 pretty-bytes@^5.6.0:
   version "5.6.0"
@@ -6210,9 +6210,9 @@ svelte-preprocess@^6.0.0:
   integrity sha512-PLG2k05qHdhmRG7zR/dyo5qKvakhm8IJ+hD2eFRQmMLHp7X3eJnjeupUtvuRpbNiF31RjVw45W+abDwHEmP5OA==
 
 svelte@^5.0.0:
-  version "5.19.7"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.19.7.tgz#4f3c32d0e6ef8c737f6951d786b502671e440559"
-  integrity sha512-I0UUp2MpB5gF8aqHJVklOcRcoLgQNnBolSwLMMqDepE9gVwmGeYBmJp1/obzae72QpxdPIymA4AunIm2x70LBg==
+  version "5.20.5"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.20.5.tgz#bbd7d3f7e6852e4d83a1a428211a3a04f0f121b0"
+  integrity sha512-dpu2lTPVsAAgZFKpF7A9741sBCdXGogfxFU4aQeVgun7GVNCSVheTzj0FsT7g9OsLhBaMX4lKLwVIvmzQGytmQ==
   dependencies:
     "@ampproject/remapping" "^2.3.0"
     "@jridgewell/sourcemap-codec" "^1.5.0"
@@ -6530,9 +6530,9 @@ type-fest@^0.8.1:
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
 typescript@^5.5.0:
-  version "5.7.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.3.tgz#919b44a7dbb8583a9b856d162be24a54bf80073e"
-  integrity sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==
+  version "5.8.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.8.2.tgz#8170b3702f74b79db2e5a96207c15e65807999e4"
+  integrity sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==
 
 ufo@^1.5.4:
   version "1.5.4"
