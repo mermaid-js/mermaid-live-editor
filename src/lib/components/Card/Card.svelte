@@ -10,6 +10,7 @@
     tabs?: Tab[];
     activeTabID?: string;
     title?: string;
+    icon?: string;
     onselect?: (tab: Tab) => void;
     actions?: Snippet;
     children?: Snippet;
@@ -21,6 +22,7 @@
     tabs = [],
     activeTabID = '',
     title,
+    icon,
     onselect,
     actions,
     children
@@ -36,7 +38,11 @@
 </script>
 
 <div
-  class="card flex h-fit {isOpen ? 'flex-grow' : ''} flex-col overflow-hidden rounded-2xl border-2">
+  class="card flex h-fit {isOpen
+    ? 'flex-grow'
+    : isClosable
+      ? 'w-1/2'
+      : ''} flex-col overflow-hidden rounded-2xl border-2">
   <div
     role="toolbar"
     tabindex="0"
@@ -44,10 +50,26 @@
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
     <div class="flex justify-between">
-      <Tabs {onselect} {tabs} bind:isOpen {title} {isClosable} {activeTabID} />
-      <div class="flex items-center gap-x-4 {isTabsShown ? '-mt-2' : ''}">
-        {@render actions?.()}
-      </div>
+      {#if icon || title}
+        <span role="menubar" tabindex="0" class="d flex w-fit items-center gap-2 font-semibold">
+          {#if icon}
+            <i class={icon}></i>
+          {/if}
+          {title}
+        </span>
+      {/if}
+      {#if isOpen && tabs && tabs.length > 0}
+        <Tabs {onselect} {tabs} {activeTabID} />
+      {/if}
+
+      {@render actions?.()}
+
+      <!-- {#if isClosable && isOpen}
+        <div class="ml-auto flex h-8 flex-col gap-0 p-1">
+          <i class="fas fa-chevron-down size-full"></i>
+          <i class="fas fa-chevron-up size-full"></i>
+        </div>
+      {/if} -->
     </div>
   </div>
   {#if isOpen}

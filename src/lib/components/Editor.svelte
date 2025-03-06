@@ -132,7 +132,7 @@
   });
 </script>
 
-<div class="flex h-full flex-col">
+<div class="flex h-full flex-col pt-1">
   <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden"></div>
   {#if $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm text-neutral-100">

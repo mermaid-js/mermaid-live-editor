@@ -2,14 +2,14 @@
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
-  import History from '$lib/components/History/History.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
+  import { Button } from '$lib/components/ui/button';
   import * as Resizable from '$lib/components/ui/resizable/index.js';
   import View from '$lib/components/View.svelte';
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
-  import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
-  import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
+  import { stateStore, updateCodeStore } from '$lib/util/state';
+  import { initHandler } from '$lib/util/util';
   import { onMount } from 'svelte';
 
   const docURLBase = 'https://mermaid.js.org';
@@ -108,7 +108,7 @@
     {
       id: 'config',
       title: 'Config',
-      icon: 'fas fa-cogs'
+      icon: 'fas fa-gear'
     }
   ];
 
@@ -126,7 +126,7 @@
           <Card onselect={tabSelectHandler} {tabs} isClosable={false} {activeTabID}>
             {#snippet actions()}
               <div class="flex flex-row items-center">
-                <div class="form-control flex-row items-center">
+                <!-- <div class="form-control flex-row items-center">
                   <label class="label cursor-pointer" for="autoSync">
                     <span> Auto sync</span>
                     <input
@@ -137,7 +137,7 @@
                       id="autoSync"
                       bind:checked={$inputStateStore.autoSync} />
                   </label>
-                </div>
+                </div> 
 
                 {#if !$stateStore.autoSync}
                   <button
@@ -147,23 +147,26 @@
                     data-cy="sync"
                     onclick={syncDiagram}><i class="fas fa-sync"></i></button>
                 {/if}
+-->
 
-                <button
-                  class="btn btn-secondary btn-xs"
+                <Button
+                  variant="ghost"
+                  href={docURL}
                   title="View documentation for {docKey.replace('Diagram', '')} diagram">
-                  <a target="_blank" href={docURL} data-cy="docs">
-                    <i class="fas fa-book mr-1"></i>Docs
-                  </a>
-                </button>
+                  <i class="fas fa-book mr-1"></i>
+                  Docs
+                </Button>
               </div>
             {/snippet}
 
             <Editor />
           </Card>
 
-          <Preset />
-          <History />
-          <Actions />
+          <div class="flex w-full flex-wrap">
+            <Preset />
+            <!-- <History /> -->
+            <Actions />
+          </div>
         </div>
       </Resizable.Pane>
       <Resizable.Handle class="opacity-0" />

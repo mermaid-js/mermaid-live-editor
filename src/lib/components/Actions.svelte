@@ -184,7 +184,7 @@ ${svgString}`);
   });
 </script>
 
-<Card title="Actions" isOpen={false}>
+<Card title="Actions" isOpen={false} icon="fas fa-share-nodes">
   <div class="m-2 flex flex-wrap gap-2">
     {#if isClipboardAvailable()}
       <button class="action-btn w-full" onclick={onCopyClipboard}

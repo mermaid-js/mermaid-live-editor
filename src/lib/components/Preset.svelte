@@ -220,7 +220,7 @@ packet-beta
   ];
 </script>
 
-<Card title="Sample Diagrams" isOpen={false}>
+<Card title="Sample Diagrams" isOpen={false} icon="fas fa-shapes">
   <div class="flex flex-wrap gap-2 p-2">
     {#each diagramOrder as sample}
       <button

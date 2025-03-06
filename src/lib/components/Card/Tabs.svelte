@@ -1,19 +1,15 @@
 <script lang="ts">
+  import { Separator } from '$lib/components/ui/separator';
   import type { Tab } from '$lib/types';
   import { fade } from 'svelte/transition';
+  import { Button } from '../ui/button';
 
   let {
-    isClosable = true,
     tabs,
-    title,
-    isOpen = $bindable(false),
     activeTabID = $bindable(),
     onselect
   }: {
-    isClosable?: boolean;
     tabs: Tab[];
-    title?: string;
-    isOpen?: boolean;
     activeTabID: string;
     onselect?: (tab: Tab) => void;
   } = $props();
@@ -31,28 +27,26 @@
   };
 </script>
 
-<div class="flex cursor-default">
-  <span role="menubar" tabindex="0" class="mr-2 font-semibold">
-    {#if isClosable}
-      <i class="fas fa-chevron-right icon mr-1" class:isOpen></i>
-    {/if}
-    {title}
-  </span>
-  {#if isOpen && tabs}
-    <ul class="tabs" transition:fade>
-      {#each tabs as tab}
-        <div
-          role="tab"
-          tabindex="0"
-          class="tab tab-lifted {activeTabID === tab.id ? 'tab-active' : 'text-primary-content'}"
-          onclick={toggleTabs(tab)}
-          onkeypress={toggleTabs(tab)}>
-          <i class="mr-1 {tab.icon}"></i>
-          {tab.title}
+<div class="flex w-fit cursor-default items-center gap-2">
+  <ul class="flex gap-2 align-middle" transition:fade>
+    {#each tabs as tab, index}
+      <Button
+        role="tab"
+        variant="ghost"
+        class={activeTabID === tab.id ? 'rounded-b-none border-b-2 border-b-secondary/50' : ''}
+        onclick={toggleTabs(tab)}
+        onkeypress={toggleTabs(tab)}>
+        <i class={tab.icon}></i>
+        {tab.title}
+      </Button>
+
+      {#if index < tabs.length - 1}
+        <div class="my-2">
+          <Separator orientation="vertical" class="w-0.5 bg-slate-300" />
         </div>
-      {/each}
-    </ul>
-  {/if}
+      {/if}
+    {/each}
+  </ul>
 </div>
 
 <style>
