@@ -45,7 +45,7 @@
   <div
     role="toolbar"
     tabindex="0"
-    class="bg-border p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
+    class="bg-border p-2 {isTabsShown ? 'pb-1' : ''} flex-none cursor-pointer"
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
     <div class="flex justify-between">
