@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { base } from '$app/paths';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
@@ -9,9 +8,8 @@
   import * as Resizable from '$lib/components/ui/resizable/index.js';
   import View from '$lib/components/View.svelte';
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
-  import { env } from '$lib/util/env';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
-  import { cmdKey, initHandler, MCBaseURL, syncDiagram } from '$lib/util/util';
+  import { cmdKey, initHandler, syncDiagram } from '$lib/util/util';
   import { onMount } from 'svelte';
 
   const docURLBase = 'https://mermaid.js.org';
@@ -122,7 +120,7 @@
 <div class="flex h-full flex-col overflow-hidden">
   <Navbar />
   <div class="flex flex-1 overflow-hidden">
-    <Resizable.PaneGroup direction="horizontal" class="p-2">
+    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-2">
       <Resizable.Pane defaultSize={40}>
         <div class="hidden h-full flex-col gap-2 md:flex" id="editorPane">
           <Card onselect={tabSelectHandler} {tabs} isClosable={false} {activeTabID}>
@@ -168,10 +166,10 @@
           <Actions />
         </div>
       </Resizable.Pane>
-      <Resizable.Handle class="mx-2" />
-      <Resizable.Pane>
+      <Resizable.Handle class="opacity-0" />
+      <Resizable.Pane class="p-2">
         <div class="flex h-full flex-1 flex-col overflow-hidden">
-          <Card title="Diagram" isClosable={false}>
+          <!-- <Card title="Diagram" isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center gap-2">
                 <label
@@ -215,12 +213,12 @@
                       alt="Mermaid chart logo" />Save to Mermaid Chart</a>
                 {/if}
               </div>
-            {/snippet}
+            {/snippet} -->
 
-            <div class="flex-1 overflow-auto">
-              <View />
-            </div>
-          </Card>
+          <!-- <div class="flex-1 overflow-auto"> -->
+          <View />
+          <!-- </div> -->
+          <!-- </Card> -->
           <div class="mx-2 rounded p-2 shadow md:hidden">
             Code editing not supported on mobile. Please use a desktop browser.
           </div>
