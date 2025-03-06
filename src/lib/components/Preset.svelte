@@ -2,6 +2,7 @@
   import Card from '$lib/components/Card/Card.svelte';
   import { updateCode } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
+  import { Button } from './ui/button';
 
   const samples = {
     Flow: `flowchart TD
@@ -221,16 +222,15 @@ packet-beta
 </script>
 
 <Card title="Sample Diagrams" isOpen={false} icon="fas fa-shapes">
-  <div class="flex flex-wrap gap-2 p-2">
+  <div class="flex h-fit flex-wrap gap-2 p-2">
     {#each diagramOrder as sample}
-      <button
-        class="btn btn-primary btn-sm w-fit min-w-20 flex-grow normal-case"
+      <Button
+        variant="secondary"
+        size="sm"
+        class="w-fit min-w-20 normal-case"
         onclick={() => loadSampleDiagram(sample)}>
         {sample}
-        {#if newDiagrams.includes(sample)}
-          <span class="fa fa-heart ml-2"></span>
-        {/if}
-      </button>
+      </Button>
     {/each}
   </div>
 </Card>

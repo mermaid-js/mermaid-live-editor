@@ -162,11 +162,9 @@
             <Editor />
           </Card>
 
-          <div class="flex w-full flex-wrap">
-            <Preset />
-            <!-- <History /> -->
-            <Actions />
-          </div>
+          <Preset />
+          <!-- <History /> -->
+          <Actions />
         </div>
       </Resizable.Pane>
       <Resizable.Handle class="opacity-0" />

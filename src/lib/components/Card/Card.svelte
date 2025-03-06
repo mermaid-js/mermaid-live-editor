@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Tab } from '$lib/types';
   import type { Snippet } from 'svelte';
+  import { quintOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
   import Tabs from './Tabs.svelte';
 
@@ -40,9 +41,7 @@
 <div
   class="card flex h-fit {isOpen
     ? 'flex-grow'
-    : isClosable
-      ? 'w-1/2'
-      : ''} flex-col overflow-hidden rounded-2xl border-2">
+    : ''} w-full flex-col overflow-hidden rounded-2xl border-2">
   <div
     role="toolbar"
     tabindex="0"
@@ -51,7 +50,7 @@
     onkeypress={toggleCardOpen}>
     <div class="flex justify-between">
       {#if icon || title}
-        <span role="menubar" tabindex="0" class="d flex w-fit items-center gap-2 font-semibold">
+        <span role="menubar" tabindex="0" class="flex w-fit items-center gap-2 font-semibold">
           {#if icon}
             <i class={icon}></i>
           {/if}
@@ -73,7 +72,9 @@
     </div>
   </div>
   {#if isOpen}
-    <div class="card-body text-base-content flex-grow overflow-auto p-0" transition:slide>
+    <div
+      class="text-base-content flex-grow overflow-hidden p-0"
+      transition:slide={{ easing: quintOut }}>
       {@render children?.()}
     </div>
   {/if}
