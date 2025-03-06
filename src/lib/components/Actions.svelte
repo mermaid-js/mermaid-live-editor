@@ -9,6 +9,7 @@
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
+  import { Button } from './ui/Button';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
@@ -184,40 +185,28 @@ ${svgString}`);
   });
 </script>
 
+{#snippet dualActionButton(text: string, download: (event: Event) => unknown, url?: string)}
+  <div class="flex flex-grow gap-0.5">
+    <Button class="flex-grow rounded-r-none" onclick={download}>
+      <i class="fas fa-download"></i>{text}
+    </Button>
+    {#if url}
+      <Button class="rounded-l-none" href={url} target="_blank" rel="noreferrer">
+        <i class="fas fa-external-link-alt"></i>
+      </Button>
+    {/if}
+  </div>
+{/snippet}
+
 <Card title="Actions" isOpen={false} icon="fas fa-share-nodes">
   <div class="m-2 flex flex-wrap gap-2">
     {#if isClipboardAvailable()}
-      <button class="action-btn w-full" onclick={onCopyClipboard}
-        ><i class="far fa-copy mr-2"></i> Copy Image to clipboard
-      </button>
-    {/if}
-    <button id="downloadPNG" class="action-btn flex-grow" onclick={onDownloadPNG}>
-      <i class="fas fa-download mr-2"></i> PNG
-    </button>
-    <button id="downloadSVG" class="action-btn flex-grow" onclick={onDownloadSVG}>
-      <i class="fas fa-download mr-2"></i> SVG
-    </button>
-    {#if rendererUrl}
-      <a target="_blank" rel="noreferrer" class="flex-grow" href={iUrl}>
-        <button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2"></i> PNG
-        </button>
-      </a>
-      <a target="_blank" rel="noreferrer" class="flex-grow" href={svgUrl}>
-        <button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2"></i> SVG
-        </button>
-      </a>
-    {/if}
-    {#if krokiRendererUrl}
-      <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
-        <button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2"></i> Kroki
-        </button>
-      </a>
+      <Button class="action-btn w-full" onclick={onCopyClipboard}>
+        <i class="far fa-copy mr-2"></i> Copy Image to clipboard
+      </Button>
     {/if}
 
-    <div class="flex items-center gap-2">
+    <div class="flex w-full items-center gap-2">
       PNG size
       <label for="autosize">
         <input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} /> Auto
@@ -242,13 +231,24 @@ ${svgString}`);
       {/if}
     </div>
 
+    {@render dualActionButton('PNG', onDownloadPNG, iUrl)}
+    {@render dualActionButton('SVG', onDownloadSVG, svgUrl)}
+
+    {#if krokiRendererUrl}
+      <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
+        <Button class="action-btn w-full">
+          <i class="fas fa-external-link-alt mr-2"></i> Kroki
+        </Button>
+      </a>
+    {/if}
+
     {#if rendererUrl}
       <div class="flex w-full items-center gap-2">
         <input class="input" id="markdown" type="text" value={mdCode} onclick={onCopyMarkdown} />
         <label for="markdown">
-          <button class="btn btn-primary btn-md flex-auto" onclick={onCopyMarkdown}>
+          <Button class="btn btn-primary btn-md flex-auto" onclick={onCopyMarkdown}>
             Copy Markdown
-          </button>
+          </Button>
         </label>
       </div>
     {/if}
@@ -261,7 +261,7 @@ ${svgString}`);
         bind:value={gistURL}
         placeholder="Enter Gist URL" />
       <label for="gist">
-        <button class="btn btn-primary btn-md flex-auto" onclick={loadGist}> Load Gist </button>
+        <Button class="btn btn-primary btn-md flex-auto" onclick={loadGist}>Load Gist</Button>
       </label>
     </div>
     {#if isNetlify}
