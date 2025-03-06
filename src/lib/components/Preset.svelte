@@ -225,7 +225,6 @@ packet-beta
   <div class="flex h-fit flex-wrap gap-2 p-2">
     {#each diagramOrder as sample}
       <Button
-        variant="secondary"
         size="sm"
         class="w-fit min-w-20 flex-grow normal-case"
         onclick={() => loadSampleDiagram(sample)}>

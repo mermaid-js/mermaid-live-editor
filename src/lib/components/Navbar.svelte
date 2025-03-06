@@ -102,6 +102,7 @@
       {#if isEnabledMermaidChartLinks}
         <Switch
           id="editorMode"
+          class="data-[state=checked]:bg-secondary"
           checked={isReferral}
           onclick={() => {
             logEvent('playgroundToggle', { isReferred: isReferral });

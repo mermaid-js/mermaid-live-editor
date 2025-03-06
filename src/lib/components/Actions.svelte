@@ -10,6 +10,8 @@
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
   import { Button } from './ui/Button';
+  import { Separator } from './ui/separator';
+  import { Switch } from './ui/switch';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
@@ -51,11 +53,11 @@ ${svgString}`);
     const box: DOMRect = svg.getBoundingClientRect();
     canvas.width = box.width;
     canvas.height = box.height;
-    if (imagemodeselected === 'width') {
+    if (imageModeFinal === 'width') {
       const ratio = box.height / box.width;
       canvas.width = userimagesize;
       canvas.height = userimagesize * ratio;
-    } else if (imagemodeselected === 'height') {
+    } else if (imageModeFinal === 'height') {
       const ratio = box.width / box.height;
       canvas.width = userimagesize * ratio;
       canvas.height = userimagesize;
@@ -170,7 +172,11 @@ ${svgString}`);
   let svgUrl: string | undefined = $state();
   let krokiUrl: string | undefined = $state();
   let mdCode: string | undefined = $state();
-  let imagemodeselected = $state('auto');
+  let isAutoImageMode = $state(true);
+  let manualSizingMode: 'width' | 'height' = $state('width');
+  let imageModeFinal: 'auto' | 'width' | 'height' = $derived(
+    isAutoImageMode ? 'auto' : manualSizingMode
+  );
   let userimagesize = $state(1080);
 
   let isNetlify = $state(false);
@@ -198,53 +204,58 @@ ${svgString}`);
   </div>
 {/snippet}
 
-<Card title="Actions" isOpen={false} icon="fas fa-share-nodes">
-  <div class="m-2 flex flex-wrap gap-2">
+<Card title="Actions" isOpen={!false} icon="fas fa-share-nodes">
+  <div class="m-2 flex flex-col gap-2">
     {#if isClipboardAvailable()}
       <Button class="action-btn w-full" onclick={onCopyClipboard}>
         <i class="far fa-copy mr-2"></i> Copy Image to clipboard
       </Button>
     {/if}
 
-    <div class="flex w-full items-center gap-2">
+    <div class="flex w-full items-center gap-2 py-2">
       PNG size
-      <label for="autosize">
-        <input type="radio" value="auto" id="autosize" bind:group={imagemodeselected} /> Auto
-      </label>
+      <Separator orientation="vertical" />
+      <span class="flex items-center gap-2">
+        Auto
+        <Switch id="autosize" bind:checked={isAutoImageMode} />
+      </span>
 
-      <label for="width">
-        <input type="radio" value="width" id="width" bind:group={imagemodeselected} /> Width
-      </label>
+      {#if !isAutoImageMode}
+        <Separator orientation="vertical" />
+        <div class="flex flex-grow justify-between">
+          <label for="width">
+            <input type="radio" value="width" id="width" bind:group={manualSizingMode} /> Width
+          </label>
 
-      <label for="height">
-        <input type="radio" value="height" id="height" bind:group={imagemodeselected} /> Height
-      </label>
+          <label for="height">
+            <input type="radio" value="height" id="height" bind:group={manualSizingMode} /> Height
+          </label>
 
-      {#if imagemodeselected !== 'auto'}
-        <input
-          id="height"
-          class="input"
-          type="number"
-          min="3"
-          max="10000"
-          bind:value={userimagesize} />
+          <input class="input" type="number" min="3" max="10000" bind:value={userimagesize} />
+        </div>
+      {/if}
+    </div>
+    <div class="flex gap-2">
+      {@render dualActionButton('PNG', onDownloadPNG, iUrl)}
+      {@render dualActionButton('SVG', onDownloadSVG, svgUrl)}
+
+      {#if krokiRendererUrl}
+        <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
+          <Button class="action-btn w-full">
+            <i class="fas fa-external-link-alt mr-2"></i> Kroki
+          </Button>
+        </a>
       {/if}
     </div>
 
-    {@render dualActionButton('PNG', onDownloadPNG, iUrl)}
-    {@render dualActionButton('SVG', onDownloadSVG, svgUrl)}
-
-    {#if krokiRendererUrl}
-      <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
-        <Button class="action-btn w-full">
-          <i class="fas fa-external-link-alt mr-2"></i> Kroki
-        </Button>
-      </a>
-    {/if}
-
     {#if rendererUrl}
       <div class="flex w-full items-center gap-2">
-        <input class="input" id="markdown" type="text" value={mdCode} onclick={onCopyMarkdown} />
+        <input
+          class="input flex-grow"
+          id="markdown"
+          type="text"
+          value={mdCode}
+          onclick={onCopyMarkdown} />
         <label for="markdown">
           <Button class="btn btn-primary btn-md flex-auto" onclick={onCopyMarkdown}>
             Copy Markdown
@@ -255,7 +266,7 @@ ${svgString}`);
 
     <div class="flex w-full items-center gap-2">
       <input
-        class="input"
+        class="input flex-grow"
         id="gist"
         type="text"
         bind:value={gistURL}
