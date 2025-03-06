@@ -408,6 +408,11 @@
     "@floating-ui/utils" "^0.2.3"
     vue-demi ">=0.13.0"
 
+"@fontsource-variable/recursive@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/recursive/-/recursive-5.2.5.tgz#ba3f882efa9a19a9a4fc81f29cc5899470eeb074"
+  integrity sha512-tgz93CoozxkF23TeAr+ihEwwKKvZ9lFosrCjx63XPn7keeMl3nZS+iFMDsY8s1U6+jVHMHpOU8ZAOorsWNtdsA==
+
 "@fortawesome/fontawesome-free@^6.5.1":
   version "6.7.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-6.7.2.tgz#8249de9b7e22fcb3ceb5e66090c30a1d5492b81a"
