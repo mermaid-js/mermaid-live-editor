@@ -227,7 +227,7 @@ packet-beta
       <Button
         variant="secondary"
         size="sm"
-        class="w-fit min-w-20 normal-case"
+        class="w-fit min-w-20 flex-grow normal-case"
         onclick={() => loadSampleDiagram(sample)}>
         {sample}
       </Button>
