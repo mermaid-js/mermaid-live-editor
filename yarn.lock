@@ -4459,6 +4459,11 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+lucide-svelte@^0.477.0:
+  version "0.477.0"
+  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.477.0.tgz#85d80c9a7787b4b3ff8f5faed2f41182c8c4e303"
+  integrity sha512-w/zj6/CXTtTizIeo8SuWGYu0u45CJ7cD2AtNzIObVHZrWXNgaIIX/2cI25wybjSmYHIi4pub2TLv/kNPKiB3ww==
+
 lz-string@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
@@ -4899,6 +4904,13 @@ pako@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/pako/-/pako-2.1.0.tgz#266cc37f98c7d883545d11335c00fbd4062c9a86"
   integrity sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==
+
+paneforge@^1.0.0-next.4:
+  version "1.0.0-next.4"
+  resolved "https://registry.yarnpkg.com/paneforge/-/paneforge-1.0.0-next.4.tgz#99887329c5cab35b83beac2700540a7b765a62cf"
+  integrity sha512-xB7iqIx6sT+XDRx/Eps+lddN3X7zRy8RIqXXFimGuFF6d+3s4YoXrk8SdNwEK5U/mqwupeKX0BbSfy0z9W9feA==
+  dependencies:
+    svelte-toolbelt "^0.7.1"
 
 parent-module@^1.0.0:
   version "1.0.1"

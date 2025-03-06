@@ -6,6 +6,7 @@
   import History from '$lib/components/History/History.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
+  import * as Resizable from '$lib/components/ui/resizable/index.js';
   import View from '$lib/components/View.svelte';
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
   import { env } from '$lib/util/env';
@@ -115,130 +116,117 @@
 
   onMount(async () => {
     await initHandler();
-    const resizer = document.querySelector<HTMLElement>('#resizeHandler');
-    const element = document.querySelector<HTMLElement>('#editorPane');
-    if (!resizer || !element) {
-      console.debug('Failed to find resize handler or editor pane', { resizer, element });
-      return;
-    }
-    const resize = ({ pageX }: { pageX: number }) => {
-      const newWidth = pageX - element.getBoundingClientRect().left;
-      if (newWidth > 50) {
-        element.style.width = `${newWidth}px`;
-      }
-    };
-
-    const stopResize = () => {
-      window.removeEventListener('mousemove', resize);
-    };
-    resizer.addEventListener('mousedown', (event) => {
-      event.preventDefault();
-      window.addEventListener('mousemove', resize);
-      window.addEventListener('mouseup', stopResize);
-    });
   });
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
   <Navbar />
   <div class="flex flex-1 overflow-hidden">
-    <div class="hidden flex-col md:flex" id="editorPane" style="width: 40%">
-      <Card onselect={tabSelectHandler} {tabs} isClosable={false} {activeTabID} title="Mermaid">
-        {#snippet actions()}
-          <div class="flex flex-row items-center">
-            <div class="form-control flex-row items-center">
-              <label class="label cursor-pointer" for="autoSync">
-                <span> Auto sync</span>
-                <input
-                  type="checkbox"
-                  class="toggle {$stateStore.autoSync ? 'btn-secondary' : 'toggle-primary'} ml-1"
-                  id="autoSync"
-                  bind:checked={$inputStateStore.autoSync} />
-              </label>
-            </div>
+    <Resizable.PaneGroup direction="horizontal" class="p-2">
+      <Resizable.Pane defaultSize={40}>
+        <div class="hidden h-full flex-col gap-2 md:flex" id="editorPane">
+          <Card onselect={tabSelectHandler} {tabs} isClosable={false} {activeTabID}>
+            {#snippet actions()}
+              <div class="flex flex-row items-center">
+                <div class="form-control flex-row items-center">
+                  <label class="label cursor-pointer" for="autoSync">
+                    <span> Auto sync</span>
+                    <input
+                      type="checkbox"
+                      class="toggle {$stateStore.autoSync
+                        ? 'btn-secondary'
+                        : 'toggle-primary'} ml-1"
+                      id="autoSync"
+                      bind:checked={$inputStateStore.autoSync} />
+                  </label>
+                </div>
 
-            {#if !$stateStore.autoSync}
-              <button
-                class="btn btn-secondary btn-xs mr-1"
-                title="Sync Diagram ({cmdKey} + Enter)"
-                aria-label="Sync Diagram"
-                data-cy="sync"
-                onclick={syncDiagram}><i class="fas fa-sync"></i></button>
-            {/if}
+                {#if !$stateStore.autoSync}
+                  <button
+                    class="btn btn-secondary btn-xs mr-1"
+                    title="Sync Diagram ({cmdKey} + Enter)"
+                    aria-label="Sync Diagram"
+                    data-cy="sync"
+                    onclick={syncDiagram}><i class="fas fa-sync"></i></button>
+                {/if}
 
-            <button
-              class="btn btn-secondary btn-xs"
-              title="View documentation for {docKey.replace('Diagram', '')} diagram">
-              <a target="_blank" href={docURL} data-cy="docs">
-                <i class="fas fa-book mr-1"></i>Docs
-              </a>
-            </button>
-          </div>
-        {/snippet}
+                <button
+                  class="btn btn-secondary btn-xs"
+                  title="View documentation for {docKey.replace('Diagram', '')} diagram">
+                  <a target="_blank" href={docURL} data-cy="docs">
+                    <i class="fas fa-book mr-1"></i>Docs
+                  </a>
+                </button>
+              </div>
+            {/snippet}
 
-        <Editor />
-      </Card>
+            <Editor />
+          </Card>
 
-      <div class="-mt-2">
-        <Preset />
-        <History />
-        <Actions />
-      </div>
-    </div>
-    <div id="resizeHandler" class="hidden md:block"></div>
-    <div class="flex flex-1 flex-col overflow-hidden">
-      <Card title="Diagram" isClosable={false}>
-        {#snippet actions()}
-          <div class="flex flex-row items-center gap-2">
-            <label
-              class="label flex cursor-pointer gap-1 py-0"
-              title="Rough mode is in beta. Features like clickable nodes, Pan & Zoom, will be disabled."
-              for="rough">
-              <span>Rough</span>
-              <input
-                type="checkbox"
-                class="toggle {$stateStore.rough ? 'btn-secondary' : 'toggle-primary'}"
-                id="rough"
-                bind:checked={$inputStateStore.rough} />
-            </label>
-            <label
-              class="label flex cursor-pointer gap-1 py-0"
-              title={$stateStore.rough ? 'Pan & Zoom is disabled in rough mode.' : ''}
-              for="panZoom">
-              <span>Pan & Zoom</span>
-              <input
-                type="checkbox"
-                class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
-                id="panZoom"
-                disabled={$stateStore.rough}
-                bind:checked={$inputStateStore.panZoom} />
-            </label>
-            <a
-              href={`${base}/view#${$stateStore.serialized}`}
-              target="_blank"
-              class="btn btn-secondary btn-xs gap-1"
-              title="View diagram in new page"
-              ><i class="fas fa-external-link-alt"></i>Full screen</a>
-            {#if env.isEnabledMermaidChartLinks}
-              <a
-                href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
-                target="_blank"
-                class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
-                title="Save diagram in Mermaid Chart"
-                ><img src="./mermaidchart-logo.svg" class="h-5 w-5" alt="Mermaid chart logo" />Save
-                to Mermaid Chart</a>
-            {/if}
-          </div>
-        {/snippet}
-
-        <div class="flex-1 overflow-auto">
-          <View />
+          <Preset />
+          <History />
+          <Actions />
         </div>
-      </Card>
-      <div class="mx-2 rounded p-2 shadow md:hidden">
-        Code editing not supported on mobile. Please use a desktop browser.
-      </div>
-    </div>
+      </Resizable.Pane>
+      <Resizable.Handle class="mx-2" />
+      <Resizable.Pane>
+        <div class="flex h-full flex-1 flex-col overflow-hidden">
+          <Card title="Diagram" isClosable={false}>
+            {#snippet actions()}
+              <div class="flex flex-row items-center gap-2">
+                <label
+                  class="label flex cursor-pointer gap-1 py-0"
+                  title="Rough mode is in beta. Features like clickable nodes, Pan & Zoom, will be disabled."
+                  for="rough">
+                  <span>Rough</span>
+                  <input
+                    type="checkbox"
+                    class="toggle {$stateStore.rough ? 'btn-secondary' : 'toggle-primary'}"
+                    id="rough"
+                    bind:checked={$inputStateStore.rough} />
+                </label>
+                <label
+                  class="label flex cursor-pointer gap-1 py-0"
+                  title={$stateStore.rough ? 'Pan & Zoom is disabled in rough mode.' : ''}
+                  for="panZoom">
+                  <span>Pan & Zoom</span>
+                  <input
+                    type="checkbox"
+                    class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
+                    id="panZoom"
+                    disabled={$stateStore.rough}
+                    bind:checked={$inputStateStore.panZoom} />
+                </label>
+                <a
+                  href={`${base}/view#${$stateStore.serialized}`}
+                  target="_blank"
+                  class="btn btn-secondary btn-xs gap-1"
+                  title="View diagram in new page"
+                  ><i class="fas fa-external-link-alt"></i>Full screen</a>
+                {#if env.isEnabledMermaidChartLinks}
+                  <a
+                    href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
+                    target="_blank"
+                    class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
+                    title="Save diagram in Mermaid Chart"
+                    ><img
+                      src="./mermaidchart-logo.svg"
+                      class="size-5"
+                      alt="Mermaid chart logo" />Save to Mermaid Chart</a>
+                {/if}
+              </div>
+            {/snippet}
+
+            <div class="flex-1 overflow-auto">
+              <View />
+            </div>
+          </Card>
+          <div class="mx-2 rounded p-2 shadow md:hidden">
+            Code editing not supported on mobile. Please use a desktop browser.
+          </div>
+        </div>
+      </Resizable.Pane>
+    </Resizable.PaneGroup>
   </div>
 </div>
 

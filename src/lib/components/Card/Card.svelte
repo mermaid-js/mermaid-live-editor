@@ -9,7 +9,7 @@
     isOpen?: boolean;
     tabs?: Tab[];
     activeTabID?: string;
-    title: string;
+    title?: string;
     onselect?: (tab: Tab) => void;
     actions?: Snippet;
     children?: Snippet;
@@ -35,11 +35,12 @@
   let isTabsShown = $derived(isOpen && tabs.length > 0);
 </script>
 
-<div class="card m-2 flex flex-grow flex-col overflow-hidden rounded shadow-2xl">
+<div
+  class="card flex h-fit {isOpen ? 'flex-grow' : ''} flex-col overflow-hidden rounded-2xl border-2">
   <div
     role="toolbar"
     tabindex="0"
-    class="bg-primary p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
+    class="bg-border p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
     <div class="flex justify-between">
@@ -50,7 +51,7 @@
     </div>
   </div>
   {#if isOpen}
-    <div class="card-body flex-grow overflow-auto p-0 text-base-content" transition:slide>
+    <div class="card-body text-base-content flex-grow overflow-auto p-0" transition:slide>
       {@render children?.()}
     </div>
   {/if}

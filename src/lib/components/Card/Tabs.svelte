@@ -12,7 +12,7 @@
   }: {
     isClosable?: boolean;
     tabs: Tab[];
-    title: string;
+    title?: string;
     isOpen?: boolean;
     activeTabID: string;
     onselect?: (tab: Tab) => void;
