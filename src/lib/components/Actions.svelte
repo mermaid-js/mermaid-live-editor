@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
+  import { Switch } from '$/components/ui/switch';
   import { browser } from '$app/environment';
   import Card from '$lib/components/Card/Card.svelte';
   import { waitForRender } from '$lib/util/autoSync';
@@ -9,9 +12,6 @@
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
-  import { Button } from './ui/Button';
-  import { Separator } from './ui/separator';
-  import { Switch } from './ui/switch';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 

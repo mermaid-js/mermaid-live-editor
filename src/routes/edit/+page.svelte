@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import * as Resizable from '$/components/ui/resizable';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
-  import { Button } from '$lib/components/ui/button';
-  import * as Resizable from '$lib/components/ui/resizable/index.js';
   import View from '$lib/components/View.svelte';
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
   import { stateStore, updateCodeStore } from '$lib/util/state';

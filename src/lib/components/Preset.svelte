@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
   import Card from '$lib/components/Card/Card.svelte';
   import { updateCode } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
-  import { Button } from './ui/button';
 
   const samples = {
     Flow: `flowchart TD

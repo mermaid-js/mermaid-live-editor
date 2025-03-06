@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Popover from '$lib/components/ui/popover/index.js';
+  import * as Popover from '$/components/ui/popover';
 
   interface Props {
     links: { title: string; href: string }[];

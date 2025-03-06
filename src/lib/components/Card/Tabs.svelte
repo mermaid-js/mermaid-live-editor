@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Separator } from '$lib/components/ui/separator';
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
   import type { Tab } from '$lib/types';
   import { fade } from 'svelte/transition';
-  import { Button } from '../ui/button';
 
   let {
     tabs,

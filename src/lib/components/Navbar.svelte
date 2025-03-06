@@ -7,15 +7,15 @@
 </script>
 
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
+  import { Switch } from '$/components/ui/switch';
   import { env } from '$lib/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import { stateStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
   import type { ComponentProps } from 'svelte';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
-  import { Button } from './ui/button';
-  import { Separator } from './ui/separator';
-  import { Switch } from './ui/switch';
 
   const { isEnabledMermaidChartLinks } = env;
 
