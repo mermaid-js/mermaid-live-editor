@@ -1723,10 +1723,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bits-ui@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-1.3.4.tgz#8099427ef0ce870e5d9ef843b8b41e929705d09f"
-  integrity sha512-hmrYbmb5D3ecRHP9GWTlkoo/9IGsPwMCmy3dAPKAfztG/NhWk49JcpuPbWi/eIggetVnv5nYrFp3N8zWscePCA==
+bits-ui@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-1.3.6.tgz#9b0fe5db7934db06fa0cea9b468251bfe991ca58"
+  integrity sha512-0Ee7Ox5KqIBdio/+TG387Xlj6QJ0S7tHVS2K4DYiBHxBRbm6ni13i/pOoNDjeME6NOGUZxbSe4dNZIW3pGlxZA==
   dependencies:
     "@floating-ui/core" "^1.6.4"
     "@floating-ui/dom" "^1.6.7"

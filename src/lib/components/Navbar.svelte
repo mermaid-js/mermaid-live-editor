@@ -13,8 +13,9 @@
   import { MCBaseURL } from '$lib/util/util';
   import type { ComponentProps } from 'svelte';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
-  import Privacy from './Privacy.svelte';
-  import Theme from './Theme.svelte';
+  import { Button } from './ui/button';
+  import { Separator } from './ui/separator';
+  import { Switch } from './ui/switch';
 
   const { isEnabledMermaidChartLinks } = env;
 
@@ -83,12 +84,14 @@
   </div>
 {/if}
 
-<div class="navbar z-50 bg-primary p-0 shadow-lg">
-  <div class="mx-2 flex flex-1 gap-2 px-2">
-    <a href="/"><img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" /></a>
+<nav class="z-50 flex p-4">
+  <div class="flex flex-1 items-center gap-4">
+    <Button variant="link" size="icon" href="/">
+      <img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" />
+    </Button>
     <div
       id="switcher"
-      class="flex items-center justify-center gap-2 font-bold"
+      class="flex items-center justify-center gap-4 font-medium"
       class:flex-row-reverse={isReferral}>
       <a href="/">
         {#if !isReferral}
@@ -97,9 +100,7 @@
         Live Editor
       </a>
       {#if isEnabledMermaidChartLinks}
-        <input
-          type="checkbox"
-          class="toggle toggle-primary"
+        <Switch
           id="editorMode"
           checked={isReferral}
           onclick={() => {
@@ -111,7 +112,10 @@
               isReferral ? 'noreferrer' : ''
             );
           }} />
-        <a href="{MCBaseURL}/play#{$stateStore.serialized}">Playground</a>
+
+        <a href="{MCBaseURL}/play#{$stateStore.serialized}"
+          >Playground <span class="text-sm opacity-50">- more features, no account required</span
+          ></a>
       {/if}
     </div>
   </div>
@@ -156,31 +160,24 @@
     onclick={toggleMenu} />
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
-    <span class="text-sm">v{version}</span>
-    <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
-      <li>
+    <!-- <span class="text-sm">v{version}</span> -->
+    <div class="h-full items-center justify-between gap-2 pt-4 text-base lg:flex lg:pt-0">
+      <!-- <li>
         <Privacy />
-      </li>
-      <li>
-        <Theme />
-      </li>
-      <li>
-        <DropdownNavMenu label="Documentation" links={documentationLinks} />
-      </li>
-      <li>
-        <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
-      </li>
+      </li> -->
 
+      <!-- <DropdownNavMenu label="Documentation" links={documentationLinks} /> -->
+
+      <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
+      <Separator orientation="vertical" class="min-h-[50%]" />
+      <Button variant="secondary" size="sm">Share</Button>
       {#if isEnabledMermaidChartLinks}
-        <li>
-          <a class="btn btn-ghost" target="_blank" href="https://mermaidchart.com">
-            <img class="size-6" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
-          </a>
-        </li>
+        <Button size="sm" target="_blank" href="https://mermaidchart.com"
+          ><img class="size-6" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />Save diagram</Button>
       {/if}
-    </ul>
+    </div>
   </div>
-</div>
+</nav>
 
 <style>
   #menu-toggle:checked + #menu {

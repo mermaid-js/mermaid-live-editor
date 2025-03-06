@@ -28,5 +28,8 @@
   "vitest.enable": true,
   "testing.autoRun.mode": "rerun",
   "svelte.enable-ts-plugin": true,
-  "githubPullRequests.ignoredPullRequestBranches": ["develop"]
+  "githubPullRequests.ignoredPullRequestBranches": ["develop"],
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  }
 }

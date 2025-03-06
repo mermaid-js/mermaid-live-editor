@@ -1,4 +1,6 @@
 <script lang="ts">
+  import * as Popover from '$lib/components/ui/popover/index.js';
+
   interface Props {
     links: { title: string; href: string }[];
     label?: string;
@@ -8,8 +10,8 @@
   let { links, label, icon }: Props = $props();
 </script>
 
-<div class="dropdown dropdown-end">
-  <button class="btn btn-ghost">
+<Popover.Root>
+  <Popover.Trigger class="flex items-center gap-0">
     {#if icon}
       <i class={icon}></i>
     {/if}
@@ -22,11 +24,10 @@
       class="ml-1 inline-block h-4 w-4 fill-current"
       ><path
         d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" /></svg>
-  </button>
-  <div
-    class="dropdown-content menu top-14 size-fit overflow-y-auto bg-base-200 text-base-content shadow-2xl">
+  </Popover.Trigger>
+  <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-    <ul tabindex="0" class="menu compact p-4">
+    <ul tabindex="0" class="menu flex flex-col gap-2">
       {#each links as { href, title }}
         <li>
           <a
@@ -40,5 +41,5 @@
         </li>
       {/each}
     </ul>
-  </div>
-</div>
+  </Popover.Content>
+</Popover.Root>
