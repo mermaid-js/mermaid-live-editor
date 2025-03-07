@@ -1,9 +1,9 @@
 <script lang="ts">
+  import Card from '$/components/Card/Card.svelte';
   import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
-  import { Switch } from '$/components/ui/switch';
+  import { Input } from '$/components/ui/input';
+  import * as ToggleGroup from '$/components/ui/toggle-group';
   import { browser } from '$app/environment';
-  import Card from '$lib/components/Card/Card.svelte';
   import { waitForRender } from '$lib/util/autoSync';
   import { env } from '$lib/util/env';
   import { pakoSerde } from '$lib/util/serde';
@@ -12,6 +12,7 @@
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
+  import Separator from './ui/separator/separator.svelte';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
@@ -53,14 +54,14 @@ ${svgString}`);
     const box: DOMRect = svg.getBoundingClientRect();
     canvas.width = box.width;
     canvas.height = box.height;
-    if (imageModeFinal === 'width') {
+    if (imageSizeMode === 'width') {
       const ratio = box.height / box.width;
-      canvas.width = userimagesize;
-      canvas.height = userimagesize * ratio;
-    } else if (imageModeFinal === 'height') {
+      canvas.width = imageSize;
+      canvas.height = imageSize * ratio;
+    } else if (imageSizeMode === 'height') {
       const ratio = box.width / box.height;
-      canvas.width = userimagesize * ratio;
-      canvas.height = userimagesize;
+      canvas.width = imageSize * ratio;
+      canvas.height = imageSize;
     }
 
     const context = canvas.getContext('2d');
@@ -172,12 +173,8 @@ ${svgString}`);
   let svgUrl: string | undefined = $state();
   let krokiUrl: string | undefined = $state();
   let mdCode: string | undefined = $state();
-  let isAutoImageMode = $state(true);
-  let manualSizingMode: 'width' | 'height' = $state('width');
-  let imageModeFinal: 'auto' | 'width' | 'height' = $derived(
-    isAutoImageMode ? 'auto' : manualSizingMode
-  );
-  let userimagesize = $state(1080);
+  let imageSizeMode: 'auto' | 'width' | 'height' = $state('auto');
+  let imageSize = $state(1080);
 
   let isNetlify = $state(false);
   if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
@@ -206,34 +203,27 @@ ${svgString}`);
 
 <Card title="Actions" isStackable icon="fas fa-share-nodes">
   <div class="flex min-w-fit flex-col gap-2 p-2">
-    {#if isClipboardAvailable()}
-      <Button class="action-btn w-full" onclick={onCopyClipboard}>
-        <i class="far fa-copy mr-2"></i> Copy Image to clipboard
-      </Button>
-    {/if}
-
-    <div class="flex w-full items-center gap-2 py-2">
+    <div class="flex w-full items-center gap-2 whitespace-nowrap py-2">
       PNG size
-      <Separator orientation="vertical" />
+      <ToggleGroup.Root type="single" variant="outline" bind:value={imageSizeMode}>
+        <ToggleGroup.Item value="auto">Auto</ToggleGroup.Item>
+        <ToggleGroup.Item value="width">Width</ToggleGroup.Item>
+        <ToggleGroup.Item value="height">Height</ToggleGroup.Item>
+      </ToggleGroup.Root>
+      <!-- <Separator orientation="vertical" />
       <span class="flex items-center gap-2">
         Auto
         <Switch id="autosize" bind:checked={isAutoImageMode} />
-      </span>
+      </span> -->
 
-      {#if !isAutoImageMode}
-        <Separator orientation="vertical" />
-        <div class="flex flex-grow justify-between">
-          <label for="width">
-            <input type="radio" value="width" id="width" bind:group={manualSizingMode} /> Width
-          </label>
-
-          <label for="height">
-            <input type="radio" value="height" id="height" bind:group={manualSizingMode} /> Height
-          </label>
-
-          <input class="input" type="number" min="3" max="10000" bind:value={userimagesize} />
-        </div>
-      {/if}
+      <!-- {#if } -->
+      <Input
+        type="number"
+        min="3"
+        max="10000"
+        disabled={imageSizeMode === 'auto'}
+        bind:value={imageSize} />
+      <!-- {/if} -->
     </div>
     <div class="flex gap-2">
       {@render dualActionButton('PNG', onDownloadPNG, iUrl)}
@@ -247,33 +237,22 @@ ${svgString}`);
         </a>
       {/if}
     </div>
-
+    <Separator />
+    {#if isClipboardAvailable()}
+      <Button class="action-btn w-full" onclick={onCopyClipboard}>
+        <i class="far fa-copy mr-2"></i> Copy Image to clipboard
+      </Button>
+    {/if}
     {#if rendererUrl}
       <div class="flex w-full items-center gap-2">
-        <input
-          class="input flex-grow"
-          id="markdown"
-          type="text"
-          value={mdCode}
-          onclick={onCopyMarkdown} />
-        <label for="markdown">
-          <Button class="btn btn-primary btn-md flex-auto" onclick={onCopyMarkdown}>
-            Copy Markdown
-          </Button>
-        </label>
+        <Input type="text" value={mdCode} onclick={onCopyMarkdown} />
+        <Button onclick={onCopyMarkdown}>Copy Markdown</Button>
       </div>
     {/if}
 
     <div class="flex w-full items-center gap-2">
-      <input
-        class="input flex-grow"
-        id="gist"
-        type="text"
-        bind:value={gistURL}
-        placeholder="Enter Gist URL" />
-      <label for="gist">
-        <Button class="btn btn-primary btn-md flex-auto" onclick={loadGist}>Load Gist</Button>
-      </label>
+      <Input type="url" bind:value={gistURL} placeholder="Enter Gist URL" />
+      <Button onclick={loadGist}>Load Gist</Button>
     </div>
     {#if isNetlify}
       <div class="flex w-full items-center justify-center">
