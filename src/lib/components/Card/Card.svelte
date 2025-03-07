@@ -8,6 +8,7 @@
   interface Props {
     isClosable?: boolean;
     isOpen?: boolean;
+    isStackable?: boolean;
     tabs?: Tab[];
     activeTabID?: string;
     title?: string;
@@ -19,7 +20,8 @@
 
   let {
     isClosable = true,
-    isOpen = true,
+    isOpen = false,
+    isStackable = false,
     tabs = [],
     activeTabID = '',
     title,
@@ -39,16 +41,16 @@
 </script>
 
 <div
-  class="card flex h-fit {isOpen
-    ? 'flex-grow'
-    : ''} w-full flex-col overflow-hidden rounded-2xl border-2">
+  class="card flex h-fit {isOpen ? 'isOpen flex-grow' : ''} {isStackable
+    ? 'flex-1 group-has-[.isOpen]:w-full group-has-[.isOpen]:flex-none'
+    : 'w-full'} flex-col overflow-hidden rounded-2xl border-2">
   <div
     role="toolbar"
     tabindex="0"
     class="bg-border p-2 {isTabsShown ? 'pb-1' : ''} flex-none cursor-pointer"
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
-    <div class="flex justify-between">
+    <div class="flex justify-between whitespace-nowrap">
       {#if icon || title}
         <span role="menubar" tabindex="0" class="flex w-fit items-center gap-2 font-semibold">
           {#if icon}
@@ -72,9 +74,7 @@
     </div>
   </div>
   {#if isOpen}
-    <div
-      class="text-base-content flex-grow overflow-hidden p-0"
-      transition:slide={{ easing: quintOut }}>
+    <div class="flex-grow overflow-x-auto" transition:slide={{ easing: quintOut }}>
       {@render children?.()}
     </div>
   {/if}

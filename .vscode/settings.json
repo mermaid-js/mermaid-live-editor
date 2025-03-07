@@ -21,6 +21,7 @@
     "roughjs",
     "Serde",
     "serdes",
+    "Stackable",
     "tailwindcss",
     "uparrow"
   ],

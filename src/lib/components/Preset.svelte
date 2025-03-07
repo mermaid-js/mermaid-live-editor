@@ -221,8 +221,8 @@ packet-beta
   ];
 </script>
 
-<Card title="Sample Diagrams" isOpen={false} icon="fas fa-shapes">
-  <div class="flex h-fit flex-wrap gap-2 p-2">
+<Card title="Sample Diagrams" isStackable icon="fas fa-shapes">
+  <div class="flex h-fit max-h-52 flex-wrap gap-2 overflow-y-auto p-2">
     {#each diagramOrder as sample}
       <Button
         size="sm"

@@ -121,9 +121,9 @@
   <Navbar />
   <div class="flex flex-1 overflow-hidden">
     <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-2">
-      <Resizable.Pane defaultSize={40}>
+      <Resizable.Pane defaultSize={40} minSize={15}>
         <div class="hidden h-full flex-col gap-2 md:flex" id="editorPane">
-          <Card onselect={tabSelectHandler} {tabs} isClosable={false} {activeTabID}>
+          <Card onselect={tabSelectHandler} isOpen {tabs} {activeTabID} isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center">
                 <!-- <div class="form-control flex-row items-center">
@@ -162,9 +162,11 @@
             <Editor />
           </Card>
 
-          <Preset />
-          <!-- <History /> -->
-          <Actions />
+          <div class="group flex flex-wrap justify-between gap-2">
+            <Preset />
+            <!-- <History /> -->
+            <Actions />
+          </div>
         </div>
       </Resizable.Pane>
       <Resizable.Handle class="opacity-0" />
@@ -228,27 +230,3 @@
     </Resizable.PaneGroup>
   </div>
 </div>
-
-<style>
-  #resizeHandler {
-    cursor: col-resize;
-    padding: 0 2px;
-  }
-
-  #resizeHandler::after {
-    width: 2px;
-    height: 100%;
-    top: 0;
-    content: '';
-    position: absolute;
-    background-color: hsla(var(--b3));
-    margin-left: -1px;
-    transition-duration: 0.2s;
-  }
-
-  #resizeHandler:hover::after {
-    margin-left: -2px;
-    background-color: hsla(var(--p));
-    width: 4px;
-  }
-</style>

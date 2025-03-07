@@ -204,8 +204,8 @@ ${svgString}`);
   </div>
 {/snippet}
 
-<Card title="Actions" isOpen={!false} icon="fas fa-share-nodes">
-  <div class="m-2 flex flex-col gap-2">
+<Card title="Actions" isStackable icon="fas fa-share-nodes">
+  <div class="flex min-w-fit flex-col gap-2 p-2">
     {#if isClipboardAvailable()}
       <Button class="action-btn w-full" onclick={onCopyClipboard}>
         <i class="far fa-copy mr-2"></i> Copy Image to clipboard
