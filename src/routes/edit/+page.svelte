@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
   import Actions from '$lib/components/Actions.svelte';
@@ -120,35 +121,12 @@
 <div class="flex h-full flex-col overflow-hidden">
   <Navbar />
   <div class="flex flex-1 overflow-hidden">
-    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-2">
+    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6">
       <Resizable.Pane defaultSize={40} minSize={15}>
-        <div class="hidden h-full flex-col gap-2 md:flex" id="editorPane">
+        <div class="hidden h-full flex-col gap-6 md:flex" id="editorPane">
           <Card onselect={tabSelectHandler} isOpen {tabs} {activeTabID} isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center">
-                <!-- <div class="form-control flex-row items-center">
-                  <label class="label cursor-pointer" for="autoSync">
-                    <span> Auto sync</span>
-                    <input
-                      type="checkbox"
-                      class="toggle {$stateStore.autoSync
-                        ? 'btn-secondary'
-                        : 'toggle-primary'} ml-1"
-                      id="autoSync"
-                      bind:checked={$inputStateStore.autoSync} />
-                  </label>
-                </div> 
-
-                {#if !$stateStore.autoSync}
-                  <button
-                    class="btn btn-secondary btn-xs mr-1"
-                    title="Sync Diagram ({cmdKey} + Enter)"
-                    aria-label="Sync Diagram"
-                    data-cy="sync"
-                    onclick={syncDiagram}><i class="fas fa-sync"></i></button>
-                {/if}
--->
-
                 <Button
                   variant="ghost"
                   href={docURL}
@@ -162,16 +140,17 @@
             <Editor />
           </Card>
 
-          <div class="group flex flex-wrap justify-between gap-2">
+          <div class="group flex flex-wrap justify-between gap-6">
             <Preset />
             <!-- <History /> -->
             <Actions />
           </div>
         </div>
       </Resizable.Pane>
-      <Resizable.Handle class="opacity-0" />
-      <Resizable.Pane class="p-2">
-        <div class="flex h-full flex-1 flex-col overflow-hidden">
+      <Resizable.Handle class="mr-2 opacity-0" />
+      <Resizable.Pane>
+        <div class="relative flex h-full flex-1 flex-col overflow-hidden">
+          <div class="absolute left-0 top-0"><SyncRoughToolbar /></div>
           <!-- <Card title="Diagram" isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center gap-2">

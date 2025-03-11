@@ -102,7 +102,6 @@
         );
 
         if (svg.length > 0) {
-          handlePanZoom(state);
           container.innerHTML = svg;
           const graphDiv = document.querySelector<SVGSVGElement>('#graph-div');
           if (!graphDiv) {
@@ -119,6 +118,7 @@
             }
             const height = sketch.getAttribute('height');
             const width = sketch.getAttribute('width');
+            sketch.setAttribute('id', 'graph-div');
             sketch.setAttribute('height', '100%');
             sketch.setAttribute('width', '100%');
             sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
@@ -130,6 +130,7 @@
               bindFunctions(graphDiv);
             }
           }
+          handlePanZoom(state);
         }
         if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
@@ -165,7 +166,7 @@
 
 {#if outOfSync}
   <div
-    class="font-monotext-yellow-600 absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left"
+    class="font-monotext-yellow-600 bg-base-100 absolute z-10 w-full bg-opacity-80 p-2 text-left"
     id="errorContainer">
     Diagram out of sync. <br />
     {#if $stateStore.autoSync}

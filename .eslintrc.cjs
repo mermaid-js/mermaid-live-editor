@@ -77,6 +77,7 @@ module.exports = {
       'error',
       {
         allowList: {
+          args: true,
           ctx: true,
           db: true,
           doc: true,
