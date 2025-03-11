@@ -4646,6 +4646,11 @@ mlly@^1.7.3, mlly@^1.7.4:
     pkg-types "^1.3.0"
     ufo "^1.5.4"
 
+mode-watcher@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/mode-watcher/-/mode-watcher-0.5.1.tgz#310e6ac144b3f0b3cfb486e1015d9e746e503377"
+  integrity sha512-adEC6T7TMX/kzQlaO/MtiQOSFekZfQu4MC+lXyoceQG+U5sKpJWZ4yKXqw846ExIuWJgedkOIPqAYYRk/xHm+w==
+
 monaco-editor@0.52.2:
   version "0.52.2"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.52.2.tgz#53c75a6fcc6802684e99fd1b2700299857002205"

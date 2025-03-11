@@ -2,8 +2,8 @@
   import { base } from '$app/paths';
   import { loadingStateStore } from '$lib/util/loading';
   import { toggleDarkTheme } from '$lib/util/state';
-  import { setTheme, themeStore } from '$lib/util/theme';
   import { initHandler } from '$lib/util/util';
+  import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
   import '../app.postcss';
 
@@ -32,22 +32,14 @@
         });
     }
 
-    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if ($themeStore.theme === undefined) {
-      setTheme(isDarkMode ? 'dark' : 'light');
-    }
-
-    themeStore.subscribe(({ theme, isDark }) => {
-      if (theme) {
-        document.querySelectorAll('html')[0].dataset.theme = theme;
-        toggleDarkTheme(isDark);
-      }
+    mode.subscribe((mode) => {
+      toggleDarkTheme(mode === 'dark');
     });
   });
 </script>
 
-<main class="h-screen text-primary-content">
+<ModeWatcher />
+<main class="text-primary-content h-screen">
   {@render children?.()}
 </main>
 

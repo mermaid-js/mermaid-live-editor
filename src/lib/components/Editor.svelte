@@ -13,8 +13,8 @@
   import { sanitizeText } from '$lib/util/sanitize';
   import { stateStore, updateCode, updateConfig } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
-  import { themeStore } from '$lib/util/theme';
   import { errorDebug, syncDiagram } from '$lib/util/util';
+  import { mode } from 'mode-watcher';
   import * as monaco from 'monaco-editor';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
@@ -61,8 +61,8 @@
     monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
   });
 
-  themeStore.subscribe(({ isDark }) => {
-    editor && monaco.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
+  mode.subscribe((mode) => {
+    editor && monaco.editor.setTheme(mode === 'dark' ? 'mermaid-dark' : 'mermaid');
   });
 
   const handleUpdate = (text: string, mode: EditorMode) => {
@@ -110,7 +110,7 @@
         });
       }
     });
-    monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
+    monaco.editor.setTheme($mode === 'dark' ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,

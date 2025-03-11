@@ -14,6 +14,7 @@
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import { stateStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
+  import { toggleMode } from 'mode-watcher';
   import type { ComponentProps } from 'svelte';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
 
@@ -84,7 +85,7 @@
   </div>
 {/if}
 
-<nav class="z-50 flex p-4">
+<nav class="z-50 flex p-4 px-6">
   <div class="flex flex-1 items-center gap-4">
     <Button variant="link" size="icon" href="/">
       <img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" />
@@ -171,6 +172,16 @@
 
       <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
       <Separator orientation="vertical" class="min-h-[50%]" />
+
+      <Button onclick={toggleMode} variant="outline" size="icon">
+        <i
+          class="fas fa-sun rotate-0 scale-100 transition-all duration-200 dark:-rotate-90 dark:scale-0"
+        ></i>
+        <i
+          class="fas fa-moon absolute rotate-90 scale-0 transition-all duration-200 dark:rotate-0 dark:scale-100"
+        ></i>
+        <span class="sr-only">Toggle theme</span>
+      </Button>
       <Button variant="secondary" size="sm">Share</Button>
       {#if isEnabledMermaidChartLinks}
         <Button size="sm" target="_blank" href="https://mermaidchart.com"
