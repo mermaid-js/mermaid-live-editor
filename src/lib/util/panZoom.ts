@@ -11,6 +11,7 @@ export class PanZoomState {
   private resizeObserver: ResizeObserver;
 
   public isPanEnabled: boolean;
+  public onPanZoomChange?: (pan: Point, zoom: number) => void;
 
   constructor() {
     this.isPanEnabled = true;
@@ -28,11 +29,17 @@ export class PanZoomState {
         this.pan = pan;
         this.zoom = this.pzoom?.getZoom();
         this.isDirty = true;
+        if (this.zoom) {
+          this.onPanZoomChange?.(this.pan, this.zoom);
+        }
       },
       onZoom: (zoom) => {
         this.zoom = zoom;
         this.pan = this.pzoom?.getPan();
         this.isDirty = true;
+        if (this.pan) {
+          this.onPanZoomChange?.(this.pan, this.zoom);
+        }
       },
       controlIconsEnabled: false,
       panEnabled: true,

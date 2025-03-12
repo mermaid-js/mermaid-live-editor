@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PanZoomState } from '$/util/panZoom';
   import type { State, ValidatedState } from '$lib/types';
   import { recordRenderTime, shouldRefreshView } from '$lib/util/autoSync';
   import { render as renderDiagram } from '$lib/util/mermaid';
@@ -7,9 +8,9 @@
   import { cmdKey } from '$lib/util/util';
   import type { MermaidConfig } from 'mermaid';
   import { onMount } from 'svelte';
-  import panzoom from 'svg-pan-zoom';
   import { Svg2Roughjs } from 'svg2roughjs';
 
+  let { panZoomState = new PanZoomState() }: { panZoomState?: PanZoomState } = $props();
   let code = '';
   let config = '';
   let container: HTMLDivElement | undefined = $state();
@@ -19,17 +20,13 @@
   let outOfSync = $state(false);
   let hide = $state(false);
   let manualUpdate = true;
-  let panZoomEnabled = $stateStore.panZoom;
-  let pzoom: typeof panzoom | undefined;
 
-  const handlePanZoomChange = () => {
-    if (!pzoom) {
-      return;
-    }
-    const pan = pzoom.getPan();
-    const zoom = pzoom.getZoom();
-    updateCodeStore({ pan, zoom });
-    logEvent('panZoom');
+  // Set up panZoom state observer to update the store when pan/zoom changes
+  const setupPanZoomObserver = () => {
+    panZoomState.onPanZoomChange = (pan, zoom) => {
+      updateCodeStore({ pan, zoom });
+      logEvent('panZoom');
+    };
   };
 
   const handlePanZoom = (state: State) => {
@@ -37,25 +34,13 @@
       return;
     }
     hide = true;
-    pzoom?.destroy();
-    pzoom = undefined;
+
     void Promise.resolve().then(() => {
-      const graphDiv = document.querySelector<HTMLElement>('#graph-div');
+      const graphDiv = document.querySelector<SVGElement>('#graph-div');
       if (!graphDiv) {
         return;
       }
-      pzoom = panzoom(graphDiv, {
-        onPan: handlePanZoomChange,
-        onZoom: handlePanZoomChange,
-        controlIconsEnabled: true,
-        fit: true,
-        center: true
-      });
-      const { pan, zoom } = state;
-      if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
-        pzoom.zoom(zoom);
-        pzoom.pan(pan);
-      }
+      panZoomState.updateElement(graphDiv, state);
       hide = false;
     });
   };
@@ -75,12 +60,7 @@
         outOfSync = false;
         manualUpdate = true;
         // Do not render if there is no change in Code/Config/PanZoom
-        if (
-          code === state.code &&
-          config === state.mermaid &&
-          panZoomEnabled === state.panZoom &&
-          rough === state.rough
-        ) {
+        if (code === state.code && config === state.mermaid && rough === state.rough) {
           return;
         }
 
@@ -91,7 +71,6 @@
 
         code = state.code;
         config = state.mermaid;
-        panZoomEnabled = state.panZoom;
         rough = state.rough;
         const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
@@ -153,13 +132,9 @@
   };
 
   onMount(() => {
+    setupPanZoomObserver();
     stateStore.subscribe((state) => {
       void handleStateChange(state);
-    });
-    window.addEventListener('resize', () => {
-      if ($stateStore.panZoom && pzoom) {
-        pzoom.resize();
-      }
     });
   });
 </script>

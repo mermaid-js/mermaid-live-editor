@@ -1,7 +1,10 @@
 <script lang="ts">
+  import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
+  import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
+  import { PanZoomState } from '$/util/panZoom';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
   import Editor from '$lib/components/Editor.svelte';
@@ -13,6 +16,7 @@
   import { initHandler } from '$lib/util/util';
   import { onMount } from 'svelte';
 
+  const panZoomState = new PanZoomState();
   const docURLBase = 'https://mermaid.js.org';
   const docMap: DocumentationConfig = {
     graph: {
@@ -150,7 +154,9 @@
       <Resizable.Handle class="mr-2 opacity-0" />
       <Resizable.Pane>
         <div class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <div class="absolute left-0 top-0"><SyncRoughToolbar /></div>
+          <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+          <div class="absolute bottom-0 left-0"><SyncRoughToolbar /></div>
+          <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
           <!-- <Card title="Diagram" isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center gap-2">
@@ -198,7 +204,7 @@
             {/snippet} -->
 
           <!-- <div class="flex-1 overflow-auto"> -->
-          <View />
+          <View {panZoomState} />
           <!-- </div> -->
           <!-- </Card> -->
           <div class="mx-2 rounded p-2 shadow md:hidden">
