@@ -175,10 +175,6 @@
     <!-- <span class="text-sm">v{version}</span> -->
     <div
       class="h-full items-center justify-between gap-2 overflow-hidden pt-4 text-base lg:flex lg:pt-0">
-      <!-- <li>
-        <Privacy />
-      </li> -->
-
       <!-- <DropdownNavMenu label="Documentation" links={documentationLinks} /> -->
       <Button onclick={toggleMode} variant="outline" size="icon" title="Toggle theme">
         <SunIcon

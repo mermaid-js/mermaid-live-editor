@@ -1763,10 +1763,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bits-ui@^1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-1.3.6.tgz#9b0fe5db7934db06fa0cea9b468251bfe991ca58"
-  integrity sha512-0Ee7Ox5KqIBdio/+TG387Xlj6QJ0S7tHVS2K4DYiBHxBRbm6ni13i/pOoNDjeME6NOGUZxbSe4dNZIW3pGlxZA==
+bits-ui@^1.3.12:
+  version "1.3.12"
+  resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-1.3.12.tgz#311d33e12fd619d97850500f9c4e719373d64e69"
+  integrity sha512-RhPvg2e7mTQSXR9WMdsyR5eTC2DSa4ch5MT/TjIaN3suMJ3RGlbzYPNvf4n56Lgck3W4Xm+L4jSgrzTdynuM8Q==
   dependencies:
     "@floating-ui/core" "^1.6.4"
     "@floating-ui/dom" "^1.6.7"
@@ -4523,10 +4523,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lucide-svelte@^0.477.0:
-  version "0.477.0"
-  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.477.0.tgz#85d80c9a7787b4b3ff8f5faed2f41182c8c4e303"
-  integrity sha512-w/zj6/CXTtTizIeo8SuWGYu0u45CJ7cD2AtNzIObVHZrWXNgaIIX/2cI25wybjSmYHIi4pub2TLv/kNPKiB3ww==
+lucide-svelte@^0.479.0:
+  version "0.479.0"
+  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.479.0.tgz#680157ee44f9ed88e01539276556ba211292af7d"
+  integrity sha512-epCj6WL86ykxg7oCQTmPEth5e11pwJUzIfG9ROUsWsTP+WPtb3qat+VmAjfx/r4TRW7memTFcbTPvMrZvKthqw==
 
 lz-string@^1.5.0:
   version "1.5.0"

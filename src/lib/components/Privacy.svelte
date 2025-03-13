@@ -1,27 +1,29 @@
 <script>
-  import ShieldHalvedIcon from '~icons/fa6-solid/shield-halved';
+  import * as Dialog from '$/components/ui/dialog';
+  import ShieldIcon from '~icons/material-symbols/shield-lock-outline-rounded';
 </script>
 
-<label for="privacyModal" class="btn btn-ghost flex gap-2">
-  <ShieldHalvedIcon /> Security
-</label>
+<Dialog.Root>
+  <Dialog.Trigger>
+    <ShieldIcon />
+  </Dialog.Trigger>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title class="flex items-center gap-2 text-xl">
+        <ShieldIcon class="size-8 text-green-700" />Data security</Dialog.Title>
+      <Dialog.Description></Dialog.Description>
+    </Dialog.Header>
 
-<input type="checkbox" id="privacyModal" class="modal-toggle" />
-<div class="modal" role="dialog">
-  <div class="modal-box text-base-content flex flex-col gap-4">
-    <h1 class="text-3xl font-bold">Data security</h1>
-    <p>
-      <span class="text-xl font-extrabold">
-        The content of the diagrams you create never leaves your browser.
-      </span>
-      It's stored in the URL, and the browser's local storage only.
+    <p class="text-xl font-semibold">
+      The content of the diagrams you create never leaves your browser.
     </p>
+    <p>It's stored in the URL, and the browser's local storage only.</p>
     <p>
       Mermaid live editor is a fully client side application, that will also work as an offline <a
         href="https://web.dev/explore/progressive-web-apps"
-        class="link"
+        class="underline"
         target="_blank">
-        PWA.
+        Progressive Web App.
       </a>
     </p>
     <p>
@@ -29,7 +31,7 @@
       Plausible Analytics. We only collect data related to actions performed, like the type of
       diagram rendered, number of times a feature was used, etc. <br /> All the data we collect is
       anonymized and
-      <a href="https://p.mermaid.live/mermaid.live" class="link" target="_blank">
+      <a href="https://p.mermaid.live/mermaid.live" class="underline" target="_blank">
         available publicly.
       </a>
     </p>
@@ -38,9 +40,5 @@
       Additional services like the external PNG/SVG/Kroki links and "Save to Mermaid Chart" feature
       will share your diagram with the respective 3rd party service.
     </p>
-
-    <label class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2" for="privacyModal">
-      X
-    </label>
-  </div>
-</div>
+  </Dialog.Content>
+</Dialog.Root>
