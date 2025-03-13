@@ -54,6 +54,7 @@
       return;
     }
     error = false;
+    let diagramType: string | undefined;
     try {
       if (container && state && (state.updateDiagram || state.autoSync)) {
         if (!state.autoSync) {
@@ -76,12 +77,16 @@
         rough = state.rough;
         const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
-        const { svg, bindFunctions } = await renderDiagram(
+        const {
+          svg,
+          bindFunctions,
+          diagramType: detectedDiagramType
+        } = await renderDiagram(
           Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
           code,
           'graph-div'
         );
-
+        diagramType = detectedDiagramType;
         if (svg.length > 0) {
           container.innerHTML = svg;
           const graphDiv = document.querySelector<SVGSVGElement>('#graph-div');
@@ -127,7 +132,7 @@
       error = true;
     }
     const renderTime = Date.now() - startTime;
-    saveStatistics({ code, renderTime, isRough: state.rough });
+    saveStatistics({ code, renderTime, isRough: state.rough, diagramType });
     recordRenderTime(renderTime, () => {
       $inputStateStore.updateDiagram = true;
     });

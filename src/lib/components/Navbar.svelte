@@ -113,12 +113,15 @@
             checked={isReferral}
             onclick={() => {
               logEvent('playgroundToggle', { isReferred: isReferral });
-              window.open(
-                `${MCBaseURL}/play#${$stateStore.serialized}`,
-                '_self',
-                // Do not send referrer header, if the user already came from playground
-                isReferral ? 'noreferrer' : ''
-              );
+              // Wait for the event to be logged
+              setTimeout(() => {
+                window.open(
+                  `${MCBaseURL}/play#${$stateStore.serialized}`,
+                  '_self',
+                  // Do not send referrer header, if the user already came from playground
+                  isReferral ? 'noreferrer' : ''
+                );
+              }, 100);
             }} />
 
           <a href="{MCBaseURL}/play#{$stateStore.serialized}" class="whitespace-nowrap">
