@@ -125,9 +125,9 @@
             );
           }} />
 
-        <a href="{MCBaseURL}/play#{$stateStore.serialized}"
-          >Playground <span class="text-sm opacity-50">- more features, no account required</span
-          ></a>
+        <a href="{MCBaseURL}/play#{$stateStore.serialized}">
+          Playground <span class="text-sm opacity-50">- more features, no account required</span>
+        </a>
       {/if}
     </div>
   </div>
@@ -180,17 +180,16 @@
       </li> -->
 
       <!-- <DropdownNavMenu label="Documentation" links={documentationLinks} /> -->
-
-      <DropdownNavMenu icon={GithubIcon} class="fa-lg" links={githubLinks} />
-      <Separator orientation="vertical" />
-
-      <Button onclick={toggleMode} variant="outline" size="icon">
+      <Button onclick={toggleMode} variant="outline" size="icon" title="Toggle theme">
         <SunIcon
           class="rotate-0 scale-100 transition-all duration-200 dark:-rotate-90 dark:scale-0" />
         <MoonIcon
           class="absolute rotate-90 scale-0 transition-all duration-200 dark:rotate-0 dark:scale-100" />
-        <span class="sr-only">Toggle theme</span>
       </Button>
+
+      <DropdownNavMenu icon={GithubIcon} class="fa-lg" links={githubLinks} />
+      <Separator orientation="vertical" />
+
       {@render children()}
     </div>
   </div>

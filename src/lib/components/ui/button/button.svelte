@@ -12,6 +12,7 @@
         outline:
           'border-input bg-background hover:bg-accent hover:text-accent-foreground border shadow-sm',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm',
+        accent: 'bg-accent text-accent-foreground hover:bg-accent/80 shadow-sm',
         ghost: 'hover:bg-primary hover:text-primary-foreground',
         link: 'text-primary underline-offset-4 hover:underline'
       },

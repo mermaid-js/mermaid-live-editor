@@ -133,12 +133,13 @@
 
 <div class="flex h-full flex-col overflow-hidden">
   <Navbar>
-    <Button size="sm">Share</Button>
     <Toggle bind:pressed={isHistoryOpen}>
       <HistoryIcon />
     </Toggle>
+    <Button size="sm">Share</Button>
     {#if env.isEnabledMermaidChartLinks}
       <Button
+        variant="accent"
         size="sm"
         href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
         target="_blank">
