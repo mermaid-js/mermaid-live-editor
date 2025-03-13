@@ -99,7 +99,7 @@ export class PanZoomState {
   public reset() {
     this.pzoom?.reset();
     // Zoom out a bit to avoid overlap with the toolbar
-    this.pzoom?.zoom(0.9);
+    this.pzoom?.zoom(0.875);
     this.isDirty = false;
   }
 }
