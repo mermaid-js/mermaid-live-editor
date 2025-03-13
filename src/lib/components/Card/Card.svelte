@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Tab } from '$lib/types';
-  import type { Snippet } from 'svelte';
+  import type { Component, Snippet } from 'svelte';
   import { quintOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
   import Tabs from './Tabs.svelte';
@@ -12,7 +12,7 @@
     tabs?: Tab[];
     activeTabID?: string;
     title?: string;
-    icon?: string;
+    icon?: Component;
     onselect?: (tab: Tab) => void;
     actions?: Snippet;
     children?: Snippet;
@@ -43,19 +43,17 @@
 <div
   class="card flex h-fit {isOpen ? 'isOpen flex-grow' : ''} {isStackable
     ? 'flex-1 group-has-[.isOpen]:w-full group-has-[.isOpen]:flex-none'
-    : 'w-full'} flex-col overflow-hidden rounded-2xl border-2">
+    : 'w-full'} flex-col overflow-hidden rounded-2xl border-2 border-muted">
   <div
     role="toolbar"
     tabindex="0"
-    class="bg-border p-2 {isTabsShown ? 'pb-1' : ''} flex-none cursor-pointer"
+    class="bg-muted p-2 {isTabsShown ? 'pb-1' : ''} flex-none cursor-pointer"
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
     <div class="flex justify-between whitespace-nowrap">
       {#if icon || title}
         <span role="menubar" tabindex="0" class="flex w-fit items-center gap-2 font-semibold">
-          {#if icon}
-            <i class={icon}></i>
-          {/if}
+          <svelte:component this={icon} class="size-4" />
           {title}
         </span>
       {/if}
@@ -67,8 +65,8 @@
 
       <!-- {#if isClosable && isOpen}
         <div class="ml-auto flex h-8 flex-col gap-0 p-1">
-          <i class="fas fa-chevron-down size-full"></i>
-          <i class="fas fa-chevron-up size-full"></i>
+          <ChevronDownIcon class="size-full" />
+          <ChevronUpIcon class="size-full" />
         </div>
       {/if} -->
     </div>

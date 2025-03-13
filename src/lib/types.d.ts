@@ -1,3 +1,6 @@
+import type { Component } from 'svelte';
+import 'unplugin-icons/types/svelte';
+
 export interface MarkerData {
   severity: number;
   message: string;
@@ -15,7 +18,7 @@ export interface TabEvents {
 export interface Tab {
   id: string;
   title: string;
-  icon: string;
+  icon: Component;
 }
 
 export interface State {

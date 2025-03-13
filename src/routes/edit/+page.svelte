@@ -15,6 +15,9 @@
   import { stateStore, updateCodeStore } from '$lib/util/state';
   import { initHandler } from '$lib/util/util';
   import { onMount } from 'svelte';
+  import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
+  import CodeIcon from '~icons/material-symbols/code-blocks-outline';
+  import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
   const docURLBase = 'https://mermaid.js.org';
@@ -108,12 +111,12 @@
     {
       id: 'code',
       title: 'Code',
-      icon: 'fas fa-code'
+      icon: CodeIcon
     },
     {
       id: 'config',
       title: 'Config',
-      icon: 'fas fa-gear'
+      icon: GearIcon
     }
   ];
 
@@ -135,7 +138,7 @@
                   variant="ghost"
                   href={docURL}
                   title="View documentation for {docKey.replace('Diagram', '')} diagram">
-                  <i class="fas fa-book mr-1"></i>
+                  <BookIcon class="mr-1" />
                   Docs
                 </Button>
               </div>
@@ -154,9 +157,6 @@
       <Resizable.Handle class="mr-2 opacity-0" />
       <Resizable.Pane>
         <div class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-          <div class="absolute bottom-0 left-0"><SyncRoughToolbar /></div>
-          <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
           <!-- <Card title="Diagram" isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center gap-2">
@@ -188,7 +188,7 @@
                   target="_blank"
                   class="btn btn-secondary btn-xs gap-1"
                   title="View diagram in new page"
-                  ><i class="fas fa-external-link-alt"></i>Full screen</a>
+                  ><ExternalLinkAltIcon />Full screen</a>
                 {#if env.isEnabledMermaidChartLinks}
                   <a
                     href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
@@ -205,6 +205,9 @@
 
           <!-- <div class="flex-1 overflow-auto"> -->
           <View {panZoomState} />
+          <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+          <div class="absolute bottom-0 left-0"><SyncRoughToolbar /></div>
+          <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
           <!-- </div> -->
           <!-- </Card> -->
           <div class="mx-2 rounded p-2 shadow md:hidden">

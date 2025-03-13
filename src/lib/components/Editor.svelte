@@ -19,6 +19,7 @@
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onDestroy, onMount } from 'svelte';
+  import ExclamationCircleIcon from '~icons/fa/exclamation-circle';
 
   let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
@@ -137,7 +138,7 @@
   {#if $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm text-neutral-100">
       <div class="flex items-center gap-2 bg-red-700 p-2">
-        <i class="fa fa-exclamation-circle w-4" aria-hidden="true"></i>
+        <ExclamationCircleIcon class="w-4" aria-hidden="true" />
         <p>Diagram syntax error</p>
       </div>
       <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">

@@ -9,6 +9,7 @@
   import type { MermaidConfig } from 'mermaid';
   import { onMount } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';
+  import SyncIcon from '~icons/fa6-solid/arrows-rotate';
 
   let { panZoomState = new PanZoomState() }: { panZoomState?: PanZoomState } = $props();
   let code = '';
@@ -141,13 +142,13 @@
 
 {#if outOfSync}
   <div
-    class="font-monotext-yellow-600 bg-base-100 absolute z-10 w-full bg-opacity-80 p-2 text-left"
+    class="bg-base-100 absolute z-10 w-full bg-opacity-80 p-2 text-left font-mono text-yellow-600"
     id="errorContainer">
     Diagram out of sync. <br />
     {#if $stateStore.autoSync}
       It will be updated automatically.
     {:else}
-      Press <i class="fas fa-sync"></i> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      Press <SyncIcon /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
     {/if}
   </div>
 {/if}

@@ -2,13 +2,21 @@
   import { inputStateStore, stateStore } from '$/util/state';
   import { cmdKey, syncDiagram } from '$/util/util';
   import { slide } from 'svelte/transition';
+  import SyncIcon from '~icons/fa6-solid/arrows-rotate';
   import FloatingToolbar from './FloatingToolbar.svelte';
   import { Switch } from './ui/switch';
 </script>
 
 <FloatingToolbar>
   <label class="label flex cursor-pointer items-center gap-2" for="rough">
-    <Switch bind:checked={$inputStateStore.rough} name="rough" />
+    <Switch
+      bind:checked={$inputStateStore.rough}
+      onclick={() => {
+        if (!$inputStateStore.autoSync) {
+          syncDiagram();
+        }
+      }}
+      name="rough" />
     <span>Hand drawn</span>
   </label>
 
@@ -24,6 +32,6 @@
       title="Sync Diagram ({cmdKey} + Enter)"
       aria-label="Sync Diagram"
       data-cy="sync"
-      onclick={syncDiagram}><i class="fas fa-sync"></i></button>
+      onclick={syncDiagram}><SyncIcon /></button>
   {/if}
 </FloatingToolbar>

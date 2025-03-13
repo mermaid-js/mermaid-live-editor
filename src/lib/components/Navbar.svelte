@@ -16,6 +16,10 @@
   import { MCBaseURL } from '$lib/util/util';
   import { toggleMode } from 'mode-watcher';
   import type { ComponentProps } from 'svelte';
+  import GithubIcon from '~icons/fa-brands/github';
+  import CloseIcon from '~icons/fa/close';
+  import MoonIcon from '~icons/fa6-solid/moon';
+  import SunIcon from '~icons/fa6-solid/sun';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
 
   const { isEnabledMermaidChartLinks } = env;
@@ -79,7 +83,7 @@
           dismissPromotion(activePromotion?.id);
           activePromotion = undefined;
         }}>
-        <i class="fa fa-close px-2"></i>
+        <CloseIcon class="px-2" />
       </button>
     {/snippet}
   </div>
@@ -163,23 +167,22 @@
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
     <!-- <span class="text-sm">v{version}</span> -->
-    <div class="h-full items-center justify-between gap-2 pt-4 text-base lg:flex lg:pt-0">
+    <div
+      class="h-full items-center justify-between gap-2 overflow-hidden pt-4 text-base lg:flex lg:pt-0">
       <!-- <li>
         <Privacy />
       </li> -->
 
       <!-- <DropdownNavMenu label="Documentation" links={documentationLinks} /> -->
 
-      <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
-      <Separator orientation="vertical" class="min-h-[50%]" />
+      <DropdownNavMenu icon={GithubIcon} class="fa-lg" links={githubLinks} />
+      <Separator orientation="vertical" />
 
       <Button onclick={toggleMode} variant="outline" size="icon">
-        <i
-          class="fas fa-sun rotate-0 scale-100 transition-all duration-200 dark:-rotate-90 dark:scale-0"
-        ></i>
-        <i
-          class="fas fa-moon absolute rotate-90 scale-0 transition-all duration-200 dark:rotate-0 dark:scale-100"
-        ></i>
+        <SunIcon
+          class="rotate-0 scale-100 transition-all duration-200 dark:-rotate-90 dark:scale-0" />
+        <MoonIcon
+          class="absolute rotate-90 scale-0 transition-all duration-200 dark:rotate-0 dark:scale-100" />
         <span class="sr-only">Toggle theme</span>
       </Button>
       <Button variant="secondary" size="sm">Share</Button>

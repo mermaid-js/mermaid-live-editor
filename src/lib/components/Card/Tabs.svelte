@@ -33,10 +33,10 @@
       <Button
         role="tab"
         variant="ghost"
-        class={activeTabID === tab.id ? 'rounded-b-none border-b-2 border-b-primary/50' : ''}
+        class="px-2 {activeTabID === tab.id ? 'rounded-b-none border-b-2 border-b-primary/50' : ''}"
         onclick={toggleTabs(tab)}
         onkeypress={toggleTabs(tab)}>
-        <i class={tab.icon}></i>
+        <tab.icon />
         {tab.title}
       </Button>
 

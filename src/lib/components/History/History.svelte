@@ -10,6 +10,14 @@
   import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
+  import GitAltIcon from '~icons/fa-brands/git-alt';
+  import BookmarkIcon from '~icons/fa-regular/bookmark';
+  import SaveIcon from '~icons/fa-regular/save';
+  import DownloadIcon from '~icons/fa/download';
+  import UploadIcon from '~icons/fa/upload';
+  import HistoryIcon from '~icons/fa6-solid/history';
+  import TrashAltIcon from '~icons/fa6-solid/trash-alt';
+  import UndoIcon from '~icons/fa6-solid/undo';
   import {
     addHistoryEntry,
     clearHistoryData,
@@ -31,12 +39,12 @@
     {
       id: 'manual',
       title: 'Saved',
-      icon: 'far fa-bookmark'
+      icon: BookmarkIcon
     },
     {
       id: 'auto',
       title: 'Timeline',
-      icon: 'fas fa-history'
+      icon: HistoryIcon
     }
   ]);
 
@@ -112,7 +120,7 @@
         {
           id: 'loader',
           title: 'Revisions',
-          icon: 'fab fa-git-alt'
+          icon: GitAltIcon
         },
         ...tabs
       ];
@@ -129,14 +137,14 @@
         class="btn btn-secondary btn-xs w-12"
         onclick={stopPropagation(() => uploadHistory())}
         title="Upload history"
-        aria-label="Upload history"><i class="fa fa-upload"></i></button>
+        aria-label="Upload history"><UploadIcon /></button>
       {#if $historyStore.length > 0}
         <button
           id="downloadHistory"
           class="btn btn-secondary btn-xs w-12"
           onclick={stopPropagation(() => downloadHistory())}
           title="Download history"
-          aria-label="Download history"><i class="fa fa-download"></i></button>
+          aria-label="Download history"><DownloadIcon /></button>
       {/if}
       |
       <button
@@ -144,14 +152,14 @@
         class="btn btn-success btn-xs w-12"
         onclick={stopPropagation(() => saveHistory())}
         title="Save current state"
-        aria-label="Save current state"><i class="far fa-save"></i></button>
+        aria-label="Save current state"><SaveIcon /></button>
       {#if $historyModeStore !== 'loader'}
         <button
           id="clearHistory"
           class="btn btn-error btn-xs w-12"
           onclick={stopPropagation(() => clearHistory())}
           title="Delete all saved states"
-          aria-label="Delete all saved states"><i class="fas fa-trash-alt"></i></button>
+          aria-label="Delete all saved states"><TrashAltIcon /></button>
       {/if}
     </div>
   {/snippet}
@@ -161,7 +169,7 @@
         <li class="flex-col rounded p-2 shadow">
           <div class="flex">
             <div class="flex-1">
-              <div class="flex flex-col text-base-content">
+              <div class="text-base-content flex flex-col">
                 {#if url}
                   <a
                     href={url}
@@ -176,10 +184,10 @@
             </div>
             <div class="flex content-center gap-2">
               <button class="btn btn-success" onclick={() => restoreHistoryItem(state)}
-                ><i class="fas fa-undo mr-1"></i>Restore</button>
+                ><UndoIcon class="mr-1" />Restore</button>
               {#if type !== 'loader'}
                 <button class="btn btn-error" onclick={() => clearHistory(id)}
-                  ><i class="fas fa-trash-alt mr-1"></i>Delete</button>
+                  ><TrashAltIcon class="mr-1" />Delete</button>
               {/if}
             </div>
           </div>

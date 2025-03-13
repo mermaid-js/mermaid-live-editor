@@ -58,8 +58,6 @@ export class PanZoomState {
     // TODO: Investigate why this is necessary
     if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
       this.restorePanZoom(pan, zoom);
-    } else if (this.pan && this.zoom) {
-      this.restorePanZoom(this.pan, this.zoom);
     }
 
     // we start out with both pan and zoom enabled so that the tool can auto position view refreshed
@@ -70,6 +68,10 @@ export class PanZoomState {
     } else {
       this.pzoom.disableZoom();
       this.pzoom.disablePan();
+    }
+
+    if (pan === undefined && zoom === undefined) {
+      this.reset();
     }
   }
 
@@ -96,6 +98,8 @@ export class PanZoomState {
 
   public reset() {
     this.pzoom?.reset();
+    // Zoom out a bit to avoid overlap with the toolbar
+    this.pzoom?.zoom(0.9);
     this.isDirty = false;
   }
 }

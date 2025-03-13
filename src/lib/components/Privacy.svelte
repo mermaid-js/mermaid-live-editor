@@ -1,10 +1,14 @@
+<script>
+  import ShieldHalvedIcon from '~icons/fa6-solid/shield-halved';
+</script>
+
 <label for="privacyModal" class="btn btn-ghost flex gap-2">
-  <i class="fa-solid fa-shield-halved text-xl"></i> Security
+  <ShieldHalvedIcon /> Security
 </label>
 
 <input type="checkbox" id="privacyModal" class="modal-toggle" />
 <div class="modal" role="dialog">
-  <div class="modal-box flex flex-col gap-4 text-base-content">
+  <div class="modal-box text-base-content flex flex-col gap-4">
     <h1 class="text-3xl font-bold">Data security</h1>
     <p>
       <span class="text-xl font-extrabold">

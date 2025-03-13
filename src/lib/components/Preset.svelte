@@ -3,6 +3,7 @@
   import Card from '$lib/components/Card/Card.svelte';
   import { updateCode } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
+  import ShapesIcon from '~icons/fa6-solid/shapes';
 
   const samples = {
     Flow: `flowchart TD
@@ -221,7 +222,7 @@ packet-beta
   ];
 </script>
 
-<Card title="Sample Diagrams" isStackable icon="fas fa-shapes">
+<Card title="Sample Diagrams" isStackable icon={ShapesIcon}>
   <div class="flex h-fit max-h-52 flex-wrap gap-2 overflow-y-auto p-2">
     {#each diagramOrder as sample}
       <Button

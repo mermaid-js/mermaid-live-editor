@@ -1,20 +1,21 @@
 <script lang="ts">
   import * as Popover from '$/components/ui/popover';
+  import type { Component } from 'svelte';
 
   interface Props {
     links: { title: string; href: string }[];
     label?: string;
-    icon?: string;
+    icon?: Component;
+    class?: string;
   }
 
-  let { links, label, icon }: Props = $props();
+  let { links, label, icon, class: className }: Props = $props();
 </script>
 
 <Popover.Root>
   <Popover.Trigger class="flex items-center gap-0">
-    {#if icon}
-      <i class={icon}></i>
-    {/if}
+    <svelte:component this={icon} class={className} />
+
     {#if label}
       <span>{label}</span>
     {/if}

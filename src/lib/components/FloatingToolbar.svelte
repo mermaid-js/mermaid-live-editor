@@ -8,6 +8,6 @@
   let { children }: Props = $props();
 </script>
 
-<div class="flex items-center justify-between gap-2 rounded-2xl bg-border p-2">
+<div class="flex items-center justify-between gap-2 rounded-2xl bg-muted p-2">
   {@render children()}
 </div>

@@ -12,7 +12,11 @@
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
-  import Separator from './ui/separator/separator.svelte';
+  import CopyIcon from '~icons/fa-regular/copy';
+  import ExternalLinkIcon from '~icons/fa6-solid/link';
+  import ShareNodesIcon from '~icons/fa6-solid/share';
+  import DownloadIcon from '~icons/material-symbols/download';
+  import { Separator } from './ui/separator';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
@@ -191,17 +195,17 @@ ${svgString}`);
 {#snippet dualActionButton(text: string, download: (event: Event) => unknown, url?: string)}
   <div class="flex flex-grow gap-0.5">
     <Button class="flex-grow rounded-r-none" onclick={download}>
-      <i class="fas fa-download"></i>{text}
+      <DownloadIcon class="size-4" />{text}
     </Button>
     {#if url}
       <Button class="rounded-l-none" href={url} target="_blank" rel="noreferrer">
-        <i class="fas fa-external-link-alt"></i>
+        <ExternalLinkIcon />
       </Button>
     {/if}
   </div>
 {/snippet}
 
-<Card title="Actions" isStackable icon="fas fa-share-nodes">
+<Card title="Actions" isOpen isStackable icon={ShareNodesIcon}>
   <div class="flex min-w-fit flex-col gap-2 p-2">
     <div class="flex w-full items-center gap-2 whitespace-nowrap py-2">
       PNG size
@@ -232,7 +236,7 @@ ${svgString}`);
       {#if krokiRendererUrl}
         <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
           <Button class="action-btn w-full">
-            <i class="fas fa-external-link-alt mr-2"></i> Kroki
+            <ExternalLinkIcon class="mr-2" /> Kroki
           </Button>
         </a>
       {/if}
@@ -240,7 +244,7 @@ ${svgString}`);
     <Separator />
     {#if isClipboardAvailable()}
       <Button class="action-btn w-full" onclick={onCopyClipboard}>
-        <i class="far fa-copy mr-2"></i> Copy Image to clipboard
+        <CopyIcon class="mr-2" /> Copy Image to clipboard
       </Button>
     {/if}
     {#if rendererUrl}
