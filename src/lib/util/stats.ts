@@ -103,8 +103,7 @@ export const logEvent = (
     return;
   }
   const key = data ? JSON.stringify({ name, data }) : name;
-  const delay = delaysPerEvent[name];
-  if (timeouts.has(key) && delay > 0) {
+  if (timeouts.has(key)) {
     clearTimeout(timeouts.get(key));
   } else {
     plausible.trackEvent(
@@ -115,6 +114,6 @@ export const logEvent = (
   }
   timeouts.set(
     key,
-    window.setTimeout(() => timeouts.delete(key), delay)
+    window.setTimeout(() => timeouts.delete(key), delaysPerEvent[name])
   );
 };
