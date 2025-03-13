@@ -12,10 +12,10 @@
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
-  import CopyIcon from '~icons/fa-regular/copy';
-  import ExternalLinkIcon from '~icons/fa6-solid/link';
-  import ShareNodesIcon from '~icons/fa6-solid/share';
+  import CopyIcon from '~icons/material-symbols/content-copy-outline-rounded';
   import DownloadIcon from '~icons/material-symbols/download';
+  import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
+  import WidthIcon from '~icons/material-symbols/width-rounded';
   import { Separator } from './ui/separator';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
@@ -178,6 +178,13 @@ ${svgString}`);
   let krokiUrl: string | undefined = $state();
   let mdCode: string | undefined = $state();
   let imageSizeMode: 'auto' | 'width' | 'height' = $state('auto');
+
+  $effect(() => {
+    if (!imageSizeMode) {
+      imageSizeMode = 'auto';
+    }
+  });
+
   let imageSize = $state(1080);
 
   let isNetlify = $state(false);
@@ -195,7 +202,7 @@ ${svgString}`);
 {#snippet dualActionButton(text: string, download: (event: Event) => unknown, url?: string)}
   <div class="flex flex-grow gap-0.5">
     <Button class="flex-grow rounded-r-none" onclick={download}>
-      <DownloadIcon class="size-4" />{text}
+      <DownloadIcon />{text}
     </Button>
     {#if url}
       <Button class="rounded-l-none" href={url} target="_blank" rel="noreferrer">
@@ -205,7 +212,7 @@ ${svgString}`);
   </div>
 {/snippet}
 
-<Card title="Actions" isOpen isStackable icon={ShareNodesIcon}>
+<Card title="Actions" isOpen isStackable icon={{ component: DownloadIcon, class: 'rotate-180' }}>
   <div class="flex min-w-fit flex-col gap-2 p-2">
     <div class="flex w-full items-center gap-2 whitespace-nowrap py-2">
       PNG size
@@ -221,6 +228,11 @@ ${svgString}`);
       </span> -->
 
       <!-- {#if } -->
+      {#if imageSizeMode !== 'auto'}
+        <div>
+          <WidthIcon class="{imageSizeMode === 'width' ? '' : 'rotate-90'} size-6 transition-all" />
+        </div>
+      {/if}
       <Input
         type="number"
         min="3"
@@ -243,14 +255,14 @@ ${svgString}`);
     </div>
     <Separator />
     {#if isClipboardAvailable()}
-      <Button class="action-btn w-full" onclick={onCopyClipboard}>
-        <CopyIcon class="mr-2" /> Copy Image to clipboard
+      <Button onclick={onCopyClipboard}>
+        <CopyIcon /> Copy Image
       </Button>
     {/if}
     {#if rendererUrl}
       <div class="flex w-full items-center gap-2">
         <Input type="text" value={mdCode} onclick={onCopyMarkdown} />
-        <Button onclick={onCopyMarkdown}>Copy Markdown</Button>
+        <Button onclick={onCopyMarkdown}><CopyIcon /> Copy Markdown</Button>
       </div>
     {/if}
 

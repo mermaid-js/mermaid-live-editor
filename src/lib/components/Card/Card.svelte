@@ -12,7 +12,10 @@
     tabs?: Tab[];
     activeTabID?: string;
     title?: string;
-    icon?: Component;
+    icon?: {
+      component: Component;
+      class?: string;
+    };
     onselect?: (tab: Tab) => void;
     actions?: Snippet;
     children?: Snippet;
@@ -47,29 +50,31 @@
   <div
     role="toolbar"
     tabindex="0"
-    class="bg-muted p-2 {isTabsShown ? 'pb-1' : ''} flex-none cursor-pointer"
+    class="bg-muted p-2 {isTabsShown
+      ? 'pb-1'
+      : ''} flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap"
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
-    <div class="flex justify-between whitespace-nowrap">
-      {#if icon || title}
-        <span role="menubar" tabindex="0" class="flex w-fit items-center gap-2 font-semibold">
-          <svelte:component this={icon} class="size-4" />
-          {title}
-        </span>
-      {/if}
-      {#if isOpen && tabs && tabs.length > 0}
-        <Tabs {onselect} {tabs} {activeTabID} />
-      {/if}
+    {#if icon || title}
+      <span role="menubar" tabindex="0" class="flex w-fit items-center gap-3">
+        {#if icon}
+          <icon.component class={icon.class} />
+        {/if}
+        {title}
+      </span>
+    {/if}
+    {#if isOpen && tabs && tabs.length > 0}
+      <Tabs {onselect} {tabs} {activeTabID} />
+    {/if}
 
-      {@render actions?.()}
+    {@render actions?.()}
 
-      <!-- {#if isClosable && isOpen}
+    <!-- {#if isClosable && isOpen}
         <div class="ml-auto flex h-8 flex-col gap-0 p-1">
           <ChevronDownIcon class="size-full" />
           <ChevronUpIcon class="size-full" />
         </div>
       {/if} -->
-    </div>
   </div>
   {#if isOpen}
     <div class="flex-grow overflow-x-auto" transition:slide={{ easing: quintOut }}>
