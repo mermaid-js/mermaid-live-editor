@@ -7,20 +7,17 @@
 </script>
 
 <script lang="ts">
-  import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import { Switch } from '$/components/ui/switch';
   import { env } from '$lib/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import { stateStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
-  import { toggleMode } from 'mode-watcher';
   import type { ComponentProps, Snippet } from 'svelte';
   import GithubIcon from '~icons/fa-brands/github';
   import CloseIcon from '~icons/fa/close';
-  import MoonIcon from '~icons/fa6-solid/moon';
-  import SunIcon from '~icons/fa6-solid/sun';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
+  import MainMenu from './MainMenu.svelte';
 
   interface Props {
     children: Snippet;
@@ -97,9 +94,8 @@
 
 <nav class="z-50 flex p-6">
   <div class="flex flex-1 items-center gap-4">
-    <Button variant="link" size="icon" href="/">
-      <img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" />
-    </Button>
+    <MainMenu />
+
     <div
       id="switcher"
       class="flex items-center justify-center gap-4 font-medium"
@@ -172,18 +168,9 @@
     onclick={toggleMenu} />
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
-    <!-- <span class="text-sm">v{version}</span> -->
     <div
       class="h-full items-center justify-between gap-2 overflow-hidden pt-4 text-base lg:flex lg:pt-0">
-      <!-- <DropdownNavMenu label="Documentation" links={documentationLinks} /> -->
-      <Button onclick={toggleMode} variant="outline" size="icon" title="Toggle theme">
-        <SunIcon
-          class="rotate-0 scale-100 transition-all duration-200 dark:-rotate-90 dark:scale-0" />
-        <MoonIcon
-          class="absolute rotate-90 scale-0 transition-all duration-200 dark:rotate-0 dark:scale-100" />
-      </Button>
-
-      <DropdownNavMenu icon={GithubIcon} class="fa-lg" links={githubLinks} />
+      <DropdownNavMenu icon={GithubIcon} links={githubLinks} />
       <Separator orientation="vertical" />
 
       {@render children()}

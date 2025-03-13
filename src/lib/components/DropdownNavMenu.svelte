@@ -4,27 +4,16 @@
 
   interface Props {
     links: { title: string; href: string }[];
-    label?: string;
     icon?: Component;
     class?: string;
   }
 
-  let { links, label, icon, class: className }: Props = $props();
+  let { links, icon, class: className }: Props = $props();
 </script>
 
 <Popover.Root>
   <Popover.Trigger class="flex items-center gap-0">
     <svelte:component this={icon} class={className} />
-
-    {#if label}
-      <span>{label}</span>
-    {/if}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1792 1792"
-      class="ml-1 inline-block h-4 w-4 fill-current"
-      ><path
-        d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" /></svg>
   </Popover.Trigger>
   <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
