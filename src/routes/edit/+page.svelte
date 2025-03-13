@@ -128,9 +128,9 @@
 <div class="flex h-full flex-col overflow-hidden">
   <Navbar />
   <div class="flex flex-1 overflow-hidden">
-    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6">
-      <Resizable.Pane defaultSize={40} minSize={15}>
-        <div class="hidden h-full flex-col gap-6 md:flex" id="editorPane">
+    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
+      <Resizable.Pane defaultSize={40} minSize={15} class="hidden md:block">
+        <div class="flex h-full flex-col gap-6" id="editorPane">
           <Card onselect={tabSelectHandler} isOpen {tabs} {activeTabID} isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center">
@@ -154,7 +154,7 @@
           </div>
         </div>
       </Resizable.Pane>
-      <Resizable.Handle class="mr-2 opacity-0" />
+      <Resizable.Handle class="mr-1 opacity-0" />
       <Resizable.Pane>
         <div class="relative flex h-full flex-1 flex-col overflow-hidden">
           <!-- <Card title="Diagram" isClosable={false}>
@@ -206,7 +206,7 @@
           <!-- <div class="flex-1 overflow-auto"> -->
           <View {panZoomState} />
           <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-          <div class="absolute bottom-0 left-0"><SyncRoughToolbar /></div>
+          <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
           <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
           <!-- </div> -->
           <!-- </Card> -->
