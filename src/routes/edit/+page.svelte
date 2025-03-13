@@ -1,9 +1,12 @@
 <script lang="ts">
+  import History from '$/components/History/History.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
+  import { Toggle } from '$/components/ui/toggle';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
+  import { env } from '$/util/env';
   import { PanZoomState } from '$/util/panZoom';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
@@ -13,10 +16,11 @@
   import View from '$lib/components/View.svelte';
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
   import { stateStore, updateCodeStore } from '$lib/util/state';
-  import { initHandler } from '$lib/util/util';
+  import { initHandler, MCBaseURL } from '$lib/util/util';
   import { onMount } from 'svelte';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
   import CodeIcon from '~icons/material-symbols/code-blocks-outline';
+  import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
@@ -107,7 +111,7 @@
     updateCodeStore({ editorMode });
   };
 
-  const tabs: Tab[] = [
+  const editorTabs: Tab[] = [
     {
       id: 'code',
       title: 'Code',
@@ -123,15 +127,36 @@
   onMount(async () => {
     await initHandler();
   });
+
+  let isHistoryOpen = $state(false);
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
-  <Navbar />
+  <Navbar>
+    <Button size="sm">Share</Button>
+    <Toggle bind:pressed={isHistoryOpen}>
+      <HistoryIcon />
+    </Toggle>
+    {#if env.isEnabledMermaidChartLinks}
+      <Button
+        size="sm"
+        href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
+        target="_blank">
+        <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+        Save diagram
+      </Button>
+    {/if}
+  </Navbar>
   <div class="flex flex-1 overflow-hidden">
     <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
       <Resizable.Pane defaultSize={40} minSize={15} class="hidden md:block">
         <div class="flex h-full flex-col gap-6" id="editorPane">
-          <Card onselect={tabSelectHandler} isOpen {tabs} {activeTabID} isClosable={false}>
+          <Card
+            onselect={tabSelectHandler}
+            isOpen
+            tabs={editorTabs}
+            {activeTabID}
+            isClosable={false}>
             {#snippet actions()}
               <div class="flex flex-row items-center">
                 <Button
@@ -203,13 +228,24 @@
               </div>
             {/snippet} -->
 
-          <!-- <div class="flex-1 overflow-auto"> -->
-          <View {panZoomState} />
-          <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-          <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
-          <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
-          <!-- </div> -->
-          <!-- </Card> -->
+          <Resizable.PaneGroup direction="horizontal" autoSaveId="viewAndHistory" class="">
+            <Resizable.Pane minSize={15} class="relative">
+              <!-- <div class="flex-1 overflow-auto"> -->
+              <View {panZoomState} />
+              <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+              <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
+              <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
+            </Resizable.Pane>
+            {#if isHistoryOpen}
+              <Resizable.Handle class="ml-2 opacity-0" />
+              <Resizable.Pane minSize={25} defaultSize={40}>
+                <div class="flex h-full flex-grow flex-col">
+                  <History />
+                </div>
+              </Resizable.Pane>
+            {/if}
+          </Resizable.PaneGroup>
+
           <div class="mx-2 rounded p-2 shadow md:hidden">
             Code editing not supported on mobile. Please use a desktop browser.
           </div>

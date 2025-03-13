@@ -86,6 +86,9 @@ export class PanZoomState {
 
   public resize() {
     this.pzoom?.resize();
+    if (!this.isDirty) {
+      this.reset();
+    }
   }
 
   public zoomIn() {

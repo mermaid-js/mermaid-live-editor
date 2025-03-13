@@ -15,12 +15,18 @@
   import { stateStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
   import { toggleMode } from 'mode-watcher';
-  import type { ComponentProps } from 'svelte';
+  import type { ComponentProps, Snippet } from 'svelte';
   import GithubIcon from '~icons/fa-brands/github';
   import CloseIcon from '~icons/fa/close';
   import MoonIcon from '~icons/fa6-solid/moon';
   import SunIcon from '~icons/fa6-solid/sun';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
+
+  interface Props {
+    children: Snippet;
+  }
+
+  let { children }: Props = $props();
 
   const { isEnabledMermaidChartLinks } = env;
 
@@ -185,11 +191,7 @@
           class="absolute rotate-90 scale-0 transition-all duration-200 dark:rotate-0 dark:scale-100" />
         <span class="sr-only">Toggle theme</span>
       </Button>
-      <Button variant="secondary" size="sm">Share</Button>
-      {#if isEnabledMermaidChartLinks}
-        <Button size="sm" target="_blank" href="https://mermaidchart.com"
-          ><img class="size-6" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />Save diagram</Button>
-      {/if}
+      {@render children()}
     </div>
   </div>
 </nav>

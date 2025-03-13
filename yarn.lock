@@ -6337,6 +6337,11 @@ svelte-preprocess@^6.0.0:
   resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-6.0.3.tgz#fdc1f9dc41b6f22bf8b1f059e9f21eaaae181eeb"
   integrity sha512-PLG2k05qHdhmRG7zR/dyo5qKvakhm8IJ+hD2eFRQmMLHp7X3eJnjeupUtvuRpbNiF31RjVw45W+abDwHEmP5OA==
 
+svelte-sonner@^0.3.28:
+  version "0.3.28"
+  resolved "https://registry.yarnpkg.com/svelte-sonner/-/svelte-sonner-0.3.28.tgz#b24b3e7af924d5c50ca2e33cede1382283074abf"
+  integrity sha512-K3AmlySeFifF/cKgsYNv5uXqMVNln0NBAacOYgmkQStLa/UoU0LhfAACU6Gr+YYC8bOCHdVmFNoKuDbMEsppJg==
+
 svelte-toolbelt@^0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/svelte-toolbelt/-/svelte-toolbelt-0.7.1.tgz#63e9c6629456a1a0dd57812f85426e4631fd754e"

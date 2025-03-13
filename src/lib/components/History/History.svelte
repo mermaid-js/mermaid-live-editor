@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { stopPropagation } from 'svelte/legacy';
-
   import Card from '$lib/components/Card/Card.svelte';
   import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
   import { notify, prompt } from '$lib/util/notify';
@@ -11,13 +9,15 @@
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import GitAltIcon from '~icons/fa-brands/git-alt';
-  import BookmarkIcon from '~icons/fa-regular/bookmark';
-  import SaveIcon from '~icons/fa-regular/save';
-  import DownloadIcon from '~icons/fa/download';
-  import UploadIcon from '~icons/fa/upload';
-  import HistoryIcon from '~icons/fa6-solid/history';
-  import TrashAltIcon from '~icons/fa6-solid/trash-alt';
-  import UndoIcon from '~icons/fa6-solid/undo';
+  import BookmarkIcon from '~icons/material-symbols/bookmark-outline-rounded';
+  import TrashAltIcon from '~icons/material-symbols/delete-outline-rounded';
+  import DownloadIcon from '~icons/material-symbols/download-rounded';
+  import SaveIcon from '~icons/material-symbols/save-outline-rounded';
+  import UndoIcon from '~icons/material-symbols/settings-backup-restore-rounded';
+  import UploadIcon from '~icons/material-symbols/upload-rounded';
+  import HistoryIcon from '~icons/mdi/clock-outline';
+  import { Button } from '../ui/button';
+  import { Separator } from '../ui/separator';
   import {
     addHistoryEntry,
     clearHistoryData,
@@ -35,6 +35,7 @@
   const tabSelectHandler = (tab: Tab) => {
     historyModeStore.set(tab.id as HistoryType);
   };
+
   let tabs: Tab[] = $state([
     {
       id: 'manual',
@@ -102,11 +103,6 @@
     inputStateStore.set({ ...state, updateDiagram: true });
   };
 
-  const relativeTime = (time: number) => {
-    const t = new Date(time);
-    return `${new Date(t).toLocaleString()} (${dayjs(t).fromNow()})`;
-  };
-
   onMount(() => {
     historyModeStore.set('manual');
     setInterval(() => {
@@ -129,68 +125,80 @@
   });
 </script>
 
-<Card onselect={tabSelectHandler} isOpen={false} {tabs} title="History">
+<Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs}>
   {#snippet actions()}
-    <div>
-      <button
+    <div class="flex items-center gap-2">
+      <Button
+        size="icon"
+        variant="ghost"
         id="uploadHistory"
-        class="btn btn-secondary btn-xs w-12"
-        onclick={stopPropagation(() => uploadHistory())}
-        title="Upload history"
-        aria-label="Upload history"><UploadIcon /></button>
+        onclick={uploadHistory}
+        title="Upload history"><UploadIcon /></Button>
       {#if $historyStore.length > 0}
-        <button
+        <Button
           id="downloadHistory"
-          class="btn btn-secondary btn-xs w-12"
-          onclick={stopPropagation(() => downloadHistory())}
-          title="Download history"
-          aria-label="Download history"><DownloadIcon /></button>
+          size="icon"
+          variant="ghost"
+          onclick={downloadHistory}
+          title="Download history"><DownloadIcon /></Button>
       {/if}
-      |
-      <button
+      <Separator orientation="vertical" />
+      <Button
         id="saveHistory"
-        class="btn btn-success btn-xs w-12"
-        onclick={stopPropagation(() => saveHistory())}
-        title="Save current state"
-        aria-label="Save current state"><SaveIcon /></button>
+        size="icon"
+        variant="ghost"
+        onclick={() => saveHistory()}
+        title="Save current state"><SaveIcon /></Button>
       {#if $historyModeStore !== 'loader'}
-        <button
+        <Button
           id="clearHistory"
-          class="btn btn-error btn-xs w-12"
-          onclick={stopPropagation(() => clearHistory())}
-          title="Delete all saved states"
-          aria-label="Delete all saved states"><TrashAltIcon /></button>
+          size="icon"
+          variant="ghost"
+          class="hover:text-destructive"
+          onclick={() => clearHistory()}
+          title="Delete all saved states"><TrashAltIcon /></Button>
       {/if}
     </div>
   {/snippet}
-  <ul class="h-56 space-y-2 overflow-auto p-2" id="historyList">
+  <ul class="flex h-full min-w-fit flex-col gap-2 overflow-auto p-2" id="historyList">
     {#if $historyStore.length > 0}
-      {#each $historyStore as { id, state, time, name, url, type }}
-        <li class="flex-col rounded p-2 shadow">
-          <div class="flex">
-            <div class="flex-1">
-              <div class="text-base-content flex flex-col">
-                {#if url}
-                  <a
-                    href={url}
-                    target="_blank"
-                    title="Open revision in new tab"
-                    class="text-blue-500 hover:underline">{name}</a>
-                {:else}
-                  <span>{name}</span>
-                {/if}
-                <span class="text-sm text-gray-400">{relativeTime(time)}</span>
-              </div>
+      {#each $historyStore as { id, state, time, name, url, type } (id)}
+        <li class="flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+              {#if url}
+                <a
+                  href={url}
+                  target="_blank"
+                  title="Open revision in new tab"
+                  class="text-blue-500 hover:underline">{name}</a>
+              {:else}
+                <span>{name}</span>
+              {/if}
+              <span class="whitespace-nowrap text-xs text-primary-foreground/30">
+                {new Date(time).toLocaleString()}
+              </span>
             </div>
-            <div class="flex content-center gap-2">
-              <button class="btn btn-success" onclick={() => restoreHistoryItem(state)}
-                ><UndoIcon class="mr-1" />Restore</button>
+
+            <div class="flex items-center gap-2">
+              <span class="whitespace-nowrap text-sm text-primary-foreground/50">
+                {dayjs(time).fromNow()}
+              </span>
+              <Button size="icon" variant="ghost" onclick={() => restoreHistoryItem(state)}>
+                <UndoIcon />
+              </Button>
               {#if type !== 'loader'}
-                <button class="btn btn-error" onclick={() => clearHistory(id)}
-                  ><TrashAltIcon class="mr-1" />Delete</button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  class="hover:text-destructive"
+                  onclick={() => clearHistory(id)}>
+                  <TrashAltIcon />
+                </Button>
               {/if}
             </div>
           </div>
+          <Separator />
         </li>
       {/each}
     {:else}
