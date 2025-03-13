@@ -7,6 +7,7 @@
   import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
   import type { MermaidConfig } from 'mermaid';
+  import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';
   import SyncIcon from '~icons/fa6-solid/arrows-rotate';
@@ -153,7 +154,12 @@
   </div>
 {/if}
 
-<div id="view" bind:this={view} class="h-full p-2" class:error class:outOfSync>
+<div
+  id="view"
+  bind:this={view}
+  class="grid-bg-{$mode === 'dark' ? 'dark' : 'light'} h-full"
+  class:error
+  class:outOfSync>
   <div id="container" bind:this={container} class="h-full overflow-auto" class:hide></div>
 </div>
 
@@ -173,5 +179,15 @@
 
   .hide {
     visibility: hidden;
+  }
+
+  .grid-bg-light {
+    background-size: 30px 30px;
+    background-image: radial-gradient(circle, #e4e4e789 2px, rgba(0, 0, 0, 0) 2px);
+  }
+
+  .grid-bg-dark {
+    background-size: 30px 30px;
+    background-image: radial-gradient(circle, #46464646 2px, rgba(0, 0, 0, 0) 2px);
   }
 </style>

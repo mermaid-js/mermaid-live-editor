@@ -89,7 +89,7 @@
   </div>
 {/if}
 
-<nav class="z-50 flex p-4 px-6">
+<nav class="z-50 flex p-6">
   <div class="flex flex-1 items-center gap-4">
     <Button variant="link" size="icon" href="/">
       <img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" />

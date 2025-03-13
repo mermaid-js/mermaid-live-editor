@@ -2,12 +2,12 @@
   import { type VariantProps, tv } from 'tailwind-variants';
 
   export const toggleVariants = tv({
-    base: 'hover:bg-muted hover:text-muted-foreground focus-visible:ring-ring data-[state=on]:bg-accent data-[state=on]:text-accent-foreground inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+    base: 'hover:bg-muted hover:text-muted-foreground focus-visible:ring-ring data-[state=on]:bg-primary data-[state=on]:text-primary-foreground inline-flex items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0',
     variants: {
       variant: {
         default: 'bg-transparent',
         outline:
-          'border-input hover:bg-accent hover:text-accent-foreground border bg-transparent shadow-sm'
+          'border-input hover:bg-primary/80 hover:text-primary-foreground border bg-transparent'
       },
       size: {
         default: 'h-9 min-w-9 px-3',
@@ -27,8 +27,8 @@
 </script>
 
 <script lang="ts">
-  import { Toggle as TogglePrimitive } from 'bits-ui';
   import { cn } from '$lib/utils.js';
+  import { Toggle as TogglePrimitive } from 'bits-ui';
 
   let {
     ref = $bindable(null),
