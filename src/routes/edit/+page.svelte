@@ -136,7 +136,7 @@
     <Toggle bind:pressed={isHistoryOpen} size="sm">
       <HistoryIcon />
     </Toggle>
-    <Button size="sm">Share</Button>
+    <Button size="sm" class="cursor-not-allowed">Share</Button>
     {#if env.isEnabledMermaidChartLinks}
       <Button
         variant="accent"

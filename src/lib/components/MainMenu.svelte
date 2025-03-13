@@ -14,9 +14,9 @@
   import SunIcon from '~icons/material-symbols/sunny-rounded';
   const menuItems = [
     { label: 'New Diagram', icon: AddIcon, href: '/' },
-    { label: 'Home', icon: HomeIcon, href: '/' },
-    { label: 'Docs', icon: BookIcon, href: '/docs' },
-    { label: 'Help', icon: HelpIcon, href: '/pricing' }
+    { label: 'Home', icon: HomeIcon, href: 'https://mermaid.js.org/' },
+    { label: 'Docs', icon: BookIcon, href: 'https://mermaid.js.org/intro/' },
+    { label: 'Help', icon: HelpIcon, href: 'https://discord.gg/sKeNQX4Wtj' }
   ];
 </script>
 
