@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as Popover from '$/components/ui/popover';
   import type { Component } from 'svelte';
+  import { Button } from './ui/button';
 
   interface Props {
     links: { title: string; href: string }[];
@@ -13,7 +14,9 @@
 
 <Popover.Root>
   <Popover.Trigger class="flex items-center gap-0">
-    <svelte:component this={icon} class={className} />
+    <Button variant="ghost" size="sm">
+      <svelte:component this={icon} class={className} />
+    </Button>
   </Popover.Trigger>
   <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->

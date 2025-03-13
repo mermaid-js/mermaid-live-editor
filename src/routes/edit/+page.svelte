@@ -133,7 +133,7 @@
 
 <div class="flex h-full flex-col overflow-hidden">
   <Navbar>
-    <Toggle bind:pressed={isHistoryOpen}>
+    <Toggle bind:pressed={isHistoryOpen} size="sm">
       <HistoryIcon />
     </Toggle>
     <Button size="sm">Share</Button>
@@ -183,63 +183,16 @@
       <Resizable.Handle class="mr-1 opacity-0" />
       <Resizable.Pane>
         <div class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <!-- <Card title="Diagram" isClosable={false}>
-            {#snippet actions()}
-              <div class="flex flex-row items-center gap-2">
-                <label
-                  class="label flex cursor-pointer gap-1 py-0"
-                  title="Rough mode is in beta. Features like clickable nodes, Pan & Zoom, will be disabled."
-                  for="rough">
-                  <span>Rough</span>
-                  <input
-                    type="checkbox"
-                    class="toggle {$stateStore.rough ? 'btn-secondary' : 'toggle-primary'}"
-                    id="rough"
-                    bind:checked={$inputStateStore.rough} />
-                </label>
-                <label
-                  class="label flex cursor-pointer gap-1 py-0"
-                  title={$stateStore.rough ? 'Pan & Zoom is disabled in rough mode.' : ''}
-                  for="panZoom">
-                  <span>Pan & Zoom</span>
-                  <input
-                    type="checkbox"
-                    class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
-                    id="panZoom"
-                    disabled={$stateStore.rough}
-                    bind:checked={$inputStateStore.panZoom} />
-                </label>
-                <a
-                  href={`${base}/view#${$stateStore.serialized}`}
-                  target="_blank"
-                  class="btn btn-secondary btn-xs gap-1"
-                  title="View diagram in new page"
-                  ><ExternalLinkAltIcon />Full screen</a>
-                {#if env.isEnabledMermaidChartLinks}
-                  <a
-                    href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
-                    target="_blank"
-                    class="btn btn-secondary btn-xs gap-1 bg-[#FF3570]"
-                    title="Save diagram in Mermaid Chart"
-                    ><img
-                      src="./mermaidchart-logo.svg"
-                      class="size-5"
-                      alt="Mermaid chart logo" />Save to Mermaid Chart</a>
-                {/if}
-              </div>
-            {/snippet} -->
-
           <Resizable.PaneGroup direction="horizontal" autoSaveId="viewAndHistory" class="">
             <Resizable.Pane minSize={15} class="relative">
-              <!-- <div class="flex-1 overflow-auto"> -->
               <View {panZoomState} />
               <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
               <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
               <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
             </Resizable.Pane>
             {#if isHistoryOpen}
-              <Resizable.Handle class="ml-2 opacity-0" />
-              <Resizable.Pane minSize={25} defaultSize={40}>
+              <Resizable.Handle class="ml-2 hidden opacity-0 md:block" />
+              <Resizable.Pane minSize={25} defaultSize={40} class="hidden md:block">
                 <div class="flex h-full flex-grow flex-col">
                   <History />
                 </div>
@@ -247,7 +200,7 @@
             {/if}
           </Resizable.PaneGroup>
 
-          <div class="mx-2 rounded p-2 shadow md:hidden">
+          <div class="rounded bg-primary p-2 text-center shadow md:hidden">
             Code editing not supported on mobile. Please use a desktop browser.
           </div>
         </div>
