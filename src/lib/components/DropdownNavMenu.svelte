@@ -9,19 +9,19 @@
     class?: string;
   }
 
-  let { links, icon, class: className }: Props = $props();
+  let props: Props = $props();
 </script>
 
 <Popover.Root>
   <Popover.Trigger class="flex items-center gap-0">
     <Button variant="ghost" size="sm">
-      <svelte:component this={icon} class={className} />
+      <props.icon class={props.class} />
     </Button>
   </Popover.Trigger>
   <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <ul tabindex="0" class="menu flex flex-col gap-2">
-      {#each links as { href, title }}
+      {#each props.links as { href, title }}
         <li>
           <a
             role="menuitem"

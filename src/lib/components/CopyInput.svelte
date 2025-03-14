@@ -21,8 +21,8 @@
   <Input
     {type}
     {value}
-    onclick={(e) => {
-      e.currentTarget.setSelectionRange(0, e.currentTarget.value.length);
+    onclick={(event) => {
+      event.currentTarget.setSelectionRange(0, event.currentTarget.value.length);
     }} />
   <Button
     onclick={async () => {

@@ -130,7 +130,7 @@
       error = true;
     }
     const renderTime = Date.now() - startTime;
-    saveStatistics({ code, renderTime, isRough: state.rough, diagramType });
+    saveStatistics({ code, diagramType, isRough: state.rough, renderTime });
     recordRenderTime(renderTime, () => {
       $inputStateStore.updateDiagram = true;
     });

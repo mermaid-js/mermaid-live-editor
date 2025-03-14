@@ -43,15 +43,6 @@
     }
   ];
 
-  const documentationLinks: Links = [
-    { title: 'Getting started', href: 'https://mermaid.js.org/intro/getting-started.html' },
-    { title: 'Tutorials', href: 'https://mermaid.js.org/ecosystem/tutorials.html' },
-    {
-      title: 'Integrations',
-      href: 'https://mermaid.js.org/ecosystem/integrations-community.html'
-    }
-  ];
-
   let activePromotion = $state(getActivePromotion());
 
   const trackBannerClick = () => {

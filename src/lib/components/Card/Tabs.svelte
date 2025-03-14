@@ -50,12 +50,3 @@
     {/each}
   </ul>
 </div>
-
-<style>
-  .icon {
-    transition-duration: 0.5s;
-  }
-  .isOpen {
-    transform: rotate(90deg);
-  }
-</style>

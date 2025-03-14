@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DiagramDocButton from '$/components/DiagramDocButton.svelte';
+  import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
   import History from '$/components/History/History.svelte';
   import McTooltip from '$/components/MCTooltip.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
@@ -39,14 +39,14 @@
 
   const editorTabs: Tab[] = [
     {
+      icon: CodeIcon,
       id: 'code',
-      title: 'Code',
-      icon: CodeIcon
+      title: 'Code'
     },
     {
+      icon: GearIcon,
       id: 'config',
-      title: 'Config',
-      icon: GearIcon
+      title: 'Config'
     }
   ];
 

@@ -20,7 +20,7 @@
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
-  const { krokiRendererUrl, rendererUrl } = env;
+  const { krokiRendererUrl } = env;
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
   const getFileName = (extension: string) =>

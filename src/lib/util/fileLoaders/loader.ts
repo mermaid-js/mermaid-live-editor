@@ -27,14 +27,14 @@ export const loadDataFromUrl = async (): Promise<void> => {
     }
     state = {
       code,
-      mermaid: config,
       loader: {
-        type: 'files',
         config: {
           codeURL,
           configURL
-        }
-      }
+        },
+        type: 'files'
+      },
+      mermaid: config
     };
   } else {
     for (const [key, value] of searchParams.entries()) {

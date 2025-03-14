@@ -53,7 +53,9 @@ module.exports = {
       files: ['**/components/ui/**'],
       rules: {
         'unicorn/prefer-export-from': 'off',
-        'unicorn/prevent-abbreviations': 'off'
+        'unicorn/prevent-abbreviations': 'off',
+        'unicorn/explicit-length-check': 'off',
+        'sort-keys/sort-keys-fix': 'off'
       }
     }
   ],
@@ -69,7 +71,7 @@ module.exports = {
     es2020: true
   },
   rules: {
-    'sort-keys': 'error',
+    'sort-keys/sort-keys-fix': ['error', 'asc', { minKeys: 5 }],
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {
@@ -104,6 +106,7 @@ module.exports = {
           k: true,
           param: true,
           Props: true,
+          props: true,
           req: true,
           res: true,
           str: true,

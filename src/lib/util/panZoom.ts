@@ -25,6 +25,11 @@ export class PanZoomState {
 
   public updateElement(diagramView: SVGElement, { pan, zoom }: Pick<State, 'pan' | 'zoom'>) {
     this.pzoom = panzoom(diagramView, {
+      center: true,
+      controlIconsEnabled: false,
+      fit: true,
+      maxZoom: 12,
+      minZoom: 0.2,
       onPan: (pan) => {
         this.pan = pan;
         this.zoom = this.pzoom?.getZoom();
@@ -41,13 +46,8 @@ export class PanZoomState {
           this.onPanZoomChange?.(this.pan, this.zoom);
         }
       },
-      controlIconsEnabled: false,
       panEnabled: true,
-      zoomEnabled: true,
-      fit: true,
-      center: true,
-      maxZoom: 12,
-      minZoom: 0.2
+      zoomEnabled: true
     });
 
     this.pzoom.disableDblClickZoom();
