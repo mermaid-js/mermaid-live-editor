@@ -48,6 +48,13 @@ module.exports = {
         'plugin:@typescript-eslint/strict',
         'prettier'
       ]
+    },
+    {
+      files: ['**/components/ui/**'],
+      rules: {
+        'unicorn/prefer-export-from': 'off',
+        'unicorn/prevent-abbreviations': 'off'
+      }
     }
   ],
   parserOptions: {
@@ -62,7 +69,7 @@ module.exports = {
     es2020: true
   },
   rules: {
-    'sort-keys': 'off',
+    'sort-keys': 'error',
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {
