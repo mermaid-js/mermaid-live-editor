@@ -57,7 +57,7 @@
     error = false;
     let diagramType: string | undefined;
     try {
-      if (container && state?.updateDiagram) {
+      if (container) {
         outOfSync = false;
         manualUpdate = true;
         // Do not render if there is no change in Code/Config/PanZoom
