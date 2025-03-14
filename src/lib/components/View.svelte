@@ -157,8 +157,10 @@
   };
 
   onMount(() => {
+    let pendingStateChange: Promise<void> | undefined;
     stateStore.subscribe((state) => {
-      void handleStateChange(state);
+      pendingStateChange =
+        pendingStateChange?.then(() => handleStateChange(state)) ?? handleStateChange(state);
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {
@@ -170,7 +172,7 @@
 
 {#if outOfSync}
   <div
-    class="font-monotext-yellow-600 absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left"
+    class="absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left font-mono text-yellow-600"
     id="errorContainer">
     Diagram out of sync. <br />
     {#if $stateStore.autoSync}
