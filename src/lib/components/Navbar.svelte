@@ -7,6 +7,7 @@
 </script>
 
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import { Switch } from '$/components/ui/switch';
   import { env } from '$/util/env';
@@ -18,7 +19,6 @@
   import CloseIcon from '~icons/material-symbols/close-rounded';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
   import MainMenu from './MainMenu.svelte';
-  import { Button } from './ui/button';
 
   interface Props {
     children: Snippet;

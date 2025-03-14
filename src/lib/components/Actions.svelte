@@ -2,6 +2,7 @@
   import Card from '$/components/Card/Card.svelte';
   import { Button } from '$/components/ui/button';
   import { Input } from '$/components/ui/input';
+  import { Separator } from '$/components/ui/separator';
   import * as ToggleGroup from '$/components/ui/toggle-group';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
@@ -16,7 +17,6 @@
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
   import CopyInput from './CopyInput.svelte';
-  import { Separator } from './ui/separator';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 

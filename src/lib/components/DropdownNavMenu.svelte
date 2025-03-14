@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
   import * as Popover from '$/components/ui/popover';
   import type { Component } from 'svelte';
-  import { Button } from './ui/button';
 
   interface Props {
     links: { title: string; href: string }[];

@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
+  import { Switch } from '$/components/ui/switch';
   import { inputStateStore, stateStore } from '$/util/state';
   import { cmdKey, syncDiagram } from '$/util/util';
   import { slide } from 'svelte/transition';
   import SyncIcon from '~icons/fa6-solid/arrows-rotate';
   import FloatingToolbar from './FloatingToolbar.svelte';
-  import { Button } from './ui/button';
-  import { Separator } from './ui/separator';
-  import { Switch } from './ui/switch';
 </script>
 
 <FloatingToolbar>

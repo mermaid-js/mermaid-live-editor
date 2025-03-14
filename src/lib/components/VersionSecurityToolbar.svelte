@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
   import { version } from 'mermaid/package.json';
   import QuestionCircleIcon from '~icons/material-symbols/help-outline-rounded';
   import FloatingToolbar from './FloatingToolbar.svelte';
   import Privacy from './Privacy.svelte';
-  import { Button } from './ui/button';
-  import { Separator } from './ui/separator';
 </script>
 
 <FloatingToolbar>

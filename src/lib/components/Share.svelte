@@ -1,10 +1,10 @@
 <script>
   import { buttonVariants } from '$/components/ui/button';
   import * as Dialog from '$/components/ui/dialog';
+  import { Separator } from '$/components/ui/separator';
   import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
   import CopyInput from './CopyInput.svelte';
-  import { Separator } from './ui/separator';
 </script>
 
 <Dialog.Root>
