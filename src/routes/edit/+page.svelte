@@ -1,6 +1,7 @@
 <script lang="ts">
   import History from '$/components/History/History.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
+  import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
@@ -15,8 +16,8 @@
   import Preset from '$lib/components/Preset.svelte';
   import View from '$lib/components/View.svelte';
   import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
-  import { stateStore, updateCodeStore } from '$lib/util/state';
-  import { initHandler, MCBaseURL } from '$lib/util/util';
+  import { stateStore, updateCodeStore, urlsStore } from '$lib/util/state';
+  import { initHandler } from '$lib/util/util';
   import { onMount } from 'svelte';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
   import CodeIcon from '~icons/material-symbols/code-blocks-outline';
@@ -136,13 +137,9 @@
     <Toggle bind:pressed={isHistoryOpen} size="sm">
       <HistoryIcon />
     </Toggle>
-    <Button size="sm" class="cursor-not-allowed">Share</Button>
+    <Share />
     {#if env.isEnabledMermaidChartLinks}
-      <Button
-        variant="accent"
-        size="sm"
-        href={`${MCBaseURL}/app/plugin/save?state=${$stateStore.serialized}`}
-        target="_blank">
+      <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
         <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
         Save diagram
       </Button>

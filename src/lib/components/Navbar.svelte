@@ -9,9 +9,9 @@
 <script lang="ts">
   import { Separator } from '$/components/ui/separator';
   import { Switch } from '$/components/ui/switch';
-  import { env } from '$lib/util/env';
+  import { env } from '$/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
-  import { stateStore } from '$lib/util/state';
+  import { urlsStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
   import type { ComponentProps, Snippet } from 'svelte';
   import GithubIcon from '~icons/fa-brands/github';
@@ -25,8 +25,6 @@
   }
 
   let { children }: Props = $props();
-
-  const { isEnabledMermaidChartLinks } = env;
 
   const isReferral = document.referrer.includes(MCBaseURL);
 
@@ -104,7 +102,7 @@
         {/if}
         Live Editor
       </a>
-      {#if isEnabledMermaidChartLinks}
+      {#if env.isEnabledMermaidChartLinks}
         <div class=" hidden items-center justify-center gap-4 md:flex">
           <Separator orientation="vertical" />
           <Switch
@@ -116,7 +114,7 @@
               // Wait for the event to be logged
               setTimeout(() => {
                 window.open(
-                  `${MCBaseURL}/play#${$stateStore.serialized}`,
+                  $urlsStore.mermaidChart.playground,
                   '_self',
                   // Do not send referrer header, if the user already came from playground
                   isReferral ? 'noreferrer' : ''
@@ -124,7 +122,7 @@
               }, 100);
             }} />
 
-          <a href="{MCBaseURL}/play#{$stateStore.serialized}" class="whitespace-nowrap">
+          <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
             Playground <span class="hidden text-sm opacity-50 lg:inline"
               >- more features, no account required</span>
           </a>

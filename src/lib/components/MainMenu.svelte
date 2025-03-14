@@ -1,6 +1,8 @@
 <script lang="ts">
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
+  import { env } from '$/util/env';
+  import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
   import type { Component } from 'svelte';
@@ -62,12 +64,14 @@
           checked={$mode === 'dark'}
           onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
       </div>
-      {@render menuItem({
-        label: 'Edit in Playground',
-        icon: PlaygroundIcon,
-        href: '/',
-        class: 'text-accent bg-background hover:bg-background/50'
-      })}
+      {#if env.isEnabledMermaidChartLinks}
+        {@render menuItem({
+          label: 'Edit in Playground',
+          icon: PlaygroundIcon,
+          href: $urlsStore.mermaidChart.playground,
+          class: 'text-accent bg-background hover:bg-background/50'
+        })}
+      {/if}
     </div>
   </Popover.Content>
 </Popover.Root>

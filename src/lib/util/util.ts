@@ -1,3 +1,4 @@
+import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
@@ -26,7 +27,9 @@ export const initHandler = async (): Promise<void> => {
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
-export const MCBaseURL = 'https://mermaidchart.com'; // 'http://localhost:5174'
+export const MCBaseURL = env.isEnabledMermaidChartLinks
+  ? 'https://mermaidchart.com' // 'http://localhost:5174'
+  : 'https://example.com';
 
 let count = 0;
 export const errorDebug = (limit = 1000) => {
@@ -47,3 +50,39 @@ export const fetchText = async (url: string): Promise<string> => {
   const res = await fetch(url);
   return res.text();
 };
+
+export const copyToClipboard = async (text: string) => {
+  if (!navigator.clipboard) {
+    return fallbackCopyToClipboard(text);
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return fallbackCopyToClipboard(text);
+  }
+};
+
+function fallbackCopyToClipboard(text: string) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  // Make the textarea out of viewport
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-999999px';
+  textArea.style.top = '-999999px';
+  document.body.append(textArea);
+
+  textArea.focus();
+  textArea.select();
+
+  let success = false;
+  try {
+    // The deprecated but widely supported method
+    success = document.execCommand('copy');
+  } catch (error) {
+    console.error('Failed to copy:', error);
+  }
+
+  textArea.remove();
+  return success;
+}

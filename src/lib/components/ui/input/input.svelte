@@ -1,9 +1,8 @@
 <script lang="ts">
-  import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
-  import type { WithElementRef } from 'bits-ui';
+  import type { InputType } from '$/types';
   import { cn } from '$lib/utils.js';
-
-  type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;
+  import type { WithElementRef } from 'bits-ui';
+  import type { HTMLInputAttributes } from 'svelte/elements';
 
   type Props = WithElementRef<
     Omit<HTMLInputAttributes, 'type'> &

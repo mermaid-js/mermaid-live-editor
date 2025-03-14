@@ -6,8 +6,7 @@
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
   import { env } from '$lib/util/env';
-  import { pakoSerde } from '$lib/util/serde';
-  import { stateStore } from '$lib/util/state';
+  import { stateStore, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
@@ -16,6 +15,7 @@
   import DownloadIcon from '~icons/material-symbols/download';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
+  import CopyInput from './CopyInput.svelte';
   import { Separator } from './ui/separator';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
@@ -151,12 +151,6 @@ ${svgString}`);
     });
   };
 
-  const onCopyMarkdown = () => {
-    document.querySelector<HTMLInputElement>('#markdown')?.select();
-    document.execCommand('Copy');
-    logEvent('copyMarkdown');
-  };
-
   let gistURL = $state('');
   stateStore.subscribe(({ loader }) => {
     if (loader?.type === 'gist') {
@@ -173,10 +167,6 @@ ${svgString}`);
     logEvent('loadGist');
   };
 
-  let iUrl: string | undefined = $state();
-  let svgUrl: string | undefined = $state();
-  let krokiUrl: string | undefined = $state();
-  let mdCode: string | undefined = $state();
   let imageSizeMode: 'auto' | 'width' | 'height' = $state('auto');
 
   $effect(() => {
@@ -187,16 +177,8 @@ ${svgString}`);
 
   let imageSize = $state(1080);
 
-  let isNetlify = $state(false);
-  if (browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path))) {
-    isNetlify = true;
-  }
-  stateStore.subscribe(({ code, serialized }) => {
-    iUrl = `${rendererUrl}/img/${serialized}?type=png`;
-    svgUrl = `${rendererUrl}/svg/${serialized}`;
-    krokiUrl = `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`;
-    mdCode = `[![](${iUrl})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`;
-  });
+  const isNetlify =
+    browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path));
 </script>
 
 {#snippet dualActionButton(text: string, download: (event: Event) => unknown, url?: string)}
@@ -221,13 +203,6 @@ ${svgString}`);
         <ToggleGroup.Item value="width">Width</ToggleGroup.Item>
         <ToggleGroup.Item value="height">Height</ToggleGroup.Item>
       </ToggleGroup.Root>
-      <!-- <Separator orientation="vertical" />
-      <span class="flex items-center gap-2">
-        Auto
-        <Switch id="autosize" bind:checked={isAutoImageMode} />
-      </span> -->
-
-      <!-- {#if } -->
       {#if imageSizeMode !== 'auto'}
         <div>
           <WidthIcon class="{imageSizeMode === 'width' ? '' : 'rotate-90'} size-6 transition-all" />
@@ -239,14 +214,13 @@ ${svgString}`);
         max="10000"
         disabled={imageSizeMode === 'auto'}
         bind:value={imageSize} />
-      <!-- {/if} -->
     </div>
     <div class="flex gap-2">
-      {@render dualActionButton('PNG', onDownloadPNG, iUrl)}
-      {@render dualActionButton('SVG', onDownloadSVG, svgUrl)}
+      {@render dualActionButton('PNG', onDownloadPNG, $urlsStore.png)}
+      {@render dualActionButton('SVG', onDownloadSVG, $urlsStore.svg)}
 
       {#if krokiRendererUrl}
-        <a target="_blank" rel="noreferrer" class="flex-grow" href={krokiUrl}>
+        <a target="_blank" rel="noreferrer" class="flex-grow" href={$urlsStore.kroki}>
           <Button class="action-btn w-full">
             <ExternalLinkIcon class="mr-2" /> Kroki
           </Button>
@@ -259,11 +233,8 @@ ${svgString}`);
         <CopyIcon /> Copy Image
       </Button>
     {/if}
-    {#if rendererUrl}
-      <div class="flex w-full items-center gap-2">
-        <Input type="text" value={mdCode} onclick={onCopyMarkdown} />
-        <Button onclick={onCopyMarkdown}><CopyIcon /> Copy Markdown</Button>
-      </div>
+    {#if $urlsStore.mdCode}
+      <CopyInput value={$urlsStore.mdCode} label="Copy Markdown" />
     {/if}
 
     <div class="flex w-full items-center gap-2">

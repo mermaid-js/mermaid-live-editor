@@ -2,6 +2,7 @@ import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
+import { env } from './env';
 import {
   extractErrorLineText,
   findMostRelevantLineNumber,
@@ -9,8 +10,8 @@ import {
 } from './errorHandling';
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
-import { deserializeState, serializeState } from './serde';
-import { errorDebug, formatJSON } from './util';
+import { deserializeState, pakoSerde, serializeState } from './serde';
+import { errorDebug, formatJSON, MCBaseURL } from './util';
 
 export const defaultState: State = {
   code: `flowchart TD
@@ -118,6 +119,21 @@ export const stateStore: Readable<ValidatedState> = derived(
   },
   currentState
 );
+
+export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
+  const { krokiRendererUrl, rendererUrl } = env;
+  const png = `${rendererUrl}/img/${serialized}?type=png`;
+  return {
+    png,
+    svg: `${rendererUrl}/svg/${serialized}`,
+    kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
+    mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
+    mermaidChart: {
+      save: `${MCBaseURL}/app/plugin/save?state=${serialized}`,
+      playground: `${MCBaseURL}/play#${serialized}`
+    }
+  };
+});
 
 export const loadState = (data: string): void => {
   let state: State;

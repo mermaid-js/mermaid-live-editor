@@ -1,4 +1,5 @@
 import type { Component } from 'svelte';
+import type { HTMLInputTypeAttribute } from 'svelte/elements';
 import 'unplugin-icons/types/svelte';
 
 export interface MarkerData {
@@ -90,3 +91,5 @@ export interface ErrorHash {
     last_column: number;
   };
 }
+
+export type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;
