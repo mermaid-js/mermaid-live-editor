@@ -150,7 +150,7 @@
   </Navbar>
   <div class="flex flex-1 overflow-hidden">
     <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
-      <Resizable.Pane defaultSize={40} minSize={15} class="hidden md:block">
+      <Resizable.Pane defaultSize={30} minSize={15} class="hidden md:block">
         <div class="flex h-full flex-col gap-6" id="editorPane">
           <Card
             onselect={tabSelectHandler}
@@ -175,36 +175,29 @@
 
           <div class="group flex flex-wrap justify-between gap-6">
             <Preset />
-            <!-- <History /> -->
             <Actions />
           </div>
         </div>
       </Resizable.Pane>
       <Resizable.Handle class="mr-1 opacity-0" />
-      <Resizable.Pane>
-        <div class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <Resizable.PaneGroup direction="horizontal" autoSaveId="viewAndHistory" class="">
-            <Resizable.Pane minSize={15} class="relative">
-              <View {panZoomState} />
-              <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-              <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
-              <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
-            </Resizable.Pane>
-            {#if isHistoryOpen}
-              <Resizable.Handle class="ml-2 hidden opacity-0 md:block" />
-              <Resizable.Pane minSize={25} defaultSize={40} class="hidden md:block">
-                <div class="flex h-full flex-grow flex-col">
-                  <History />
-                </div>
-              </Resizable.Pane>
-            {/if}
-          </Resizable.PaneGroup>
-
-          <div class="rounded bg-primary p-2 text-center shadow md:hidden">
-            Code editing not supported on mobile. Please use a desktop browser.
-          </div>
+      <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
+        <View {panZoomState} />
+        <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+        <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
+        <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
+        <div class="rounded bg-primary p-2 text-center shadow md:hidden">
+          Code editing not supported on mobile. Please use a desktop browser.
         </div>
       </Resizable.Pane>
+      {#if isHistoryOpen}
+        <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
+        <Resizable.Pane
+          minSize={15}
+          defaultSize={30}
+          class="hidden h-full flex-grow flex-col md:flex">
+          <History />
+        </Resizable.Pane>
+      {/if}
     </Resizable.PaneGroup>
   </div>
 </div>

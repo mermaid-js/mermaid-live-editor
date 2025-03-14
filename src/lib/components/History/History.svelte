@@ -173,7 +173,7 @@
                   title="Open revision in new tab"
                   class="text-blue-500 hover:underline">{name}</a>
               {:else}
-                <span>{name}</span>
+                <span class="whitespace-nowrap">{name}</span>
               {/if}
               <span class="whitespace-nowrap text-xs text-primary-foreground/30">
                 {new Date(time).toLocaleString()}
