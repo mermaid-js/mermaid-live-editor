@@ -1,12 +1,13 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
   import type { PanZoomState } from '$/util/panZoom';
+  import { urlsStore } from '$/util/state';
   import ExpandIcon from '~icons/material-symbols/open-in-full-rounded';
   import ArrowsToCircleIcon from '~icons/material-symbols/screenshot-frame-2';
   import MagnifyingGlassPlusIcon from '~icons/material-symbols/zoom-in';
   import MagnifyingGlassMinusIcon from '~icons/material-symbols/zoom-out';
   import FloatingToolbar from './FloatingToolbar.svelte';
-  import { Button } from './ui/button';
-  import { Separator } from './ui/separator';
 
   let { panZoomState }: { panZoomState: PanZoomState } = $props();
 </script>
@@ -23,7 +24,7 @@
     <MagnifyingGlassPlusIcon />
   </Button>
   <Separator orientation="vertical" />
-  <Button variant="ghost" size="icon" title="Full Screen">
+  <Button variant="ghost" size="icon" title="Full Screen" href={$urlsStore.view} target="_blank">
     <ExpandIcon />
   </Button>
 </FloatingToolbar>

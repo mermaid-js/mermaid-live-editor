@@ -128,6 +128,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     svg: `${rendererUrl}/svg/${serialized}`,
     kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
     mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
+    view: `/view#${serialized}`,
     mermaidChart: {
       save: `${MCBaseURL}/app/plugin/save?state=${serialized}`,
       playground: `${MCBaseURL}/play#${serialized}`

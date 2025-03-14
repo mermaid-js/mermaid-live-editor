@@ -12,7 +12,10 @@
   import { Svg2Roughjs } from 'svg2roughjs';
   import SyncIcon from '~icons/fa6-solid/arrows-rotate';
 
-  let { panZoomState = new PanZoomState() }: { panZoomState?: PanZoomState } = $props();
+  let {
+    panZoomState = new PanZoomState(),
+    shouldShowGrid = true
+  }: { panZoomState?: PanZoomState; shouldShowGrid?: boolean } = $props();
   let code = '';
   let config = '';
   let container: HTMLDivElement | undefined = $state();
@@ -162,7 +165,7 @@
 <div
   id="view"
   bind:this={view}
-  class="grid-bg-{$mode === 'dark' ? 'dark' : 'light'} h-full"
+  class="grid-bg-{shouldShowGrid ? ($mode === 'dark' ? 'dark' : 'light') : 'none'} h-full"
   class:error
   class:outOfSync>
   <div id="container" bind:this={container} class="h-full overflow-auto" class:hide></div>
