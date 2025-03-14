@@ -8,10 +8,11 @@
 </script>
 
 <script lang="ts">
+  import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
   import { sanitizeText } from '$lib/util/sanitize';
-  import { stateStore, updateCode, updateConfig } from '$lib/util/state';
+  import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { errorDebug, syncDiagram } from '$lib/util/util';
   import { mode } from 'mode-watcher';
@@ -19,7 +20,8 @@
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onDestroy, onMount } from 'svelte';
-  import ExclamationCircleIcon from '~icons/fa/exclamation-circle';
+  import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
+  import { Button } from './ui/button';
 
   let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
@@ -136,12 +138,27 @@
 <div class="flex h-full flex-col pt-1">
   <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden"></div>
   {#if $stateStore.error instanceof Error}
-    <div class="flex flex-col text-sm text-neutral-100">
-      <div class="flex items-center gap-2 bg-red-700 p-2">
-        <ExclamationCircleIcon class="w-4" aria-hidden="true" />
-        <p>Diagram syntax error</p>
+    <div class="flex flex-col text-sm">
+      <div class="flex items-center justify-between gap-2 bg-slate-900 p-2 text-white">
+        <div class="flex w-fit items-center gap-2">
+          <ExclamationCircleIcon class="size-6 text-destructive" aria-hidden="true" />
+          <div class="flex flex-col">
+            <p>Syntax error</p>
+            {#if env.isEnabledMermaidChartLinks}
+              <p class="text-xs text-white/60">Create a free account to repair with AI</p>
+            {/if}
+          </div>
+        </div>
+        {#if env.isEnabledMermaidChartLinks}
+          <Button
+            variant="accent"
+            size="sm"
+            title="Repair with Mermaid AI"
+            href={$urlsStore.mermaidChart.save}
+            ><img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />AI Repair</Button>
+        {/if}
       </div>
-      <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
+      <div class="max-h-32 overflow-auto bg-muted p-2 font-mono">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html sanitizeText($stateStore.error?.toString().replaceAll('\n', '<br />'))}
       </div>
