@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DiagramDocButton from '$/components/DiagramDocButton.svelte';
   import History from '$/components/History/History.svelte';
   import McTooltip from '$/components/MCTooltip.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
@@ -16,96 +17,19 @@
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
   import View from '$lib/components/View.svelte';
-  import type { DocumentationConfig, EditorMode, Tab, ValidatedState } from '$lib/types';
+  import type { EditorMode, Tab, ValidatedState } from '$lib/types';
   import { stateStore, updateCodeStore, urlsStore } from '$lib/util/state';
   import { initHandler } from '$lib/util/util';
   import { onMount } from 'svelte';
-  import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
   import CodeIcon from '~icons/material-symbols/code-blocks-outline';
   import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
-  const docURLBase = 'https://mermaid.js.org';
-  const docMap: DocumentationConfig = {
-    graph: {
-      code: '/syntax/.html',
-      config: '/syntax/.html#configuration'
-    },
-    flowchart: {
-      code: '/syntax/flowchart.html',
-      config: '/syntax/flowchart.html#configuration'
-    },
-    sequenceDiagram: {
-      code: '/syntax/sequenceDiagram.html',
-      config: '/syntax/sequenceDiagram.html#configuration'
-    },
-    classDiagram: {
-      code: '/syntax/classDiagram.html',
-      config: '/syntax/classDiagram.html#configuration'
-    },
-    'stateDiagram-v2': {
-      code: '/syntax/stateDiagram.html'
-    },
-    gantt: {
-      code: '/syntax/gantt.html',
-      config: '/syntax/gantt.html#configuration'
-    },
-    pie: {
-      code: '/syntax/pie.html',
-      config: '/syntax/pie.html#configuration'
-    },
-    erDiagram: {
-      code: '/syntax/entityRelationshipDiagram.html',
-      config: '/syntax/entityRelationshipDiagram.html#styling'
-    },
-    journey: {
-      code: '/syntax/userJourney.html'
-    },
-    gitGraph: {
-      code: '/syntax/gitgraph.html',
-      config: '/syntax/gitgraph.html#gitgraph-specific-configuration-options'
-    },
-    quadrantChart: {
-      code: '/syntax/quadrantChart.html',
-      config: '/syntax/quadrantChart.html#chart-configurations'
-    },
-    requirementDiagram: {
-      code: '/syntax/requirementDiagram.html'
-    },
-    C4Context: {
-      code: '/syntax/c4.html'
-    },
-    mindmap: {
-      code: '/syntax/mindmap.html'
-    },
-    timeline: {
-      code: '/syntax/timeline.html',
-      config: '/syntax/timeline.html#themes'
-    },
-    zenuml: {
-      code: '/syntax/zenuml.html'
-    },
-    'sankey-beta': {
-      code: '/syntax/sankey.html',
-      config: '/syntax/sankey.html#configuration'
-    },
-    'xychart-beta': {
-      code: '/syntax/xyChart.html',
-      config: '/syntax/xyChart.html#chart-configurations'
-    }
-  };
-  let docURL = $state(docURLBase);
+
   let activeTabID = $state('code');
-  let docKey = $state('');
-  stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
+  stateStore.subscribe(({ editorMode }: ValidatedState) => {
     activeTabID = editorMode;
-    const codeTypeMatch = /(\S+)\s/.exec(code);
-    if (codeTypeMatch && codeTypeMatch.length > 1) {
-      docKey = codeTypeMatch[1];
-      const docConfig = docMap[docKey] ?? { code: '' };
-      docURL = docURLBase + (docConfig[editorMode] ?? docConfig.code ?? '');
-    }
   });
 
   const tabSelectHandler = (tab: Tab) => {
@@ -159,17 +83,8 @@
             {activeTabID}
             isClosable={false}>
             {#snippet actions()}
-              <div class="flex flex-row items-center">
-                <Button
-                  variant="ghost"
-                  href={docURL}
-                  title="View documentation for {docKey.replace('Diagram', '')} diagram">
-                  <BookIcon class="mr-1" />
-                  Docs
-                </Button>
-              </div>
+              <DiagramDocButton />
             {/snippet}
-
             <Editor />
           </Card>
 

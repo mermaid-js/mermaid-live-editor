@@ -11,7 +11,15 @@ module.exports = {
     'plugin:svelte/prettier',
     'prettier'
   ],
-  plugins: ['tailwindcss', '@typescript-eslint', 'es', 'vitest', 'no-only-tests', 'unicorn'],
+  plugins: [
+    'tailwindcss',
+    '@typescript-eslint',
+    'es',
+    'vitest',
+    'no-only-tests',
+    'sort-keys',
+    'unicorn'
+  ],
   ignorePatterns: [
     'docs/*',
     '*.cjs',
@@ -54,6 +62,7 @@ module.exports = {
     es2020: true
   },
   rules: {
+    'sort-keys': 'off',
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {

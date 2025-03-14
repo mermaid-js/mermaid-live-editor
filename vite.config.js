@@ -3,13 +3,26 @@ import { svelteTesting } from '@testing-library/svelte/vite';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vitest/config';
 
+/**
+ * HMR creates state inconsistencies, so we always reload the page.
+ * @type {import('vite').PluginOption} PluginOption
+ */
+const alwaysFullReload = {
+  name: 'always-full-reload',
+  handleHotUpdate({ server }) {
+    server.ws.send({ type: 'full-reload' });
+    return [];
+  }
+};
+
 export default defineConfig({
   plugins: [
     sveltekit(),
     svelteTesting(),
     Icons({
       compiler: 'svelte'
-    })
+    }),
+    alwaysFullReload
   ],
   envPrefix: 'MERMAID_',
   optimizeDeps: { include: ['mermaid'] },

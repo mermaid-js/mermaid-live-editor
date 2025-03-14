@@ -95,7 +95,7 @@
       Popularisation
         British popular psychology author Tony Buzan
     Research
-      On effectivness<br/>and features
+      On effectiveness<br/>and features
       On Automatic creation
         Uses
             Creative techniques
@@ -201,8 +201,6 @@ packet-beta
     logEvent('loadSampleDiagram', { diagramType });
   };
 
-  // Adding in this array will add an icon to the preset menu
-  const newDiagrams: SampleTypes[] = ['QuadrantChart', 'XYChart', 'Block', 'Packet'];
   const diagramOrder: SampleTypes[] = [
     'Flow',
     'Sequence',

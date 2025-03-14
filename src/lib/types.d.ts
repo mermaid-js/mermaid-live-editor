@@ -38,6 +38,7 @@ export interface State {
 
 export interface ValidatedState extends State {
   editorMode: EditorMode;
+  diagramType?: string;
   error?: Error;
   errorMarkers: MarkerData[];
   serialized: string;

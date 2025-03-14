@@ -65,7 +65,8 @@ const processState = async (state: State) => {
   // No changes should be done to fields part of `state`.
   try {
     processed.serialized = serializeState(state);
-    await parse(state.code);
+    const { diagramType } = await parse(state.code);
+    processed.diagramType = diagramType;
     JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
