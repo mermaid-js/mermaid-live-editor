@@ -12,9 +12,12 @@
       {@render children()}
     </Tooltip.Trigger>
     <Tooltip.Content>
-      <p class="flex items-center gap-2">
-        <ExternalLinkIcon /> Opens a new tab in Mermaid Chart
-      </p>
+      <div class="flex items-center gap-2">
+        <ExternalLinkIcon />
+        <span class="flex items-center gap-1">
+          Opens a new tab in <div class="text-accent">MermaidChart.com</div>
+        </span>
+      </div>
     </Tooltip.Content>
   </Tooltip.Root>
 </Tooltip.Provider>
