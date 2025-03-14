@@ -8,6 +8,8 @@
 </script>
 
 <script lang="ts">
+  import McTooltip from '$/components/MCTooltip.svelte';
+  import { Button } from '$/components/ui/button';
   import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
@@ -21,7 +23,6 @@
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onDestroy, onMount } from 'svelte';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
-  import { Button } from './ui/button';
 
   let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
@@ -150,12 +151,12 @@
           </div>
         </div>
         {#if env.isEnabledMermaidChartLinks}
-          <Button
-            variant="accent"
-            size="sm"
-            title="Repair with Mermaid AI"
-            href={$urlsStore.mermaidChart.save}
-            ><img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />AI Repair</Button>
+          <McTooltip>
+            <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
+              <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+              AI Repair
+            </Button>
+          </McTooltip>
         {/if}
       </div>
       <div class="max-h-32 overflow-auto bg-muted p-2 font-mono">

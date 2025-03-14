@@ -1,5 +1,6 @@
 <script lang="ts">
   import History from '$/components/History/History.svelte';
+  import McTooltip from '$/components/MCTooltip.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
@@ -139,10 +140,12 @@
     </Toggle>
     <Share />
     {#if env.isEnabledMermaidChartLinks}
-      <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
-        <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
-        Save diagram
-      </Button>
+      <McTooltip>
+        <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
+          <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+          Save diagram
+        </Button>
+      </McTooltip>
     {/if}
   </Navbar>
   <div class="flex flex-1 overflow-hidden">

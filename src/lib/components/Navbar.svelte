@@ -7,6 +7,8 @@
 </script>
 
 <script lang="ts">
+  import MainMenu from '$/components/MainMenu.svelte';
+  import McTooltip from '$/components/MCTooltip.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import { Switch } from '$/components/ui/switch';
@@ -18,7 +20,6 @@
   import GithubIcon from '~icons/fa-brands/github';
   import CloseIcon from '~icons/material-symbols/close-rounded';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
-  import MainMenu from './MainMenu.svelte';
 
   interface Props {
     children: Snippet;
@@ -103,30 +104,32 @@
         Live Editor
       </a>
       {#if env.isEnabledMermaidChartLinks}
-        <div class=" hidden items-center justify-center gap-4 md:flex">
-          <Separator orientation="vertical" />
-          <Switch
-            id="editorMode"
-            class="data-[state=checked]:bg-secondary"
-            checked={isReferral}
-            onclick={() => {
-              logEvent('playgroundToggle', { isReferred: isReferral });
-              // Wait for the event to be logged
-              setTimeout(() => {
-                window.open(
-                  $urlsStore.mermaidChart.playground,
-                  '_self',
-                  // Do not send referrer header, if the user already came from playground
-                  isReferral ? 'noreferrer' : ''
-                );
-              }, 100);
-            }} />
+        <McTooltip>
+          <div class=" hidden items-center justify-center gap-4 md:flex">
+            <Separator orientation="vertical" />
+            <Switch
+              id="editorMode"
+              class="data-[state=checked]:bg-secondary"
+              checked={isReferral}
+              onclick={() => {
+                logEvent('playgroundToggle', { isReferred: isReferral });
+                // Wait for the event to be logged
+                setTimeout(() => {
+                  window.open(
+                    $urlsStore.mermaidChart.playground,
+                    '_self',
+                    // Do not send referrer header, if the user already came from playground
+                    isReferral ? 'noreferrer' : ''
+                  );
+                }, 100);
+              }} />
 
-          <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
-            Playground <span class="hidden text-sm opacity-50 lg:inline"
-              >- more features, no account required</span>
-          </a>
-        </div>
+            <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
+              Playground <span class="hidden text-sm opacity-50 lg:inline"
+                >- more features, no account required</span>
+            </a>
+          </div>
+        </McTooltip>
       {/if}
     </div>
   </div>

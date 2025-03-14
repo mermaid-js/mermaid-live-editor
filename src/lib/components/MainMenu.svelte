@@ -1,4 +1,5 @@
 <script lang="ts">
+  import McTooltip from '$/components/MCTooltip.svelte';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
   import { env } from '$/util/env';
@@ -14,6 +15,7 @@
   import MoonIcon from '~icons/material-symbols/nights-stay-outline';
   import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
   import SunIcon from '~icons/material-symbols/sunny-rounded';
+
   const menuItems = [
     { label: 'New Diagram', icon: AddIcon, href: '/' },
     { label: 'Home', icon: HomeIcon, href: 'https://mermaid.js.org/' },
@@ -65,12 +67,14 @@
           onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
       </div>
       {#if env.isEnabledMermaidChartLinks}
-        {@render menuItem({
-          label: 'Edit in Playground',
-          icon: PlaygroundIcon,
-          href: $urlsStore.mermaidChart.playground,
-          class: 'text-accent bg-background hover:bg-background/50'
-        })}
+        <McTooltip>
+          {@render menuItem({
+            label: 'Edit in Playground',
+            icon: PlaygroundIcon,
+            href: $urlsStore.mermaidChart.playground,
+            class: 'text-accent bg-background hover:bg-background/50'
+          })}
+        </McTooltip>
       {/if}
     </div>
   </Popover.Content>
