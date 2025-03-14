@@ -138,8 +138,14 @@
 
   onMount(() => {
     setupPanZoomObserver();
+    let pendingStateChange: Promise<void> | undefined;
     stateStore.subscribe((state) => {
-      void handleStateChange(state);
+      // Queue state changes to prevent race condition
+      if (pendingStateChange) {
+        pendingStateChange = pendingStateChange.then(() => handleStateChange(state));
+      } else {
+        pendingStateChange = handleStateChange(state);
+      }
     });
   });
 </script>
