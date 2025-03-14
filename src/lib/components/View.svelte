@@ -10,7 +10,7 @@
   import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';
-  import SyncIcon from '~icons/fa6-solid/arrows-rotate';
+  import SyncIcon from '~icons/material-symbols/sync-rounded';
 
   let {
     panZoomState = new PanZoomState(),

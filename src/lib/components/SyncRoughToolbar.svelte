@@ -5,7 +5,7 @@
   import { inputStateStore, stateStore } from '$/util/state';
   import { cmdKey, syncDiagram } from '$/util/util';
   import { slide } from 'svelte/transition';
-  import SyncIcon from '~icons/fa6-solid/arrows-rotate';
+  import SyncIcon from '~icons/material-symbols/sync-rounded';
   import FloatingToolbar from './FloatingToolbar.svelte';
 </script>
 

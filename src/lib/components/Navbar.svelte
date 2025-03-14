@@ -17,8 +17,8 @@
   import { urlsStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
   import type { ComponentProps, Snippet } from 'svelte';
-  import GithubIcon from '~icons/fa-brands/github';
   import CloseIcon from '~icons/material-symbols/close-rounded';
+  import GithubIcon from '~icons/mdi/github';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
 
   interface Props {
