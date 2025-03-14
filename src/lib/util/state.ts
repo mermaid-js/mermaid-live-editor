@@ -24,9 +24,9 @@ export const defaultState: State = {
   mermaid: formatJSON({
     theme: 'default'
   }),
-  autoSync: true,
   rough: false,
-  updateDiagram: true
+  updateDiagram: true,
+  grid: true
 };
 
 const urlParseFailedState = `flowchart TD

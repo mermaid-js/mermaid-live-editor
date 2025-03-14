@@ -26,8 +26,9 @@ export interface State {
   code: string;
   mermaid: string;
   updateDiagram: boolean;
-  autoSync: boolean;
   rough: boolean;
+  // All new options must be optional, as users would have old states saved
+  grid?: boolean;
   editorMode?: EditorMode;
   panZoom?: boolean;
   pan?: { x: number; y: number };

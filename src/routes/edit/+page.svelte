@@ -181,7 +181,7 @@
       </Resizable.Pane>
       <Resizable.Handle class="mr-1 opacity-0" />
       <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-        <View {panZoomState} />
+        <View {panZoomState} shouldShowGrid={$stateStore.grid} />
         <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
         <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
         <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>

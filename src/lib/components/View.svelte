@@ -5,12 +5,10 @@
   import { render as renderDiagram } from '$lib/util/mermaid';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { logEvent, saveStatistics } from '$lib/util/stats';
-  import { cmdKey } from '$lib/util/util';
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';
-  import SyncIcon from '~icons/material-symbols/sync-rounded';
 
   let {
     panZoomState = new PanZoomState(),
@@ -59,10 +57,7 @@
     error = false;
     let diagramType: string | undefined;
     try {
-      if (container && state && (state.updateDiagram || state.autoSync)) {
-        if (!state.autoSync) {
-          $inputStateStore.updateDiagram = false;
-        }
+      if (container && state?.updateDiagram) {
         outOfSync = false;
         manualUpdate = true;
         // Do not render if there is no change in Code/Config/PanZoom
@@ -154,11 +149,7 @@
     class="bg-base-100 absolute z-10 w-full bg-opacity-80 p-2 text-left font-mono text-yellow-600"
     id="errorContainer">
     Diagram out of sync. <br />
-    {#if $stateStore.autoSync}
-      It will be updated automatically.
-    {:else}
-      Press <SyncIcon /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
-    {/if}
+    It will be updated automatically.
   </div>
 {/if}
 
