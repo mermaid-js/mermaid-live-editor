@@ -6,7 +6,7 @@
 
   let {
     tabs,
-    activeTabID = $bindable(),
+    activeTabID,
     onselect
   }: {
     tabs: Tab[];
@@ -21,7 +21,6 @@
   const toggleTabs = (tab: Tab) => {
     return (event: Event) => {
       event.stopPropagation();
-      activeTabID = tab.id;
       onselect?.(tab);
     };
   };

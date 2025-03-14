@@ -6,11 +6,10 @@
   import { initHandler } from '$lib/util/util';
   import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
-
   import '../app.postcss';
 
   interface Props {
-    children?: Snippet;
+    children: Snippet;
   }
 
   let { children }: Props = $props();
@@ -43,8 +42,8 @@
 <ModeWatcher />
 <Toaster />
 
-<main class="text-primary-content h-screen">
-  {@render children?.()}
+<main class="h-screen">
+  {@render children()}
 </main>
 
 {#if $loadingStateStore.loading}

@@ -17,7 +17,7 @@
   import Navbar from '$lib/components/Navbar.svelte';
   import Preset from '$lib/components/Preset.svelte';
   import View from '$lib/components/View.svelte';
-  import type { EditorMode, Tab, ValidatedState } from '$lib/types';
+  import type { EditorMode, Tab } from '$lib/types';
   import { stateStore, updateCodeStore, urlsStore } from '$lib/util/state';
   import { initHandler } from '$lib/util/util';
   import { onMount } from 'svelte';
@@ -26,11 +26,6 @@
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
-
-  let activeTabID = $state('code');
-  stateStore.subscribe(({ editorMode }: ValidatedState) => {
-    activeTabID = editorMode;
-  });
 
   const tabSelectHandler = (tab: Tab) => {
     const editorMode: EditorMode = tab.id === 'code' ? 'code' : 'config';
@@ -80,7 +75,7 @@
             onselect={tabSelectHandler}
             isOpen
             tabs={editorTabs}
-            {activeTabID}
+            activeTabID={$stateStore.editorMode}
             isClosable={false}>
             {#snippet actions()}
               <DiagramDocButton />

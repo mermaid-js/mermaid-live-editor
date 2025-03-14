@@ -18,7 +18,7 @@
     };
     onselect?: (tab: Tab) => void;
     actions?: Snippet;
-    children?: Snippet;
+    children: Snippet;
   }
 
   let {
@@ -68,17 +68,10 @@
     {/if}
 
     {@render actions?.()}
-
-    <!-- {#if isClosable && isOpen}
-        <div class="ml-auto flex h-8 flex-col gap-0 p-1">
-          <ChevronDownIcon class="size-full" />
-          <ChevronUpIcon class="size-full" />
-        </div>
-      {/if} -->
   </div>
   {#if isOpen}
     <div class="flex-grow overflow-x-auto" transition:slide={{ easing: quintOut }}>
-      {@render children?.()}
+      {@render children()}
     </div>
   {/if}
 </div>
