@@ -21,7 +21,6 @@
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
   let pzoom: typeof panzoom | undefined;
-
   const handlePanZoomChange = () => {
     if (!pzoom) {
       return;
@@ -157,10 +156,10 @@
   };
 
   onMount(() => {
-    let pendingStateChange: Promise<void> | undefined;
+    // Queue state changes to avoid race condition
+    let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
-      pendingStateChange =
-        pendingStateChange?.then(() => handleStateChange(state)) ?? handleStateChange(state);
+      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {
