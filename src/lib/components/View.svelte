@@ -21,7 +21,6 @@
   let rough: boolean;
   let view: HTMLDivElement | undefined = $state();
   let error = $state(false);
-  let outOfSync = $state(false);
   let manualUpdate = true;
 
   // Set up panZoom state observer to update the store when pan/zoom changes
@@ -51,7 +50,6 @@
     let diagramType: string | undefined;
     try {
       if (container) {
-        outOfSync = false;
         manualUpdate = true;
         // Do not render if there is no change in Code/Config/PanZoom
         if (code === state.code && config === state.mermaid && rough === state.rough) {
@@ -59,7 +57,6 @@
         }
 
         if (!shouldRefreshView()) {
-          outOfSync = true;
           return;
         }
 
@@ -113,8 +110,6 @@
         error = false;
       } else if (manualUpdate) {
         manualUpdate = false;
-      } else if (code !== state.code || config !== state.mermaid) {
-        outOfSync = true;
       }
     } catch (error_) {
       console.error('view fail', error_);
@@ -137,31 +132,14 @@
   });
 </script>
 
-{#if outOfSync}
-  <div
-    class="absolute z-10 w-full bg-opacity-80 p-2 text-left font-mono text-yellow-600"
-    id="errorContainer">
-    Diagram out of sync. <br />
-    It will be updated automatically.
-  </div>
-{/if}
-
 <div
   id="view"
   bind:this={view}
-  class={[shouldShowGrid && `grid-bg-${$mode}`, 'h-full', (error || outOfSync) && 'opacity-50']}>
+  class={[shouldShowGrid && `grid-bg-${$mode}`, error && 'opacity-50', 'h-full w-full']}>
   <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 
 <style>
-  #view {
-    flex: 1;
-  }
-  .error,
-  .outOfSync {
-    opacity: 0.5;
-  }
-
   .grid-bg-light {
     background-size: 30px 30px;
     background-image: radial-gradient(circle, #e4e4e789 2px, rgba(0, 0, 0, 0) 2px);
