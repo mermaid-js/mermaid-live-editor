@@ -192,7 +192,7 @@
           <div class="flex flex-row items-center gap-2">
             <label
               class="label flex cursor-pointer gap-1 py-0"
-              title="Rough mode is in beta. Features like clickable nodes, Pan & Zoom, will be disabled."
+              title="Rough mode is in beta. Features like clickable nodes and ZenUML diagram will not work."
               for="rough">
               <span>Rough</span>
               <input
@@ -201,16 +201,12 @@
                 id="rough"
                 bind:checked={$inputStateStore.rough} />
             </label>
-            <label
-              class="label flex cursor-pointer gap-1 py-0"
-              title={$stateStore.rough ? 'Pan & Zoom is disabled in rough mode.' : ''}
-              for="panZoom">
+            <label class="label flex cursor-pointer gap-1 py-0" for="panZoom">
               <span>Pan & Zoom</span>
               <input
                 type="checkbox"
                 class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
                 id="panZoom"
-                disabled={$stateStore.rough}
                 bind:checked={$inputStateStore.panZoom} />
             </label>
             <a
