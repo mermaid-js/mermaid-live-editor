@@ -1,5 +1,5 @@
 import { cleanup, render } from '@testing-library/svelte';
-import { describe, expect, it, afterEach } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import Card from './Card.svelte';
 
 describe('card.svelte', () => {

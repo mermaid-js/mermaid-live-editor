@@ -1,55 +1,53 @@
-<script context="module" lang="ts">
-  import { version } from 'mermaid/package.json';
+<script module lang="ts">
   import { logEvent, plausible } from '$lib/util/stats';
+  import { version } from 'mermaid/package.json';
   void logEvent('version', {
     mermaidVersion: version
   });
 </script>
 
 <script lang="ts">
-  import Theme from './Theme.svelte';
+  import { env } from '$lib/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
+  import { stateStore } from '$lib/util/state';
+  import { MCBaseURL } from '$lib/util/util';
+  import type { ComponentProps } from 'svelte';
+  import DropdownNavMenu from './DropdownNavMenu.svelte';
   import Privacy from './Privacy.svelte';
-  let isMenuOpen = false;
+  import Theme from './Theme.svelte';
 
+  const { isEnabledMermaidChartLinks } = env;
+
+  let isMenuOpen = $state(false);
+  const isReferral = document.referrer.includes(MCBaseURL);
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
   }
 
-  interface Link {
-    href: string;
-    title?: string;
-    icon?: string;
-    img?: string;
-  }
-  const links: Link[] = [
+  type Links = ComponentProps<typeof DropdownNavMenu>['links'];
+
+  const githubLinks: Links = [
+    { title: 'Mermaid JS', href: 'https://github.com/mermaid-js/mermaid' },
     {
-      title: 'Documentation',
-      href: 'https://mermaid.js.org/intro/getting-started.html'
+      title: 'Mermaid Live Editor',
+      href: 'https://github.com/mermaid-js/mermaid-live-editor'
     },
     {
-      title: 'Tutorial',
-      href: 'https://mermaid.js.org/ecosystem/tutorials.html'
-    },
-    {
-      title: 'Mermaid',
-      href: 'https://github.com/mermaid-js/mermaid'
-    },
-    {
-      title: 'CLI',
+      title: 'Mermaid CLI',
       href: 'https://github.com/mermaid-js/mermaid-cli'
-    },
-    {
-      href: 'https://github.com/mermaid-js/mermaid-live-editor',
-      icon: 'fab fa-github fa-lg'
-    },
-    {
-      href: 'https://mermaidchart.com',
-      img: './mermaidchart-logo.svg'
     }
   ];
 
-  let activePromotion = getActivePromotion();
+  const documentationLinks: Links = [
+    { title: 'Getting started', href: 'https://mermaid.js.org/intro/getting-started.html' },
+    { title: 'Tutorials', href: 'https://mermaid.js.org/ecosystem/tutorials.html' },
+    {
+      title: 'Integrations',
+      href: 'https://mermaid.js.org/ecosystem/integrations-community.html'
+    }
+  ];
+
+  let activePromotion = $state(getActivePromotion());
 
   const trackBannerClick = () => {
     if (!plausible || !activePromotion) {
@@ -62,43 +60,63 @@
 </script>
 
 {#if activePromotion}
-  <div
-    class="top-bar z-10 flex h-fit w-full items-center justify-center bg-gradient-to-r from-[#bd34fe] to-[#ff3670] p-1 text-center text-white">
+  <div class="top-bar z-10 flex h-fit w-full bg-primary">
     <div
       class="flex flex-grow"
       role="button"
       tabindex="0"
-      on:click={trackBannerClick}
-      on:keypress={trackBannerClick}>
-      <svelte:component this={activePromotion.component} />
+      onclick={trackBannerClick}
+      onkeypress={trackBannerClick}>
+      <activePromotion.component {closeBanner} />
     </div>
-    <button
-      title="Dismiss banner"
-      on:click={() => {
-        dismissPromotion(activePromotion?.id);
-        activePromotion = undefined;
-      }}>
-      <i class="fa fa-close px-2" />
-    </button>
+    {#snippet closeBanner()}
+      <button
+        title="Dismiss banner"
+        aria-label="Dismiss banner"
+        onclick={() => {
+          dismissPromotion(activePromotion?.id);
+          activePromotion = undefined;
+        }}>
+        <i class="fa fa-close px-2"></i>
+      </button>
+    {/snippet}
   </div>
 {/if}
 
-<div class="navbar bg-primary p-0 shadow-lg">
-  <div class="mx-2 flex-1 px-2">
-    <span class="text-lg font-bold">
-      <a href="/">Mermaid<span class="text-xs font-thin">v{version}</span> Live Editor</a>
-    </span>
-    <span class="ml-4">
-      <a
-        href="https://www.producthunt.com/products/mermaid-chart?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-mermaid&#0045;chart"
-        target="_blank"
-        ><img
-          src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=552855&theme=light&size=small"
-          alt="Mermaid&#0032;Chart - A&#0032;smarter&#0032;way&#0032;to&#0032;create&#0032;diagrams | Product Hunt"
-          style="width: 86px; height: 32px;"
-          width="86"
-          height="32" /></a>
-    </span>
+<div class="navbar z-50 bg-primary p-0 shadow-lg">
+  <div class="mx-2 flex flex-1 gap-2 px-2">
+    <a href="/"><img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" /></a>
+    <div
+      id="switcher"
+      class="flex items-center justify-center gap-2 font-bold"
+      class:flex-row-reverse={isReferral}>
+      <a href="/">
+        {#if !isReferral}
+          Mermaid
+        {/if}
+        Live Editor
+      </a>
+      {#if isEnabledMermaidChartLinks}
+        <input
+          type="checkbox"
+          class="toggle toggle-primary"
+          id="editorMode"
+          checked={isReferral}
+          onclick={() => {
+            logEvent('playgroundToggle', { isReferred: isReferral });
+            // Wait for the event to be logged
+            setTimeout(() => {
+              window.open(
+                `${MCBaseURL}/play#${$stateStore.serialized}`,
+                '_self',
+                // Do not send referrer header, if the user already came from playground
+                isReferral ? 'noreferrer' : ''
+              );
+            }, 100);
+          }} />
+        <a href="{MCBaseURL}/play#{$stateStore.serialized}">Playground</a>
+      {/if}
+    </div>
   </div>
 
   <label
@@ -138,28 +156,31 @@
     type="checkbox"
     id="menu-toggle"
     bind:checked={isMenuOpen}
-    on:click={toggleMenu} />
+    onclick={toggleMenu} />
 
   <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
-    <Theme />
+    <span class="text-sm">v{version}</span>
     <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
       <li>
         <Privacy />
       </li>
-      {#each links as { title, href, icon, img }}
+      <li>
+        <Theme />
+      </li>
+      <li>
+        <DropdownNavMenu label="Documentation" links={documentationLinks} />
+      </li>
+      <li>
+        <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
+      </li>
+
+      {#if isEnabledMermaidChartLinks}
         <li>
-          <a class="btn btn-ghost" target="_blank" {href}>
-            {#if icon}
-              <i class={icon} />
-            {:else if img}
-              <img src={img} alt={title} />
-            {/if}
-            {#if title}
-              {title}
-            {/if}
+          <a class="btn btn-ghost" target="_blank" href="https://mermaidchart.com">
+            <img class="size-6" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
           </a>
         </li>
-      {/each}
+      {/if}
     </ul>
   </div>
 </div>
@@ -171,14 +192,5 @@
     padding: 1rem 0;
     background: #661ae6;
     display: flex;
-  }
-
-  .navbar {
-    z-index: 10000;
-  }
-
-  img {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 </style>

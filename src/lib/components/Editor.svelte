@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   declare global {
     interface Window {
       Cypress: boolean;
@@ -19,7 +19,7 @@
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onDestroy, onMount } from 'svelte';
 
-  let divElement: HTMLDivElement | undefined;
+  let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
   let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     minimap: {
@@ -132,11 +132,11 @@
 </script>
 
 <div class="flex h-full flex-col">
-  <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden" />
+  <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden"></div>
   {#if $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm text-neutral-100">
       <div class="flex items-center gap-2 bg-red-700 p-2">
-        <i class="fa fa-exclamation-circle w-4" aria-hidden="true" />
+        <i class="fa fa-exclamation-circle w-4" aria-hidden="true"></i>
         <p>Diagram syntax error</p>
       </div>
       <output class="max-h-32 overflow-auto bg-red-600 p-2" name="mermaid-error" for="editor">

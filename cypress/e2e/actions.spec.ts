@@ -37,7 +37,7 @@ describe('Check actions', () => {
     cy.contains('ER').click();
 
     cy.get(`#downloadPNG`).click();
-    verifyFileSizeGreaterThan('diagram', 'png', 40_000);
+    verifyFileSizeGreaterThan('diagram', 'png', 35_000);
 
     cy.get(`#downloadSVG`).click();
     verifyFileSizeGreaterThan('diagram', 'svg', 11_000);

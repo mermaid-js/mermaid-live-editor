@@ -5,6 +5,7 @@
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
+  import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { onMount } from 'svelte';
   import panzoom from 'svg-pan-zoom';
@@ -12,16 +13,14 @@
 
   let code = '';
   let config = '';
-  let container: HTMLDivElement;
+  let container: HTMLDivElement | undefined = $state();
   let rough: boolean;
-  let view: HTMLDivElement;
-  let error = false;
-  let outOfSync = false;
-  let hide = false;
+  let view: HTMLDivElement | undefined = $state();
+  let error = $state(false);
+  let outOfSync = $state(false);
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
   let pzoom: typeof panzoom | undefined;
-
   const handlePanZoomChange = () => {
     if (!pzoom) {
       return;
@@ -32,18 +31,13 @@
     logEvent('panZoom');
   };
 
-  const handlePanZoom = (state: State) => {
+  const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
     if (!state.panZoom) {
       return;
     }
-    hide = true;
     pzoom?.destroy();
     pzoom = undefined;
     void Promise.resolve().then(() => {
-      const graphDiv = document.querySelector<HTMLElement>('#graph-div');
-      if (!graphDiv) {
-        return;
-      }
       pzoom = panzoom(graphDiv, {
         onPan: handlePanZoomChange,
         onZoom: handlePanZoomChange,
@@ -56,7 +50,6 @@
         pzoom.zoom(zoom);
         pzoom.pan(pan);
       }
-      hide = false;
     });
   };
 
@@ -67,6 +60,7 @@
       return;
     }
     error = false;
+    let diagramType: string | undefined;
     try {
       if (container && state && (state.updateDiagram || state.autoSync)) {
         if (!state.autoSync) {
@@ -93,18 +87,18 @@
         config = state.mermaid;
         panZoomEnabled = state.panZoom;
         rough = state.rough;
-        const scroll = view.parentElement?.scrollTop;
+        const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
-        const { svg, bindFunctions } = await renderDiagram(
-          Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
-          code,
-          'graph-div'
-        );
-
+        const viewID = uniqueID('graph-');
+        const {
+          svg,
+          bindFunctions,
+          diagramType: detectedDiagramType
+        } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
+        diagramType = detectedDiagramType;
         if (svg.length > 0) {
-          handlePanZoom(state);
           container.innerHTML = svg;
-          const graphDiv = document.querySelector<SVGSVGElement>('#graph-div');
+          let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
@@ -113,7 +107,7 @@
             svg2roughjs.svg = graphDiv;
             await svg2roughjs.sketch();
             graphDiv.remove();
-            const sketch = document.querySelector<HTMLElement>('#container > svg');
+            const sketch = document.querySelector<SVGSVGElement>('#container > svg');
             if (!sketch) {
               throw new Error('sketch not found');
             }
@@ -123,6 +117,7 @@
             sketch.setAttribute('width', '100%');
             sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
             sketch.style.maxWidth = '100%';
+            graphDiv = sketch;
           } else {
             graphDiv.setAttribute('height', '100%');
             graphDiv.style.maxWidth = '100%';
@@ -130,8 +125,9 @@
               bindFunctions(graphDiv);
             }
           }
+          handlePanZoom(state, graphDiv);
         }
-        if (view.parentElement && scroll) {
+        if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
         }
         error = false;
@@ -145,15 +141,17 @@
       error = true;
     }
     const renderTime = Date.now() - startTime;
-    saveStatistics({ code, renderTime, isRough: state.rough });
+    saveStatistics({ code, renderTime, isRough: state.rough, diagramType });
     recordRenderTime(renderTime, () => {
       $inputStateStore.updateDiagram = true;
     });
   };
 
   onMount(() => {
+    // Queue state changes to avoid race condition
+    let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
-      void handleStateChange(state);
+      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {
@@ -165,36 +163,27 @@
 
 {#if outOfSync}
   <div
-    class="font-monotext-yellow-600 absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left"
+    class="absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left font-mono text-yellow-600"
     id="errorContainer">
     Diagram out of sync. <br />
     {#if $stateStore.autoSync}
       It will be updated automatically.
     {:else}
-      Press <i class="fas fa-sync" /> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
+      Press <i class="fas fa-sync"></i> (Sync button) or <kbd>{cmdKey} + Enter</kbd> to sync.
     {/if}
   </div>
 {/if}
 
 <div id="view" bind:this={view} class="h-full p-2" class:error class:outOfSync>
-  <div id="container" bind:this={container} class="h-full overflow-auto" class:hide />
+  <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 
 <style>
   #view {
     flex: 1;
   }
-
-  #container {
-    transition: visibility 0.3s;
-  }
-
   .error,
   .outOfSync {
     opacity: 0.5;
-  }
-
-  .hide {
-    visibility: hidden;
   }
 </style>

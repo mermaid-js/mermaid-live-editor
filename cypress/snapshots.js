@@ -1,7 +1,7 @@
 module.exports = {
   "Site Loads": {
     "Check Home page load": {
-      "1": "{\"code\":\"flowchart TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n  \",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":true,\"updateDiagram\":true}"
+      "1": "{\"code\":\"flowchart TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n  \",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":true,\"rough\":false,\"updateDiagram\":true,\"panZoom\":false}"
     },
     "Check Redirect from old URL": {
       "1": "{\"code\":\"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":true,\"updateDiagram\":true}"
@@ -19,10 +19,10 @@ module.exports = {
   "__version": "12.17.4",
   "Auto sync tests": {
     "should dim diagram when code is edited": {
-      "1": "{\"code\":\"flowchart TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Test\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":false,\"updateDiagram\":false}"
+      "1": "{\"code\":\"flowchart TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Test\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":false,\"rough\":false,\"updateDiagram\":false,\"panZoom\":false}"
     },
     "should not dim diagram when code is in sync": {
-      "1": "{\"code\":\"flowchart TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Testing\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":true,\"updateDiagram\":false}"
+      "1": "{\"code\":\"flowchart TD\\n    A[Christmas] -->|Get money| B(Go shopping)\\n    B --> C{Let me think}\\n    C -->|One| D[Laptop]\\n    C -->|Two| E[iPhone]\\n    C -->|Three| F[fa:fa-car Car]\\n    C --> Testing\",\"mermaid\":\"{\\n  \\\"theme\\\": \\\"default\\\"\\n}\",\"autoSync\":true,\"rough\":false,\"updateDiagram\":false,\"panZoom\":false}"
     }
   },
   "Test themes": {

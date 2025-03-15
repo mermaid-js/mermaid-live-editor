@@ -1,11 +1,17 @@
 <script lang="ts">
-  import '../app.postcss';
   import { base } from '$app/paths';
-  import { onMount } from 'svelte';
   import { loadingStateStore } from '$lib/util/loading';
-  import { setTheme, themeStore } from '$lib/util/theme';
   import { toggleDarkTheme } from '$lib/util/state';
+  import { setTheme, themeStore } from '$lib/util/theme';
   import { initHandler } from '$lib/util/util';
+  import { onMount, type Snippet } from 'svelte';
+  import '../app.postcss';
+
+  interface Props {
+    children?: Snippet;
+  }
+
+  let { children }: Props = $props();
 
   // This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
   // Then move it into src and vite will bundle it automatically.
@@ -42,14 +48,14 @@
 </script>
 
 <main class="h-screen text-primary-content">
-  <slot />
+  {@render children?.()}
 </main>
 
 {#if $loadingStateStore.loading}
   <div
     class="absolute left-0 top-0 z-50 flex h-screen w-screen justify-center bg-gray-600 align-middle opacity-50">
     <div class="my-auto text-4xl font-bold text-indigo-100">
-      <div class="loader mx-auto" />
+      <div class="loader mx-auto"></div>
       <div>{$loadingStateStore.message}</div>
     </div>
   </div>

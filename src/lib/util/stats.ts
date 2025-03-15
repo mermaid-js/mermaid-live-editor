@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import type PlausibleInstance from 'plausible-tracker';
 import { env } from './env';
+
 export let plausible: ReturnType<typeof PlausibleInstance> | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
@@ -20,29 +21,6 @@ export const initAnalytics = async (): Promise<void> => {
   }
 };
 
-export const detectType = (text: string): string | undefined => {
-  const possibleDiagramTypes = [
-    'classDiagram',
-    'erDiagram',
-    'flowChart',
-    'gantt',
-    'gitGraph',
-    'graph',
-    'journey',
-    'pie',
-    'stateDiagram',
-    'quadrantChart',
-    'mindmap'
-  ];
-  const firstLine = text
-    .replaceAll(/^\s*%%.*\n/g, '\n')
-    .trimStart()
-    .split(' ')[0]
-    .toLowerCase();
-  const detectedDiagram = possibleDiagramTypes.find((d) => firstLine.includes(d.toLowerCase()));
-  return detectedDiagram;
-};
-
 export const countLines = (code: string): number => {
   return (code.match(/\n/g)?.length ?? 0) + 1;
 };
@@ -50,50 +28,47 @@ export const countLines = (code: string): number => {
 export const saveStatistics = ({
   code,
   renderTime,
-  isRough
+  isRough,
+  diagramType
 }: {
   code: string;
   renderTime: number;
   isRough: boolean;
+  diagramType?: string;
 }): void => {
-  const graphType = detectType(code);
-  if (!graphType) {
+  if (!diagramType) {
     return;
   }
   const length = countLines(code);
   const lengthBucket = getBucket(length);
   const renderTimeMsBucket = getBucket(renderTime);
-  logEvent('render', { graphType, length, lengthBucket, renderTimeMsBucket, isRough });
+  logEvent('render', { diagramType, lengthBucket, renderTimeMsBucket, isRough });
 };
 
 const getBucket = (length: number): string => {
-  return length < 10
-    ? '0-10'
-    : length < 25
-      ? '10-25'
-      : length < 50
-        ? '25-50'
-        : length < 100
-          ? '50-100'
-          : length < 200
-            ? '100-200'
-            : length < 500
-              ? '200-500'
-              : length < 700
-                ? '500-700'
-                : length < 1000
-                  ? '700-1000'
-                  : length < 1500
-                    ? '1000-1500'
-                    : length < 2500
-                      ? '1500-2500'
-                      : length < 4500
-                        ? '2500-4500'
-                        : length < 7000
-                          ? '4500-7000'
-                          : length < 10_000
-                            ? '7000-10000'
-                            : '10000+';
+  const buckets = [
+    [10, '0-10'],
+    [25, '10-25'],
+    [50, '25-50'],
+    [100, '50-100'],
+    [200, '100-200'],
+    [500, '200-500'],
+    [700, '500-700'],
+    [1000, '700-1000'],
+    [1500, '1000-1500'],
+    [2500, '1500-2500'],
+    [4500, '2500-4500'],
+    [7000, '4500-7000'],
+    [10_000, '7000-10000']
+  ] as const;
+
+  for (const [threshold, label] of buckets) {
+    if (length < threshold) {
+      return label;
+    }
+  }
+
+  return '10000+';
 };
 
 const minutesToMilliSeconds = (minutes: number): number => {
@@ -104,6 +79,7 @@ const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
   render: minutesToMilliSeconds(5),
   panZoom: minutesToMilliSeconds(10),
+  playgroundToggle: 0,
   copyClipboard: defaultDelay,
   download: defaultDelay,
   copyMarkdown: defaultDelay,
@@ -115,7 +91,7 @@ const delaysPerEvent = {
   themeChange: defaultDelay,
   bannerClick: defaultDelay,
   version: defaultDelay
-};
+} as const;
 export type AnalyticsEvent = keyof typeof delaysPerEvent;
 const timeouts: Map<string, number> = new Map<string, number>();
 // manual debounce to reduce the number of events sent to analytics
