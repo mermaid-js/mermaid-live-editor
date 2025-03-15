@@ -5,6 +5,7 @@
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { logEvent, saveStatistics } from '$lib/util/stats';
   import { cmdKey } from '$lib/util/util';
+  import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { onMount } from 'svelte';
   import panzoom from 'svg-pan-zoom';
@@ -17,7 +18,6 @@
   let view: HTMLDivElement | undefined = $state();
   let error = $state(false);
   let outOfSync = $state(false);
-  let hide = $state(false);
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
   let pzoom: typeof panzoom | undefined;
@@ -31,18 +31,13 @@
     logEvent('panZoom');
   };
 
-  const handlePanZoom = (state: State) => {
+  const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
     if (!state.panZoom) {
       return;
     }
-    hide = true;
     pzoom?.destroy();
     pzoom = undefined;
     void Promise.resolve().then(() => {
-      const graphDiv = document.querySelector<HTMLElement>('#graph-div');
-      if (!graphDiv) {
-        return;
-      }
       pzoom = panzoom(graphDiv, {
         onPan: handlePanZoomChange,
         onZoom: handlePanZoomChange,
@@ -55,7 +50,6 @@
         pzoom.zoom(zoom);
         pzoom.pan(pan);
       }
-      hide = false;
     });
   };
 
@@ -95,20 +89,16 @@
         rough = state.rough;
         const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
+        const viewID = uniqueID('graph-');
         const {
           svg,
           bindFunctions,
           diagramType: detectedDiagramType
-        } = await renderDiagram(
-          Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
-          code,
-          'graph-div'
-        );
+        } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
         diagramType = detectedDiagramType;
         if (svg.length > 0) {
-          handlePanZoom(state);
           container.innerHTML = svg;
-          const graphDiv = document.querySelector<SVGSVGElement>('#graph-div');
+          let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
@@ -117,7 +107,7 @@
             svg2roughjs.svg = graphDiv;
             await svg2roughjs.sketch();
             graphDiv.remove();
-            const sketch = document.querySelector<HTMLElement>('#container > svg');
+            const sketch = document.querySelector<SVGSVGElement>('#container > svg');
             if (!sketch) {
               throw new Error('sketch not found');
             }
@@ -127,6 +117,7 @@
             sketch.setAttribute('width', '100%');
             sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
             sketch.style.maxWidth = '100%';
+            graphDiv = sketch;
           } else {
             graphDiv.setAttribute('height', '100%');
             graphDiv.style.maxWidth = '100%';
@@ -134,6 +125,7 @@
               bindFunctions(graphDiv);
             }
           }
+          handlePanZoom(state, graphDiv);
         }
         if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
@@ -183,24 +175,15 @@
 {/if}
 
 <div id="view" bind:this={view} class="h-full p-2" class:error class:outOfSync>
-  <div id="container" bind:this={container} class="h-full overflow-auto" class:hide></div>
+  <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 
 <style>
   #view {
     flex: 1;
   }
-
-  #container {
-    transition: visibility 0.3s;
-  }
-
   .error,
   .outOfSync {
     opacity: 0.5;
-  }
-
-  .hide {
-    visibility: hidden;
   }
 </style>
