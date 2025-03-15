@@ -142,11 +142,11 @@
 <style>
   .grid-bg-light {
     background-size: 30px 30px;
-    background-image: radial-gradient(circle, #e4e4e789 2px, rgba(0, 0, 0, 0) 2px);
+    background-image: radial-gradient(circle, #e4e4e48c 2px, #0000 2px);
   }
 
   .grid-bg-dark {
     background-size: 30px 30px;
-    background-image: radial-gradient(circle, #46464646 2px, rgba(0, 0, 0, 0) 2px);
+    background-image: radial-gradient(circle, #46464646 2px, #0000 2px);
   }
 </style>
