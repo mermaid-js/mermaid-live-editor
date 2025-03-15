@@ -1,10 +1,10 @@
-import { derived, writable, get } from 'svelte/store';
-import type { Readable, Writable } from 'svelte/store';
-import { persist, localStorage } from '$lib/util/persist';
-import { generateSlug } from 'random-word-slugs';
 import type { HistoryEntry, HistoryType, Optional } from '$lib/types';
-import { v4 as uuidV4 } from 'uuid';
+import { localStorage, persist } from '$lib/util/persist';
 import { logEvent } from '$lib/util/stats';
+import { generateSlug } from 'random-word-slugs';
+import type { Readable, Writable } from 'svelte/store';
+import { derived, get, writable } from 'svelte/store';
+import { v4 as uuidV4 } from 'uuid';
 
 const MAX_AUTO_HISTORY_LENGTH = 30;
 

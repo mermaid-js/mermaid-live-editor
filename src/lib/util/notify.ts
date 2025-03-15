@@ -1,5 +1,7 @@
+import { toast } from 'svelte-sonner';
+
 export const notify = (message: string): void => {
-  alert(message);
+  toast(message);
 };
 
 export const prompt = (message: string): boolean => {

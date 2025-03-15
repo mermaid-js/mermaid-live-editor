@@ -8,17 +8,21 @@
 </script>
 
 <script lang="ts">
+  import McTooltip from '$/components/MCTooltip.svelte';
+  import { Button } from '$/components/ui/button';
+  import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
   import { sanitizeText } from '$lib/util/sanitize';
-  import { stateStore, updateCode, updateConfig } from '$lib/util/state';
+  import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
-  import { themeStore } from '$lib/util/theme';
   import { errorDebug, syncDiagram } from '$lib/util/util';
+  import { mode } from 'mode-watcher';
   import * as monaco from 'monaco-editor';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onDestroy, onMount } from 'svelte';
+  import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
   let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
@@ -61,8 +65,8 @@
     monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
   });
 
-  themeStore.subscribe(({ isDark }) => {
-    editor && monaco.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
+  mode.subscribe((mode) => {
+    editor && monaco.editor.setTheme(mode === 'dark' ? 'mermaid-dark' : 'mermaid');
   });
 
   const handleUpdate = (text: string, mode: EditorMode) => {
@@ -110,7 +114,7 @@
         });
       }
     });
-    monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
+    monaco.editor.setTheme($mode === 'dark' ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,
@@ -132,15 +136,30 @@
   });
 </script>
 
-<div class="flex h-full flex-col">
+<div class="flex h-full flex-col pt-1">
   <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden"></div>
   {#if $stateStore.error instanceof Error}
-    <div class="flex flex-col text-sm text-neutral-100">
-      <div class="flex items-center gap-2 bg-red-700 p-2">
-        <i class="fa fa-exclamation-circle w-4" aria-hidden="true"></i>
-        <p>Diagram syntax error</p>
+    <div class="flex flex-col text-sm">
+      <div class="flex items-center justify-between gap-2 bg-slate-900 p-2 text-white">
+        <div class="flex w-fit items-center gap-2">
+          <ExclamationCircleIcon class="size-6 text-destructive" aria-hidden="true" />
+          <div class="flex flex-col">
+            <p>Syntax error</p>
+            {#if env.isEnabledMermaidChartLinks}
+              <p class="text-xs text-white/60">Create a free account to repair with AI</p>
+            {/if}
+          </div>
+        </div>
+        {#if env.isEnabledMermaidChartLinks}
+          <McTooltip>
+            <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
+              <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+              AI Repair
+            </Button>
+          </McTooltip>
+        {/if}
       </div>
-      <div class="max-h-32 overflow-auto bg-red-600 p-2 font-mono">
+      <div class="max-h-32 overflow-auto bg-muted p-2 font-mono">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html sanitizeText($stateStore.error?.toString().replaceAll('\n', '<br />'))}
       </div>

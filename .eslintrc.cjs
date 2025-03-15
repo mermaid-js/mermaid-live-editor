@@ -11,7 +11,15 @@ module.exports = {
     'plugin:svelte/prettier',
     'prettier'
   ],
-  plugins: ['tailwindcss', '@typescript-eslint', 'es', 'vitest', 'no-only-tests', 'unicorn'],
+  plugins: [
+    'tailwindcss',
+    '@typescript-eslint',
+    'es',
+    'vitest',
+    'no-only-tests',
+    'sort-keys',
+    'unicorn'
+  ],
   ignorePatterns: [
     'docs/*',
     '*.cjs',
@@ -40,6 +48,15 @@ module.exports = {
         'plugin:@typescript-eslint/strict',
         'prettier'
       ]
+    },
+    {
+      files: ['**/components/ui/**'],
+      rules: {
+        'unicorn/prefer-export-from': 'off',
+        'unicorn/prevent-abbreviations': 'off',
+        'unicorn/explicit-length-check': 'off',
+        'sort-keys/sort-keys-fix': 'off'
+      }
     }
   ],
   parserOptions: {
@@ -54,6 +71,7 @@ module.exports = {
     es2020: true
   },
   rules: {
+    'sort-keys/sort-keys-fix': ['error', 'asc', { minKeys: 5 }],
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {
@@ -77,6 +95,7 @@ module.exports = {
       'error',
       {
         allowList: {
+          args: true,
           ctx: true,
           db: true,
           doc: true,
@@ -87,6 +106,7 @@ module.exports = {
           k: true,
           param: true,
           Props: true,
+          props: true,
           req: true,
           res: true,
           str: true,

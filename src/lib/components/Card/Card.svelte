@@ -1,26 +1,34 @@
 <script lang="ts">
   import type { Tab } from '$lib/types';
-  import type { Snippet } from 'svelte';
+  import type { Component, Snippet } from 'svelte';
+  import { quintOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
   import Tabs from './Tabs.svelte';
 
   interface Props {
     isClosable?: boolean;
     isOpen?: boolean;
+    isStackable?: boolean;
     tabs?: Tab[];
     activeTabID?: string;
-    title: string;
+    title?: string;
+    icon?: {
+      component: Component;
+      class?: string;
+    };
     onselect?: (tab: Tab) => void;
     actions?: Snippet;
-    children?: Snippet;
+    children: Snippet;
   }
 
   let {
     isClosable = true,
-    isOpen = true,
+    isOpen = false,
+    isStackable = false,
     tabs = [],
     activeTabID = '',
     title,
+    icon,
     onselect,
     actions,
     children
@@ -35,23 +43,35 @@
   let isTabsShown = $derived(isOpen && tabs.length > 0);
 </script>
 
-<div class="card m-2 flex flex-grow flex-col overflow-hidden rounded shadow-2xl">
+<div
+  class="card flex h-fit {isOpen ? 'isOpen flex-grow' : ''} {isStackable
+    ? 'flex-1 group-has-[.isOpen]:w-full group-has-[.isOpen]:flex-none'
+    : 'w-full'} flex-col overflow-hidden rounded-2xl border-2 border-muted">
   <div
     role="toolbar"
     tabindex="0"
-    class="bg-primary p-2 {isTabsShown ? 'pb-0' : ''} flex-none cursor-pointer"
+    class="bg-muted p-2 {isTabsShown
+      ? 'pb-1'
+      : ''} flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap"
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
-    <div class="flex justify-between">
-      <Tabs {onselect} {tabs} bind:isOpen {title} {isClosable} {activeTabID} />
-      <div class="flex items-center gap-x-4 {isTabsShown ? '-mt-2' : ''}">
-        {@render actions?.()}
-      </div>
-    </div>
+    {#if icon || title}
+      <span role="menubar" tabindex="0" class="flex w-fit items-center gap-3">
+        {#if icon}
+          <icon.component class={icon.class} />
+        {/if}
+        {title}
+      </span>
+    {/if}
+    {#if isOpen && tabs && tabs.length > 0}
+      <Tabs {onselect} {tabs} {activeTabID} />
+    {/if}
+
+    {@render actions?.()}
   </div>
   {#if isOpen}
-    <div class="card-body flex-grow overflow-auto p-0 text-base-content" transition:slide>
-      {@render children?.()}
+    <div class="flex-grow overflow-x-auto" transition:slide={{ easing: quintOut }}>
+      {@render children()}
     </div>
   {/if}
 </div>

@@ -61,12 +61,12 @@ const getGistData = async (gistURL: string): Promise<GistData> => {
     }
     const currentItem = history[0];
     return {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      url: `${html_url}/${currentItem.version}`,
+      author: currentItem.user.login,
       code,
       config,
-      author: currentItem.user.login,
       time: new Date(currentItem.committed_at).getTime(),
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      url: `${html_url}/${currentItem.version}`,
       version: currentItem.version.slice(-7)
     };
   } else {
@@ -79,10 +79,10 @@ const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => 
     ...defaultState,
     code: gist.code,
     loader: {
-      type: 'gist',
       config: {
         url: gistURL
-      }
+      },
+      type: 'gist'
     }
   };
   gist.config && (state.mermaid = gist.config);
@@ -120,11 +120,11 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
   const state = getStateFromGist(entry, gistURL);
   for (const gist of gistHistory) {
     addHistoryEntry({
+      name: `${gist.author} v${gist.version}`,
       state: getStateFromGist(gist),
       time: gist.time,
       type: 'loader',
-      url: gist.url,
-      name: `${gist.author} v${gist.version}`
+      url: gist.url
     });
   }
   return state;

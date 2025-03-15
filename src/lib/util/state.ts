@@ -2,6 +2,7 @@ import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
+import { env } from './env';
 import {
   extractErrorLineText,
   findMostRelevantLineNumber,
@@ -9,8 +10,8 @@ import {
 } from './errorHandling';
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
-import { deserializeState, serializeState } from './serde';
-import { errorDebug, formatJSON } from './util';
+import { deserializeState, pakoSerde, serializeState } from './serde';
+import { errorDebug, formatJSON, MCBaseURL } from './util';
 
 export const defaultState: State = {
   code: `flowchart TD
@@ -20,10 +21,10 @@ export const defaultState: State = {
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]
   `,
+  grid: true,
   mermaid: formatJSON({
     theme: 'default'
   }),
-  autoSync: true,
   rough: false,
   updateDiagram: true
 };
@@ -46,25 +47,26 @@ export const currentState: ValidatedState = (() => {
   const state = get(inputStateStore);
   return {
     ...state,
-    serialized: serializeState(state),
-    errorMarkers: [],
+    editorMode: state.editorMode ?? 'code',
     error: undefined,
-    editorMode: state.editorMode ?? 'code'
+    errorMarkers: [],
+    serialized: serializeState(state)
   };
 })();
 
 const processState = async (state: State) => {
   const processed: ValidatedState = {
     ...state,
-    serialized: '',
-    errorMarkers: [],
+    editorMode: state.editorMode ?? 'code',
     error: undefined,
-    editorMode: state.editorMode ?? 'code'
+    errorMarkers: [],
+    serialized: ''
   };
   // No changes should be done to fields part of `state`.
   try {
     processed.serialized = serializeState(state);
-    await parse(state.code);
+    const { diagramType } = await parse(state.code);
+    processed.diagramType = diagramType;
     JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
@@ -94,12 +96,12 @@ const processState = async (state: State) => {
 
         processed.error = new Error(errorString);
         const marker: MarkerData = {
-          severity: 8, // Error
-          startLineNumber: realLineNumber,
-          startColumn: first_column,
-          endLineNumber: last_line + (realLineNumber - first_line),
           endColumn: last_column + (first_column === last_column ? 0 : 5),
-          message: errorString || 'Syntax error'
+          endLineNumber: last_line + (realLineNumber - first_line),
+          message: errorString || 'Syntax error',
+          severity: 8, // Error
+          startColumn: first_column,
+          startLineNumber: realLineNumber
         };
         processed.errorMarkers = [marker];
       } catch (error) {
@@ -118,6 +120,22 @@ export const stateStore: Readable<ValidatedState> = derived(
   },
   currentState
 );
+
+export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
+  const { krokiRendererUrl, rendererUrl } = env;
+  const png = `${rendererUrl}/img/${serialized}?type=png`;
+  return {
+    kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
+    mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
+    mermaidChart: {
+      save: `${MCBaseURL}/app/plugin/save?state=${serialized}`,
+      playground: `${MCBaseURL}/play#${serialized}`
+    },
+    png,
+    svg: `${rendererUrl}/svg/${serialized}`,
+    view: `/view#${serialized}`
+  };
+});
 
 export const loadState = (data: string): void => {
   let state: State;

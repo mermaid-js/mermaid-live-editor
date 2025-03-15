@@ -1,3 +1,7 @@
+import type { Component } from 'svelte';
+import type { HTMLInputTypeAttribute } from 'svelte/elements';
+import 'unplugin-icons/types/svelte';
+
 export interface MarkerData {
   severity: number;
   message: string;
@@ -15,15 +19,16 @@ export interface TabEvents {
 export interface Tab {
   id: string;
   title: string;
-  icon: string;
+  icon: Component;
 }
 
 export interface State {
   code: string;
   mermaid: string;
   updateDiagram: boolean;
-  autoSync: boolean;
   rough: boolean;
+  // All new options must be optional, as users would have old states saved
+  grid?: boolean;
   editorMode?: EditorMode;
   panZoom?: boolean;
   pan?: { x: number; y: number };
@@ -33,6 +38,7 @@ export interface State {
 
 export interface ValidatedState extends State {
   editorMode: EditorMode;
+  diagramType?: string;
   error?: Error;
   errorMarkers: MarkerData[];
   serialized: string;
@@ -87,3 +93,5 @@ export interface ErrorHash {
     last_column: number;
   };
 }
+
+export type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;
