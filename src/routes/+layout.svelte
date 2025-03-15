@@ -32,10 +32,10 @@
           console.log('Service worker registration failed, error:', error);
         });
     }
+  });
 
-    mode.subscribe((mode) => {
-      toggleDarkTheme(mode === 'dark');
-    });
+  $effect(() => {
+    toggleDarkTheme($mode === 'dark');
   });
 </script>
 

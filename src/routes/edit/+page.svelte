@@ -67,6 +67,7 @@
       </McTooltip>
     {/if}
   </Navbar>
+
   <div class="flex flex-1 overflow-hidden">
     <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
       <Resizable.Pane defaultSize={30} minSize={15} class="hidden md:block">

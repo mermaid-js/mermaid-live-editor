@@ -19,12 +19,18 @@
   import CopyInput from './CopyInput.svelte';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
-
   const { krokiRendererUrl } = env;
+
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
   const getFileName = (extension: string) =>
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
+
+  const getSvgElement = () => {
+    const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
+    svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    return svgElement;
+  };
 
   const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
     if (svg) {
@@ -33,9 +39,11 @@
     }
     height && svg?.setAttribute('height', `${height}px`);
     width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+
     if (!svg) {
       svg = getSvgElement();
     }
+
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
@@ -45,19 +53,30 @@
 ${svgString}`);
   };
 
+  const simulateDownload = (download: string, href: string): void => {
+    const a = document.createElement('a');
+    a.download = download;
+    a.href = href;
+    a.click();
+    a.remove();
+  };
+
   const exportImage = async (event: Event, exporter: Exporter) => {
     await waitForRender();
     if (document.querySelector('.outOfSync')) {
       throw new Error('Diagram is out of sync');
     }
-    const canvas: HTMLCanvasElement = document.createElement('canvas');
+
+    const canvas = document.createElement('canvas');
     const svg = document.querySelector<HTMLElement>('#container svg');
     if (!svg) {
       throw new Error('svg not found');
     }
-    const box: DOMRect = svg.getBoundingClientRect();
+
+    const box = svg.getBoundingClientRect();
     canvas.width = box.width;
     canvas.height = box.height;
+
     if (imageSizeMode === 'width') {
       const ratio = box.height / box.width;
       canvas.width = imageSize;
@@ -72,6 +91,7 @@ ${svgString}`);
     if (!context) {
       throw new Error('context not found');
     }
+
     context.fillStyle = `hsl(${window.getComputedStyle(document.body).getPropertyValue('--b1')})`;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -83,19 +103,6 @@ ${svgString}`);
     event.preventDefault();
   };
 
-  const getSvgElement = () => {
-    const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
-    svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    return svgElement;
-  };
-
-  const simulateDownload = (download: string, href: string): void => {
-    const a = document.createElement('a');
-    a.download = download;
-    a.href = href;
-    a.click();
-    a.remove();
-  };
   const downloadImage: Exporter = (context, image) => {
     return () => {
       const { canvas } = context;
@@ -108,7 +115,7 @@ ${svgString}`);
   };
 
   const isClipboardAvailable = (): boolean => {
-    return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem') as boolean;
+    return Object.prototype.hasOwnProperty.call(window, 'ClipboardItem');
   };
 
   const clipboardCopy: Exporter = (context, image) => {
@@ -161,7 +168,7 @@ ${svgString}`);
 
   const loadGist = () => {
     if (!gistURL) {
-      alert('Please enter a Gist URL first');
+      return alert('Please enter a Gist URL first');
     }
     window.location.href = `${window.location.pathname}?gist=${gistURL}`;
     logEvent('loadGist');

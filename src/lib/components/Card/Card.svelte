@@ -44,15 +44,18 @@
 </script>
 
 <div
-  class="card flex h-fit {isOpen ? 'isOpen flex-grow' : ''} {isStackable
-    ? 'flex-1 group-has-[.isOpen]:w-full group-has-[.isOpen]:flex-none'
-    : 'w-full'} flex-col overflow-hidden rounded-2xl border-2 border-muted">
+  class={[
+    'border-muted card flex h-fit flex-col overflow-hidden rounded-2xl border-2',
+    isOpen && 'isOpen flex-grow',
+    isStackable ? 'flex-1 group-has-[.isOpen]:w-full group-has-[.isOpen]:flex-none' : 'w-full'
+  ]}>
   <div
     role="toolbar"
     tabindex="0"
-    class="bg-muted p-2 {isTabsShown
-      ? 'pb-1'
-      : ''} flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap"
+    class={[
+      'bg-muted flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap p-2',
+      isTabsShown && 'pb-1'
+    ]}
     onclick={toggleCardOpen}
     onkeypress={toggleCardOpen}>
     {#if icon || title}

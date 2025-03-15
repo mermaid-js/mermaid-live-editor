@@ -195,10 +195,7 @@ export const updateCode = (
 };
 
 export const updateConfig = (config: string): void => {
-  // console.log('updateConfig', config);
-  inputStateStore.update((state) => {
-    return { ...state, mermaid: config };
-  });
+  updateCodeStore({ mermaid: config });
 };
 
 export const toggleDarkTheme = (dark: boolean): void => {
@@ -207,7 +204,6 @@ export const toggleDarkTheme = (dark: boolean): void => {
     if (!config.theme || ['dark', 'default'].includes(config.theme)) {
       config.theme = dark ? 'dark' : 'default';
     }
-
     return { ...state, mermaid: formatJSON(config) };
   });
 };

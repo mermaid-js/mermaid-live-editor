@@ -36,7 +36,6 @@
   let text = '';
 
   stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
-    // console.log('editor store subscription', { code, mermaid });
     if (!editor) {
       return;
     }
@@ -44,7 +43,6 @@
     // Update editor text if it's different
     const newText = editorMode === 'code' ? code : mermaid;
     if (newText !== text) {
-      // console.log('updating editor text', newText);
       editor.setScrollTop(0);
       editor.setValue(newText);
       text = newText;
@@ -70,7 +68,6 @@
   });
 
   const handleUpdate = (text: string, mode: EditorMode) => {
-    // console.log('editor HandleUpdate', { text, mode });
     if (mode === 'code') {
       updateCode(text);
     } else {
@@ -91,7 +88,7 @@
     if (!divElement) {
       throw new Error('divEl is undefined');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
     initEditor(monaco);
     errorDebug();
     editor = monaco.editor.create(divElement, editorOptions);
@@ -103,6 +100,7 @@
       text = newText;
       handleUpdate(text, $stateStore.editorMode);
     });
+
     editor.addAction({
       id: 'mermaid-render-diagram',
       label: 'Render Diagram',
@@ -142,7 +140,7 @@
     <div class="flex flex-col text-sm">
       <div class="flex items-center justify-between gap-2 bg-slate-900 p-2 text-white">
         <div class="flex w-fit items-center gap-2">
-          <ExclamationCircleIcon class="size-6 text-destructive" aria-hidden="true" />
+          <ExclamationCircleIcon class="text-destructive size-6" aria-hidden="true" />
           <div class="flex flex-col">
             <p>Syntax error</p>
             {#if env.isEnabledMermaidChartLinks}
@@ -159,7 +157,7 @@
           </McTooltip>
         {/if}
       </div>
-      <div class="max-h-32 overflow-auto bg-muted p-2 font-mono">
+      <div class="bg-muted max-h-32 overflow-auto p-2 font-mono">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html sanitizeText($stateStore.error?.toString().replaceAll('\n', '<br />'))}
       </div>

@@ -1,6 +1,7 @@
-<script module lang="ts">
+<script lang="ts" module>
   import { logEvent, plausible } from '$lib/util/stats';
   import { version } from 'mermaid/package.json';
+
   void logEvent('version', {
     mermaidVersion: version
   });
@@ -96,7 +97,7 @@
       </a>
       {#if env.isEnabledMermaidChartLinks}
         <McTooltip>
-          <div class=" hidden items-center justify-center gap-4 md:flex">
+          <div class="hidden items-center justify-center gap-4 md:flex">
             <Separator orientation="vertical" />
             <Switch
               id="editorMode"
