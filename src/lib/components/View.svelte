@@ -21,7 +21,6 @@
   let manualUpdate = true;
   let panZoomEnabled = $stateStore.panZoom;
   let pzoom: typeof panzoom | undefined;
-
   const handlePanZoomChange = () => {
     if (!pzoom) {
       return;
@@ -157,8 +156,10 @@
   };
 
   onMount(() => {
+    // Queue state changes to avoid race condition
+    let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
-      void handleStateChange(state);
+      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
     });
     window.addEventListener('resize', () => {
       if ($stateStore.panZoom && pzoom) {
@@ -170,7 +171,7 @@
 
 {#if outOfSync}
   <div
-    class="font-monotext-yellow-600 absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left"
+    class="absolute z-10 w-full bg-base-100 bg-opacity-80 p-2 text-left font-mono text-yellow-600"
     id="errorContainer">
     Diagram out of sync. <br />
     {#if $stateStore.autoSync}
