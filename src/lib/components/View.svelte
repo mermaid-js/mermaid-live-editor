@@ -5,6 +5,7 @@
   import { render as renderDiagram } from '$lib/util/mermaid';
   import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
   import { logEvent, saveStatistics } from '$lib/util/stats';
+  import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
@@ -21,7 +22,6 @@
   let view: HTMLDivElement | undefined = $state();
   let error = $state(false);
   let outOfSync = $state(false);
-  let hide = $state(false);
   let manualUpdate = true;
 
   // Set up panZoom state observer to update the store when pan/zoom changes
@@ -32,19 +32,12 @@
     };
   };
 
-  const handlePanZoom = (state: State) => {
+  const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
     if (!state.panZoom) {
       return;
     }
-    hide = true;
-
     void Promise.resolve().then(() => {
-      const graphDiv = document.querySelector<SVGElement>('#graph-div');
-      if (!graphDiv) {
-        return;
-      }
       panZoomState.updateElement(graphDiv, state);
-      hide = false;
     });
   };
 
@@ -75,19 +68,16 @@
         rough = state.rough;
         const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
+        const viewID = uniqueID('graph-');
         const {
           svg,
           bindFunctions,
           diagramType: detectedDiagramType
-        } = await renderDiagram(
-          Object.assign({}, JSON.parse(state.mermaid)) as MermaidConfig,
-          code,
-          'graph-div'
-        );
+        } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
         diagramType = detectedDiagramType;
         if (svg.length > 0) {
           container.innerHTML = svg;
-          const graphDiv = document.querySelector<SVGSVGElement>('#graph-div');
+          let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
           if (!graphDiv) {
             throw new Error('graph-div not found');
           }
@@ -96,7 +86,7 @@
             svg2roughjs.svg = graphDiv;
             await svg2roughjs.sketch();
             graphDiv.remove();
-            const sketch = document.querySelector<HTMLElement>('#container > svg');
+            const sketch = document.querySelector<SVGSVGElement>('#container > svg');
             if (!sketch) {
               throw new Error('sketch not found');
             }
@@ -107,6 +97,7 @@
             sketch.setAttribute('width', '100%');
             sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
             sketch.style.maxWidth = '100%';
+            graphDiv = sketch;
           } else {
             graphDiv.setAttribute('height', '100%');
             graphDiv.style.maxWidth = '100%';
@@ -114,7 +105,7 @@
               bindFunctions(graphDiv);
             }
           }
-          handlePanZoom(state);
+          handlePanZoom(state, graphDiv);
         }
         if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
@@ -138,21 +129,17 @@
 
   onMount(() => {
     setupPanZoomObserver();
-    let pendingStateChange: Promise<void> | undefined;
+    // Queue state changes to avoid race condition
+    let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
-      // Queue state changes to prevent race condition
-      if (pendingStateChange) {
-        pendingStateChange = pendingStateChange.then(() => handleStateChange(state));
-      } else {
-        pendingStateChange = handleStateChange(state);
-      }
+      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
     });
   });
 </script>
 
 {#if outOfSync}
   <div
-    class="bg-base-100 absolute z-10 w-full bg-opacity-80 p-2 text-left font-mono text-yellow-600"
+    class="absolute z-10 w-full bg-opacity-80 p-2 text-left font-mono text-yellow-600"
     id="errorContainer">
     Diagram out of sync. <br />
     It will be updated automatically.
@@ -165,25 +152,16 @@
   class="grid-bg-{shouldShowGrid ? ($mode === 'dark' ? 'dark' : 'light') : 'none'} h-full"
   class:error
   class:outOfSync>
-  <div id="container" bind:this={container} class="h-full overflow-auto" class:hide></div>
+  <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 
 <style>
   #view {
     flex: 1;
   }
-
-  #container {
-    transition: visibility 0.3s;
-  }
-
   .error,
   .outOfSync {
     opacity: 0.5;
-  }
-
-  .hide {
-    visibility: hidden;
   }
 
   .grid-bg-light {
