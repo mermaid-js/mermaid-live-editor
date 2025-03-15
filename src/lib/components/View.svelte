@@ -149,9 +149,7 @@
 <div
   id="view"
   bind:this={view}
-  class="grid-bg-{shouldShowGrid ? ($mode === 'dark' ? 'dark' : 'light') : 'none'} h-full"
-  class:error
-  class:outOfSync>
+  class={[shouldShowGrid && `grid-bg-${$mode}`, 'h-full', (error || outOfSync) && 'opacity-50']}>
   <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 
