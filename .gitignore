@@ -4,13 +4,12 @@
 .npmrc
 /.svelte-kit
 /build
+/coverage
 /cypress/downloads
 /cypress/screenshots
 /cypress/videos
 /docs
 /functions
+/node_modules
 /snapshots.js
-build/
-coverage/
-node_modules/
 yarn-error.log

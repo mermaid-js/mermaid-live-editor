@@ -34,6 +34,7 @@
     "@types/uuid": "9.0.8",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
+    "@vitest/coverage-v8": "2.1.9",
     "@vitest/ui": "^2.1.4",
     "autoprefixer": "^10.4.14",
     "c8": "7.14.0",
