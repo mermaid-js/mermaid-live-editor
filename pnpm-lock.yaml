@@ -12,13 +12,13 @@ importers:
         specifier: ^5.2.5
         version: 5.2.5
       '@mermaid-js/layout-elk':
-        specifier: ^0.1.4
+        specifier: ^0.1.7
         version: 0.1.7(mermaid@11.5.0)
       '@mermaid-js/mermaid-zenuml':
         specifier: ^0.2.0
         version: 0.2.0(mermaid@11.5.0)(typescript@5.8.2)
       dayjs:
-        specifier: ^1.11.7
+        specifier: ^1.11.13
         version: 1.11.13
       js-base64:
         specifier: 3.7.7
@@ -39,7 +39,7 @@ importers:
         specifier: 2.1.0
         version: 2.1.0
       plausible-tracker:
-        specifier: ^0.3.8
+        specifier: ^0.3.9
         version: 0.3.9
       random-word-slugs:
         specifier: 0.1.7
@@ -48,7 +48,7 @@ importers:
         specifier: 3.6.2
         version: 3.6.2
       svg2roughjs:
-        specifier: ^3.2.0
+        specifier: ^3.2.1
         version: 3.2.1
       uuid:
         specifier: 9.0.1
@@ -58,7 +58,7 @@ importers:
         specifier: 2.1.7
         version: 2.1.7
       '@fortawesome/fontawesome-free':
-        specifier: ^6.5.1
+        specifier: ^6.5.2
         version: 6.7.2
       '@iconify-json/material-symbols':
         specifier: ^1.2.15
@@ -68,18 +68,18 @@ importers:
         version: 1.2.3
       '@sveltejs/adapter-static':
         specifier: 3.0.8
-        version: 3.0.8(@sveltejs/kit@2.19.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14))
+        version: 3.0.8(@sveltejs/kit@2.20.0(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14))
       '@sveltejs/kit':
-        specifier: 2.19.2
-        version: 2.19.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14)
+        specifier: 2.20.0
+        version: 2.20.0(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14)
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^4.0.0
+        specifier: ^4.0.4
         version: 4.0.4(svelte@5.23.1)(vite@5.4.14)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
       '@testing-library/svelte':
-        specifier: ^5.2.4
+        specifier: ^5.2.7
         version: 5.2.7(svelte@5.23.1)(vite@5.4.14)(vitest@2.1.9)
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -100,10 +100,10 @@ importers:
         specifier: 2.1.9
         version: 2.1.9(vitest@2.1.9)
       '@vitest/ui':
-        specifier: ^2.1.4
+        specifier: ^2.1.9
         version: 2.1.9(vitest@2.1.9)
       autoprefixer:
-        specifier: ^10.4.14
+        specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
       bits-ui:
         specifier: ^1.3.12
@@ -112,13 +112,13 @@ importers:
         specifier: 7.14.0
         version: 7.14.0
       chai:
-        specifier: ^4.3.7
+        specifier: ^4.3.10
         version: 4.5.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
       cssnano:
-        specifier: ^6.0.0
+        specifier: ^6.0.5
         version: 6.1.2(postcss@8.5.3)
       cypress:
         specifier: 12.17.4
@@ -139,7 +139,7 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(eslint@8.57.1)
       eslint-plugin-no-only-tests:
-        specifier: ^3.1.0
+        specifier: ^3.3.0
         version: 3.3.0
       eslint-plugin-postcss-modules:
         specifier: ^2.0.0
@@ -148,16 +148,16 @@ importers:
         specifier: ^2.3.5
         version: 2.3.5
       eslint-plugin-svelte:
-        specifier: ^2.45.1
+        specifier: ^2.46.1
         version: 2.46.1(eslint@8.57.1)(svelte@5.23.1)
       eslint-plugin-tailwindcss:
-        specifier: ^3.13.1
+        specifier: ^3.18.0
         version: 3.18.0(tailwindcss@3.4.17)
       eslint-plugin-unicorn:
         specifier: ^50.0.1
         version: 50.0.1(eslint@8.57.1)
       eslint-plugin-vitest:
-        specifier: ^0.5.0
+        specifier: ^0.5.4
         version: 0.5.4(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2)(vitest@2.1.9)
       esserializer:
         specifier: ^1.3.11
@@ -169,37 +169,37 @@ importers:
         specifier: ^25.0.1
         version: 25.0.1
       lint-staged:
-        specifier: ^15.2.0
+        specifier: ^15.2.11
         version: 15.5.0
       lucide-svelte:
         specifier: ^0.479.0
         version: 0.479.0(svelte@5.23.1)
       node-html-parser:
-        specifier: ^6.1.5
+        specifier: ^6.1.13
         version: 6.1.13
       paneforge:
         specifier: ^1.0.0-next.4
         version: 1.0.0-next.4(svelte@5.23.1)
       postcss:
-        specifier: ^8.4.33
+        specifier: ^8.4.49
         version: 8.5.3
       postcss-load-config:
         specifier: 5.1.0
         version: 5.1.0(jiti@1.21.7)(postcss@8.5.3)
       prettier:
-        specifier: ^3.1.0
+        specifier: ^3.1.1
         version: 3.5.3
       prettier-plugin-svelte:
-        specifier: ^3.2.6
+        specifier: ^3.2.8
         version: 3.3.3(prettier@3.5.3)(svelte@5.23.1)
       prettier-plugin-tailwindcss:
-        specifier: ^0.6.0
+        specifier: ^0.6.11
         version: 0.6.11(prettier-plugin-svelte@3.3.3(prettier@3.5.3)(svelte@5.23.1))(prettier@3.5.3)
       svelte:
         specifier: ^5.23.1
         version: 5.23.1
       svelte-preprocess:
-        specifier: ^6.0.0
+        specifier: ^6.0.3
         version: 6.0.3(postcss-load-config@5.1.0(jiti@1.21.7)(postcss@8.5.3))(postcss@8.5.3)(svelte@5.23.1)(typescript@5.8.2)
       svelte-sonner:
         specifier: ^0.3.28
@@ -211,25 +211,25 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1(tailwindcss@3.4.17)
       tailwindcss:
-        specifier: ^3.4.1
+        specifier: ^3.4.17
         version: 3.4.17
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17)
       tslib:
-        specifier: ^2.6.2
+        specifier: ^2.6.3
         version: 2.8.1
       typescript:
-        specifier: ^5.5.0
+        specifier: ^5.5.4
         version: 5.8.2
       unplugin-icons:
         specifier: ^22.1.0
         version: 22.1.0(@vue/compiler-sfc@3.5.13)(svelte@5.23.1)
       vite:
-        specifier: ^5.4.4
+        specifier: ^5.4.14
         version: 5.4.14
       vitest:
-        specifier: ^2.1.4
+        specifier: ^2.1.9
         version: 2.1.9(@vitest/ui@2.1.9)(jsdom@25.0.1)
       vitest-dom:
         specifier: ^0.1.1
@@ -730,8 +730,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@sveltejs/kit@2.19.2':
-    resolution: {integrity: sha512-OkW7MMGkjXtdfqdHWlyPozh/Ct1X3pthXAKTSqHm+mwmvmTBASmPE6FhwlvUgsqlCceRYL+5QUGiIJfOy0xIjQ==}
+  '@sveltejs/kit@2.20.0':
+    resolution: {integrity: sha512-xCUGevE2GFhpDAxZiVOsk6HKaBicwU7uWYcMOcpHCDcjoN6mKBIeMEzuddRMqSA4zjbeA+RcillCv1ppkWRwSQ==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -4861,11 +4861,11 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
-  '@sveltejs/adapter-static@3.0.8(@sveltejs/kit@2.19.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14))':
+  '@sveltejs/adapter-static@3.0.8(@sveltejs/kit@2.20.0(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14))':
     dependencies:
-      '@sveltejs/kit': 2.19.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14)
+      '@sveltejs/kit': 2.20.0(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14)
 
-  '@sveltejs/kit@2.19.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14)':
+  '@sveltejs/kit@2.20.0(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.23.1)(vite@5.4.14))(svelte@5.23.1)(vite@5.4.14)':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.23.1)(vite@5.4.14)
       '@types/cookie': 0.6.0
