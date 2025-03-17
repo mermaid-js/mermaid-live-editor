@@ -100,6 +100,7 @@
 <Button
   variant="ghost"
   href={doc.url}
+  target="_blank"
   title="View documentation for {doc.key.replace('Diagram', '')} diagram">
   <BookIcon />
   Docs
