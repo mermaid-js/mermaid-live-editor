@@ -20,9 +20,9 @@
   </Popover.Trigger>
   <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-    <ul tabindex="0" class="menu flex flex-col gap-2">
+    <ul tabindex="0" class="flex flex-col">
       {#each props.links as { href, title }}
-        <li>
+        <li class="rounded-md p-2 hover:bg-muted">
           <a
             role="menuitem"
             tabindex="0"
