@@ -27,7 +27,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mermaid:
-        specifier: ^11.3.0
+        specifier: ^11.5.0
         version: 11.5.0
       monaco-editor:
         specifier: 0.52.2
@@ -172,7 +172,7 @@ importers:
         specifier: ^0.6.0
         version: 0.6.11(prettier-plugin-svelte@3.3.3(prettier@3.5.3)(svelte@5.23.1))(prettier@3.5.3)
       svelte:
-        specifier: ^5.0.0
+        specifier: ^5.23.1
         version: 5.23.1
       svelte-preprocess:
         specifier: ^6.0.0
