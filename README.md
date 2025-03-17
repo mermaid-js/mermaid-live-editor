@@ -100,8 +100,8 @@ https://docs.github.com/en/get-started/quickstart/fork-a-repo
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) version 18.20.7 or higher
-- [pnpm](https://pnpm.io/) package manager. Install with `npm install -g pnpm`
+- [Node.js](https://nodejs.org/en/) current LTS version
+- [pnpm](https://pnpm.io/) package manager. Install with `corepack enable pnpm`
 
 ## Development
 

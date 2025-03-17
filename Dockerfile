@@ -1,9 +1,9 @@
-FROM docker.io/library/node:20-alpine3.18 AS mermaid-live-editor-dependencies
+FROM docker.io/library/node:22-alpine3.21 AS mermaid-live-editor-dependencies
 
 RUN apk --no-cache add build-base git python3 && \
     rm -rf /var/cache/apk/*
 
-RUN npm install -g pnpm
+RUN corepack enable pnpm
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ FROM mermaid-live-editor-builder AS mermaid-dev
 
 ENTRYPOINT ["pnpm", "dev"]
 
-FROM nginx:1.25-alpine3.18 AS mermaid
+FROM nginx:1.27-alpine3.21 AS mermaid
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=mermaid-live-editor-builder /app/docs /usr/share/nginx/html
