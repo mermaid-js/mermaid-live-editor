@@ -25,6 +25,7 @@ export const defaultState: State = {
   mermaid: formatJSON({
     theme: 'default'
   }),
+  panZoom: true,
   rough: false,
   updateDiagram: true
 };
@@ -170,9 +171,11 @@ export const loadState = (data: string): void => {
   updateCodeStore(state);
 };
 
+let renderCount = 0;
 export const updateCodeStore = (newState: Partial<State>): void => {
   inputStateStore.update((state) => {
-    return { ...state, ...newState };
+    renderCount++;
+    return { ...state, ...newState, renderCount };
   });
 };
 
