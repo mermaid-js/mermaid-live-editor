@@ -1,7 +1,7 @@
 <script lang="ts">
   import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
   import History from '$/components/History/History.svelte';
-  import McTooltip from '$/components/MCTooltip.svelte';
+  import McWrapper from '$/components/McWrapper.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
@@ -9,7 +9,6 @@
   import * as Resizable from '$/components/ui/resizable';
   import { Toggle } from '$/components/ui/toggle';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
-  import { env } from '$/util/env';
   import { PanZoomState } from '$/util/panZoom';
   import Actions from '$lib/components/Actions.svelte';
   import Card from '$lib/components/Card/Card.svelte';
@@ -58,14 +57,12 @@
       <HistoryIcon />
     </Toggle>
     <Share />
-    {#if env.isEnabledMermaidChartLinks}
-      <McTooltip>
-        <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
-          <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
-          Save diagram
-        </Button>
-      </McTooltip>
-    {/if}
+    <McWrapper>
+      <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
+        <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+        Save diagram
+      </Button>
+    </McWrapper>
   </Navbar>
 
   <div class="flex flex-1 overflow-hidden">

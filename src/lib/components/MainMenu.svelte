@@ -1,8 +1,7 @@
 <script lang="ts">
-  import McTooltip from '$/components/MCTooltip.svelte';
+  import McWrapper from '$/components/McWrapper.svelte';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
-  import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
@@ -38,44 +37,39 @@
 {/snippet}
 
 <Popover.Root>
-  <Popover.Trigger class="flex shrink-0 items-center gap-0">
+  <Popover.Trigger class="shrink-0">
     <img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" />
   </Popover.Trigger>
-  <Popover.Content align="start" class="overflow-hidden  p-0" sideOffset={16}>
-    <div class="flex flex-col">
-      {#each menuItems as item}
-        {@render menuItem(item)}
-      {/each}
-      <div
-        class="flex items-center justify-between border-b bg-muted px-3 py-2 hover:bg-background">
-        <span class="flex items-center gap-2">
-          <div class="grid">
-            {#key $mode}
-              <div transition:scale class="col-start-1 row-start-1">
-                {#if $mode === 'dark'}
-                  <MoonIcon />
-                {:else}
-                  <SunIcon />
-                {/if}
-              </div>
-            {/key}
-          </div>
-          Dark Mode
-        </span>
-        <Switch
-          checked={$mode === 'dark'}
-          onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
-      </div>
-      {#if env.isEnabledMermaidChartLinks}
-        <McTooltip>
-          {@render menuItem({
-            label: 'Edit in Playground',
-            icon: PlaygroundIcon,
-            href: $urlsStore.mermaidChart.playground,
-            class: 'text-accent bg-background hover:bg-background/50'
-          })}
-        </McTooltip>
-      {/if}
+  <Popover.Content align="start" class="flex flex-col overflow-hidden p-0" sideOffset={16}>
+    {#each menuItems as item}
+      {@render menuItem(item)}
+    {/each}
+    <div class="flex items-center justify-between border-b bg-muted px-3 py-2 hover:bg-background">
+      <span class="flex items-center gap-2">
+        <div class="grid">
+          {#key $mode}
+            <div transition:scale class="col-start-1 row-start-1">
+              {#if $mode === 'dark'}
+                <MoonIcon />
+              {:else}
+                <SunIcon />
+              {/if}
+            </div>
+          {/key}
+        </div>
+        Dark Mode
+      </span>
+      <Switch
+        checked={$mode === 'dark'}
+        onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
     </div>
+    <McWrapper>
+      {@render menuItem({
+        label: 'Edit in Playground',
+        icon: PlaygroundIcon,
+        href: $urlsStore.mermaidChart.playground,
+        class: 'text-accent bg-background hover:bg-background/50'
+      })}
+    </McWrapper>
   </Popover.Content>
 </Popover.Root>

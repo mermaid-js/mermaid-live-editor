@@ -4,10 +4,10 @@
   import { Input } from '$/components/ui/input';
   import { Separator } from '$/components/ui/separator';
   import * as ToggleGroup from '$/components/ui/toggle-group';
+  import { env } from '$/util/env';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
-  import { env } from '$lib/util/env';
-  import { stateStore, urlsStore } from '$lib/util/state';
+  import { inputStateStore, stateStore, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
@@ -19,7 +19,6 @@
   import CopyInput from './CopyInput.svelte';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
-  const { krokiRendererUrl } = env;
 
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
@@ -62,6 +61,8 @@ ${svgString}`);
   };
 
   const exportImage = async (event: Event, exporter: Exporter) => {
+    $inputStateStore.panZoom = false;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await waitForRender();
     if (document.querySelector('.outOfSync')) {
       throw new Error('Diagram is out of sync');
@@ -74,8 +75,6 @@ ${svgString}`);
     }
 
     const box = svg.getBoundingClientRect();
-    canvas.width = box.width;
-    canvas.height = box.height;
 
     if (imageSizeMode === 'width') {
       const ratio = box.height / box.width;
@@ -85,6 +84,10 @@ ${svgString}`);
       const ratio = box.width / box.height;
       canvas.width = imageSize * ratio;
       canvas.height = imageSize;
+    } else {
+      const multiplier = 2;
+      canvas.width = box.width * multiplier;
+      canvas.height = box.height * multiplier;
     }
 
     const context = canvas.getContext('2d');
@@ -96,7 +99,10 @@ ${svgString}`);
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     const image = new Image();
-    image.addEventListener('load', exporter(context, image));
+    image.addEventListener('load', () => {
+      exporter(context, image)();
+      $inputStateStore.panZoom = true;
+    });
     image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
 
     event.stopPropagation();
@@ -226,7 +232,7 @@ ${svgString}`);
       {@render dualActionButton('PNG', onDownloadPNG, $urlsStore.png)}
       {@render dualActionButton('SVG', onDownloadSVG, $urlsStore.svg)}
 
-      {#if krokiRendererUrl}
+      {#if env.krokiRendererUrl}
         <a target="_blank" rel="noreferrer" class="flex-grow" href={$urlsStore.kroki}>
           <Button class="action-btn w-full">
             <ExternalLinkIcon class="mr-2" /> Kroki

@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-  import McTooltip from '$/components/MCTooltip.svelte';
+  import McWrapper from '$/components/McWrapper.svelte';
   import { Button } from '$/components/ui/button';
   import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
@@ -147,14 +147,12 @@
             {/if}
           </div>
         </div>
-        {#if env.isEnabledMermaidChartLinks}
-          <McTooltip>
-            <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
-              <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
-              AI Repair
-            </Button>
-          </McTooltip>
-        {/if}
+        <McWrapper>
+          <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
+            <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+            AI Repair
+          </Button>
+        </McWrapper>
       </div>
       <output class="max-h-32 overflow-auto bg-muted p-2" name="mermaid-error" for="editor">
         <pre>{$stateStore.error?.toString()}</pre>

@@ -9,11 +9,10 @@
 
 <script lang="ts">
   import MainMenu from '$/components/MainMenu.svelte';
-  import McTooltip from '$/components/MCTooltip.svelte';
+  import McWrapper from '$/components/McWrapper.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import { Switch } from '$/components/ui/switch';
-  import { env } from '$/util/env';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import { urlsStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
@@ -84,7 +83,6 @@
 <nav class="z-50 flex p-6">
   <div class="flex flex-1 items-center gap-4">
     <MainMenu />
-
     <div
       id="switcher"
       class="flex items-center justify-center gap-4 font-medium"
@@ -95,40 +93,38 @@
         {/if}
         Live Editor
       </a>
-      {#if env.isEnabledMermaidChartLinks}
-        <McTooltip>
-          <div class="hidden items-center justify-center gap-4 md:flex">
-            <Separator orientation="vertical" />
-            <Switch
-              id="editorMode"
-              class="data-[state=checked]:bg-secondary"
-              checked={isReferral}
-              onclick={() => {
-                logEvent('playgroundToggle', { isReferred: isReferral });
-                // Wait for the event to be logged
-                setTimeout(() => {
-                  window.open(
-                    $urlsStore.mermaidChart.playground,
-                    '_self',
-                    // Do not send referrer header, if the user already came from playground
-                    isReferral ? 'noreferrer' : ''
-                  );
-                }, 100);
-              }} />
 
-            <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
-              Playground <span class="hidden text-sm opacity-50 lg:inline"
-                >- more features, no account required</span>
-            </a>
-          </div>
-        </McTooltip>
-      {/if}
+      <McWrapper>
+        <div class="hidden items-center justify-center gap-4 md:flex">
+          <Separator orientation="vertical" />
+          <Switch
+            id="editorMode"
+            class="data-[state=checked]:bg-secondary"
+            checked={isReferral}
+            onclick={() => {
+              logEvent('playgroundToggle', { isReferred: isReferral });
+              // Wait for the event to be logged
+              setTimeout(() => {
+                window.open(
+                  $urlsStore.mermaidChart.playground,
+                  '_self',
+                  // Do not send referrer header, if the user already came from playground
+                  isReferral ? 'noreferrer' : ''
+                );
+              }, 100);
+            }} />
+
+          <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
+            Playground <span class="hidden text-sm opacity-50 lg:inline"
+              >- more features, no account required</span>
+          </a>
+        </div>
+      </McWrapper>
     </div>
   </div>
-
   <div
     id="menu"
-    class="hidden h-full w-full flex-nowrap items-center justify-between gap-3 overflow-hidden pt-4 text-base md:flex md:w-auto md:items-center md:pt-0">
+    class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
     <DropdownNavMenu icon={GithubIcon} links={githubLinks} />
     <Separator orientation="vertical" />
     {@render children()}

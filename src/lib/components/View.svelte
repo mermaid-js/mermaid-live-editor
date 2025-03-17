@@ -21,6 +21,7 @@
   let rough: boolean;
   let view: HTMLDivElement | undefined = $state();
   let error = $state(false);
+  let panZoom = true;
   let manualUpdate = true;
 
   // Set up panZoom state observer to update the store when pan/zoom changes
@@ -32,9 +33,7 @@
   };
 
   const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
-    void Promise.resolve().then(() => {
-      panZoomState.updateElement(graphDiv, state);
-    });
+    panZoomState.updateElement(graphDiv, state);
   };
 
   const handleStateChange = async (state: ValidatedState) => {
@@ -49,7 +48,12 @@
       if (container) {
         manualUpdate = true;
         // Do not render if there is no change in Code/Config/PanZoom
-        if (code === state.code && config === state.mermaid && rough === state.rough) {
+        if (
+          code === state.code &&
+          config === state.mermaid &&
+          rough === state.rough &&
+          panZoom === state.panZoom
+        ) {
           return;
         }
 
@@ -60,6 +64,7 @@
         code = state.code;
         config = state.mermaid;
         rough = state.rough;
+        panZoom = state.panZoom ?? true;
         const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
         const viewID = uniqueID('graph-');
@@ -99,7 +104,9 @@
               bindFunctions(graphDiv);
             }
           }
-          handlePanZoom(state, graphDiv);
+          if (state.panZoom) {
+            handlePanZoom(state, graphDiv);
+          }
         }
         if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;

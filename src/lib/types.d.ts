@@ -28,6 +28,8 @@ export interface State {
   updateDiagram: boolean;
   rough: boolean;
   // All new options must be optional, as users would have old states saved
+  renderCount?: number;
+  panZoom?: boolean;
   grid?: boolean;
   editorMode?: EditorMode;
   pan?: { x: number; y: number };
