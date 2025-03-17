@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { Toaster } from '$/components/ui/sonner/index.js';
+  import { loadingStateStore } from '$/util/loading';
+  import { toggleDarkTheme } from '$/util/state';
+  import { initHandler } from '$/util/util';
   import { base } from '$app/paths';
-  import { Toaster } from '$lib/components/ui/sonner/index.js';
-  import { loadingStateStore } from '$lib/util/loading';
-  import { toggleDarkTheme } from '$lib/util/state';
-  import { initHandler } from '$lib/util/util';
   import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
   import '../app.postcss';

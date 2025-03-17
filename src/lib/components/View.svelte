@@ -1,10 +1,10 @@
 <script lang="ts">
+  import type { State, ValidatedState } from '$/types';
+  import { recordRenderTime, shouldRefreshView } from '$/util/autoSync';
+  import { render as renderDiagram } from '$/util/mermaid';
   import { PanZoomState } from '$/util/panZoom';
-  import type { State, ValidatedState } from '$lib/types';
-  import { recordRenderTime, shouldRefreshView } from '$lib/util/autoSync';
-  import { render as renderDiagram } from '$lib/util/mermaid';
-  import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
-  import { logEvent, saveStatistics } from '$lib/util/stats';
+  import { inputStateStore, stateStore, updateCodeStore } from '$/util/state';
+  import { logEvent, saveStatistics } from '$/util/stats';
   import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
@@ -139,7 +139,7 @@
 <div
   id="view"
   bind:this={view}
-  class={[shouldShowGrid && `grid-bg-${$mode}`, error && 'opacity-50', 'h-full w-full']}>
+  class={['h-full w-full', shouldShowGrid && `grid-bg-${$mode}`, error && 'opacity-50']}>
   <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 

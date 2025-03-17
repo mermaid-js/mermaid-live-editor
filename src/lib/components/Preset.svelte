@@ -1,6 +1,6 @@
 <script lang="ts">
+  import Card from '$/components/Card/Card.svelte';
   import { Button } from '$/components/ui/button';
-  import Card from '$lib/components/Card/Card.svelte';
   import { updateCode } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import ShapesIcon from '~icons/material-symbols/account-tree-outline-rounded';

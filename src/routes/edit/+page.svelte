@@ -1,24 +1,24 @@
 <script lang="ts">
+  import Actions from '$/components/Actions.svelte';
+  import Card from '$/components/Card/Card.svelte';
   import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
+  import Editor from '$/components/Editor.svelte';
   import History from '$/components/History/History.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
+  import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
+  import Preset from '$/components/Preset.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
   import { Toggle } from '$/components/ui/toggle';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
+  import View from '$/components/View.svelte';
+  import type { EditorMode, Tab } from '$/types';
   import { PanZoomState } from '$/util/panZoom';
-  import Actions from '$lib/components/Actions.svelte';
-  import Card from '$lib/components/Card/Card.svelte';
-  import Editor from '$lib/components/Editor.svelte';
-  import Navbar from '$lib/components/Navbar.svelte';
-  import Preset from '$lib/components/Preset.svelte';
-  import View from '$lib/components/View.svelte';
-  import type { EditorMode, Tab } from '$lib/types';
-  import { stateStore, updateCodeStore, urlsStore } from '$lib/util/state';
-  import { initHandler } from '$lib/util/util';
+  import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
+  import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/material-symbols/code-blocks-outline';
   import HistoryIcon from '~icons/material-symbols/history';
@@ -99,10 +99,7 @@
       </Resizable.Pane>
       {#if isHistoryOpen}
         <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
-        <Resizable.Pane
-          minSize={15}
-          defaultSize={30}
-          class="hidden h-full flex-grow flex-col md:flex">
+        <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full flex-grow md:flex">
           <History />
         </Resizable.Pane>
       {/if}

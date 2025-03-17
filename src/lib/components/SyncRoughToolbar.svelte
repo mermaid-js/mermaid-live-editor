@@ -1,8 +1,8 @@
 <script lang="ts">
+  import FloatingToolbar from '$/components/FloatingToolbar.svelte';
   import { Separator } from '$/components/ui/separator';
   import { Switch } from '$/components/ui/switch';
   import { defaultState, inputStateStore } from '$/util/state';
-  import FloatingToolbar from './FloatingToolbar.svelte';
 
   if ($inputStateStore.grid === undefined) {
     // Handle cases where old states were saved without grid option

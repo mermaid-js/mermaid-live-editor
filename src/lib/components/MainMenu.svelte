@@ -38,7 +38,7 @@
 
 <Popover.Root>
   <Popover.Trigger class="shrink-0">
-    <img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" />
+    <img class="size-6" src="/favicon.svg" alt="Mermaid Live Editor" />
   </Popover.Trigger>
   <Popover.Content align="start" class="flex flex-col overflow-hidden p-0" sideOffset={16}>
     {#each menuItems as item}

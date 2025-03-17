@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FloatingToolbar from '$/components/FloatingToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import type { PanZoomState } from '$/util/panZoom';
@@ -7,7 +8,6 @@
   import ArrowsToCircleIcon from '~icons/material-symbols/screenshot-frame-2';
   import MagnifyingGlassPlusIcon from '~icons/material-symbols/zoom-in';
   import MagnifyingGlassMinusIcon from '~icons/material-symbols/zoom-out';
-  import FloatingToolbar from './FloatingToolbar.svelte';
 
   let { panZoomState }: { panZoomState: PanZoomState } = $props();
 </script>

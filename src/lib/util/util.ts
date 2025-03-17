@@ -52,14 +52,10 @@ export const fetchText = async (url: string): Promise<string> => {
 };
 
 export const copyToClipboard = async (text: string) => {
-  if (!navigator.clipboard) {
-    return fallbackCopyToClipboard(text);
-  }
   try {
     await navigator.clipboard.writeText(text);
-    return true;
   } catch {
-    return fallbackCopyToClipboard(text);
+    fallbackCopyToClipboard(text);
   }
 };
 
@@ -75,14 +71,13 @@ function fallbackCopyToClipboard(text: string) {
   textArea.focus();
   textArea.select();
 
-  let success = false;
   try {
     // The deprecated but widely supported method
-    success = document.execCommand('copy');
+    document.execCommand('copy');
   } catch (error) {
     console.error('Failed to copy:', error);
+    throw error;
+  } finally {
+    textArea.remove();
   }
-
-  textArea.remove();
-  return success;
 }

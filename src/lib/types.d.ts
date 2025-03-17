@@ -57,10 +57,15 @@ export interface FileLoaderConfig {
   codeURL: string;
   configURL?: string;
 }
-export interface LoaderConfig {
-  type: 'gist' | 'files';
-  config: GistLoaderConfig | FileLoaderConfig;
-}
+export type LoaderConfig =
+  | {
+      type: 'gist';
+      config: GistLoaderConfig;
+    }
+  | {
+      type: 'files';
+      config: FileLoaderConfig;
+    };
 export type HistoryType = 'auto' | 'manual' | 'loader';
 export type HistoryEntry = { id: string; state: State; time: number; url?: string } & (
   | {
