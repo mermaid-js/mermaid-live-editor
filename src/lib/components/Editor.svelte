@@ -14,13 +14,12 @@
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
   import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
-  import { logEvent } from '$lib/util/stats';
-  import { errorDebug, syncDiagram } from '$lib/util/util';
+  import { errorDebug } from '$lib/util/util';
   import { mode } from 'mode-watcher';
   import * as monaco from 'monaco-editor';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
   let divElement: HTMLDivElement | undefined = $state();
@@ -32,19 +31,19 @@
     theme: 'mermaid',
     overviewRulerLanes: 0
   };
-  let text = '';
+  let currentText = '';
 
-  stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
+  const unsubscribeState = stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
     if (!editor) {
       return;
     }
 
     // Update editor text if it's different
     const newText = editorMode === 'code' ? code : mermaid;
-    if (newText !== text) {
+    if (newText !== currentText) {
       editor.setScrollTop(0);
       editor.setValue(newText);
-      text = newText;
+      currentText = newText;
     }
 
     // Update editor mode if it's different
@@ -60,10 +59,6 @@
 
     // Display/clear errors
     monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
-  });
-
-  mode.subscribe((mode) => {
-    editor && monaco.editor.setTheme(mode === 'dark' ? 'mermaid-dark' : 'mermaid');
   });
 
   const handleUpdate = (text: string, mode: EditorMode) => {
@@ -93,25 +88,15 @@
     editor = monaco.editor.create(divElement, editorOptions);
     editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      if (!newText || text === newText || isFlush) {
+      if (!newText || currentText === newText || isFlush) {
         return;
       }
-      text = newText;
-      handleUpdate(text, $stateStore.editorMode);
+      currentText = newText;
+      handleUpdate(currentText, $stateStore.editorMode);
     });
-
-    editor.addAction({
-      id: 'mermaid-render-diagram',
-      label: 'Render Diagram',
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-      run: function () {
-        syncDiagram();
-        logEvent('renderDiagram', {
-          method: 'keyboardShortcut'
-        });
-      }
+    const unsubscribeMode = mode.subscribe((mode) => {
+      editor && monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
     });
-    monaco.editor.setTheme($mode === 'dark' ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,
@@ -126,10 +111,13 @@
     if (window.Cypress) {
       window.editorLoaded = true;
     }
-  });
 
-  onDestroy(() => {
-    editor?.dispose();
+    return () => {
+      unsubscribeState();
+      unsubscribeMode();
+      resizeObserver.disconnect();
+      editor?.dispose();
+    };
   });
 </script>
 
