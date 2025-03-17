@@ -17,7 +17,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: yarn
+          cache: pnpm
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -34,9 +37,8 @@ jobs:
         run: |
           export DEPLOY=true
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
-          yarn install
-          version=$(yarn version --patch --no-git-tag-version | grep "New version" | cut -d':' -f 2)
-          yarn build
+          pnpm install
+          pnpm build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

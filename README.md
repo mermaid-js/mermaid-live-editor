@@ -1,10 +1,8 @@
-[![Mermaid Live Editor](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/2ckppp/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/2ckppp/runs) [![Join our Slack!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack)](https://join.slack.com/t/mermaid-talk/shared_invite/enQtNzc4NDIyNzk4OTAyLWVhYjQxOTI2OTg4YmE1ZmJkY2Y4MTU3ODliYmIwOTY3NDJlYjA0YjIyZTdkMDMyZTUwOGI0NjEzYmEwODcwOTE) [![Netlify Status](https://api.netlify.com/api/v1/badges/27fa023d-7c73-4a3f-9791-b3b657a47100/deploy-status)](https://app.netlify.com/sites/mermaidjs/deploys)
+[![Mermaid Live Editor](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/2ckppp/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/2ckppp/runs)
+[![Join our Discord!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=discord&label=discord)](https://discord.gg/sKeNQX4Wtj)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/27fa023d-7c73-4a3f-9791-b3b657a47100/deploy-status)](https://app.netlify.com/sites/mermaidjs/deploys)
 
-# Contributors are welcome!
-
-If you want to speed up the progress for mermaid-live-editor, join the slack channel and contact knsv.
-
-# mermaid-live-editor
+# Mermaid Live Editor
 
 Edit, preview and share mermaid charts/diagrams.
 
@@ -18,6 +16,10 @@ Edit, preview and share mermaid charts/diagrams.
 ## Live demo
 
 You can try out a live version [here](https://mermaid.live/).
+
+# Contributors are welcome!
+
+If you want to speed up the progress for mermaid-live-editor, join the Discord channel and contact knsv.
 
 ## Docker
 
@@ -98,15 +100,14 @@ https://docs.github.com/en/get-started/quickstart/fork-a-repo
 
 ## Requirements
 
-- [volta](https://volta.sh/) to manage node versions.
-- [Node.js](https://nodejs.org/en/). `volta install node`
-- [yarn](https://yarnpkg.com/) package manager. `volta install yarn`
+- [Node.js](https://nodejs.org/en/) version 18.20.7 or higher
+- [pnpm](https://pnpm.io/) package manager. Install with `npm install -g pnpm`
 
 ## Development
 
 ```sh
-yarn install
-yarn dev -- --open
+pnpm install
+pnpm dev -- --open
 ```
 
 This app is created with Svelte Kit.
