@@ -45,7 +45,7 @@
 
 <div
   class={[
-    'border-muted card flex h-fit flex-col overflow-hidden rounded-2xl border-2',
+    'card flex h-fit flex-col overflow-hidden rounded-2xl border-2 border-muted',
     isOpen && 'isOpen flex-grow',
     isStackable ? 'flex-1 group-has-[.isOpen]:w-full group-has-[.isOpen]:flex-none' : 'w-full'
   ]}>
@@ -53,7 +53,7 @@
     role="toolbar"
     tabindex="0"
     class={[
-      'bg-muted flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap p-2',
+      'flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap bg-muted p-2',
       isTabsShown && 'pb-1'
     ]}
     onclick={toggleCardOpen}
