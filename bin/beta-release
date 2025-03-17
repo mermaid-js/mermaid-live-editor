@@ -6,7 +6,7 @@
 # git clone https://github.com/mermaid-js/docs.git
 set -e
 rm -rf docs
-yarn release
+pnpm release
 pushd .
 if [ ! -d ../docs ]; then
   echo "Clone https://github.com/mermaid-js/docs to parent folder before continuing." 

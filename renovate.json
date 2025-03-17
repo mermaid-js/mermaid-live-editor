@@ -24,5 +24,6 @@
   "major": {
     "dependencyDashboardApproval": true
   },
-  "dependencyDashboardAutoclose": true
+  "dependencyDashboardAutoclose": true,
+  "rangeStrategy": "bump"
 }

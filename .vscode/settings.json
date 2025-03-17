@@ -25,7 +25,7 @@
     "tailwindcss",
     "uparrow"
   ],
-  "vitest.commandLine": "yarn test:unit",
+  "vitest.commandLine": "pnpm test:unit",
   "vitest.enable": true,
   "testing.autoRun.mode": "rerun",
   "svelte.enable-ts-plugin": true,

@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite dev",
-    "dev:force": "MERMAID_LOCAL=true yarn dev --force",
-    "dev:test": "yarn dev",
+    "dev:force": "MERMAID_LOCAL=true pnpm dev --force",
+    "dev:test": "pnpm dev",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "prettier --check --cache . && eslint --ignore-path .gitignore .",
@@ -18,7 +18,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:browser": "cypress run",
-    "test": "test:unit && test:browser",
+    "test": "pnpm test:unit && pnpm test:browser",
     "cy": "cypress open"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "@iconify-json/material-symbols": "^1.2.15",
     "@iconify-json/mdi": "^1.2.3",
     "@sveltejs/adapter-static": "3.0.8",
-    "@sveltejs/kit": "2.19.0",
+    "@sveltejs/kit": "2.19.2",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/svelte": "^5.2.4",
@@ -69,7 +69,7 @@
     "prettier": "^3.1.0",
     "prettier-plugin-svelte": "^3.2.6",
     "prettier-plugin-tailwindcss": "^0.6.0",
-    "svelte": "^5.0.0",
+    "svelte": "^5.23.1",
     "svelte-preprocess": "^6.0.0",
     "svelte-sonner": "^0.3.28",
     "tailwind-merge": "^3.0.2",
@@ -90,7 +90,7 @@
     "dayjs": "^1.11.7",
     "js-base64": "3.7.7",
     "lodash-es": "^4.17.21",
-    "mermaid": "^11.3.0",
+    "mermaid": "^11.5.0",
     "mode-watcher": "^0.5.1",
     "monaco-editor": "0.52.2",
     "pako": "2.1.0",
@@ -106,11 +106,20 @@
       "eslint --ignore-path .gitignore "
     ]
   },
-  "volta": {
-    "node": "18.20.7",
-    "yarn": "1.22.22"
-  },
   "engines": {
-    "node": ">=16.7"
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@cypress/snapshot",
+      "cypress",
+      "deasync",
+      "esbuild",
+      "svelte-preprocess"
+    ],
+    "ignoredBuiltDependencies": [
+      "vue-demi"
+    ]
   }
 }
