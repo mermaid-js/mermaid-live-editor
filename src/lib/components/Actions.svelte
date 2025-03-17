@@ -1,5 +1,7 @@
 <script lang="ts">
   import Card from '$/components/Card/Card.svelte';
+  import CopyButton from '$/components/CopyButton.svelte';
+  import CopyInput from '$/components/CopyInput.svelte';
   import { Button } from '$/components/ui/button';
   import { Input } from '$/components/ui/input';
   import { Separator } from '$/components/ui/separator';
@@ -12,11 +14,9 @@
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
-  import CopyIcon from '~icons/material-symbols/content-copy-outline-rounded';
   import DownloadIcon from '~icons/material-symbols/download';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
-  import CopyInput from './CopyInput.svelte';
 
   const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
@@ -64,10 +64,6 @@ ${svgString}`);
     $inputStateStore.panZoom = false;
     await new Promise((resolve) => setTimeout(resolve, 1000));
     await waitForRender();
-    if (document.querySelector('.outOfSync')) {
-      throw new Error('Diagram is out of sync');
-    }
-
     const canvas = document.createElement('canvas');
     const svg = document.querySelector<HTMLElement>('#container svg');
     if (!svg) {
@@ -167,7 +163,6 @@ ${svgString}`);
   let gistURL = $state('');
   stateStore.subscribe(({ loader }) => {
     if (loader?.type === 'gist') {
-      // @ts-expect-error Gist will have url
       gistURL = loader.config.url;
     }
   });
@@ -190,17 +185,17 @@ ${svgString}`);
 
   let imageSize = $state(1080);
 
-  const isNetlify =
-    browser && ['mermaid.live', 'netlify'].some((path) => window.location.host.includes(path));
+  const isNetlify = browser && window.location.host.includes('netlify');
 </script>
 
 {#snippet dualActionButton(text: string, download: (event: Event) => unknown, url?: string)}
   <div class="flex flex-grow gap-0.5">
-    <Button class="flex-grow rounded-r-none" onclick={download}>
-      <DownloadIcon />{text}
+    <Button class={['flex-grow', url && 'rounded-r-none']} onclick={download}>
+      <DownloadIcon />
+      {text}
     </Button>
     {#if url}
-      <Button class="rounded-l-none" href={url} target="_blank" rel="noreferrer">
+      <Button class="rounded-l-none" href={url} target="_blank" rel="noreferrer noopener">
         <ExternalLinkIcon />
       </Button>
     {/if}
@@ -217,9 +212,8 @@ ${svgString}`);
         <ToggleGroup.Item value="height">Height</ToggleGroup.Item>
       </ToggleGroup.Root>
       {#if imageSizeMode !== 'auto'}
-        <div>
-          <WidthIcon class="{imageSizeMode === 'width' ? '' : 'rotate-90'} size-6 transition-all" />
-        </div>
+        <WidthIcon
+          class={['size-6 shrink-0 transition-all', imageSizeMode === 'width' && 'rotate-90']} />
       {/if}
       <Input
         type="number"
@@ -231,20 +225,17 @@ ${svgString}`);
     <div class="flex gap-2">
       {@render dualActionButton('PNG', onDownloadPNG, $urlsStore.png)}
       {@render dualActionButton('SVG', onDownloadSVG, $urlsStore.svg)}
-
       {#if env.krokiRendererUrl}
         <a target="_blank" rel="noreferrer" class="flex-grow" href={$urlsStore.kroki}>
-          <Button class="action-btn w-full">
-            <ExternalLinkIcon class="mr-2" /> Kroki
+          <Button class="action-btn flex w-full items-center gap-2">
+            <ExternalLinkIcon /> Kroki
           </Button>
         </a>
       {/if}
     </div>
     <Separator />
     {#if isClipboardAvailable()}
-      <Button onclick={onCopyClipboard}>
-        <CopyIcon /> Copy Image
-      </Button>
+      <CopyButton onclick={onCopyClipboard} label="Copy Image" />
     {/if}
     {#if $urlsStore.mdCode}
       <CopyInput value={$urlsStore.mdCode} label="Copy Markdown" />
