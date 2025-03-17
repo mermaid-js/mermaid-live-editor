@@ -13,7 +13,6 @@
   import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
-  import { sanitizeText } from '$lib/util/sanitize';
   import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { errorDebug, syncDiagram } from '$lib/util/util';
@@ -140,7 +139,7 @@
     <div class="flex flex-col text-sm">
       <div class="flex items-center justify-between gap-2 bg-slate-900 p-2 text-white">
         <div class="flex w-fit items-center gap-2">
-          <ExclamationCircleIcon class="text-destructive size-6" aria-hidden="true" />
+          <ExclamationCircleIcon class="size-6 text-destructive" aria-hidden="true" />
           <div class="flex flex-col">
             <p>Syntax error</p>
             {#if env.isEnabledMermaidChartLinks}
@@ -157,10 +156,9 @@
           </McTooltip>
         {/if}
       </div>
-      <div class="bg-muted max-h-32 overflow-auto p-2 font-mono">
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html sanitizeText($stateStore.error?.toString().replaceAll('\n', '<br />'))}
-      </div>
+      <output class="max-h-32 overflow-auto bg-muted p-2" name="mermaid-error" for="editor">
+        <pre>{$stateStore.error?.toString()}</pre>
+      </output>
     </div>
   {/if}
 </div>
