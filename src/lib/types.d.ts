@@ -30,7 +30,6 @@ export interface State {
   // All new options must be optional, as users would have old states saved
   grid?: boolean;
   editorMode?: EditorMode;
-  panZoom?: boolean;
   pan?: { x: number; y: number };
   zoom?: number;
   loader?: LoaderConfig;

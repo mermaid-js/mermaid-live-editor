@@ -32,9 +32,6 @@
   };
 
   const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
-    if (!state.panZoom) {
-      return;
-    }
     void Promise.resolve().then(() => {
       panZoomState.updateElement(graphDiv, state);
     });
