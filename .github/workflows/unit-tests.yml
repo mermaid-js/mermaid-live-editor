@@ -24,13 +24,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules-build-
 
-      - uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
 
       - name: Lint & Test
         run: |
