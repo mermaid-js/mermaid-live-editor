@@ -25,7 +25,7 @@
     "@cypress/snapshot": "2.1.7",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@sveltejs/adapter-static": "3.0.8",
-    "@sveltejs/kit": "2.19.2",
+    "@sveltejs/kit": "2.20.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/svelte": "^5.2.7",
@@ -94,7 +94,7 @@
     ]
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19.0"
   },
   "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c",
   "pnpm": {
