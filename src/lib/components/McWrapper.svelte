@@ -13,7 +13,7 @@
       <Tooltip.Trigger>
         {@render children()}
       </Tooltip.Trigger>
-      <Tooltip.Content>
+      <Tooltip.Content side="bottom">
         <div class="flex items-center gap-2">
           <ExternalLinkIcon />
           <span class="flex items-center gap-1">
