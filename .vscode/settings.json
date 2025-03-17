@@ -32,5 +32,10 @@
   "githubPullRequests.ignoredPullRequestBranches": ["develop"],
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
-  }
+  },
+  "tailwindCSS.classAttributes": ["class", "className", ".*Classes"],
+  "tailwindCSS.experimental.classRegex": [
+    ["([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "tailwindCSS.emmetCompletions": true
 }
