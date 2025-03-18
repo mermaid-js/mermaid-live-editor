@@ -12,3 +12,9 @@
 /functions
 /node_modules
 /snapshots.js
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

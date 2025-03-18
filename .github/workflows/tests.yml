@@ -7,13 +7,11 @@ on:
       - develop
 
 jobs:
-  cypress-run:
+  playwright:
+    name: 'Playwright Tests'
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # run 3 copies of the current job in parallel
-        containers: [1, 2, 3]
+    container:
+      image: mcr.microsoft.com/playwright:v1.42.1-jammy
 
     steps:
       - name: Checkout
@@ -23,7 +21,6 @@ jobs:
         id: pnpm-and-build-cache
         with:
           path: |
-            ~/.cache/Cypress
             build
             node_modules
           key: ${{ runner.os }}-node_modules-build-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -38,16 +35,22 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
 
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          build: pnpm build
-          start: pnpm preview
-          wait-on: 'http://localhost:3000'
-          record: true
-          parallel: true
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Run Playwright tests
+        run: |
+          pnpm preview & 
+          pnpm test:e2e
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          CYPRESS_CI: true
+          CI: true
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

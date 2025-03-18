@@ -19,7 +19,10 @@
     "test:coverage": "vitest run --coverage",
     "test:browser": "cypress run",
     "test": "pnpm test:unit && pnpm test:browser",
-    "cy": "cypress open"
+    "cy": "cypress open",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "devDependencies": {
     "@cypress/snapshot": "2.1.7",
@@ -69,7 +72,8 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.14",
     "vitest": "^2.1.9",
-    "vitest-dom": "^0.1.1"
+    "vitest-dom": "^0.1.1",
+    "@playwright/test": "^1.42.1"
   },
   "dependencies": {
     "@mermaid-js/layout-elk": "^0.1.7",

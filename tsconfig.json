@@ -7,13 +7,15 @@
     "cypress/**/*.js",
     "cypress/**/*.json",
     "static/**/*.js",
-    "static/**/*.json"
+    "static/**/*.json",
+    "playwright.config.ts",
+    "tests/**/*.ts"
   ],
   "compilerOptions": {
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
-    "types": ["vitest/importMeta"]
+    "types": ["vitest/importMeta", "@playwright/test"]
   },
   "extends": "./.svelte-kit/tsconfig.json"
 }
