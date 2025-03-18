@@ -47,7 +47,7 @@
       'flex items-center justify-start gap-2 border-b bg-muted p-2 px-3 hover:bg-background',
       options.class
     )}>
-    <options.icon />
+    <options.icon class="size-5" />
     {options.label}
   </a>
 {/snippet}
