@@ -19,7 +19,13 @@ export default defineConfig({
     // in-source testing
     includeSource: ['src/**/*.{js,ts,svelte}'],
     // Ignore E2E tests
-    exclude: ['tests/**/*'],
+    exclude: [
+      'tests/**/*',
+      '**\/node_modules/**',
+      '**\/dist/**',
+      '**\/.{idea,git,cache,output,temp}/**',
+      '**\/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*'
+    ],
     setupFiles: ['./src/tests/setup.ts'],
     coverage: {
       exclude: ['src/mocks', '.svelte-kit', 'src/**/*.test.ts'],
