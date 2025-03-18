@@ -1,19 +1,17 @@
 <script lang="ts">
   import McWrapper from '$/components/McWrapper.svelte';
+  import ThemeIcon from '$/components/ThemeIcon.svelte';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
   import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
   import type { Component } from 'svelte';
-  import { scale } from 'svelte/transition';
   import AddIcon from '~icons/material-symbols/add-2-rounded';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
   import HelpIcon from '~icons/material-symbols/help-outline-rounded';
   import HomeIcon from '~icons/material-symbols/house-outline-rounded';
-  import MoonIcon from '~icons/material-symbols/nights-stay-outline';
   import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
-  import SunIcon from '~icons/material-symbols/sunny-rounded';
 
   const menuItems = [
     { label: 'New Diagram', icon: AddIcon, href: '/' },
@@ -46,17 +44,7 @@
     {/each}
     <div class="flex items-center justify-between border-b bg-muted px-3 py-2 hover:bg-background">
       <span class="flex items-center gap-2">
-        <div class="grid">
-          {#key $mode}
-            <div transition:scale class="col-start-1 row-start-1">
-              {#if $mode === 'dark'}
-                <MoonIcon />
-              {:else}
-                <SunIcon />
-              {/if}
-            </div>
-          {/key}
-        </div>
+        <ThemeIcon />
         Dark Mode
       </span>
       <Switch

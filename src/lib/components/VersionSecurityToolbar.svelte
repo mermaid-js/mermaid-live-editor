@@ -4,7 +4,8 @@
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import { version } from 'mermaid/package.json';
-  import QuestionCircleIcon from '~icons/material-symbols/help-outline-rounded';
+  import { mode, setMode } from 'mode-watcher';
+  import ThemeIcon from './ThemeIcon.svelte';
 </script>
 
 <FloatingToolbar>
@@ -14,7 +15,12 @@
   </Button>
 
   <Separator orientation="vertical" />
-  <Button variant="ghost" size="icon" title="Help">
-    <QuestionCircleIcon />
+  <Button
+    variant="ghost"
+    size="icon"
+    title="Theme"
+    class="[&_svg]:size-5"
+    onclick={() => setMode($mode === 'dark' ? 'light' : 'dark')}>
+    <ThemeIcon />
   </Button>
 </FloatingToolbar>
