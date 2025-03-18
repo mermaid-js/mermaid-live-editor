@@ -4,8 +4,8 @@ let shouldSync = true;
 let updater: () => void;
 let renderPromise: Promise<void> | undefined;
 let resolveRenderPromise: (() => void) | undefined;
-const renderDelay = 2000;
-const slowRenderThreshold = 100;
+const renderDelay = 1000;
+const slowRenderThreshold = 150;
 
 const debouncedRender = debounce(() => {
   shouldSync = true;
