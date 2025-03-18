@@ -1,8 +1,9 @@
 <script lang="ts">
-  import type { Tab } from '$lib/types';
+  import type { Tab } from '$/types';
   import type { Component, Snippet } from 'svelte';
   import { quintOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
+  import CollapseAllIcon from '~icons/material-symbols/collapse-all-rounded';
   import Tabs from './Tabs.svelte';
 
   interface Props {
@@ -71,6 +72,10 @@
     {/if}
 
     {@render actions?.()}
+
+    {#if isOpen && isClosable}
+      <CollapseAllIcon />
+    {/if}
   </div>
   {#if isOpen}
     <div class="flex-grow overflow-x-auto" transition:slide={{ easing: quintOut }}>
