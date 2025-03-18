@@ -32,8 +32,11 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
 
-      - name: Lint & Test
-        run: |
-          pnpm install
-          pnpm lint
-          pnpm test:unit
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Run unit tests
+        run: pnpm test:unit
