@@ -26,11 +26,11 @@ test.describe('Check actions', () => {
   test('should download png and svg', async ({ page }) => {
     const downloadPNGPromise = verifyFileSizeGreaterThan(page, 'diagram', 'png', 29_000);
     await page.locator('#downloadPNG').click();
-    await downloadPNGPromise;
+    const firstPngSize = await downloadPNGPromise;
 
     const downloadSVGPromise = verifyFileSizeGreaterThan(page, 'diagram', 'svg', 10_000);
     await page.locator('#downloadSVG').click();
-    await downloadSVGPromise;
+    const firstSvgSize = await downloadSVGPromise;
 
     // Verify downloaded file is different for different diagrams
     await page.getByText('Sample Diagrams').click();
@@ -38,10 +38,14 @@ test.describe('Check actions', () => {
 
     const downloadPNGPromise2 = verifyFileSizeGreaterThan(page, 'diagram', 'png', 35_000);
     await page.locator('#downloadPNG').click();
-    await downloadPNGPromise2;
+    const secondPngSize = await downloadPNGPromise2;
 
     const downloadSVGPromise2 = verifyFileSizeGreaterThan(page, 'diagram', 'svg', 11_000);
     await page.locator('#downloadSVG').click();
-    await downloadSVGPromise2;
+    const secondSvgSize = await downloadSVGPromise2;
+
+    // Verify files are actually different
+    expect(firstPngSize).not.toBe(secondPngSize);
+    expect(firstSvgSize).not.toBe(secondSvgSize);
   });
 });

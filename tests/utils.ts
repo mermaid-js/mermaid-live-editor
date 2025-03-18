@@ -30,7 +30,7 @@ export async function typeInEditor(
   if (newline) {
     await editor.locator('textarea').press('Enter');
   }
-  await editor.locator('textarea').pressSequentially(text, { delay: 0 });
+  await page.keyboard.type(text, { delay: 10 });
 }
 
 export async function verifyFileSizeGreaterThan(
@@ -38,13 +38,14 @@ export async function verifyFileSizeGreaterThan(
   fileType: 'history' | 'diagram',
   extension: string,
   size: number
-) {
+): Promise<number> {
   const download = await page.waitForEvent('download');
   const path = await download.path();
   if (!path) throw new Error('Download path not available');
   const fileSize = statSync(path).size;
   expect(fileSize).toBeGreaterThan(size);
   expect(fileSize).toBeLessThan(size * 2);
+  return fileSize;
 }
 
 export async function verifyFileSnapshot(

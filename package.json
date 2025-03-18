@@ -17,15 +17,12 @@
     "test:unit": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "test:browser": "cypress run",
+    "test:browser": "playwright test",
     "test": "pnpm test:unit && pnpm test:browser",
-    "cy": "cypress open",
-    "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug"
   },
   "devDependencies": {
-    "@cypress/snapshot": "2.1.7",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@sveltejs/adapter-static": "3.0.8",
     "@sveltejs/kit": "2.20.0",
@@ -43,11 +40,8 @@
     "c8": "7.14.0",
     "chai": "^4.3.10",
     "cssnano": "^6.0.5",
-    "cypress": "12.17.4",
-    "cypress-localstorage-commands": "2.2.7",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-cypress": "2.15.2",
     "eslint-plugin-es": "^4.1.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-postcss-modules": "^2.0.0",
@@ -108,8 +102,6 @@
       "svelte-preprocess"
     ],
     "ignoredBuiltDependencies": [
-      "@cypress/snapshot",
-      "cypress",
       "vue-demi"
     ]
   }

@@ -5,9 +5,6 @@
 /.svelte-kit
 /build
 /coverage
-/cypress/downloads
-/cypress/screenshots
-/cypress/videos
 /docs
 /functions
 /node_modules
