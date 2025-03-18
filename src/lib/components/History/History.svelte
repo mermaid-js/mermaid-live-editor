@@ -202,7 +202,7 @@
         </li>
       {/each}
     {:else}
-      <div class="m-2">
+      <div class="m-2 text-center">
         No items in History<br />
         Click the Save button to save current state and restore it later.<br />
         Timeline will automatically be saved every minute.
