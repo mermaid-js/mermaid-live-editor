@@ -42,9 +42,7 @@ jobs:
         run: pnpm build
 
       - name: Run Playwright tests
-        run: |
-          pnpm preview & 
-          pnpm test:e2e
+        run: pnpm test:e2e
         env:
           CI: true
 

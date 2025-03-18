@@ -9,8 +9,10 @@ export default defineConfig({
   reporter: process.env.CI ? [['github'], ['list']] : 'list',
   use: {
     baseURL: 'http://localhost:3000',
-    trace: 'on-first-retry',
-    viewport: { width: 1920, height: 768 }
+    browserName: 'chromium',
+    permissions: ['clipboard-read', 'clipboard-write'],
+    trace: 'retain-on-failure',
+    viewport: { width: 1920, height: 1080 }
   },
   projects: [
     {
@@ -19,7 +21,7 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'pnpm run dev',
+    command: `pnpm ${process.env.CI ? 'preview' : 'dev'}`,
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI
   }

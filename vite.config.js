@@ -18,6 +18,8 @@ export default defineConfig({
     environment: 'jsdom',
     // in-source testing
     includeSource: ['src/**/*.{js,ts,svelte}'],
+    // Ignore E2E tests
+    exclude: ['tests/**/*'],
     setupFiles: ['./src/tests/setup.ts'],
     coverage: {
       exclude: ['src/mocks', '.svelte-kit', 'src/**/*.test.ts'],
