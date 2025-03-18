@@ -1,12 +1,3 @@
-<script lang="ts" module>
-  declare global {
-    interface Window {
-      Cypress: boolean;
-      editorLoaded: boolean;
-    }
-  }
-</script>
-
 <script lang="ts">
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
@@ -119,10 +110,6 @@
 
     if (divElement.parentElement) {
       resizeObserver.observe(divElement);
-    }
-
-    if (window.Cypress) {
-      window.editorLoaded = true;
     }
   });
 
