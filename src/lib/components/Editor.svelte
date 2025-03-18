@@ -9,6 +9,7 @@
 
 <script lang="ts">
   import McWrapper from '$/components/McWrapper.svelte';
+  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import { Button } from '$/components/ui/button';
   import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
@@ -137,7 +138,7 @@
         </div>
         <McWrapper>
           <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
-            <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+            <MermaidChartIcon />
             AI Repair
           </Button>
         </McWrapper>

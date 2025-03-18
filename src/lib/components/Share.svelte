@@ -6,6 +6,7 @@
   import { urlsStore } from '$/util/state';
   import ShareIcon from '~icons/material-symbols/share';
   import CopyInput from './CopyInput.svelte';
+  import MermaidChartIcon from './MermaidChartIcon.svelte';
 </script>
 
 <Dialog.Root>
@@ -33,7 +34,7 @@
         <Separator />
         <div class="flex flex-col gap-2">
           <h2 class="flex items-center gap-2">
-            <img class="size-5" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+            <MermaidChartIcon class="size-5" />
             Mermaid Chart Playground
           </h2>
           <CopyInput value={$urlsStore.mermaidChart.playground} />

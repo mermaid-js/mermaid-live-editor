@@ -2,13 +2,18 @@
   import { env } from '$/util/env';
   import { stateStore } from '$/util/state';
   import * as Tooltip from '$lib/components/ui/tooltip';
-  import type { Snippet } from 'svelte';
+  import type { ComponentProps, Snippet } from 'svelte';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
 
   let {
     children,
-    shouldCheckDiagramType = true
-  }: { children: Snippet; shouldCheckDiagramType?: boolean } = $props();
+    shouldCheckDiagramType = true,
+    side = 'bottom'
+  }: {
+    children: Snippet;
+    shouldCheckDiagramType?: boolean;
+    side?: ComponentProps<typeof Tooltip.Content>['side'];
+  } = $props();
 
   let shouldDisableComponent = $derived(
     shouldCheckDiagramType && $stateStore.diagramType === 'zenuml'
@@ -23,7 +28,7 @@
           {@render children()}
         </div>
       </Tooltip.Trigger>
-      <Tooltip.Content side="bottom">
+      <Tooltip.Content {side}>
         <div class="flex items-center gap-2">
           {#if shouldDisableComponent}
             <div class="text-muted-foreground">

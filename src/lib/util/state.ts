@@ -132,6 +132,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
       save: `${MCBaseURL}/app/plugin/save?state=${serialized}`,
       playground: `${MCBaseURL}/play#${serialized}`
     },
+    new: `${window.location.protocol}//${window.location.host}${window.location.pathname}/#${serializeState(defaultState)}`,
     png,
     svg: `${rendererUrl}/svg/${serialized}`,
     view: `/view#${serialized}`

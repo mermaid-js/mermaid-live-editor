@@ -5,6 +5,7 @@
   import Editor from '$/components/Editor.svelte';
   import History from '$/components/History/History.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
+  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Preset from '$/components/Preset.svelte';
@@ -59,7 +60,7 @@
     <Share />
     <McWrapper>
       <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
-        <img class="size-4" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
+        <MermaidChartIcon />
         Save diagram
       </Button>
     </McWrapper>
