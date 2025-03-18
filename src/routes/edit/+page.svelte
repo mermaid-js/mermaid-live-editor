@@ -99,7 +99,10 @@
       </Resizable.Pane>
       {#if isHistoryOpen}
         <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
-        <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full flex-grow md:flex">
+        <Resizable.Pane
+          minSize={15}
+          defaultSize={30}
+          class="hidden h-full flex-grow flex-col md:flex">
           <History />
         </Resizable.Pane>
       {/if}
