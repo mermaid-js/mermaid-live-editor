@@ -1,8 +1,9 @@
 <script lang="ts">
   import FloatingToolbar from '$/components/FloatingToolbar.svelte';
-  import { Separator } from '$/components/ui/separator';
-  import { Switch } from '$/components/ui/switch';
+  import { Toggle } from '$/components/ui/toggle';
   import { defaultState, inputStateStore } from '$/util/state';
+  import RoughIcon from '~icons/material-symbols/draw-outline-rounded';
+  import BackgroundIcon from '~icons/material-symbols/grid-4x4-rounded';
 
   if ($inputStateStore.grid === undefined) {
     // Handle cases where old states were saved without grid option
@@ -11,16 +12,10 @@
 </script>
 
 <FloatingToolbar>
-  <label class="label flex cursor-pointer items-center gap-2" for="rough">
-    <span>Hand-Drawn</span>
-
-    <Switch bind:checked={$inputStateStore.rough} id="rough" />
-  </label>
-
-  <Separator orientation="vertical" />
-
-  <label class="label flex cursor-pointer items-center gap-2" for="grid">
-    <span>Grid</span>
-    <Switch bind:checked={$inputStateStore.grid} id="grid" />
-  </label>
+  <Toggle bind:pressed={$inputStateStore.rough} size="sm" title="Hand-Drawn">
+    <RoughIcon />
+  </Toggle>
+  <Toggle bind:pressed={$inputStateStore.grid} size="sm" title="Background Grid">
+    <BackgroundIcon />
+  </Toggle>
 </FloatingToolbar>
