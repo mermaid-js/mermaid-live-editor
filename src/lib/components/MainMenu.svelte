@@ -60,6 +60,7 @@
     {#each menuItems as item}
       {@render menuItem(item)}
     {/each}
+
     <div class="flex items-center justify-between border-b bg-muted px-3 py-2 hover:bg-background">
       <span class="flex items-center gap-2">
         <ThemeIcon />

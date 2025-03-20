@@ -27,7 +27,6 @@ export default defineConfig({
     alwaysFullReload
   ],
   envPrefix: 'MERMAID_',
-  optimizeDeps: { include: ['mermaid'] },
   server: {
     port: 3000,
     host: true
