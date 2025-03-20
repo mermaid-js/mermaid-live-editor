@@ -3,6 +3,7 @@
   import Privacy from '$/components/Privacy.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
+  import { TID } from '$/constants';
   import { version } from 'mermaid/package.json';
   import { mode, setMode } from 'mode-watcher';
   import ThemeIcon from './ThemeIcon.svelte';
@@ -18,7 +19,8 @@
   <Button
     variant="ghost"
     size="icon"
-    title="Theme"
+    data-testid={TID.themeToggleButton}
+    title="Switch to {$mode === 'dark' ? 'light' : 'dark'} theme"
     class="[&_svg]:size-5"
     onclick={() => setMode($mode === 'dark' ? 'light' : 'dark')}>
     <ThemeIcon />

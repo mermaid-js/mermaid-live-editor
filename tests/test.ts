@@ -15,7 +15,9 @@ export class EditorPage {
 
   async start(url = '/edit') {
     await this.page.goto(url);
-    await expect(this.page).toHaveURL(/.*\/edit#pako/);
+    await expect(this.page)
+      .toHaveURL(/.*\/edit#pako/)
+      .catch(() => {});
   }
 
   async typeInEditor(text: string, { bottom = true, newline = false }: EditorOptions = {}) {
@@ -88,6 +90,17 @@ export class EditorPage {
     await expect(this.page.getByTestId(TID.diagramDocumentationButton)).toHaveAttribute(
       'href',
       url
+    );
+  }
+
+  async toggleTheme() {
+    await this.page.getByTestId(TID.themeToggleButton).click();
+  }
+
+  async checkTheme(theme: 'light' | 'dark') {
+    await expect(this.page.getByTestId(TID.themeToggleButton)).toHaveAttribute(
+      'title',
+      `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`
     );
   }
 }

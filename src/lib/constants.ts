@@ -3,5 +3,6 @@ export const TID = {
   diagramDocumentationButton: 'diagram-documentation-button',
   downloadPNG: 'download-PNG',
   downloadSVG: 'download-SVG',
-  errorContainer: 'error-container'
+  errorContainer: 'error-container',
+  themeToggleButton: 'theme-toggle-button'
 } as const;

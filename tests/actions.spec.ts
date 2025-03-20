@@ -2,7 +2,6 @@ import { expect, test } from './test';
 
 test.describe('Check actions', () => {
   test.beforeEach(async ({ editPage }) => {
-    await editPage.toggleSampleDiagrams();
     await editPage.toggleActions();
   });
 
