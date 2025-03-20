@@ -15,14 +15,14 @@
     "pre-commit": "lint-staged",
     "postinstall": "husky install && svelte-kit sync && (git config blame.ignoreRevsFile .git-blame-ignore-revs || true)",
     "test:unit": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage",
-    "test:browser": "cypress run",
-    "test": "pnpm test:unit && pnpm test:browser",
-    "cy": "cypress open"
+    "test:unit:ui": "vitest --ui",
+    "test:unit:coverage": "vitest run --coverage",
+    "test": "pnpm test:unit && pnpm test:e2e",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "devDependencies": {
-    "@cypress/snapshot": "2.1.7",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@sveltejs/adapter-static": "3.0.8",
     "@sveltejs/kit": "2.20.0",
@@ -40,11 +40,8 @@
     "c8": "7.14.0",
     "chai": "^4.3.10",
     "cssnano": "^6.0.5",
-    "cypress": "12.17.4",
-    "cypress-localstorage-commands": "2.2.7",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-cypress": "2.15.2",
     "eslint-plugin-es": "^4.1.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-postcss-modules": "^2.0.0",
@@ -69,7 +66,8 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.14",
     "vitest": "^2.1.9",
-    "vitest-dom": "^0.1.1"
+    "vitest-dom": "^0.1.1",
+    "@playwright/test": "^1.42.1"
   },
   "dependencies": {
     "@mermaid-js/layout-elk": "^0.1.7",
@@ -99,8 +97,6 @@
   "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c",
   "pnpm": {
     "onlyBuiltDependencies": [
-      "@cypress/snapshot",
-      "cypress",
       "deasync",
       "esbuild",
       "svelte-preprocess"
