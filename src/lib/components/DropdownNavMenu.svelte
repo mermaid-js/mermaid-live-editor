@@ -1,34 +1,28 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import * as Popover from '$/components/ui/popover';
+  import type { Component } from 'svelte';
+
   interface Props {
     links: { title: string; href: string }[];
-    label?: string;
-    icon?: string;
+    icon?: Component;
+    class?: string;
   }
 
-  let { links, label, icon }: Props = $props();
+  let props: Props = $props();
 </script>
 
-<div class="dropdown dropdown-end">
-  <button class="btn btn-ghost">
-    {#if icon}
-      <i class={icon}></i>
-    {/if}
-    {#if label}
-      <span>{label}</span>
-    {/if}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1792 1792"
-      class="ml-1 inline-block h-4 w-4 fill-current"
-      ><path
-        d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" /></svg>
-  </button>
-  <div
-    class="dropdown-content menu top-14 size-fit overflow-y-auto bg-base-200 text-base-content shadow-2xl">
+<Popover.Root>
+  <Popover.Trigger class="flex items-center gap-0">
+    <Button variant="ghost" size="sm">
+      <props.icon class={props.class} />
+    </Button>
+  </Popover.Trigger>
+  <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-    <ul tabindex="0" class="menu compact p-4">
-      {#each links as { href, title }}
-        <li>
+    <ul tabindex="0" class="flex flex-col">
+      {#each props.links as { href, title }}
+        <li class="rounded-md p-2 hover:bg-muted">
           <a
             role="menuitem"
             tabindex="0"
@@ -40,5 +34,5 @@
         </li>
       {/each}
     </ul>
-  </div>
-</div>
+  </Popover.Content>
+</Popover.Root>

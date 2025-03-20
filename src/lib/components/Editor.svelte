@@ -1,14 +1,19 @@
 <script lang="ts">
+  import McWrapper from '$/components/McWrapper.svelte';
+  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
+  import { Button } from '$/components/ui/button';
+  import { TID } from '$/constants';
+  import { env } from '$/util/env';
   import type { EditorMode } from '$lib/types';
   import { initEditor } from '$lib/util/monacoExtra';
-  import { stateStore, updateCode, updateConfig } from '$lib/util/state';
-  import { logEvent } from '$lib/util/stats';
-  import { themeStore } from '$lib/util/theme';
-  import { errorDebug, syncDiagram } from '$lib/util/util';
+  import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
+  import { errorDebug } from '$lib/util/util';
+  import { mode } from 'mode-watcher';
   import * as monaco from 'monaco-editor';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
+  import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
   let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
@@ -19,21 +24,19 @@
     theme: 'mermaid',
     overviewRulerLanes: 0
   };
-  let text = '';
+  let currentText = '';
 
-  stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
-    // console.log('editor store subscription', { code, mermaid });
+  const unsubscribeState = stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
     if (!editor) {
       return;
     }
 
     // Update editor text if it's different
     const newText = editorMode === 'code' ? code : mermaid;
-    if (newText !== text) {
-      // console.log('updating editor text', newText);
+    if (newText !== currentText) {
       editor.setScrollTop(0);
       editor.setValue(newText);
-      text = newText;
+      currentText = newText;
     }
 
     // Update editor mode if it's different
@@ -51,12 +54,7 @@
     monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
   });
 
-  themeStore.subscribe(({ isDark }) => {
-    editor && monaco.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid');
-  });
-
   const handleUpdate = (text: string, mode: EditorMode) => {
-    // console.log('editor HandleUpdate', { text, mode });
     if (mode === 'code') {
       updateCode(text);
     } else {
@@ -77,30 +75,21 @@
     if (!divElement) {
       throw new Error('divEl is undefined');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
     initEditor(monaco);
     errorDebug();
     editor = monaco.editor.create(divElement, editorOptions);
     editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      if (!newText || text === newText || isFlush) {
+      if (!newText || currentText === newText || isFlush) {
         return;
       }
-      text = newText;
-      handleUpdate(text, $stateStore.editorMode);
+      currentText = newText;
+      handleUpdate(currentText, $stateStore.editorMode);
     });
-    editor.addAction({
-      id: 'mermaid-render-diagram',
-      label: 'Render Diagram',
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-      run: function () {
-        syncDiagram();
-        logEvent('renderDiagram', {
-          method: 'keyboardShortcut'
-        });
-      }
+    const unsubscribeMode = mode.subscribe((mode) => {
+      editor && monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
     });
-    monaco.editor.setTheme($themeStore.isDark ? 'mermaid-dark' : 'mermaid');
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,
@@ -111,22 +100,38 @@
     if (divElement.parentElement) {
       resizeObserver.observe(divElement);
     }
-  });
 
-  onDestroy(() => {
-    editor?.dispose();
+    return () => {
+      unsubscribeState();
+      unsubscribeMode();
+      resizeObserver.disconnect();
+      editor?.dispose();
+    };
   });
 </script>
 
-<div class="flex h-full flex-col">
+<div class="flex h-full flex-col pt-1">
   <div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden"></div>
   {#if $stateStore.error instanceof Error}
-    <div class="flex flex-col text-sm text-neutral-100">
-      <div class="flex items-center gap-2 bg-red-700 p-2">
-        <i class="fa fa-exclamation-circle w-4" aria-hidden="true"></i>
-        <p>Diagram syntax error</p>
+    <div class="flex flex-col text-sm" data-testid={TID.errorContainer}>
+      <div class="flex items-center justify-between gap-2 bg-slate-900 p-2 text-white">
+        <div class="flex w-fit items-center gap-2">
+          <ExclamationCircleIcon class="size-6 text-destructive" aria-hidden="true" />
+          <div class="flex flex-col">
+            <p>Syntax error</p>
+            {#if env.isEnabledMermaidChartLinks}
+              <p class="text-xs text-white/60">Create a free account to repair with AI</p>
+            {/if}
+          </div>
+        </div>
+        <McWrapper>
+          <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
+            <MermaidChartIcon />
+            AI Repair
+          </Button>
+        </McWrapper>
       </div>
-      <output class="max-h-32 overflow-auto bg-red-600 p-2" name="mermaid-error" for="editor">
+      <output class="max-h-32 overflow-auto bg-muted p-2" name="mermaid-error" for="editor">
         <pre>{$stateStore.error?.toString()}</pre>
       </output>
     </div>

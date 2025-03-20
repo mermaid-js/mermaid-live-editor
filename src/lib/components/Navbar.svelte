@@ -1,28 +1,33 @@
-<script module lang="ts">
+<script lang="ts" module>
   import { logEvent, plausible } from '$lib/util/stats';
   import { version } from 'mermaid/package.json';
+
   void logEvent('version', {
     mermaidVersion: version
   });
 </script>
 
 <script lang="ts">
-  import { env } from '$lib/util/env';
+  import MainMenu from '$/components/MainMenu.svelte';
+  import McWrapper from '$/components/McWrapper.svelte';
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
+  import { Switch } from '$/components/ui/switch';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
-  import { stateStore } from '$lib/util/state';
+  import { urlsStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
-  import type { ComponentProps } from 'svelte';
+  import type { ComponentProps, Snippet } from 'svelte';
+  import CloseIcon from '~icons/material-symbols/close-rounded';
+  import GithubIcon from '~icons/mdi/github';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
-  import Privacy from './Privacy.svelte';
-  import Theme from './Theme.svelte';
 
-  const { isEnabledMermaidChartLinks } = env;
-
-  let isMenuOpen = $state(false);
-  const isReferral = document.referrer.includes(MCBaseURL);
-  function toggleMenu() {
-    isMenuOpen = !isMenuOpen;
+  interface Props {
+    children: Snippet;
   }
+
+  let { children }: Props = $props();
+
+  const isReferral = document.referrer.includes(MCBaseURL);
 
   type Links = ComponentProps<typeof DropdownNavMenu>['links'];
 
@@ -35,15 +40,6 @@
     {
       title: 'Mermaid CLI',
       href: 'https://github.com/mermaid-js/mermaid-cli'
-    }
-  ];
-
-  const documentationLinks: Links = [
-    { title: 'Getting started', href: 'https://mermaid.js.org/intro/getting-started.html' },
-    { title: 'Tutorials', href: 'https://mermaid.js.org/ecosystem/tutorials.html' },
-    {
-      title: 'Integrations',
-      href: 'https://mermaid.js.org/ecosystem/integrations-community.html'
     }
   ];
 
@@ -70,127 +66,67 @@
       <activePromotion.component {closeBanner} />
     </div>
     {#snippet closeBanner()}
-      <button
+      <Button
         title="Dismiss banner"
-        aria-label="Dismiss banner"
+        variant="ghost"
+        size="sm"
         onclick={() => {
           dismissPromotion(activePromotion?.id);
           activePromotion = undefined;
         }}>
-        <i class="fa fa-close px-2"></i>
-      </button>
+        <CloseIcon />
+      </Button>
     {/snippet}
   </div>
 {/if}
 
-<div class="navbar z-50 bg-primary p-0 shadow-lg">
-  <div class="mx-2 flex flex-1 gap-2 px-2">
-    <a href="/"><img class="size-6" src="./favicon.svg" alt="Mermaid Live Editor" /></a>
+<nav class="z-50 flex p-6">
+  <div class="flex flex-1 items-center gap-4">
+    <MainMenu />
     <div
       id="switcher"
-      class="flex items-center justify-center gap-2 font-bold"
+      class="flex items-center justify-center gap-4 font-medium"
       class:flex-row-reverse={isReferral}>
-      <a href="/">
+      <a href="/" class="whitespace-nowrap text-accent">
         {#if !isReferral}
           Mermaid
         {/if}
         Live Editor
       </a>
-      {#if isEnabledMermaidChartLinks}
-        <input
-          type="checkbox"
-          class="toggle toggle-primary"
-          id="editorMode"
-          checked={isReferral}
-          onclick={() => {
-            logEvent('playgroundToggle', { isReferred: isReferral });
-            // Wait for the event to be logged
-            setTimeout(() => {
-              window.open(
-                `${MCBaseURL}/play#${$stateStore.serialized}`,
-                '_self',
-                // Do not send referrer header, if the user already came from playground
-                isReferral ? 'noreferrer' : ''
-              );
-            }, 100);
-          }} />
-        <a href="{MCBaseURL}/play#{$stateStore.serialized}">Playground</a>
-      {/if}
+
+      <McWrapper labelPrefix="Opens the current diagram in">
+        <div class="hidden items-center justify-center gap-4 md:flex">
+          <Separator orientation="vertical" />
+          <Switch
+            id="editorMode"
+            class="data-[state=checked]:bg-secondary"
+            checked={isReferral}
+            onclick={() => {
+              logEvent('playgroundToggle', { isReferred: isReferral });
+              // Wait for the event to be logged
+              setTimeout(() => {
+                window.open(
+                  $urlsStore.mermaidChart.playground,
+                  '_self',
+                  // Do not send referrer header, if the user already came from playground
+                  isReferral ? 'noreferrer' : ''
+                );
+              }, 100);
+            }} />
+
+          <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
+            Playground <span class="hidden text-sm opacity-50 lg:inline"
+              >- more features, no account required</span>
+          </a>
+        </div>
+      </McWrapper>
     </div>
   </div>
-
-  <label
-    for="menu-toggle"
-    class={isMenuOpen ? 'hidden' : 'pointer-cursor fixed right-4 z-[1000] lg:hidden'}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      class="fill-current"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20">
-      <title>Menu</title>
-      <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-    </svg>
-  </label>
-
-  <!-- Cross SVG -->
-  <label
-    for="menu-toggle"
-    class={isMenuOpen ? 'pointer-cursor fixed right-4 z-[1000] lg:hidden' : 'hidden'}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      class="fill-current"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20">
-      <title>Cross</title>
-      <line x1="5" y1="5" x2="15" y2="15" stroke="white" stroke-width="2" />
-      <line x1="5" y1="15" x2="15" y2="5" stroke="white" stroke-width="2" />
-    </svg>
-  </label>
-
-  <input
-    class="hidden"
-    type="checkbox"
-    id="menu-toggle"
-    bind:checked={isMenuOpen}
-    onclick={toggleMenu} />
-
-  <div class="hidden w-full lg:flex lg:w-auto lg:items-center" id="menu">
-    <span class="text-sm">v{version}</span>
-    <ul class="items-center justify-between pt-4 text-base lg:flex lg:pt-0">
-      <li>
-        <Privacy />
-      </li>
-      <li>
-        <Theme />
-      </li>
-      <li>
-        <DropdownNavMenu label="Documentation" links={documentationLinks} />
-      </li>
-      <li>
-        <DropdownNavMenu icon="fab fa-github fa-lg" links={githubLinks} />
-      </li>
-
-      {#if isEnabledMermaidChartLinks}
-        <li>
-          <a class="btn btn-ghost" target="_blank" href="https://mermaidchart.com">
-            <img class="size-6" src="./mermaidchart-logo.svg" alt="Mermaid Chart" />
-          </a>
-        </li>
-      {/if}
-    </ul>
+  <div
+    id="menu"
+    class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
+    <DropdownNavMenu icon={GithubIcon} links={githubLinks} />
+    <Separator orientation="vertical" />
+    {@render children()}
   </div>
-</div>
-
-<style>
-  #menu-toggle:checked + #menu {
-    position: absolute;
-    top: 2.5rem;
-    padding: 1rem 0;
-    background: #661ae6;
-    display: flex;
-  }
-</style>
+</nav>

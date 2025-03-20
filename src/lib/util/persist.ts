@@ -204,6 +204,13 @@ function getBrowserStorage(
         connect();
       }
     },
+    deleteValue(key: string) {
+      browserStorage.removeItem(key);
+    },
+    getValue(key: string): any {
+      const value = browserStorage.getItem(key);
+      return deserialize(value);
+    },
     removeListener(key: string, listener: (newValue: any) => void) {
       const index = listeners.indexOf({ key, listener });
       if (index !== -1) {
@@ -212,13 +219,6 @@ function getBrowserStorage(
       if (listeners.length === 0) {
         disconnect();
       }
-    },
-    getValue(key: string): any {
-      const value = browserStorage.getItem(key);
-      return deserialize(value);
-    },
-    deleteValue(key: string) {
-      browserStorage.removeItem(key);
     },
     setValue(key: string, value: any) {
       browserStorage.setItem(key, serialize(value));

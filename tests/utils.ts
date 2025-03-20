@@ -21,8 +21,8 @@ export async function typeInEditor(
   text: string,
   { bottom = true, newline = false }: EditorOptions = {}
 ) {
-  await page.locator('#editor').click();
-  const editor = page.locator('#editor');
+  const editor = page.locator('css=.monaco-editor');
+  await editor.click();
 
   if (bottom) {
     await editor.locator('textarea').press('PageDown');
