@@ -1,4 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vitest/config';
 
@@ -18,7 +19,10 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     Icons({
-      compiler: 'svelte'
+      compiler: 'svelte',
+      customCollections: {
+        custom: FileSystemIconLoader('./static/icons')
+      }
     }),
     alwaysFullReload
   ],

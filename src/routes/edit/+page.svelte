@@ -21,7 +21,7 @@
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
-  import CodeIcon from '~icons/material-symbols/code-blocks-outline';
+  import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 

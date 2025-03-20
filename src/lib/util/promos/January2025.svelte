@@ -137,7 +137,7 @@
         in:fade={{ delay: 800 }}
         out:fade={{ duration: 1000 }}>
         <span class="text-sm tracking-wider text-white">{currentTagline.label}</span>
-        <Button size="sm" class="font-semibold tracking-wider">Try now</Button>
+        <Button size="sm" class="bg-background font-semibold tracking-wider">Try now</Button>
       </a>
     {/key}
   </div>
