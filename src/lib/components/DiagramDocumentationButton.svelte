@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
+  import { TID } from '$/constants';
   import type { DocumentationConfig } from '$/types';
   import { standardizeDiagramType } from '$/util/mermaid';
   import { stateStore } from '$/util/state';
@@ -99,6 +100,7 @@
 
 <Button
   variant="ghost"
+  data-testid={TID.diagramDocumentationButton}
   href={doc.url}
   target="_blank"
   title="View documentation for {doc.key.replace('Diagram', '')} diagram">

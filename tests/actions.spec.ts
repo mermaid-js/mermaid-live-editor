@@ -1,17 +1,15 @@
-import { expect, test } from '@playwright/test';
-import { typeInEditor, verifyFileSizeGreaterThan } from './utils';
+import { expect, test } from './test';
 
 test.describe('Check actions', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/edit');
-    await page.getByText('Actions', { exact: true }).click();
+  test.beforeEach(async ({ editPage }) => {
+    await editPage.toggleSampleDiagrams();
+    await editPage.toggleActions();
   });
 
-  test('should update markdown code', async ({ page }) => {
-    const markdown = page.locator('#markdown');
-    const oldText = await markdown.inputValue();
-    await typeInEditor(page, 'C --> HistoryTest', { bottom: true, newline: true });
-    const newText = await markdown.inputValue();
+  test('should update markdown code', async ({ editPage }) => {
+    const oldText = await editPage.markdownInput.inputValue();
+    await editPage.typeInEditor('C --> HistoryTest', { bottom: true, newline: true });
+    const newText = await editPage.markdownInput.inputValue();
     expect(newText).not.toBe(oldText);
   });
 
@@ -23,26 +21,16 @@ test.describe('Check actions', () => {
     await expect(page.getByText('Go shopping!!')).toBeVisible();
   });
 
-  test('should download png and svg', async ({ page }) => {
-    const downloadPNGPromise = verifyFileSizeGreaterThan(page, 'diagram', 'png', 29_000);
-    await page.locator('#downloadPNG').click();
-    const firstPngSize = await downloadPNGPromise;
-
-    const downloadSVGPromise = verifyFileSizeGreaterThan(page, 'diagram', 'svg', 10_000);
-    await page.locator('#downloadSVG').click();
-    const firstSvgSize = await downloadSVGPromise;
+  test('should download png and svg', async ({ editPage }) => {
+    const firstPngSize = await editPage.checkAndDownloadPNG(80_000);
+    const firstSvgSize = await editPage.downloadSVG(10_000);
 
     // Verify downloaded file is different for different diagrams
-    await page.getByText('Sample Diagrams').click();
-    await page.getByText('ER', { exact: true }).click();
+    await editPage.toggleSampleDiagrams();
+    await editPage.loadSampleDiagram('ER');
 
-    const downloadPNGPromise2 = verifyFileSizeGreaterThan(page, 'diagram', 'png', 35_000);
-    await page.locator('#downloadPNG').click();
-    const secondPngSize = await downloadPNGPromise2;
-
-    const downloadSVGPromise2 = verifyFileSizeGreaterThan(page, 'diagram', 'svg', 11_000);
-    await page.locator('#downloadSVG').click();
-    const secondSvgSize = await downloadSVGPromise2;
+    const secondPngSize = await editPage.checkAndDownloadPNG(110_000);
+    const secondSvgSize = await editPage.downloadSVG(11_000);
 
     // Verify files are actually different
     expect(firstPngSize).not.toBe(secondPngSize);

@@ -6,6 +6,7 @@
   import { Input } from '$/components/ui/input';
   import { Separator } from '$/components/ui/separator';
   import * as ToggleGroup from '$/components/ui/toggle-group';
+  import { TID } from '$/constants';
   import { env } from '$/util/env';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
@@ -190,7 +191,10 @@ ${svgString}`);
 
 {#snippet dualActionButton(text: string, download: (event: Event) => unknown, url?: string)}
   <div class="flex flex-grow gap-0.5">
-    <Button class={['flex-grow', url && 'rounded-r-none']} onclick={download}>
+    <Button
+      class={['flex-grow', url && 'rounded-r-none']}
+      onclick={download}
+      data-testid="download-{text}">
       <DownloadIcon />
       {text}
     </Button>
@@ -238,7 +242,7 @@ ${svgString}`);
       <CopyButton onclick={onCopyClipboard} label="Copy Image" />
     {/if}
     {#if $urlsStore.mdCode}
-      <CopyInput value={$urlsStore.mdCode} label="Copy Markdown" />
+      <CopyInput value={$urlsStore.mdCode} label="Copy Markdown" testID={TID.copyMarkdown} />
     {/if}
 
     <div class="flex w-full items-center gap-2">

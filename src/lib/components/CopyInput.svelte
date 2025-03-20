@@ -7,14 +7,16 @@
   let {
     value,
     label = 'Copy',
-    type = 'url'
-  }: { value: string; label?: string; type?: InputType } = $props();
+    type = 'url',
+    testID
+  }: { value: string; label?: string; type?: InputType; testID?: string } = $props();
 </script>
 
 <div class="flex w-full items-center gap-2">
   <Input
     {type}
     {value}
+    data-testid={testID}
     onclick={(event) => {
       event.currentTarget.setSelectionRange(0, event.currentTarget.value.length);
     }} />

@@ -1,42 +1,38 @@
-import { expect, test } from '@playwright/test';
+import { test } from './test';
 
 test.describe('Editor docs tests', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/edit');
-    await page.getByText('Sample Diagrams').click();
+  test.beforeEach(async ({ editPage }) => {
+    await editPage.toggleSampleDiagrams();
   });
 
-  test('Test default loading', async ({ page }) => {
-    await expect(page.locator('[data-cy=docs][href^="https://mermaid.js.org/"]')).toBeVisible();
+  test('Test default loading', async ({ editPage }) => {
+    await editPage.checkDocURL(/mermaid\.js\.org\//);
   });
 
   test('Test to see if the correct URL loads when changing from one diagram to other', async ({
-    page
+    editPage
   }) => {
-    await page.getByText('Flow', { exact: true }).click();
-    await expect(page.locator('[data-cy=docs][href$="/syntax/flowchart.html"]')).toBeVisible();
+    await editPage.loadSampleDiagram('Flow');
+    await editPage.checkDocURL(/syntax\/flowchart\.html/);
+    await editPage.setEditorMode('Config');
+    await editPage.checkDocURL(/syntax\/flowchart\.html#configuration/);
+    await editPage.setEditorMode('Code');
+    await editPage.checkDocURL(/syntax\/flowchart\.html/);
 
-    await page.getByText('Config').click();
-    await expect(
-      page.locator('[data-cy=docs][href$="/syntax/flowchart.html#configuration"]')
-    ).toBeVisible();
-
-    await page.getByText('Sequence').click();
-    await expect(
-      page.locator('[data-cy=docs][href$="/syntax/sequenceDiagram.html#configuration"]')
-    ).toBeVisible();
-
-    await page.getByText('Code', { exact: true }).click();
-    await expect(
-      page.locator('[data-cy=docs][href$="/syntax/sequenceDiagram.html"]')
-    ).toBeVisible();
+    await editPage.loadSampleDiagram('Sequence');
+    await editPage.checkDocURL(/syntax\/sequenceDiagram\.html/);
+    await editPage.setEditorMode('Config');
+    await editPage.checkDocURL(/syntax\/sequenceDiagram\.html#configuration/);
+    await editPage.setEditorMode('Code');
+    await editPage.checkDocURL(/syntax\/sequenceDiagram\.html/);
   });
 
-  test("Test to check URLs for a case where config URL doesn't exist", async ({ page }) => {
-    await page.getByText('State').click();
-    await expect(page.locator('[data-cy=docs][href$="/syntax/stateDiagram.html"]')).toBeVisible();
-
-    await page.getByText('Config').click();
-    await expect(page.locator('[data-cy=docs][href$="/syntax/stateDiagram.html"]')).toBeVisible();
+  test("Test to check URLs for a case where config URL doesn't exist", async ({ editPage }) => {
+    await editPage.loadSampleDiagram('State');
+    await editPage.checkDocURL(/syntax\/stateDiagram\.html/);
+    await editPage.setEditorMode('Config');
+    await editPage.checkDocURL(/syntax\/stateDiagram\.html/);
+    await editPage.setEditorMode('Code');
+    await editPage.checkDocURL(/syntax\/stateDiagram\.html/);
   });
 });
