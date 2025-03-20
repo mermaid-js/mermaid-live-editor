@@ -8,11 +8,13 @@
   let {
     children,
     shouldCheckDiagramType = true,
-    side = 'bottom'
+    side = 'bottom',
+    labelPrefix = 'Opens a new tab in'
   }: {
     children: Snippet;
     shouldCheckDiagramType?: boolean;
     side?: ComponentProps<typeof Tooltip.Content>['side'];
+    labelPrefix?: string;
   } = $props();
 
   let shouldDisableComponent = $derived(
@@ -37,7 +39,8 @@
           {:else}
             <ExternalLinkIcon />
             <span class="flex items-center gap-1">
-              Opens a new tab in <div class="text-accent">MermaidChart.com</div>
+              {labelPrefix}
+              <div class="text-accent">MermaidChart.com</div>
             </span>
           {/if}
         </div>
