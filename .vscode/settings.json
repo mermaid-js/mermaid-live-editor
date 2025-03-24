@@ -7,7 +7,6 @@
     "ckppp",
     "corg",
     "cssnano",
-    "daisyui",
     "esserializer",
     "gantt",
     "gitgraph",
@@ -22,6 +21,7 @@
     "roughjs",
     "Serde",
     "serdes",
+    "Stackable",
     "tailwindcss",
     "uparrow"
   ],
@@ -29,5 +29,13 @@
   "vitest.enable": true,
   "testing.autoRun.mode": "rerun",
   "svelte.enable-ts-plugin": true,
-  "githubPullRequests.ignoredPullRequestBranches": ["develop"]
+  "githubPullRequests.ignoredPullRequestBranches": ["develop"],
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
+  "tailwindCSS.classAttributes": ["class", "className", ".*Classes"],
+  "tailwindCSS.experimental.classRegex": [
+    ["([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "tailwindCSS.emmetCompletions": true
 }

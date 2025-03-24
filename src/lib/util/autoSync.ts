@@ -1,6 +1,4 @@
 import debounce from 'lodash-es/debounce';
-import { get } from 'svelte/store';
-import { stateStore } from './state';
 
 let shouldSync = true;
 let updater: () => void;
@@ -16,10 +14,6 @@ const debouncedRender = debounce(() => {
 
 export const recordRenderTime = (renderTimeMs: number, updaterFunction: () => void): void => {
   resolveRenderPromise?.();
-  const { autoSync } = get(stateStore);
-  if (!autoSync) {
-    return;
-  }
   updater = updaterFunction;
   const isSlow = renderTimeMs > slowRenderThreshold;
   if (!shouldSync) {

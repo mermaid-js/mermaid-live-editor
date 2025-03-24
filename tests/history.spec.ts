@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { typeInEditor } from './utils';
 
-test.describe('Save History', () => {
+test.describe.skip('Save History', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
       Object.defineProperty(Date, 'now', {

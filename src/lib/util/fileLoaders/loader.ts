@@ -1,7 +1,7 @@
-import { loadGistData } from './gist';
-import { updateCodeStore, defaultState } from '$lib/util/state';
-import { fetchText } from '$lib/util/util';
 import type { Loader, State } from '$lib/types';
+import { defaultState, updateCodeStore } from '$lib/util/state';
+import { fetchText } from '$lib/util/util';
+import { loadGistData } from './gist';
 
 const loaders: Record<string, Loader> = {
   gist: loadGistData
@@ -27,14 +27,14 @@ export const loadDataFromUrl = async (): Promise<void> => {
     }
     state = {
       code,
-      mermaid: config,
       loader: {
-        type: 'files',
         config: {
           codeURL,
           configURL
-        }
-      }
+        },
+        type: 'files'
+      },
+      mermaid: config
     };
   } else {
     for (const [key, value] of searchParams.entries()) {
@@ -52,7 +52,6 @@ export const loadDataFromUrl = async (): Promise<void> => {
   loaded &&
     updateCodeStore({
       ...state,
-      autoSync: true,
       updateDiagram: true
     });
 };

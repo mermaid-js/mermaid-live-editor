@@ -18,6 +18,24 @@ export const render = async (
   return await mermaid.render(id, code);
 };
 
-export const parse = async (code: string): Promise<unknown> => {
+export const parse = async (code: string) => {
   return await mermaid.parse(code);
+};
+
+export const standardizeDiagramType = (diagramType: string) => {
+  switch (diagramType) {
+    case 'class':
+    case 'classDiagram': {
+      return 'classDiagram';
+    }
+    case 'graph':
+    case 'flowchart':
+    case 'flowchart-elk':
+    case 'flowchart-v2': {
+      return 'flowchart';
+    }
+    default: {
+      return diagramType;
+    }
+  }
 };
