@@ -1,3 +1,7 @@
+import type { Component } from 'svelte';
+import type { HTMLInputTypeAttribute } from 'svelte/elements';
+import 'unplugin-icons/types/svelte';
+
 export interface MarkerData {
   severity: number;
   message: string;
@@ -15,17 +19,19 @@ export interface TabEvents {
 export interface Tab {
   id: string;
   title: string;
-  icon: string;
+  icon: Component;
 }
 
 export interface State {
   code: string;
   mermaid: string;
   updateDiagram: boolean;
-  autoSync: boolean;
   rough: boolean;
-  editorMode?: EditorMode;
+  // All new options must be optional, as users would have old states saved
+  renderCount?: number;
   panZoom?: boolean;
+  grid?: boolean;
+  editorMode?: EditorMode;
   pan?: { x: number; y: number };
   zoom?: number;
   loader?: LoaderConfig;
@@ -33,6 +39,7 @@ export interface State {
 
 export interface ValidatedState extends State {
   editorMode: EditorMode;
+  diagramType?: string;
   error?: Error;
   errorMarkers: MarkerData[];
   serialized: string;
@@ -50,10 +57,15 @@ export interface FileLoaderConfig {
   codeURL: string;
   configURL?: string;
 }
-export interface LoaderConfig {
-  type: 'gist' | 'files';
-  config: GistLoaderConfig | FileLoaderConfig;
-}
+export type LoaderConfig =
+  | {
+      type: 'gist';
+      config: GistLoaderConfig;
+    }
+  | {
+      type: 'files';
+      config: FileLoaderConfig;
+    };
 export type HistoryType = 'auto' | 'manual' | 'loader';
 export type HistoryEntry = { id: string; state: State; time: number; url?: string } & (
   | {
@@ -87,3 +99,5 @@ export interface ErrorHash {
     last_column: number;
   };
 }
+
+export type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;

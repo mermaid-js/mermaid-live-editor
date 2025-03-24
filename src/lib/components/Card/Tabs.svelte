@@ -1,19 +1,15 @@
 <script lang="ts">
+  import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
   import type { Tab } from '$lib/types';
   import { fade } from 'svelte/transition';
 
   let {
-    isClosable = true,
     tabs,
-    title,
-    isOpen = $bindable(false),
-    activeTabID = $bindable(),
+    activeTabID,
     onselect
   }: {
-    isClosable?: boolean;
     tabs: Tab[];
-    title: string;
-    isOpen?: boolean;
     activeTabID: string;
     onselect?: (tab: Tab) => void;
   } = $props();
@@ -25,41 +21,32 @@
   const toggleTabs = (tab: Tab) => {
     return (event: Event) => {
       event.stopPropagation();
-      activeTabID = tab.id;
       onselect?.(tab);
     };
   };
 </script>
 
-<div class="flex cursor-default">
-  <span role="menubar" tabindex="0" class="mr-2 font-semibold">
-    {#if isClosable}
-      <i class="fas fa-chevron-right icon mr-1" class:isOpen></i>
-    {/if}
-    {title}
-  </span>
-  {#if isOpen && tabs}
-    <ul class="tabs" transition:fade>
-      {#each tabs as tab}
-        <div
-          role="tab"
-          tabindex="0"
-          class="tab tab-lifted {activeTabID === tab.id ? 'tab-active' : 'text-primary-content'}"
-          onclick={toggleTabs(tab)}
-          onkeypress={toggleTabs(tab)}>
-          <i class="mr-1 {tab.icon}"></i>
-          {tab.title}
-        </div>
-      {/each}
-    </ul>
-  {/if}
-</div>
+<div class="flex w-fit cursor-default items-center gap-2">
+  <ul class="flex gap-2 align-middle" transition:fade>
+    {#each tabs as tab, index}
+      <Button
+        role="tab"
+        variant="ghost"
+        class={[
+          'px-2',
+          activeTabID === tab.id && 'rounded-b-none border-b-2 border-b-primary-foreground/50'
+        ]}
+        onclick={toggleTabs(tab)}
+        onkeypress={toggleTabs(tab)}>
+        <tab.icon />
+        {tab.title}
+      </Button>
 
-<style>
-  .icon {
-    transition-duration: 0.5s;
-  }
-  .isOpen {
-    transform: rotate(90deg);
-  }
-</style>
+      {#if index < tabs.length - 1}
+        <div class="my-2">
+          <Separator orientation="vertical" class="w-0.5 bg-slate-300" />
+        </div>
+      {/if}
+    {/each}
+  </ul>
+</div>

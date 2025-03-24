@@ -9,10 +9,10 @@ export const initAnalytics = async (): Promise<void> => {
     try {
       const { default: Plausible } = await import('plausible-tracker');
       plausible = Plausible({
-        domain: env.domain,
-        hashMode: false,
         // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
-        apiHost: env.analyticsUrl
+        apiHost: env.analyticsUrl,
+        domain: env.domain,
+        hashMode: false
       });
     } catch (error) {
       console.log(error);
@@ -42,7 +42,7 @@ export const saveStatistics = ({
   const length = countLines(code);
   const lengthBucket = getBucket(length);
   const renderTimeMsBucket = getBucket(renderTime);
-  logEvent('render', { diagramType, lengthBucket, renderTimeMsBucket, isRough });
+  logEvent('render', { diagramType, isRough, lengthBucket, renderTimeMsBucket });
 };
 
 const getBucket = (length: number): string => {
@@ -77,19 +77,19 @@ const minutesToMilliSeconds = (minutes: number): number => {
 
 const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
-  render: minutesToMilliSeconds(5),
-  panZoom: minutesToMilliSeconds(10),
-  playgroundToggle: 0,
+  bannerClick: defaultDelay,
   copyClipboard: defaultDelay,
-  download: defaultDelay,
   copyMarkdown: defaultDelay,
+  download: defaultDelay,
+  history: defaultDelay,
   loadGist: defaultDelay,
   loadSampleDiagram: defaultDelay,
-  renderDiagram: defaultDelay,
-  history: defaultDelay,
   migration: defaultDelay,
+  panZoom: minutesToMilliSeconds(10),
+  playgroundToggle: 0,
+  render: minutesToMilliSeconds(5),
+  renderDiagram: defaultDelay,
   themeChange: defaultDelay,
-  bannerClick: defaultDelay,
   version: defaultDelay
 } as const;
 export type AnalyticsEvent = keyof typeof delaysPerEvent;
@@ -102,7 +102,7 @@ export const logEvent = (
   if (!plausible) {
     return;
   }
-  const key = data ? JSON.stringify({ name, data }) : name;
+  const key = data ? JSON.stringify({ data, name }) : name;
   if (timeouts.has(key)) {
     clearTimeout(timeouts.get(key));
   } else {
