@@ -101,7 +101,13 @@ ${svgString}`);
       $inputStateStore.panZoom = true;
     });
     image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
-
+    // Fallback to set panZoom to true after 2 seconds
+    // This is a workaround for the case when the image is not loaded
+    setTimeout(() => {
+      if (!$inputStateStore.panZoom) {
+        $inputStateStore.panZoom = true;
+      }
+    }, 2000);
     event.stopPropagation();
     event.preventDefault();
   };
