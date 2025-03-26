@@ -55,9 +55,10 @@ export class PanZoomState {
     this.resizeObserver.disconnect();
     this.resizeObserver.observe(diagramView);
 
-    // TODO: Investigate why this is necessary
-    if (pan !== undefined && zoom !== undefined && Number.isFinite(zoom)) {
+    if (pan && zoom && Number.isFinite(zoom) && Number.isFinite(pan.x) && Number.isFinite(pan.y)) {
       this.restorePanZoom(pan, zoom);
+    } else {
+      this.reset();
     }
 
     // we start out with both pan and zoom enabled so that the tool can auto position view refreshed

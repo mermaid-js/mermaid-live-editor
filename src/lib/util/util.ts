@@ -2,7 +2,7 @@ import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
-import { initURLSubscription, loadState, updateCodeStore } from './state';
+import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
 import { initAnalytics, plausible } from './stats';
 
 export const loadStateFromURL = (): void => {
@@ -23,6 +23,7 @@ export const initHandler = async (): Promise<void> => {
   initURLSubscription();
   await initAnalytics();
   plausible?.trackPageview({ url: window.location.origin + window.location.pathname });
+  verifyState();
 };
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');

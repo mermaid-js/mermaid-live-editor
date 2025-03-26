@@ -232,3 +232,11 @@ export const initURLSubscription = (): void => {
 export const getStateString = (): string => {
   return JSON.stringify(get(inputStateStore));
 };
+
+export const verifyState = (): void => {
+  const state = get(inputStateStore);
+  if (!state.panZoom) {
+    state.panZoom = true;
+  }
+  updateCodeStore(state);
+};
