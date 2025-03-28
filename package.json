@@ -56,7 +56,7 @@
     "husky": "^8.0.3",
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.11",
-    "lucide-svelte": "^0.479.0",
+    "lucide-svelte": "^0.485.0",
     "node-html-parser": "^6.1.13",
     "paneforge": "^1.0.0-next.4",
     "postcss": "^8.4.49",
@@ -64,7 +64,7 @@
     "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^3.2.8",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "svelte": "^5.23.1",
+    "svelte": "^5.25.3",
     "svelte-preprocess": "^6.0.3",
     "svelte-sonner": "^0.3.28",
     "tailwind-merge": "^3.0.2",
@@ -105,7 +105,7 @@
   "engines": {
     "node": ">=20.19.0"
   },
-  "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c",
+  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6",
   "pnpm": {
     "onlyBuiltDependencies": [
       "deasync",
