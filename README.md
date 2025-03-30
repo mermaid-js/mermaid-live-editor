@@ -18,7 +18,7 @@ You can try out a live version [here](https://mermaid.live/).
 
 # Contributors are welcome!
 
-If you want to speed up the progress for mermaid-live-editor, join the Discord channel and contact knsv.
+If you want to speed up the progress for mermaid-live-editor, join the Discord channel and contact knsv
 
 ## Docker
 
