@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: urdraw-mermaid-frontend
+  namespace: urdraw
+  labels:
+    app: urdraw-mermaid-frontend
+spec:
+  serviceName: urdraw-mermaid-frontend
+  replicas: 4
+  selector:
+    matchLabels:
+      app: urdraw-mermaid-frontend
+  template:
+    metadata:
+      labels:
+        app: urdraw-mermaid-frontend
+    spec:
+      containers:
+        - name: urdraw-mermaid-frontend
+          image: ideavn/urdraw-mermaid-frontend:{latest}
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 64m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: urdraw-mermaid-frontend-service
+  namespace: urdraw
+spec:
+  selector:
+    app: urdraw-mermaid-frontend
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: urdraw-mermaid-frontend-ingress
+  namespace: urdraw
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: m.urdraw.click
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: urdraw-mermaid-frontend-service
+            port:
+              number: 8080

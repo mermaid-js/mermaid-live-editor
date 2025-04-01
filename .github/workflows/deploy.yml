@@ -1,62 +1,138 @@
-name: Deploy Live Editor
+name: Deploy
+
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
-      - develop
+      - deploy
+
 jobs:
+  send-notification-started:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP_DEPLOYMENTS }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            *🚀 UrDraw - Mermaid * 🏃‍♂️${{ github.run_number }}
+
+            *👤 Committer:* [${{ github.actor }}](https://github.com/${{ github.actor }})
+            *📝 Commit message:* ${{ github.event.commits[0].message }}
+            *📦 Repository:* ${{ github.repository }}
+            *🔍 See changes:* [View changes](https://github.com/${{ github.repository }}/commit/${{github.sha}})
+
+            Started 🚁️️️️️️🚁️️️️️️🚁️️️️️️🚁️️️️️️
+
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
         with:
-          node-version-file: '.node-version'
-          cache: pnpm
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: sveltekit
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      - name: Build & Deploy
-        env:
-          MERMAID_DOMAIN: 'mermaid.live'
-          MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
-          MERMAID_RENDERER_URL: 'https://mermaid.ink'
-          MERMAID_KROKI_RENDERER_URL: 'https://kroki.io'
-          MERMAID_IS_ENABLED_MERMAID_CHART_LINKS: 'true'
+      - name: Build image
         run: |
-          export DEPLOY=true
-          [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
-          pnpm install
-          pnpm build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./docs
+          docker buildx create --name builder --use
+          docker buildx inspect builder --bootstrap
+          docker buildx build -t ideavn/urdraw-mermaid-frontend:${{ github.run_number }} --push .
 
   deploy:
-    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: build
+    if: ${{ success() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG_K8S_LOCAL }}
+          version: "latest"
+
+      - name: Apply Kubernetes deployment
+        run: |
+          kubectl apply -f ./deployment/namespace.yaml
+          sed -i 's/{latest}/${{ github.run_number }}/g' ./deployment/frontend.yaml
+          kubectl apply -f ./deployment/frontend.yaml --validate=false
+
+  send-notification-build-failed:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
+    if: ${{ failure() && needs.build.result == 'failure' }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP_DEPLOYMENTS }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            *❌ UrDraw - Mermaid * 🏃‍♂️${{ github.run_number }}
+
+            *👤 Committer:* [${{ github.actor }}](https://github.com/${{ github.actor }})
+            *📝 Commit message:* ${{ github.event.commits[0].message }}
+            *📦 Repository:* ${{ github.repository }}
+            *🔍 See changes:* [View changes](https://github.com/${{ github.repository }}/commit/${{github.sha}})
+
+            *Build Failed*
+            😐️️️️️️😐️️️️️️😐️️️️️️😐️️️️️️😐️️️️️️😐️️️️️️
+
+  send-notification-successful:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: ${{ success() && needs.deploy.result == 'success' }}
+    steps:
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP_DEPLOYMENTS }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            *🎉 UrDraw - Mermaid * 🏃‍♂️${{ github.run_number }}
+
+            *👤 Committer:* [${{ github.actor }}](https://github.com/${{ github.actor }})
+            *📝 Commit message:* ${{ github.event.commits[0].message }}
+            *📦 Repository:* ${{ github.repository }}
+            *🔍 See changes:* [View changes](https://github.com/${{ github.repository }}/commit/${{github.sha}})
+
+            *Deployment Successful*
+            🚀️️️️️️🚀️️️️️️🚀️️️️️️🚀️️️️️️🚀️️️️️️🚀️️️️️️
+
+  send-notification-deploy-failed:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: ${{ failure() && needs.deploy.result == 'failure' }}
+    steps:
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP_DEPLOYMENTS }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            *❌ UrDraw - Mermaid * 🏃‍♂️${{ github.run_number }}
+
+            *👤 Committer:* [${{ github.actor }}](https://github.com/${{ github.actor }})
+            *📝 Commit message:* ${{ github.event.commits[0].message }}
+            *📦 Repository:* ${{ github.repository }}
+            *🔍 See changes:* [View changes](https://github.com/${{ github.repository }}/commit/${{github.sha}})
+
+            *Deployment Failed*
+            😐️️️️️️😐️️️️️️😐️️️️️️😐️️️️️️😐️️️️️️😐️️️️️️
