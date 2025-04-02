@@ -132,6 +132,8 @@ export const stateStore: Readable<ValidatedState> = derived(
 export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   const { krokiRendererUrl, rendererUrl } = env;
   const png = `${rendererUrl}/img/${serialized}?type=png`;
+  const queryParams = window.location.search;
+  
   return {
     kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
     mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
@@ -142,8 +144,8 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     new: `${window.location.protocol}//${window.location.host}${window.location.pathname}/#${serializeState(defaultState)}`,
     png,
     svg: `${rendererUrl}/svg/${serialized}`,
-    view: `/view#${serialized}`,
-    edit: `/edit#${serialized}`
+    view: `/view${queryParams}#${serialized}`,
+    edit: `/edit${queryParams}#${serialized}`
   };
 });
 

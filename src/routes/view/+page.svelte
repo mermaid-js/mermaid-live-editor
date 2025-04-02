@@ -14,7 +14,7 @@
 
 <div class="relative h-full">
   <div class="absolute left-4 top-4 z-50">
-    <Button variant="ghost" href={$urlsStore.edit} class="flex items-center gap-2 bg-muted/80 hover:bg-muted">
+    <Button href={$urlsStore.edit} class="flex items-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 shadow-md">
       <ArrowBackIcon />
       Back to Edit
     </Button>
