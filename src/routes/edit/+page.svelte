@@ -59,7 +59,11 @@
     </Toggle>
     <Share />
     <McWrapper>
-      <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save} target="_blank">
+      <Button
+        variant="accent"
+        size="sm"
+        href={$urlsStore.mermaidChart({ medium: 'save_diagram' }).save}
+        target="_blank">
         <MermaidChartIcon />
         Save diagram
       </Button>

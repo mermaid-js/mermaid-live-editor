@@ -23,17 +23,21 @@
   ]);
 
   const mermaidChartMenuItems = $derived([
-    { label: 'Edit in Playground', icon: PlaygroundIcon, href: $urlsStore.mermaidChart.playground },
+    {
+      label: 'Edit in Playground',
+      icon: PlaygroundIcon,
+      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground
+    },
     {
       label: 'Plugins',
       icon: PluginIcon,
-      href: 'https://www.mermaidchart.com/plugins',
+      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
       checkDiagramType: false
     },
     {
       label: 'MermaidChart',
       icon: MermaidChartIcon,
-      href: 'https://www.mermaidchart.com',
+      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
       checkDiagramType: false
     }
   ]);
