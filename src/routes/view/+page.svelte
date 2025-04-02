@@ -7,6 +7,7 @@
   import ArrowBackIcon from '~icons/material-symbols/arrow-back-rounded';
 
   let isLoading = $state(false);
+  let loadingTimeout;
 
   const handleEditClick = () => {
     isLoading = true;
@@ -24,6 +25,26 @@
 
     isLoading = false;
     sessionStorage.removeItem('redirectUrl');
+
+    window.addEventListener('pageshow', (event) => {
+      isLoading = false;
+      clearTimeout(loadingTimeout);
+    });
+
+    return () => {
+      clearTimeout(loadingTimeout);
+    };
+  });
+
+  $effect(() => {
+    if (isLoading) {
+      clearTimeout(loadingTimeout);
+      loadingTimeout = setTimeout(() => {
+        isLoading = false;
+      }, 4000);
+    } else {
+      clearTimeout(loadingTimeout);
+    }
   });
 </script>
 
@@ -41,7 +62,7 @@
         <div
           class="animate-spin size-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full">
         </div>
-        Redirecting...
+        Đang chuyển hướng...
       {:else}
         <ArrowBackIcon />
         Back to Edit
@@ -57,7 +78,8 @@
     <div class="flex flex-col items-center gap-3 p-6 rounded-lg bg-background shadow-lg">
       <div class="animate-spin size-10 border-4 border-primary/30 border-t-primary rounded-full">
       </div>
-      <div class="text-foreground font-medium">Loading editor...</div>
+      <div class="text-foreground font-medium">Đang tải trình soạn thảo...</div>
+      <div class="text-xs text-muted-foreground">(Loading sẽ tự tắt sau 5 giây)</div>
     </div>
   </div>
 {/if}
