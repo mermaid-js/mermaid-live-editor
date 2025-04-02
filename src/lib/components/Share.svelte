@@ -37,7 +37,7 @@
             <MermaidChartIcon class="size-5" />
             Mermaid Chart Playground
           </h2>
-          <CopyInput value={$urlsStore.mermaidChart.playground} />
+          <CopyInput value={$urlsStore.mermaidChart({ medium: 'share' }).playground} />
           <Dialog.Description>
             Opens the Mermaid Chart Playground with Mermaid AI, Visual Editor, and more.
           </Dialog.Description>

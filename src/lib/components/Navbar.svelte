@@ -107,7 +107,7 @@
               // Wait for the event to be logged
               setTimeout(() => {
                 window.open(
-                  $urlsStore.mermaidChart.playground,
+                  $urlsStore.mermaidChart({ medium: 'toggle' }).playground,
                   '_self',
                   // Do not send referrer header, if the user already came from playground
                   isReferral ? 'noreferrer' : ''
@@ -115,7 +115,9 @@
               }, 100);
             }} />
 
-          <a href={$urlsStore.mermaidChart.playground} class="whitespace-nowrap">
+          <a
+            href={$urlsStore.mermaidChart({ medium: 'toggle' }).playground}
+            class="whitespace-nowrap">
             Playground <span class="hidden text-sm opacity-50 lg:inline"
               >- more features, no account required</span>
           </a>
