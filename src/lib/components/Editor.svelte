@@ -125,7 +125,10 @@
           </div>
         </div>
         <McWrapper>
-          <Button variant="accent" size="sm" href={$urlsStore.mermaidChart.save}>
+          <Button
+            variant="accent"
+            size="sm"
+            href={$urlsStore.mermaidChart({ medium: 'ai_repair' }).save}>
             <MermaidChartIcon />
             AI Repair
           </Button>

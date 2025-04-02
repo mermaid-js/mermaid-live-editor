@@ -135,9 +135,21 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   return {
     kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
     mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
-    mermaidChart: {
-      save: `${MCBaseURL}/app/plugin/save?state=${serialized}`,
-      playground: `${MCBaseURL}/play#${serialized}`
+    mermaidChart: ({
+      medium
+    }: {
+      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'toggle';
+    }) => {
+      const parameters = new URLSearchParams();
+      parameters.set('utm_source', 'mermaid_live');
+      parameters.set('utm_medium', medium);
+      const paramString = parameters.toString();
+      return {
+        save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${paramString}`,
+        playground: `${MCBaseURL}/play?${paramString}#${serialized}`,
+        plugins: `${MCBaseURL}/plugins?${paramString}`,
+        home: `${MCBaseURL}/?${paramString}`
+      };
     },
     new: `${window.location.protocol}//${window.location.host}${window.location.pathname}/#${serializeState(defaultState)}`,
     png,

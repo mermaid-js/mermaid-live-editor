@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
+  import { MCBaseURL } from '$/util/util';
   import { onDestroy, type Snippet } from 'svelte';
   import { fade } from 'svelte/transition';
 
@@ -17,19 +18,19 @@
   const taglines: Taglines[] = [
     {
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
-      url: 'https://www.mermaidchart.com/mermaid-ai?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=aibundle'
+      url: '/mermaid-ai?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=aibundle'
     },
     {
       label: 'Diagram live with teammates in Mermaid Chart',
-      url: 'www.mermaidchart.com/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=team_collaboration'
+      url: '/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=team_collaboration'
     },
     {
       label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: 'www.mermaidchart.com/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=visual_editor'
+      url: '/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=visual_editor'
     },
     {
       label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: 'https://www.mermaidchart.com/whiteboard?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=whiteboard'
+      url: '/whiteboard?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=whiteboard'
     }
   ];
 
@@ -58,7 +59,7 @@
   <div class="grid grow">
     {#key currentTagline}
       <a
-        href={currentTagline.url}
+        href={MCBaseURL + currentTagline.url}
         target="_blank"
         class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
         in:fade={{ delay: 800 }}
