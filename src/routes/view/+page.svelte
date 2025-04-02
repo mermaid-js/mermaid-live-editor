@@ -10,12 +10,21 @@
 
   const handleEditClick = () => {
     isLoading = true;
+
+    const editUrl = $urlsStore.edit;
+    sessionStorage.setItem('redirectUrl', editUrl);
+
     setTimeout(() => {
-      window.location.href = $urlsStore.edit;
-    }, 300);
+      window.location.href = editUrl;
+    }, 400);
   };
 
-  onMount(initHandler);
+  onMount(() => {
+    initHandler();
+
+    isLoading = false;
+    sessionStorage.removeItem('redirectUrl');
+  });
 </script>
 
 <svelte:head>
