@@ -222,9 +222,61 @@ export const toggleDarkTheme = (dark: boolean): void => {
   });
 };
 
+const getDrawIdFromURL = (): string | null => {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('drawId');
+};
+
+const getTokenFromURL = (): string | null => {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('token');
+};
+
+const updateDrawingInDatabase = async (hashContent: string): Promise<void> => {
+  const drawId = getDrawIdFromURL();
+  const token = getTokenFromURL();
+  
+  if (!drawId || !token) {
+    console.log('DrawId or token not found in URL');
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://api-p.urdraw.click/drawing/${drawId}`, {
+      method: 'PUT',
+      headers: {
+        'accept': 'application/json, text/plain, */*',
+        'accept-language': 'en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7',
+        'authorization': `Bearer ${token}`,
+        'cache-control': 'no-cache',
+        'connection': 'keep-alive',
+        'content-type': 'application/json',
+        'origin': window.location.origin,
+        'pragma': 'no-cache',
+        'referer': window.location.href,
+      },
+      body: JSON.stringify({
+        content: hashContent
+      })
+    });
+    
+    if (!response.ok) {
+      console.error('Failed to update drawing in database', await response.text());
+    } else {
+      console.log('Drawing updated successfully');
+    }
+  } catch (error) {
+    console.error('Error updating drawing in database', error);
+  }
+};
+
 export const initURLSubscription = (): void => {
   const updateHash = debounce((hash) => {
-    history.replaceState(undefined, '', `#${hash}`);
+    const currentUrl = new URL(window.location.href);
+    currentUrl.hash = hash;
+    history.replaceState(undefined, '', currentUrl.toString());
+    
+    updateDrawingInDatabase(hash);
   }, 250);
 
   stateStore.subscribe(({ serialized }) => {
