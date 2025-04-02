@@ -142,7 +142,8 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     new: `${window.location.protocol}//${window.location.host}${window.location.pathname}/#${serializeState(defaultState)}`,
     png,
     svg: `${rendererUrl}/svg/${serialized}`,
-    view: `/view#${serialized}`
+    view: `/view#${serialized}`,
+    edit: `/edit#${serialized}`
   };
 });
 
