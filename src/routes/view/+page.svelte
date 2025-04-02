@@ -62,7 +62,7 @@
         <div
           class="animate-spin size-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full">
         </div>
-        Đang chuyển hướng...
+        Redirecting...
       {:else}
         <ArrowBackIcon />
         Back to Edit
@@ -78,8 +78,8 @@
     <div class="flex flex-col items-center gap-3 p-6 rounded-lg bg-background shadow-lg">
       <div class="animate-spin size-10 border-4 border-primary/30 border-t-primary rounded-full">
       </div>
-      <div class="text-foreground font-medium">Đang tải trình soạn thảo...</div>
-      <div class="text-xs text-muted-foreground">(Loading sẽ tự tắt sau 5 giây)</div>
+      <div class="text-foreground font-medium">Loading editor...</div>
+      <div class="text-xs text-muted-foreground">(Loading will automatically stop after 5 seconds)</div>
     </div>
   </div>
 {/if}
