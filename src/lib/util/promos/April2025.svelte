@@ -21,11 +21,11 @@
     },
     {
       label: 'Diagram live with teammates in Mermaid Chart',
-      url: 'www.mermaidchart.com/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=team_collaboration'
+      url: 'https://www.mermaidchart.com/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=team_collaboration'
     },
     {
       label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: 'www.mermaidchart.com/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=visual_editor'
+      url: 'https://www.mermaidchart.com/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=visual_editor'
     },
     {
       label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
