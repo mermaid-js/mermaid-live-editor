@@ -296,3 +296,49 @@ export const verifyState = (): void => {
   }
   updateCodeStore(state);
 };
+
+export const fetchDrawingContent = async (): Promise<void> => {
+  if (window.location.pathname.includes('/view')) {
+    return;
+  }
+  
+  const drawId = getDrawIdFromURL();
+  const token = getTokenFromURL();
+
+  if (!drawId || !token) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://api-p.urdraw.click/drawing/${drawId}`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json, text/plain, */*',
+        'accept-language': 'en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7',
+        'authorization': `Bearer ${token}`,
+        'cache-control': 'no-cache',
+        'connection': 'keep-alive',
+        'content-type': 'application/json',
+        'origin': window.location.origin,
+        'pragma': 'no-cache',
+        'referer': window.location.href,
+      }
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch drawing from database', await response.text());
+      return;
+    }
+
+    const data = await response.json();
+    if (data.content) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.hash = data.content;
+      history.replaceState(undefined, '', currentUrl.toString());
+      
+      loadState(data.content);
+    }
+  } catch (error) {
+    console.error('Error fetching drawing from database', error);
+  }
+};
