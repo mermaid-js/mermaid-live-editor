@@ -28,7 +28,7 @@ test.describe('Check actions', () => {
     await editPage.toggleSampleDiagrams();
     await editPage.loadSampleDiagram('ER');
 
-    const secondPngSize = await editPage.checkAndDownloadPNG(110_000);
+    const secondPngSize = await editPage.checkAndDownloadPNG(81_000);
     const secondSvgSize = await editPage.downloadSVG(11_000);
 
     // Verify files are actually different

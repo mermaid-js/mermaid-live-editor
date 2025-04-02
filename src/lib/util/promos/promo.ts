@@ -4,7 +4,7 @@ import duration from 'dayjs/plugin/duration';
 import type { Component } from 'svelte';
 import { get, writable, type Writable } from 'svelte/store';
 import { localStorage, persist } from '../persist';
-import January2025 from './January2025.svelte';
+import April2025 from './April2025.svelte';
 
 dayjs.extend(duration);
 
@@ -16,10 +16,10 @@ interface Promotion {
 }
 
 const promotions: Record<string, Promotion> = {
-  'promo-january-2025': {
-    startDate: new Date('2025-01-01'),
+  'promo-april-2025': {
+    startDate: new Date('2025-04-01'),
     endDate: new Date('2028-12-31'),
-    component: January2025,
+    component: April2025,
     hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
   }
 };
