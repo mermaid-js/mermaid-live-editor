@@ -233,11 +233,14 @@ const getTokenFromURL = (): string | null => {
 };
 
 const updateDrawingInDatabase = async (hashContent: string): Promise<void> => {
+  if (window.location.pathname.includes('/view')) {
+    return;
+  }
+  
   const drawId = getDrawIdFromURL();
   const token = getTokenFromURL();
   
   if (!drawId || !token) {
-    console.log('DrawId or token not found in URL');
     return;
   }
 
@@ -262,8 +265,6 @@ const updateDrawingInDatabase = async (hashContent: string): Promise<void> => {
     
     if (!response.ok) {
       console.error('Failed to update drawing in database', await response.text());
-    } else {
-      console.log('Drawing updated successfully');
     }
   } catch (error) {
     console.error('Error updating drawing in database', error);
