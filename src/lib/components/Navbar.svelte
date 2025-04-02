@@ -69,6 +69,7 @@
       <Button
         title="Dismiss banner"
         variant="ghost"
+        class="hover:bg-transparent hover:text-[#261A56]"
         size="sm"
         onclick={() => {
           dismissPromotion(activePromotion?.id);
