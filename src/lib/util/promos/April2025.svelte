@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
+  import { C } from '$/constants';
   import { MCBaseURL } from '$/util/util';
   import { onDestroy, type Snippet } from 'svelte';
   import { fade } from 'svelte/transition';
@@ -12,25 +13,42 @@
 
   interface Taglines {
     label: string;
-    url: string;
+    url: {
+      path: string;
+      params: Record<string, string>;
+    };
   }
+
+  const commonParams = { utm_source: C.utmSource, utm_medium: 'banner_ad' } as const;
 
   const taglines: Taglines[] = [
     {
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
-      url: '/mermaid-ai?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=aibundle'
+      url: {
+        path: '/mermaid-ai',
+        params: { utm_campaign: 'aibundle' }
+      }
     },
     {
       label: 'Diagram live with teammates in Mermaid Chart',
-      url: '/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=team_collaboration'
+      url: {
+        path: '/landing',
+        params: { utm_campaign: 'team_collaboration' }
+      }
     },
     {
       label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: '/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=visual_editor'
+      url: {
+        path: '/landing',
+        params: { utm_campaign: 'visual_editor' }
+      }
     },
     {
       label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: '/whiteboard?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=whiteboard'
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'whiteboard' }
+      }
     }
   ];
 
@@ -59,7 +77,10 @@
   <div class="grid grow">
     {#key currentTagline}
       <a
-        href={MCBaseURL + currentTagline.url}
+        href="{MCBaseURL}{currentTagline.url.path}?{new URLSearchParams({
+          ...commonParams,
+          ...currentTagline.url.params
+        }).toString()}"
         target="_blank"
         class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
         in:fade={{ delay: 800 }}
