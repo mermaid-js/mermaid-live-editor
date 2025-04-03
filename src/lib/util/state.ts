@@ -141,15 +141,15 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     }: {
       medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'toggle';
     }) => {
-      const parameters = new URLSearchParams();
-      parameters.set('utm_source', C.utmSource);
-      parameters.set('utm_medium', medium);
-      const paramString = parameters.toString();
+      const params = new URLSearchParams({
+        utm_source: C.utmSource,
+        utm_medium: medium
+      }).toString();
       return {
-        save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${paramString}`,
-        playground: `${MCBaseURL}/play?${paramString}#${serialized}`,
-        plugins: `${MCBaseURL}/plugins?${paramString}`,
-        home: `${MCBaseURL}/?${paramString}`
+        save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${params}`,
+        playground: `${MCBaseURL}/play?${params}#${serialized}`,
+        plugins: `${MCBaseURL}/plugins?${params}`,
+        home: `${MCBaseURL}/?${params}`
       };
     },
     new: `${window.location.protocol}//${window.location.host}${window.location.pathname}/#${serializeState(defaultState)}`,
