@@ -18,19 +18,19 @@
   const taglines: Taglines[] = [
     {
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
-      url: '/mermaid-ai?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=aibundle'
+      url: '/mermaid-ai?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=aibundle'
     },
     {
       label: 'Diagram live with teammates in Mermaid Chart',
-      url: '/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=team_collaboration'
+      url: '/landing?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=team_collaboration'
     },
     {
       label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: '/landing?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=visual_editor'
+      url: '/landing?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=visual_editor'
     },
     {
       label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: '/whiteboard?utm_source=mermaid_live&utm_medium=banner_ad&utm_campaign=whiteboard'
+      url: '/whiteboard?utm_source=mermaid_live_editor&utm_medium=banner_ad&utm_campaign=whiteboard'
     }
   ];
 
