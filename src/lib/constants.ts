@@ -6,3 +6,7 @@ export const TID = {
   errorContainer: 'error-container',
   themeToggleButton: 'theme-toggle-button'
 } as const;
+
+export const C = {
+  utmSource: 'mermaid_live_editor'
+} as const;
