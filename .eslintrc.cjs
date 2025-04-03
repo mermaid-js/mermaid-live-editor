@@ -105,12 +105,13 @@ module.exports = {
           j: true,
           k: true,
           param: true,
+          Params: true,
+          params: true,
           Props: true,
           props: true,
           req: true,
           res: true,
           str: true,
-          searchParams: true,
           temp: true,
           ImportMetaEnv: true
         }

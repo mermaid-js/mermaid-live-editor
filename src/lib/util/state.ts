@@ -1,4 +1,5 @@
-import type { ErrorHash, MarkerData, State, ValidatedState } from '$lib/types';
+import { C } from '$/constants';
+import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
@@ -141,7 +142,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
       medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'toggle';
     }) => {
       const parameters = new URLSearchParams();
-      parameters.set('utm_source', 'mermaid_live');
+      parameters.set('utm_source', C.utmSource);
       parameters.set('utm_medium', medium);
       const paramString = parameters.toString();
       return {
