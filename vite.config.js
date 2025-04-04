@@ -2,6 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vitest/config';
+import { federation } from '@module-federation/vite';
 
 /**
  * HMR creates state inconsistencies, so we always reload the page.
@@ -22,6 +23,14 @@ export default defineConfig({
       compiler: 'svelte',
       customCollections: {
         custom: FileSystemIconLoader('./static/icons')
+      }
+    }),
+    federation({
+      name: 'mermaid',
+      filename: 'remoteEntry.js', // si tu exposes ton app
+      manifest: true,
+      exposes: {
+        './View': './src/lib/components/View.svelte'
       }
     }),
     alwaysFullReload

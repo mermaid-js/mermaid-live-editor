@@ -15,3 +15,5 @@
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.mf_temp
+.__mf__temp
