@@ -5,7 +5,7 @@ import { env } from './env';
 export let plausible: ReturnType<typeof PlausibleInstance> | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
-  if (browser && !plausible) {
+  if (browser && !plausible && env.analyticsUrl && env.analyticsUrl.trim() !== '') {
     try {
       const { default: Plausible } = await import('plausible-tracker');
       plausible = Plausible({
@@ -99,7 +99,7 @@ export const logEvent = (
   name: AnalyticsEvent,
   data?: Record<string, string | number | boolean>
 ): void => {
-  if (!plausible) {
+  if (!plausible || !env.analyticsUrl || env.analyticsUrl.trim() === '') {
     return;
   }
   const key = data ? JSON.stringify({ data, name }) : name;
