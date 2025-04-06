@@ -2,7 +2,7 @@ import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
 import { applyMigrations } from './migrations';
-import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
+import { fetchDrawingContent, initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
 import { initAnalytics, plausible } from './stats';
 
 export const loadStateFromURL = (): void => {
@@ -17,6 +17,9 @@ export const syncDiagram = (): void => {
 
 export const initHandler = async (): Promise<void> => {
   applyMigrations();
+  
+  await fetchDrawingContent().catch(console.error);
+  
   loadStateFromURL();
   await initLoading('Loading Gist...', loadDataFromUrl().catch(console.error));
   syncDiagram();

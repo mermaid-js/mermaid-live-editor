@@ -132,6 +132,8 @@ export const stateStore: Readable<ValidatedState> = derived(
 export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   const { krokiRendererUrl, rendererUrl } = env;
   const png = `${rendererUrl}/img/${serialized}?type=png`;
+  const queryParams = window.location.search;
+  
   return {
     kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
     mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
@@ -142,7 +144,8 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     new: `${window.location.protocol}//${window.location.host}${window.location.pathname}/#${serializeState(defaultState)}`,
     png,
     svg: `${rendererUrl}/svg/${serialized}`,
-    view: `/view#${serialized}`
+    view: `/view${queryParams}#${serialized}`,
+    edit: `/edit${queryParams}#${serialized}`
   };
 });
 
@@ -219,9 +222,62 @@ export const toggleDarkTheme = (dark: boolean): void => {
   });
 };
 
+const getDrawIdFromURL = (): string | null => {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('drawId');
+};
+
+const getTokenFromURL = (): string | null => {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('token');
+};
+
+const updateDrawingInDatabase = async (hashContent: string): Promise<void> => {
+  if (window.location.pathname.includes('/view')) {
+    return;
+  }
+  
+  const drawId = getDrawIdFromURL();
+  const token = getTokenFromURL();
+  
+  if (!drawId || !token) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://api-p.urdraw.click/drawing/${drawId}`, {
+      method: 'PUT',
+      headers: {
+        'accept': 'application/json, text/plain, */*',
+        'accept-language': 'en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7',
+        'authorization': `Bearer ${token}`,
+        'cache-control': 'no-cache',
+        'connection': 'keep-alive',
+        'content-type': 'application/json',
+        'origin': window.location.origin,
+        'pragma': 'no-cache',
+        'referer': window.location.href,
+      },
+      body: JSON.stringify({
+        content: hashContent
+      })
+    });
+    
+    if (!response.ok) {
+      console.error('Failed to update drawing in database', await response.text());
+    }
+  } catch (error) {
+    console.error('Error updating drawing in database', error);
+  }
+};
+
 export const initURLSubscription = (): void => {
   const updateHash = debounce((hash) => {
-    history.replaceState(undefined, '', `#${hash}`);
+    const currentUrl = new URL(window.location.href);
+    currentUrl.hash = hash;
+    history.replaceState(undefined, '', currentUrl.toString());
+    
+    updateDrawingInDatabase(hash);
   }, 250);
 
   stateStore.subscribe(({ serialized }) => {
@@ -239,4 +295,50 @@ export const verifyState = (): void => {
     state.panZoom = true;
   }
   updateCodeStore(state);
+};
+
+export const fetchDrawingContent = async (): Promise<void> => {
+  if (window.location.pathname.includes('/view')) {
+    return;
+  }
+  
+  const drawId = getDrawIdFromURL();
+  const token = getTokenFromURL();
+
+  if (!drawId || !token) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://api-p.urdraw.click/drawing/${drawId}`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json, text/plain, */*',
+        'accept-language': 'en-US,en;q=0.9,vi-VN;q=0.8,vi;q=0.7',
+        'authorization': `Bearer ${token}`,
+        'cache-control': 'no-cache',
+        'connection': 'keep-alive',
+        'content-type': 'application/json',
+        'origin': window.location.origin,
+        'pragma': 'no-cache',
+        'referer': window.location.href,
+      }
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch drawing from database', await response.text());
+      return;
+    }
+
+    const data = await response.json();
+    if (data.content) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.hash = data.content;
+      history.replaceState(undefined, '', currentUrl.toString());
+      
+      loadState(data.content);
+    }
+  } catch (error) {
+    console.error('Error fetching drawing from database', error);
+  }
 };
