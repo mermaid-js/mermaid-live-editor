@@ -5,12 +5,15 @@
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import ArrowBackIcon from '~icons/material-symbols/arrow-back-rounded';
+  import { stateStore } from '$/util/state';
 
-  let isLoading = $state(false);
+  let isLoading = $state(true);
+  let isEditorLoading = $state(false);
   let loadingTimeout;
+  let diagramInitialized = $state(false);
 
   const handleEditClick = () => {
-    isLoading = true;
+    isEditorLoading = true;
 
     const editUrl = $urlsStore.edit;
     sessionStorage.setItem('redirectUrl', editUrl);
@@ -21,26 +24,45 @@
   };
 
   onMount(() => {
-    initHandler();
+    const initPromise = initHandler();
+    
+    const unsubscribe = stateStore.subscribe((state) => {
+      if (state && state.code) {
+        diagramInitialized = true;
+      }
+    });
 
-    isLoading = false;
+    initPromise.then(() => {
+      setTimeout(() => {
+        if (diagramInitialized) {
+          isLoading = false;
+        } else {
+          setTimeout(() => {
+            isLoading = false;
+          }, 3000);
+        }
+      }, 300);
+    });
+
+    isEditorLoading = false;
     sessionStorage.removeItem('redirectUrl');
 
     window.addEventListener('pageshow', (event) => {
-      isLoading = false;
+      isEditorLoading = false;
       clearTimeout(loadingTimeout);
     });
 
     return () => {
       clearTimeout(loadingTimeout);
+      unsubscribe();
     };
   });
 
   $effect(() => {
-    if (isLoading) {
+    if (isEditorLoading) {
       clearTimeout(loadingTimeout);
       loadingTimeout = setTimeout(() => {
-        isLoading = false;
+        isEditorLoading = false;
       }, 4000);
     } else {
       clearTimeout(loadingTimeout);
@@ -56,9 +78,9 @@
   <div class="absolute left-4 top-4 z-50">
     <Button
       onclick={handleEditClick}
-      disabled={isLoading}
+      disabled={isEditorLoading || isLoading}
       class="flex items-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 shadow-md">
-      {#if isLoading}
+      {#if isEditorLoading}
         <div
           class="animate-spin size-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full">
         </div>
@@ -69,10 +91,24 @@
       {/if}
     </Button>
   </div>
-  <View shouldShowGrid={false} />
+  
+  {#if !isLoading}
+    <View shouldShowGrid={false} />
+  {/if}
 </div>
 
 {#if isLoading}
+  <div
+    class="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="flex flex-col items-center gap-3 p-6 rounded-lg bg-background shadow-lg">
+      <div class="animate-spin size-10 border-4 border-primary/30 border-t-primary rounded-full">
+      </div>
+      <div class="text-foreground font-medium">Loading diagram...</div>
+    </div>
+  </div>
+{/if}
+
+{#if isEditorLoading}
   <div
     class="fixed inset-0 bg-background/60 backdrop-blur-sm z-50 flex items-center justify-center">
     <div class="flex flex-col items-center gap-3 p-6 rounded-lg bg-background shadow-lg">
