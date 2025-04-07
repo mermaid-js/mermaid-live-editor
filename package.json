@@ -100,8 +100,7 @@
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md,json}": [
-      "prettier --plugin-search-dir=. --write",
-      "eslint --ignore-path .gitignore "
+      "prettier --plugin-search-dir=. --write"
     ]
   },
   "engines": {
