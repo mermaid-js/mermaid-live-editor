@@ -6,6 +6,7 @@
   import { base } from '$app/paths';
   import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
+  import { initializeFirebase } from '$/firebase/firebase.client';
   import '../app.postcss';
 
   interface Props {
@@ -20,6 +21,7 @@
     window.addEventListener('hashchange', () => {
       void initHandler();
     });
+    initializeFirebase();
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register(`${base}/service-worker.js`, {

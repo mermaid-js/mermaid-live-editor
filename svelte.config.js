@@ -5,11 +5,6 @@ import { sveltePreprocess } from 'svelte-preprocess';
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
-  compilerOptions: {
-    compatibility: {
-      componentApi: 4 // 👈 pour réactiver le support de `new Component(...)`
-    }
-  },
   preprocess: [
     sveltePreprocess({
       postcss: true
@@ -19,7 +14,9 @@ const config = {
     alias: {
       '$/*': './src/lib/*'
     },
-    adapter: adapter()
+    adapter: adapter({
+      pages: 'docs'
+    })
   }
 };
 

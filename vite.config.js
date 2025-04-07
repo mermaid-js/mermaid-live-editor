@@ -2,7 +2,6 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vitest/config';
-import { federation } from '@module-federation/vite';
 
 /**
  * HMR creates state inconsistencies, so we always reload the page.
@@ -25,23 +24,11 @@ export default defineConfig({
         custom: FileSystemIconLoader('./static/icons')
       }
     }),
-    federation({
-      name: 'mermaid',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './View': './src/routes/+layout.svelte'
-      }
-    }),
     alwaysFullReload
   ],
   envPrefix: 'MERMAID_',
-  build: {
-    target: 'esnext',
-    cssCodeSplit: false
-  },
   server: {
     port: 3000,
-    cors: true,
     host: true
   },
   preview: {

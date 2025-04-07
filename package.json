@@ -2,8 +2,6 @@
   "name": "mermaid-live-editor",
   "version": "2.0.67",
   "type": "module",
-  "target": "esnext",
-  "module": "esnext",
   "license": "MIT",
   "scripts": {
     "dev": "vite dev",
@@ -28,7 +26,6 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@iconify-json/material-symbols": "^1.2.17",
     "@iconify-json/mdi": "^1.2.3",
-    "@originjs/vite-plugin-federation": "^1.4.0",
     "@playwright/test": "^1.44.1",
     "@sveltejs/adapter-static": "3.0.8",
     "@sveltejs/kit": "2.20.3",
@@ -87,8 +84,8 @@
     "@fontsource-variable/recursive": "^5.2.5",
     "@mermaid-js/layout-elk": "^0.1.7",
     "@mermaid-js/mermaid-zenuml": "^0.2.0",
-    "@module-federation/vite": "^1.2.6",
     "dayjs": "^1.11.13",
+    "firebase": "^11.6.0",
     "js-base64": "3.7.7",
     "lodash-es": "^4.17.21",
     "mermaid": "^11.6.0",
@@ -108,7 +105,7 @@
     ]
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=20.17.0"
   },
   "packageManager": "pnpm@10.7.1+sha512.2d92c86b7928dc8284f53494fb4201f983da65f0fb4f0d40baafa5cf628fa31dae3e5968f12466f17df7e97310e30f343a648baea1b9b350685dafafffdf5808",
   "pnpm": {
