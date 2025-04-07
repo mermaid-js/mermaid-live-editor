@@ -2,6 +2,8 @@
   "name": "mermaid-live-editor",
   "version": "2.0.67",
   "type": "module",
+  "target": "esnext",
+  "module": "esnext",
   "license": "MIT",
   "scripts": {
     "dev": "vite dev",

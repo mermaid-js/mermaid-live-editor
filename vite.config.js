@@ -27,17 +27,21 @@ export default defineConfig({
     }),
     federation({
       name: 'mermaid',
-      filename: 'remoteEntry.js', // si tu exposes ton app
-      manifest: true,
+      filename: 'remoteEntry.js',
       exposes: {
-        './View': './src/lib/components/View.svelte'
+        './View': './src/routes/+layout.svelte'
       }
     }),
     alwaysFullReload
   ],
   envPrefix: 'MERMAID_',
+  build: {
+    target: 'esnext',
+    cssCodeSplit: false
+  },
   server: {
     port: 3000,
+    cors: true,
     host: true
   },
   preview: {
