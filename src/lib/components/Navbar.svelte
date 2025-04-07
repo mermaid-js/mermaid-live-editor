@@ -31,18 +31,6 @@
 
   type Links = ComponentProps<typeof DropdownNavMenu>['links'];
 
-  const githubLinks: Links = [
-    { title: 'Mermaid JS', href: 'https://github.com/mermaid-js/mermaid' },
-    {
-      title: 'Mermaid Live Editor',
-      href: 'https://github.com/mermaid-js/mermaid-live-editor'
-    },
-    {
-      title: 'Mermaid CLI',
-      href: 'https://github.com/mermaid-js/mermaid-cli'
-    }
-  ];
-
   let activePromotion = $state(getActivePromotion());
 
   const trackBannerClick = () => {
@@ -88,11 +76,10 @@
       id="switcher"
       class="flex items-center justify-center gap-4 font-medium"
       class:flex-row-reverse={isReferral}>
-      <a href="/" class="whitespace-nowrap text-accent">
+      <a href="/" class="whitespace-nowrap text-subtitle text-primary">
         {#if !isReferral}
-          Mermaid
+          Lexis - Mermaid
         {/if}
-        Live Editor
       </a>
 
       <McWrapper labelPrefix="Opens the current diagram in">
@@ -128,7 +115,6 @@
   <div
     id="menu"
     class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
-    <DropdownNavMenu icon={GithubIcon} links={githubLinks} />
     <Separator orientation="vertical" />
     {@render children()}
   </div>

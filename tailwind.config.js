@@ -22,12 +22,24 @@ const config = {
         background: 'hsl(var(--background) / <alpha-value>)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',
         primary: {
-          DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
-          foreground: 'hsl(var(--primary-foreground) / <alpha-value>)'
+          DEFAULT: '#1447e6',
+          foreground: '#f5f5f5'
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
-          foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)'
+          DEFAULT: '#2563eb',
+          foreground: '#f5f5f5'
+        },
+        success: {
+          DEFAULT: '#219653',
+          foreground: '#f5f5f5'
+        },
+        danger: {
+          DEFAULT: '#d34053',
+          foreground: '#f5f5f5'
+        },
+        warning: {
+          DEFAULT: '#ffa70b',
+          foreground: '#f5f5f5'
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive) / <alpha-value>)',
@@ -67,7 +79,14 @@ const config = {
         sm: 'calc(var(--radius) - 4px)'
       },
       fontFamily: {
-        sans: [...fontFamily.sans]
+        sans: ['Jura', ...fontFamily.sans],
+        raleway: ['Raleway', ...fontFamily.sans]
+      },
+      fontSize: {
+        title: '5.4rem',
+        'title-mobile': '1.4rem',
+        subtitle: '1.7rem',
+        'light-text': '1rem'
       },
       keyframes: {
         'accordion-down': {
@@ -87,6 +106,9 @@ const config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'caret-blink': 'caret-blink 1.25s ease-out infinite'
+      },
+      backgroundImage: {
+        'gradient-body': 'linear-gradient(to right, #111827, #1f2937)'
       }
     }
   },
