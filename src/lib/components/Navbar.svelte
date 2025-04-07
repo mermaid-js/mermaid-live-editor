@@ -1,10 +1,29 @@
 <script lang="ts" module>
   import { logEvent, plausible } from '$lib/util/stats';
   import { version } from 'mermaid/package.json';
-
+  import { fly } from 'svelte/transition';
+  import { writable } from 'svelte/store';
   void logEvent('version', {
     mermaidVersion: version
   });
+  // Si vous utilisez des stores pour l'utilisateur
+  export let user = writable(null);
+
+  let isMenuOpen = false;
+  let isDropdownOpen = false;
+
+  function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+  }
+
+  function toggleDropdown() {
+    isDropdownOpen = !isDropdownOpen;
+  }
+
+  function logout() {
+    // Implémentez la logique de déconnexion ici
+    console.log('Logout');
+  }
 </script>
 
 <script lang="ts">
@@ -78,7 +97,7 @@
       class:flex-row-reverse={isReferral}>
       <a href="/" class="whitespace-nowrap text-subtitle text-primary">
         {#if !isReferral}
-          Lexis - Mermaid
+          LEXI - Mermaid
         {/if}
       </a>
 

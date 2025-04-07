@@ -6,7 +6,7 @@
   import { stateStore } from '$/util/state';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
 
-  const docURLBase = 'https://mermaid.js.org';
+  const docURLBase = 'https://mermaid.js.org/intro/';
   const docMap = {
     architecture: {
       code: '/syntax/architecture.html'

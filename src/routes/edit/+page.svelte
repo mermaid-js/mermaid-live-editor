@@ -11,15 +11,18 @@
   import Preset from '$/components/Preset.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
+  import ThemeIcon from '$/components/ThemeIcon.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
   import { Toggle } from '$/components/ui/toggle';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
+  import { TID } from '$/constants';
   import type { EditorMode, Tab } from '$/types';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
   import { initHandler } from '$/util/util';
+  import { mode, setMode } from 'mode-watcher';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
@@ -50,6 +53,13 @@
   });
 
   let isHistoryOpen = $state(false);
+  let project = { description: '' };
+
+  function autoResize(event) {
+    const textarea = event.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
@@ -58,6 +68,15 @@
       <HistoryIcon />
     </Toggle>
     <Share />
+    <Button
+      variant="ghost"
+      size="icon"
+      data-testid={TID.themeToggleButton}
+      title="Switch to {$mode === 'dark' ? 'light' : 'dark'} theme"
+      class="[&_svg]:size-5"
+      onclick={() => setMode($mode === 'dark' ? 'light' : 'dark')}>
+      <ThemeIcon />
+    </Button>
     <McWrapper>
       <Button
         variant="accent"
@@ -88,7 +107,40 @@
 
           <div class="group flex flex-wrap justify-between gap-6">
             <Preset />
-            <Actions />
+            <div class="w-full rounded-2xl bg-gray-700 px-4 py-2">
+              <!-- Zone de saisie -->
+              <textarea
+                id="projectDescription"
+                bind:value={project.description}
+                rows="1"
+                class="w-full resize-none overflow-y-auto bg-transparent text-lg text-gray-300 placeholder-gray-500 outline-none"
+                placeholder="Message Lexi"
+                on:input={autoResize}></textarea>
+
+              <!-- Boutons en bas -->
+              <div class="mt-2 flex items-center justify-between">
+                <!-- Boutons à gauche -->
+                <div class="flex space-x-2">
+                  <button
+                    class="flex items-center rounded-full bg-gray-600 px-3 py-1 text-gray-300 hover:bg-gray-500">
+                    <i class="pi pi-brain mr-2"></i> Reformuler
+                  </button>
+                  <button
+                    class="flex items-center rounded-full bg-blue-600 px-3 py-1 text-white hover:bg-blue-500">
+                    <i class="pi pi-globe mr-2"></i> Corriger
+                  </button>
+                </div>
+
+                <!-- Icônes à droite -->
+                <div class="flex items-center space-x-3">
+                  <i class="pi pi-paperclip cursor-pointer text-xl text-gray-400"></i>
+                  <button
+                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-gray-300 hover:bg-gray-400">
+                    <i class="pi pi-arrow-up"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Resizable.Pane>
