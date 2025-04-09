@@ -1,30 +1,21 @@
+import { env } from '$/util/env';
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
-// Configuration typée explicitement
-interface FirebaseConfig {
-  apiKey: string;
-  authDomain: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  appId: string;
-}
-
-// Clés triées par ordre alphabétique pour respecter sort-keys
-const firebaseConfig: FirebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID as string,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET as string
+const firebaseConfig = {
+  apiKey: env.apiKey,
+  appId: env.appId,
+  authDomain: env.authDomain,
+  messagingSenderId: env.messagingSenderId,
+  projectId: env.projectId,
+  storageBucket: env.storageBucket
 };
 
 let app: FirebaseApp;
-let firestoreDatabase: Firestore; // Nom plus descriptif
+let firestoreDatabase: Firestore;
 
 export function initializeFirebase(): void {
+  console.log('Initializing Firebase with config:', firebaseConfig);
   if (!app) {
     app = initializeApp(firebaseConfig);
     firestoreDatabase = getFirestore(app);
