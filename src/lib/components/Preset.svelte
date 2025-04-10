@@ -224,8 +224,8 @@ packet-beta
   async function loadProjectDiagrams() {
     console.log('Loading project diagrams...');
     try {
-      const userId = 'B97ZVkbJ8HXsvz4bNt0H4AU7n3v2';
-      const projectId = 'xBbn2LYhKNAkzTQpyBje';
+      const userId = 'sA6ZeSlrP9Ri8tCNAncPNKi83Nz2';
+      const projectId = 'zOfbaqzARnPEcO8h6HmW';
 
       const project = await projectService.getUserProject(userId, projectId);
       console.log('Project:', project);
@@ -243,6 +243,10 @@ packet-beta
       if (diagrams!.length > 0) {
         console.log('dia');
       }
+      console.log('diagrams:', diagrams);
+      console.log('diagrams[0]:', diagrams[0]);
+      console.log('diagrams[0].code:', diagrams[0].code);
+      samples.Class = diagrams[0].code;
     } catch (error) {
       console.error('Failed to load diagrams:', error);
     } finally {
