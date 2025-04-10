@@ -243,10 +243,8 @@ packet-beta
       if (diagrams!.length > 0) {
         console.log('dia');
       }
-      console.log('diagrams:', diagrams);
-      console.log('diagrams[0]:', diagrams[0]);
-      console.log('diagrams[0].code:', diagrams[0].code);
-      samples.Class = diagrams[0].code;
+      const formatedCode = diagrams[0].code.replace(/ {3,}/g, '\n');
+      samples.Class = formatedCode;
     } catch (error) {
       console.error('Failed to load diagrams:', error);
     } finally {
