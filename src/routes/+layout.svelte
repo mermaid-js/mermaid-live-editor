@@ -57,6 +57,10 @@
 {/if}
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+  * {
+    font-family: 'Jura', sans-serif;
+  }
   .loader {
     border: 0.45em solid #f3f3f3;
     border-radius: 50%;
