@@ -1,7 +1,7 @@
-import { getFirestoreDatabase } from '$lib/firebase/firebase.client';
 import { doc, getDoc } from 'firebase/firestore';
 import type { ProjectModel } from '$/models/project.model';
 import type { AnalysisResultModel } from '$/models/analysisResult.model';
+import db from '$/firebase/firebase.client';
 
 export class ProjectService {
   /**
@@ -17,7 +17,7 @@ export class ProjectService {
     }
 
     try {
-      const projectReference = doc(getFirestoreDatabase(), `users/${userId}/projects/${projectId}`);
+      const projectReference = doc(db, `users/${userId}/projects/${projectId}`);
 
       const projectSnap = await getDoc(projectReference);
 

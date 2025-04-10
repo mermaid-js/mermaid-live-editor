@@ -1,8 +1,10 @@
 <script lang="ts">
   import Card from '$/components/Card/Card.svelte';
   import { Button } from '$/components/ui/button';
+  import { projectService } from '$/services/project.service';
   import { updateCode } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
+  import { onMount } from 'svelte';
   import ShapesIcon from '~icons/material-symbols/account-tree-outline-rounded';
 
   const samples = {
@@ -26,7 +28,7 @@
     style m fill:#d6d,stroke:#333,stroke-width:4px
     `,
     Class: `classDiagram
-    Animal <|-- Duck
+    Animal <|-- PHARAON
     Animal <|-- Fish
     Animal <|-- Zebra
     Animal : +int age
@@ -218,6 +220,38 @@ packet-beta
     'Block',
     'Packet'
   ];
+
+  async function loadProjectDiagrams() {
+    console.log('Loading project diagrams...');
+    try {
+      const userId = 'B97ZVkbJ8HXsvz4bNt0H4AU7n3v2';
+      const projectId = 'xBbn2LYhKNAkzTQpyBje';
+
+      const project = await projectService.getUserProject(userId, projectId);
+      console.log('Project:', project);
+      if (!project) {
+        console.error('Project not found');
+        return;
+      }
+      const diagrams = project?.analysisResultModel.design;
+      console.log('Diagrams:', diagrams);
+      if (!diagrams) {
+        console.error('No diagrams found in the project');
+        return;
+      }
+
+      if (diagrams!.length > 0) {
+        console.log('dia');
+      }
+    } catch (error) {
+      console.error('Failed to load diagrams:', error);
+    } finally {
+    }
+  }
+
+  onMount(() => {
+    loadProjectDiagrams();
+  });
 </script>
 
 <Card title="Sample Diagrams" isOpen isStackable icon={{ component: ShapesIcon }}>

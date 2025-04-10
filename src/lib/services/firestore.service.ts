@@ -1,4 +1,4 @@
-import { getFirestoreDatabase } from '$/firebase/firebase.client';
+import db from '$/firebase/firebase.client';
 import {
   collection,
   doc,
@@ -26,20 +26,17 @@ export class FirestoreService<T extends { id?: string }> {
   }
 
   private getCollectionRef(): CollectionReference<T> {
-    return collection(getFirestoreDatabase(), this.collectionName).withConverter(this.converter);
+    return collection(db, this.collectionName).withConverter(this.converter);
   }
 
   private getDocumentReference(id: string): DocumentReference<T> {
-    return doc(getFirestoreDatabase(), this.collectionName, id).withConverter(this.converter);
+    return doc(db, this.collectionName, id).withConverter(this.converter);
   }
 
   private getSubCollectionRef(parentId: string, subCollectionName: string): CollectionReference<T> {
-    return collection(
-      getFirestoreDatabase(),
-      this.collectionName,
-      parentId,
-      subCollectionName
-    ).withConverter(this.converter);
+    return collection(db, this.collectionName, parentId, subCollectionName).withConverter(
+      this.converter
+    );
   }
 
   async getAll(): Promise<T[]> {
@@ -73,13 +70,7 @@ export class FirestoreService<T extends { id?: string }> {
     subCollectionName: string,
     subDocumentId: string
   ): Promise<U | undefined> {
-    const docReference = doc(
-      getFirestoreDatabase(),
-      this.collectionName,
-      parentId,
-      subCollectionName,
-      subDocumentId
-    );
+    const docReference = doc(db, this.collectionName, parentId, subCollectionName, subDocumentId);
     const docSnap = await getDoc(docReference);
     return docSnap.exists() ? (docSnap.data() as U) : undefined;
   }
