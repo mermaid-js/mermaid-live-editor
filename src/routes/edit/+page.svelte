@@ -55,6 +55,13 @@
   });
 
   let isHistoryOpen = $state(false);
+
+  let editorPane: Resizable.Pane | undefined;
+  $effect(() => {
+    if (isMobile) {
+      editorPane?.resize(50);
+    }
+  });
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
@@ -84,52 +91,42 @@
     </McWrapper>
   </Navbar>
 
-  {#snippet editorPane()}
-    <div class="flex h-full flex-col gap-6" id="editorPane">
-      <Card
-        onselect={tabSelectHandler}
-        isOpen
-        tabs={editorTabs}
-        activeTabID={$stateStore.editorMode}
-        isClosable={false}>
-        {#snippet actions()}
-          <DiagramDocButton />
-        {/snippet}
-        <Editor {isMobile} />
-      </Card>
-
-      <div class="group flex flex-wrap justify-between gap-6">
-        <Preset />
-        <Actions />
-      </div>
-    </div>
-  {/snippet}
-
-  {#snippet viewPane()}
-    <View {panZoomState} shouldShowGrid={$stateStore.grid} />
-    <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-    <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
-    <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
-  {/snippet}
-
   <div class="flex flex-1 flex-col overflow-hidden" bind:clientWidth={width}>
-    {#if isMobile}
-      <div class={['viewport flex h-full w-[200%] duration-300', isViewMode && '-translate-x-1/2']}>
-        <div class="w-1/2 p-2 pt-0">
-          {@render editorPane()}
-        </div>
-        <div class="relative w-1/2 p-2 pt-0">
-          {@render viewPane()}
-        </div>
-      </div>
-    {:else}
-      <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
-        <Resizable.Pane defaultSize={30} minSize={15} class="hiddent md:block">
-          {@render editorPane()}
+    <div
+      class={[
+        'size-full',
+        isMobile && ['w-[200%] duration-300', isViewMode && '-translate-x-1/2']
+      ]}>
+      <Resizable.PaneGroup
+        direction="horizontal"
+        autoSaveId="liveEditor"
+        class="gap-4 p-2 pt-0 md:gap-0 md:p-6">
+        <Resizable.Pane bind:this={editorPane} defaultSize={30} minSize={15} class="block">
+          <div class="flex h-full flex-col gap-6" id="editorPane">
+            <Card
+              onselect={tabSelectHandler}
+              isOpen
+              tabs={editorTabs}
+              activeTabID={$stateStore.editorMode}
+              isClosable={false}>
+              {#snippet actions()}
+                <DiagramDocButton />
+              {/snippet}
+              <Editor {isMobile} />
+            </Card>
+
+            <div class="group flex flex-wrap justify-between gap-6">
+              <Preset />
+              <Actions />
+            </div>
+          </div>
         </Resizable.Pane>
-        <Resizable.Handle class="mr-1 opacity-0" />
+        <Resizable.Handle class="mr-1 hidden opacity-0 md:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-          {@render viewPane()}
+          <View {panZoomState} shouldShowGrid={$stateStore.grid} />
+          <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+          <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
+          <div class="absolute bottom-0 left-0 md:left-5"><SyncRoughToolbar /></div>
         </Resizable.Pane>
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
@@ -141,6 +138,6 @@
           </Resizable.Pane>
         {/if}
       </Resizable.PaneGroup>
-    {/if}
+    </div>
   </div>
 </div>
