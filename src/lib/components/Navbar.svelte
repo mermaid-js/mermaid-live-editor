@@ -22,10 +22,11 @@
   import DropdownNavMenu from './DropdownNavMenu.svelte';
 
   interface Props {
+    mobileToggle?: Snippet;
     children: Snippet;
   }
 
-  let { children }: Props = $props();
+  let { children, mobileToggle }: Props = $props();
 
   const isReferral = document.referrer.includes(MCBaseURL);
 
@@ -81,7 +82,7 @@
   </div>
 {/if}
 
-<nav class="z-50 flex p-6">
+<nav class="z-50 flex p-4 md:p-6">
   <div class="flex flex-1 items-center gap-4">
     <MainMenu />
     <div
@@ -89,7 +90,7 @@
       class="flex items-center justify-center gap-4 font-medium"
       class:flex-row-reverse={isReferral}>
       <a href="/" class="whitespace-nowrap text-accent">
-        {#if !isReferral}
+        {#if !isReferral && !mobileToggle}
           Mermaid
         {/if}
         Live Editor
@@ -132,4 +133,5 @@
     <Separator orientation="vertical" />
     {@render children()}
   </div>
+  {@render mobileToggle?.()}
 </nav>

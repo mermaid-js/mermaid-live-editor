@@ -13,6 +13,7 @@
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
+  import { Switch } from '$/components/ui/switch';
   import { Toggle } from '$/components/ui/toggle';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
@@ -45,6 +46,10 @@
     }
   ];
 
+  let width = $state(0);
+  let isMobile = $derived(width < 540);
+  let isViewMode = $state(true);
+
   onMount(async () => {
     await initHandler();
   });
@@ -53,7 +58,16 @@
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
-  <Navbar>
+  {#snippet mobileToggle()}
+    <div class="flex items-center gap-2">
+      Edit <Switch
+        id="editorMode"
+        class="data-[state=checked]:bg-accent"
+        bind:checked={isViewMode} /> View
+    </div>
+  {/snippet}
+
+  <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
     <Toggle bind:pressed={isHistoryOpen} size="sm">
       <HistoryIcon />
     </Toggle>
@@ -70,47 +84,63 @@
     </McWrapper>
   </Navbar>
 
-  <div class="flex flex-1 overflow-hidden">
-    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
-      <Resizable.Pane defaultSize={30} minSize={15} class="hidden md:block">
-        <div class="flex h-full flex-col gap-6" id="editorPane">
-          <Card
-            onselect={tabSelectHandler}
-            isOpen
-            tabs={editorTabs}
-            activeTabID={$stateStore.editorMode}
-            isClosable={false}>
-            {#snippet actions()}
-              <DiagramDocButton />
-            {/snippet}
-            <Editor />
-          </Card>
+  {#snippet editorPane()}
+    <div class="flex h-full flex-col gap-6" id="editorPane">
+      <Card
+        onselect={tabSelectHandler}
+        isOpen
+        tabs={editorTabs}
+        activeTabID={$stateStore.editorMode}
+        isClosable={false}>
+        {#snippet actions()}
+          <DiagramDocButton />
+        {/snippet}
+        <Editor {isMobile} />
+      </Card>
 
-          <div class="group flex flex-wrap justify-between gap-6">
-            <Preset />
-            <Actions />
-          </div>
+      <div class="group flex flex-wrap justify-between gap-6">
+        <Preset />
+        <Actions />
+      </div>
+    </div>
+  {/snippet}
+
+  {#snippet viewPane()}
+    <View {panZoomState} shouldShowGrid={$stateStore.grid} />
+    <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+    <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
+    <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
+  {/snippet}
+
+  <div class="flex flex-1 flex-col overflow-hidden" bind:clientWidth={width}>
+    {#if isMobile}
+      <div class={['viewport flex h-full w-[200%] duration-300', isViewMode && '-translate-x-1/2']}>
+        <div class="w-1/2 p-2 pt-0">
+          {@render editorPane()}
         </div>
-      </Resizable.Pane>
-      <Resizable.Handle class="mr-1 opacity-0" />
-      <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-        <View {panZoomState} shouldShowGrid={$stateStore.grid} />
-        <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-        <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
-        <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
-        <div class="rounded bg-primary p-2 text-center shadow md:hidden">
-          Code editing not supported on mobile. Please use a desktop browser.
+        <div class="relative w-1/2 p-2 pt-0">
+          {@render viewPane()}
         </div>
-      </Resizable.Pane>
-      {#if isHistoryOpen}
-        <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
-        <Resizable.Pane
-          minSize={15}
-          defaultSize={30}
-          class="hidden h-full flex-grow flex-col md:flex">
-          <History />
+      </div>
+    {:else}
+      <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
+        <Resizable.Pane defaultSize={30} minSize={15} class="hiddent md:block">
+          {@render editorPane()}
         </Resizable.Pane>
-      {/if}
-    </Resizable.PaneGroup>
+        <Resizable.Handle class="mr-1 opacity-0" />
+        <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
+          {@render viewPane()}
+        </Resizable.Pane>
+        {#if isHistoryOpen}
+          <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
+          <Resizable.Pane
+            minSize={15}
+            defaultSize={30}
+            class="hidden h-full flex-grow flex-col md:flex">
+            <History />
+          </Resizable.Pane>
+        {/if}
+      </Resizable.PaneGroup>
+    {/if}
   </div>
 </div>
