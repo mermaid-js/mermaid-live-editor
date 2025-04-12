@@ -11,12 +11,15 @@ importers:
       '@fontsource-variable/recursive':
         specifier: ^5.2.5
         version: 5.2.5
+      '@mermaid-js/examples':
+        specifier: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc
+        version: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc
       '@mermaid-js/layout-elk':
         specifier: ^0.1.7
-        version: 0.1.7(mermaid@11.6.0)
+        version: 0.1.7(mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453)
       '@mermaid-js/mermaid-zenuml':
         specifier: ^0.2.0
-        version: 0.2.0(mermaid@11.6.0)(typescript@5.8.2)
+        version: 0.2.0(mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453)(typescript@5.8.2)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -28,7 +31,7 @@ importers:
         version: 4.17.21
       mermaid:
         specifier: ^11.6.0
-        version: 11.6.0
+        version: https://pkg.pr.new/mermaid-js/mermaid@6453
       mode-watcher:
         specifier: ^0.5.1
         version: 0.5.1(svelte@5.25.6)
@@ -559,18 +562,25 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
+  '@mermaid-js/examples@https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc':
+    resolution: {tarball: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc}
+    version: 0.0.1
+
   '@mermaid-js/layout-elk@0.1.7':
     resolution: {integrity: sha512-G3AJ2jMaCAqky2CT3z/sf3pK5UuS3tne98GsXDl3PkKByCmPmOYmJPf+6oX5PUlV3HNWWHuSgtZ9NU/CZDSuHQ==}
+    version: 0.1.7
     peerDependencies:
       mermaid: ^11.0.0
 
   '@mermaid-js/mermaid-zenuml@0.2.0':
     resolution: {integrity: sha512-Lv7xNlFT5y2TIlts+yYl1HfeEgjoqw5cfSZsWYejoJvt9K0QfdPBoj5D9Tft1aN0pj1mxjuTZbZQ1Anmem/RMg==}
+    version: 0.2.0
     peerDependencies:
       mermaid: '>=10.0.0'
 
-  '@mermaid-js/parser@0.4.0':
-    resolution: {integrity: sha512-wla8XOWvQAwuqy+gxiZqY+c7FokraOTHRWMsbB4AgRx9Sy7zKslNyejy7E+a77qHfey5GXw/ik3IXv/NHMJgaA==}
+  '@mermaid-js/parser@https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/parser@34e6112fea01f771d9da8d310147855b9650d66c':
+    resolution: {tarball: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/parser@34e6112fea01f771d9da8d310147855b9650d66c}
+    version: 0.4.0
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2377,8 +2387,9 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  mermaid@11.6.0:
-    resolution: {integrity: sha512-PE8hGUy1LDlWIHWBP05SFdqUHGmRcCcK4IzpOKPE35eOw+G9zZgcnMpyunJVUEOgb//KBORPjysKndw8bFLuRg==}
+  mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453:
+    resolution: {tarball: https://pkg.pr.new/mermaid-js/mermaid@6453}
+    version: 11.6.0
 
   micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -4067,22 +4078,24 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@mermaid-js/layout-elk@0.1.7(mermaid@11.6.0)':
+  '@mermaid-js/examples@https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc': {}
+
+  '@mermaid-js/layout-elk@0.1.7(mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453)':
     dependencies:
       d3: 7.9.0
       elkjs: 0.9.3
-      mermaid: 11.6.0
+      mermaid: https://pkg.pr.new/mermaid-js/mermaid@6453
 
-  '@mermaid-js/mermaid-zenuml@0.2.0(mermaid@11.6.0)(typescript@5.8.2)':
+  '@mermaid-js/mermaid-zenuml@0.2.0(mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453)(typescript@5.8.2)':
     dependencies:
       '@zenuml/core': 3.27.12(typescript@5.8.2)
-      mermaid: 11.6.0
+      mermaid: https://pkg.pr.new/mermaid-js/mermaid@6453
     transitivePeerDependencies:
       - '@vue/composition-api'
       - ts-node
       - typescript
 
-  '@mermaid-js/parser@0.4.0':
+  '@mermaid-js/parser@https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/parser@34e6112fea01f771d9da8d310147855b9650d66c':
     dependencies:
       langium: 3.3.1
 
@@ -6080,11 +6093,11 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  mermaid@11.6.0:
+  mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453:
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 2.3.0
-      '@mermaid-js/parser': 0.4.0
+      '@mermaid-js/parser': https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/parser@34e6112fea01f771d9da8d310147855b9650d66c
       '@types/d3': 7.4.3
       cytoscape: 3.31.1
       cytoscape-cose-bilkent: 4.1.0(cytoscape@3.31.1)
