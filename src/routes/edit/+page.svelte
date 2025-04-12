@@ -100,7 +100,7 @@
       <Resizable.PaneGroup
         direction="horizontal"
         autoSaveId="liveEditor"
-        class="gap-4 p-2 pt-0 md:gap-0 md:p-6">
+        class="gap-4 p-2 pt-0 md:gap-0 md:p-6 md:pt-0">
         <Resizable.Pane bind:this={editorPane} defaultSize={30} minSize={15} class="block">
           <div class="flex h-full flex-col gap-6" id="editorPane">
             <Card
