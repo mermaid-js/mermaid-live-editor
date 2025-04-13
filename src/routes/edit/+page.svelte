@@ -54,7 +54,7 @@
   onMount(async () => {
     await initHandler();
     window.addEventListener('appinstalled', () => {
-      logEvent('pwaInstalled');
+      logEvent('pwaInstalled', { isMobile });
     });
   });
 
