@@ -101,8 +101,8 @@
         direction="horizontal"
         autoSaveId="liveEditor"
         class="gap-4 p-2 pt-0 sm:gap-0 sm:p-6 sm:pt-0">
-        <Resizable.Pane bind:this={editorPane} defaultSize={30} minSize={15} class="block">
-          <div class="flex h-full flex-col gap-6" id="editorPane">
+        <Resizable.Pane bind:this={editorPane} defaultSize={30} minSize={15}>
+          <div class="flex h-full flex-col gap-4 sm:gap-6">
             <Card
               onselect={tabSelectHandler}
               isOpen
@@ -115,7 +115,7 @@
               <Editor {isMobile} />
             </Card>
 
-            <div class="group flex flex-wrap justify-between gap-6">
+            <div class="group flex flex-wrap justify-between gap-4 sm:gap-6">
               <Preset />
               <Actions />
             </div>
