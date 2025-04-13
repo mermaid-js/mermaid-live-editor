@@ -38,24 +38,34 @@ export class PanZoomState {
           let pannedX = 0;
           let pannedY = 0;
           hammer = new Hammer(options.svgElement);
-          hammer.get('pinch').set({ enable: true });
-          hammer.on('panstart panmove', function (event) {
-            if (event.type === 'panstart') {
-              pannedX = 0;
-              pannedY = 0;
-            }
+
+          const resetPanned = () => {
+            pannedX = 0;
+            pannedY = 0;
+          };
+          const handlePan = (event: HammerInput) => {
             instance.panBy({ x: event.deltaX - pannedX, y: event.deltaY - pannedY });
             pannedX = event.deltaX;
             pannedY = event.deltaY;
+          };
+
+          hammer.get('pinch').set({ enable: true });
+          hammer.on('panstart panmove', function (event) {
+            if (event.type === 'panstart') {
+              resetPanned();
+            }
+            handlePan(event);
           });
           hammer.on('pinchstart pinchmove', function (event) {
             if (event.type === 'pinchstart') {
               initialScale = instance.getZoom();
+              resetPanned();
             }
             instance.zoomAtPoint(initialScale * event.scale, {
               x: event.center.x,
               y: event.center.y
             });
+            handlePan(event);
           });
           options.svgElement.addEventListener('touchmove', function (event) {
             event.preventDefault();
