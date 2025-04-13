@@ -6,17 +6,24 @@
   import { Button } from '$/components/ui/button';
   import { TID } from '$/constants';
   import { env } from '$/util/env';
-  import { stateStore, urlsStore } from '$lib/util/state';
+  import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
-  export let isMobile: boolean;
+  let { isMobile }: { isMobile: boolean } = $props();
+  const onUpdate = (text: string) => {
+    if ($stateStore.editorMode === 'code') {
+      updateCode(text);
+    } else {
+      updateConfig(text);
+    }
+  };
 </script>
 
 <div class="flex h-full flex-col">
   {#if isMobile}
-    <MobileEditor />
+    <MobileEditor {onUpdate} />
   {:else}
-    <DesktopEditor />
+    <DesktopEditor {onUpdate} />
   {/if}
   {#if $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm" data-testid={TID.errorContainer}>

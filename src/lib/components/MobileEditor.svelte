@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { stateStore, updateCode, updateConfig } from '$/util/state';
+  import type { EditorProps } from '$/types';
+  import { stateStore } from '$/util/state';
   import { json, jsonLanguage } from '@codemirror/lang-json';
   import { markdown } from '@codemirror/lang-markdown';
   import { yamlFrontmatter } from '@codemirror/lang-yaml';
@@ -15,6 +16,8 @@
   let editorView: EditorView | undefined;
   let editorContainer: HTMLDivElement;
   let currentText = $state('');
+
+  const { onUpdate }: EditorProps = $props();
 
   onMount(() => {
     const themeCompartment = new Compartment();
@@ -34,11 +37,7 @@
                 return;
               }
               currentText = newText;
-              if ($stateStore.editorMode === 'code') {
-                updateCode(currentText);
-              } else {
-                updateConfig(currentText);
-              }
+              onUpdate(newText);
             }
           }),
           EditorView.theme({

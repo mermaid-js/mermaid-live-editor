@@ -101,3 +101,7 @@ export interface ErrorHash {
 }
 
 export type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;
+
+export interface EditorProps {
+  onUpdate: (text: string) => void;
+}

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { EditorMode } from '$/types';
-  import { stateStore, updateCode, updateConfig } from '$/util/state';
+  import type { EditorProps } from '$/types';
+  import { stateStore } from '$/util/state';
   import { initEditor } from '$lib/util/monacoExtra';
   import { errorDebug } from '$lib/util/util';
   import { mode } from 'mode-watcher';
@@ -9,24 +9,17 @@
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onMount } from 'svelte';
 
+  const { onUpdate }: EditorProps = $props();
+
   let divElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
-  let editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
+  let editorOptions = {
     minimap: {
       enabled: false
     },
-    theme: 'mermaid',
     overviewRulerLanes: 0
-  };
+  } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
-
-  const handleUpdate = (text: string, mode: EditorMode) => {
-    if (mode === 'code') {
-      updateCode(text);
-    } else {
-      updateConfig(text);
-    }
-  };
 
   onMount(() => {
     self.MonacoEnvironment = {
@@ -51,7 +44,7 @@
         return;
       }
       currentText = newText;
-      handleUpdate(currentText, $stateStore.editorMode);
+      onUpdate(currentText);
     });
 
     const unsubscribeState = stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
