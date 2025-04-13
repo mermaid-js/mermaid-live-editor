@@ -53,6 +53,9 @@
 
   onMount(async () => {
     await initHandler();
+    window.addEventListener('appinstalled', () => {
+      logEvent('pwaInstalled');
+    });
   });
 
   let isHistoryOpen = $state(false);

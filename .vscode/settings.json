@@ -2,6 +2,7 @@
   "editor.formatOnSave": true,
   "cSpell.blockCheckingWhenLineLengthGreaterThan": 150,
   "cSpell.words": [
+    "appinstalled",
     "asyncable",
     "Browserslist",
     "ckppp",

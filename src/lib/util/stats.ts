@@ -88,6 +88,7 @@ const delaysPerEvent = {
   mobileViewToggle: defaultDelay,
   panZoom: minutesToMilliSeconds(10),
   playgroundToggle: 0,
+  pwaInstalled: defaultDelay,
   render: minutesToMilliSeconds(5),
   renderDiagram: defaultDelay,
   themeChange: defaultDelay,
