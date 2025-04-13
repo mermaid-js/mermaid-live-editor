@@ -23,7 +23,6 @@
           basicSetup,
           themeCompartment.of($mode === 'dark' ? oneDark : []),
           EditorView.updateListener.of((update) => {
-            console.log('update', update);
             if (update.docChanged) {
               const newText = update.state.doc.toString();
               if (currentText === newText) {
