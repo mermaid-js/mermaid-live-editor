@@ -70,7 +70,7 @@
 </script>
 
 <div
-  class="flex w-full bg-[#E0095F] p-1.5"
+  class="flex w-full items-center bg-[#E0095F] p-1.5"
   role="banner"
   onmouseenter={() => (shouldAnimate = false)}
   onmouseleave={() => (shouldAnimate = true)}>
