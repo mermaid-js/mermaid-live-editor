@@ -14,5 +14,5 @@
 	"scope": "/edit",
 	"theme_color": "#6366F1",
 	"description": "FlowChart & Diagrams Editor.",
-	"orientation": "landscape"
+	"orientation": "natural"
 }
