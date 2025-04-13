@@ -51,10 +51,6 @@ export class PanZoomState {
           hammer.on('pinchstart pinchmove', function (event) {
             if (event.type === 'pinchstart') {
               initialScale = instance.getZoom();
-              instance.zoomAtPoint(initialScale * event.scale, {
-                x: event.center.x,
-                y: event.center.y
-              });
             }
             instance.zoomAtPoint(initialScale * event.scale, {
               x: event.center.x,
