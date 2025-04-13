@@ -85,6 +85,7 @@ const delaysPerEvent = {
   loadGist: defaultDelay,
   loadSampleDiagram: defaultDelay,
   migration: defaultDelay,
+  mobileViewToggle: defaultDelay,
   panZoom: minutesToMilliSeconds(10),
   playgroundToggle: 0,
   render: minutesToMilliSeconds(5),

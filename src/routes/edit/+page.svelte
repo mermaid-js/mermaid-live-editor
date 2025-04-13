@@ -20,6 +20,7 @@
   import type { EditorMode, Tab } from '$/types';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
+  import { logEvent } from '$/util/stats';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
@@ -70,7 +71,10 @@
       Edit <Switch
         id="editorMode"
         class="data-[state=checked]:bg-accent"
-        bind:checked={isViewMode} /> View
+        bind:checked={isViewMode}
+        onclick={() => {
+          logEvent('mobileViewToggle');
+        }} /> View
     </div>
   {/snippet}
 
