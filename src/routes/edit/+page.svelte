@@ -47,7 +47,7 @@
   ];
 
   let width = $state(0);
-  let isMobile = $derived(width < 540);
+  let isMobile = $derived(width < 640);
   let isViewMode = $state(true);
 
   onMount(async () => {
@@ -100,7 +100,7 @@
       <Resizable.PaneGroup
         direction="horizontal"
         autoSaveId="liveEditor"
-        class="gap-4 p-2 pt-0 md:gap-0 md:p-6 md:pt-0">
+        class="gap-4 p-2 pt-0 sm:gap-0 sm:p-6 sm:pt-0">
         <Resizable.Pane bind:this={editorPane} defaultSize={30} minSize={15} class="block">
           <div class="flex h-full flex-col gap-6" id="editorPane">
             <Card
@@ -121,19 +121,19 @@
             </div>
           </div>
         </Resizable.Pane>
-        <Resizable.Handle class="mr-1 hidden opacity-0 md:block" />
+        <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
           <View {panZoomState} shouldShowGrid={$stateStore.grid} />
           <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
           <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
-          <div class="absolute bottom-0 left-0 md:left-5"><SyncRoughToolbar /></div>
+          <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
         </Resizable.Pane>
         {#if isHistoryOpen}
-          <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
+          <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
           <Resizable.Pane
             minSize={15}
             defaultSize={30}
-            class="hidden h-full flex-grow flex-col md:flex">
+            class="hidden h-full flex-grow flex-col sm:flex">
             <History />
           </Resizable.Pane>
         {/if}
