@@ -28,7 +28,8 @@
     "serdes",
     "Stackable",
     "tailwindcss",
-    "uparrow"
+    "uparrow",
+    "zenuml"
   ],
   "vitest.commandLine": "pnpm test:unit",
   "vitest.enable": true,

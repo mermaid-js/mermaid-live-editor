@@ -87,7 +87,6 @@
     "@codemirror/lang-yaml": "^6.1.2",
     "@codemirror/language": "^6.11.0",
     "@codemirror/state": "^6.5.2",
-    "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.36.5",
     "@fontsource-variable/recursive": "^5.2.5",
     "@fsegurai/codemirror-theme-vscode-dark": "^6.1.2",
