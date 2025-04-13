@@ -1,27 +1,32 @@
 <script lang="ts">
   import { stateStore, updateCode, updateConfig } from '$/util/state';
+  import { json, jsonLanguage } from '@codemirror/lang-json';
+  import { markdown } from '@codemirror/lang-markdown';
+  import { yamlFrontmatter } from '@codemirror/lang-yaml';
+  import { language } from '@codemirror/language';
   import { Compartment, EditorState } from '@codemirror/state';
-  import { oneDark } from '@codemirror/theme-one-dark';
   import { EditorView } from '@codemirror/view';
+  import { vsCodeDark } from '@fsegurai/codemirror-theme-vscode-dark';
+  import { vsCodeLight } from '@fsegurai/codemirror-theme-vscode-light';
   import { basicSetup } from 'codemirror';
   import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
 
-  let editorView: EditorView;
+  let editorView: EditorView | undefined;
   let editorContainer: HTMLDivElement;
-  let currentText = $state(
-    $stateStore.editorMode === 'code' ? $stateStore.code : $stateStore.mermaid
-  );
+  let currentText = $state('');
 
   onMount(() => {
     const themeCompartment = new Compartment();
+    const languageCompartment = new Compartment();
 
     editorView = new EditorView({
       state: EditorState.create({
         doc: currentText,
         extensions: [
           basicSetup,
-          themeCompartment.of($mode === 'dark' ? oneDark : []),
+          languageCompartment.of([]),
+          themeCompartment.of([]),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               const newText = update.state.doc.toString();
@@ -53,31 +58,43 @@
     });
 
     const unsubscribeMode = mode.subscribe((mode) => {
+      editorView?.dispatch({
+        effects: themeCompartment.reconfigure(mode === 'dark' ? vsCodeDark : vsCodeLight)
+      });
+    });
+
+    const unsubscribeState = stateStore.subscribe(({ editorMode, code, mermaid }) => {
+      const text = editorMode === 'code' ? code : mermaid;
+      if (currentText === text || !editorView) {
+        return;
+      }
+      currentText = text;
       editorView.dispatch({
-        effects: themeCompartment.reconfigure(mode === 'dark' ? oneDark : [])
+        changes: {
+          from: 0,
+          to: editorView.state.doc.length,
+          insert: text
+        }
+      });
+      const stateLanguage = editorView.state.facet(language);
+      const isStateJson = stateLanguage === jsonLanguage;
+      const isCodeJson = editorMode === 'config';
+      if (stateLanguage && isStateJson === isCodeJson) {
+        return;
+      }
+      editorView.dispatch({
+        effects: languageCompartment.reconfigure(
+          isCodeJson ? json() : yamlFrontmatter({ content: markdown() })
+        )
       });
     });
 
     return () => {
       unsubscribeMode();
+      unsubscribeState();
       editorView?.destroy();
     };
   });
-
-  stateStore.subscribe(({ editorMode, code, mermaid }) => {
-    const text = editorMode === 'code' ? code : mermaid;
-    if (currentText === text) {
-      return;
-    }
-    currentText = text;
-    editorView?.dispatch({
-      changes: {
-        from: 0,
-        to: editorView.state.doc.length,
-        insert: text
-      }
-    });
-  });
 </script>
 
-<div bind:this={editorContainer} class="h-full w-full"></div>
+<div bind:this={editorContainer} class="size-full"></div>
