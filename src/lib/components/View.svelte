@@ -5,6 +5,7 @@
   import { PanZoomState } from '$/util/panZoom';
   import { inputStateStore, stateStore, updateCodeStore } from '$/util/state';
   import { logEvent, saveStatistics } from '$/util/stats';
+  import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
   import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
@@ -23,6 +24,7 @@
   let error = $state(false);
   let panZoom = true;
   let manualUpdate = true;
+  let waitForFontAwesomeToLoad: FontAwesome['waitForFontAwesomeToLoad'] | undefined = $state();
 
   // Set up panZoom state observer to update the store when pan/zoom changes
   const setupPanZoomObserver = () => {
@@ -65,6 +67,11 @@
         config = state.mermaid;
         rough = state.rough;
         panZoom = state.panZoom ?? true;
+
+        if (mayContainFontAwesome(code)) {
+          await waitForFontAwesomeToLoad?.();
+        }
+
         const scroll = view?.parentElement?.scrollTop;
         delete container.dataset.processed;
         const viewID = uniqueID('graph-');
@@ -135,6 +142,8 @@
     });
   });
 </script>
+
+<FontAwesome bind:waitForFontAwesomeToLoad />
 
 <div
   id="view"
