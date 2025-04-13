@@ -1,4 +1,5 @@
 import type { State } from '$/types';
+import Hammer from 'hammerjs';
 import type { Point } from 'mermaid/dist/types.js';
 import panzoom from 'svg-pan-zoom';
 type PanZoom = typeof panzoom;
@@ -24,9 +25,50 @@ export class PanZoomState {
   }
 
   public updateElement(diagramView: SVGElement, { pan, zoom }: Pick<State, 'pan' | 'zoom'>) {
+    this.pzoom?.destroy();
+    let hammer: HammerManager | undefined;
     this.pzoom = panzoom(diagramView, {
       center: true,
       controlIconsEnabled: false,
+      customEventsHandler: {
+        haltEventListeners: ['touchstart', 'touchend', 'touchmove', 'touchleave', 'touchcancel'],
+        init: function (options) {
+          const instance = options.instance;
+          let initialScale = 1;
+          let pannedX = 0;
+          let pannedY = 0;
+          hammer = new Hammer(options.svgElement);
+          hammer.get('pinch').set({ enable: true });
+          hammer.on('panstart panmove', function (event) {
+            if (event.type === 'panstart') {
+              pannedX = 0;
+              pannedY = 0;
+            }
+            instance.panBy({ x: event.deltaX - pannedX, y: event.deltaY - pannedY });
+            pannedX = event.deltaX;
+            pannedY = event.deltaY;
+          });
+          hammer.on('pinchstart pinchmove', function (event) {
+            if (event.type === 'pinchstart') {
+              initialScale = instance.getZoom();
+              instance.zoomAtPoint(initialScale * event.scale, {
+                x: event.center.x,
+                y: event.center.y
+              });
+            }
+            instance.zoomAtPoint(initialScale * event.scale, {
+              x: event.center.x,
+              y: event.center.y
+            });
+          });
+          options.svgElement.addEventListener('touchmove', function (event) {
+            event.preventDefault();
+          });
+        },
+        destroy: function () {
+          hammer?.destroy();
+        }
+      },
       fit: true,
       maxZoom: 12,
       minZoom: 0.2,
