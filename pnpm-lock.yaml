@@ -98,10 +98,10 @@ importers:
         version: 1.51.1
       '@sveltejs/adapter-static':
         specifier: 3.0.8
-        version: 3.0.8(@sveltejs/kit@2.20.5(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))
+        version: 3.0.8(@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))
       '@sveltejs/kit':
-        specifier: 2.20.5
-        version: 2.20.5(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))
+        specifier: 2.20.6
+        version: 2.20.6(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.4
         version: 4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))
@@ -711,8 +711,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@polka/url@1.0.0-next.28':
-    resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
+  '@polka/url@1.0.0-next.29':
+    resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
   '@rollup/rollup-android-arm-eabi@4.39.0':
     resolution: {integrity: sha512-lGVys55Qb00Wvh8DMAocp5kIcaNzEFTmGhfFd88LfaogYTRKrdxgtlO5H6S49v2Nd8R2C6wLOal0qv6/kCkOwA==}
@@ -824,8 +824,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@sveltejs/kit@2.20.5':
-    resolution: {integrity: sha512-zT/97KvVUo19jEGZa972ls7KICjPCB53j54TVxnEFT5VEwL16G+YFqRVwJbfxh7AmS7/Ptr1rKF7Qt4FBMDNlw==}
+  '@sveltejs/kit@2.20.6':
+    resolution: {integrity: sha512-ImUkSQ//Xf4N9r0HHAe5vRA7RyQ7U1Ue1YUT235Ig+IiIqbsixEulHTHrP5LtBiC8xOkJoPZQ1VZ/nWHNOaGGw==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -4400,7 +4400,7 @@ snapshots:
     dependencies:
       playwright: 1.51.1
 
-  '@polka/url@1.0.0-next.28': {}
+  '@polka/url@1.0.0-next.29': {}
 
   '@rollup/rollup-android-arm-eabi@4.39.0':
     optional: true
@@ -4466,11 +4466,11 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
-  '@sveltejs/adapter-static@3.0.8(@sveltejs/kit@2.20.5(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))':
+  '@sveltejs/adapter-static@3.0.8(@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))':
     dependencies:
-      '@sveltejs/kit': 2.20.5(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))
+      '@sveltejs/kit': 2.20.6(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))
 
-  '@sveltejs/kit@2.20.5(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))':
+  '@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1)))(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.26.2)(vite@5.4.16(@types/node@22.14.1))
       '@types/cookie': 0.6.0
@@ -7088,7 +7088,7 @@ snapshots:
 
   sirv@3.0.1:
     dependencies:
-      '@polka/url': 1.0.0-next.28
+      '@polka/url': 1.0.0-next.29
       mrmime: 2.0.1
       totalist: 3.0.1
 
