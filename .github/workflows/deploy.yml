@@ -39,7 +39,6 @@ jobs:
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
           pnpm install
           pnpm build
-          cp docs/index.html docs/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
