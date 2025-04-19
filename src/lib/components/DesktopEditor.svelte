@@ -21,6 +21,17 @@
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
 
+  const jsonModel = monaco.editor.createModel(
+    '',
+    'json',
+    monaco.Uri.parse('internal://config.json')
+  );
+  const mermaidModel = monaco.editor.createModel(
+    '',
+    'mermaid',
+    monaco.Uri.parse('internal://mermaid.mmd')
+  );
+
   onMount(() => {
     self.MonacoEnvironment = {
       getWorker(_, label) {
@@ -34,6 +45,17 @@
     if (!divElement) {
       throw new Error('divEl is undefined');
     }
+
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      validate: true,
+      enableSchemaRequest: true,
+      schemas: [
+        {
+          fileMatch: ['config.json'],
+          uri: 'https://mermaid.js.org/schemas/config.schema.json'
+        }
+      ]
+    });
 
     initEditor(monaco);
     errorDebug();
@@ -52,23 +74,18 @@
         return;
       }
 
+      const model = editorMode === 'code' ? mermaidModel : jsonModel;
+
+      if (editor.getModel()?.id !== model.id) {
+        editor.setModel(model);
+      }
+
       // Update editor text if it's different
       const newText = editorMode === 'code' ? code : mermaid;
       if (newText !== currentText) {
         editor.setScrollTop(0);
         editor.setValue(newText);
         currentText = newText;
-      }
-
-      // Update editor mode if it's different
-      const language = editorMode === 'code' ? 'mermaid' : 'json';
-      const model = editor.getModel();
-      if (!model) {
-        console.error("editor model doesn't exist");
-        return;
-      }
-      if (model.getLanguageId() !== language) {
-        monaco.editor.setModelLanguage(model, language);
       }
 
       // Display/clear errors

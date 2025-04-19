@@ -14,7 +14,7 @@ Edit, preview and share mermaid charts/diagrams.
 
 ## Live demo
 
-You can try out a live version [here](https://mermaid.live/).
+You can try out a [live version](https://mermaid.live/).
 
 # Contributors are welcome!
 
