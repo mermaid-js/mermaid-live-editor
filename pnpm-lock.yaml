@@ -12,8 +12,8 @@ importers:
         specifier: ^5.2.5
         version: 5.2.5
       '@mermaid-js/examples':
-        specifier: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc
-        version: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc
+        specifier: 0.0.1-beta.1
+        version: 0.0.1-beta.1
       '@mermaid-js/layout-elk':
         specifier: ^0.1.7
         version: 0.1.7(mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453)
@@ -562,9 +562,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@mermaid-js/examples@https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc':
-    resolution: {tarball: https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc}
-    version: 0.0.1
+  '@mermaid-js/examples@0.0.1-beta.1':
+    resolution: {integrity: sha512-dJ8yhCOf9Xh7T6VJzAATtxfhjT+8ywxFWYVuEE8ffu3P5v6iuoP+T27LLJN5aAIgmsLo/wFshlRqZFz3s8OolA==}
 
   '@mermaid-js/layout-elk@0.1.7':
     resolution: {integrity: sha512-G3AJ2jMaCAqky2CT3z/sf3pK5UuS3tne98GsXDl3PkKByCmPmOYmJPf+6oX5PUlV3HNWWHuSgtZ9NU/CZDSuHQ==}
@@ -4078,7 +4077,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@mermaid-js/examples@https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/examples@28bdbbc': {}
+  '@mermaid-js/examples@0.0.1-beta.1': {}
 
   '@mermaid-js/layout-elk@0.1.7(mermaid@https://pkg.pr.new/mermaid-js/mermaid@6453)':
     dependencies:
