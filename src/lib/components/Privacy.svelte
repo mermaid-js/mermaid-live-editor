@@ -7,7 +7,7 @@
   <Dialog.Trigger>
     <ShieldIcon />
   </Dialog.Trigger>
-  <Dialog.Content>
+  <Dialog.Content class="max-h-full overflow-y-auto">
     <Dialog.Header>
       <Dialog.Title class="flex items-center gap-2 text-xl">
         <ShieldIcon class="size-8 text-green-700" />

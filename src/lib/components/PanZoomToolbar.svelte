@@ -17,13 +17,17 @@
     <ArrowsToCircleIcon />
   </Button>
   <Separator orientation="vertical" />
-  <Button variant="ghost" size="icon" onclick={() => panZoomState.zoomOut()}>
+  <Button
+    variant="ghost"
+    size="icon"
+    class="hidden sm:block"
+    onclick={() => panZoomState.zoomOut()}>
     <MagnifyingGlassMinusIcon />
   </Button>
-  <Button variant="ghost" size="icon" onclick={() => panZoomState.zoomIn()}>
+  <Button variant="ghost" size="icon" class="hidden sm:block" onclick={() => panZoomState.zoomIn()}>
     <MagnifyingGlassPlusIcon />
   </Button>
-  <Separator orientation="vertical" />
+  <Separator orientation="vertical" class="hidden sm:block" />
   <Button variant="ghost" size="icon" title="Full Screen" href={$urlsStore.view} target="_blank">
     <ExpandIcon />
   </Button>
