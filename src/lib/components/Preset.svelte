@@ -225,7 +225,7 @@ packet-beta
     console.log('Loading project diagrams...');
     try {
       const userId = 'sA6ZeSlrP9Ri8tCNAncPNKi83Nz2';
-      const projectId = 'zOfbaqzARnPEcO8h6HmW';
+      const projectId = 'kwrDgZKyxff5V7Mwe2fG';
 
       const project = await projectService.getUserProject(userId, projectId);
       console.log('Project:', project);
