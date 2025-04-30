@@ -1,16 +1,12 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import type { ProjectModel } from '$/models/project.model';
 import type { AnalysisResultModel } from '$/models/analysisResult.model';
-import db from '$/firebase/firebase.client';
+import db, { getCurrentUser } from '$/firebase/firebase.client';
 
 export class ProjectService {
-  /**
-   * Récupère un projet spécifique d'un utilisateur
-   * @param userId ID de l'utilisateur
-   * @param projectId ID du projet
-   * @returns Le projet ou undefined si non trouvé
-   */
-  async getUserProject(userId: string, projectId: string): Promise<ProjectModel | undefined> {
+  async getUserProject(projectId: string): Promise<ProjectModel | undefined> {
+    const currentUser = await getCurrentUser();
+    const userId = currentUser?.uid;
     if (!userId || !projectId) {
       console.error('User ID and Project ID are required');
       return undefined;
@@ -45,6 +41,52 @@ export class ProjectService {
       } as ProjectModel;
     } catch (error) {
       console.error('Error getting project:', error);
+      throw error;
+    }
+  }
+
+  async getUserProjectById(projectId: string): Promise<ProjectModel | null> {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      console.log('Utilisateur non connecté');
+      return null;
+    }
+
+    try {
+      const projectReference = doc(db, `users/${currentUser.uid}/projects/${projectId}`);
+      const docSnap = await getDoc(projectReference);
+
+      if (!docSnap.exists()) return null;
+
+      return {
+        id: docSnap.id,
+        ...docSnap.data()
+      } as ProjectModel;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération du projet ${projectId} :`, error);
+      throw error;
+    }
+  }
+
+  async getAllUserProjects(): Promise<ProjectModel[]> {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      console.log('Utilisateur non connecté');
+      return [];
+    }
+
+    try {
+      const projectReference = collection(db, `users/${currentUser.uid}/projects`);
+      const snapshot = await getDocs(projectReference);
+
+      return snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      })) as ProjectModel[];
+    } catch (error) {
+      console.error('Erreur lors de la récupération des projets :', error);
       throw error;
     }
   }

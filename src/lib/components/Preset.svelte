@@ -203,31 +203,15 @@ packet-beta
     logEvent('loadSampleDiagram', { diagramType });
   };
 
-  const diagramOrder: SampleTypes[] = [
-    'Flow',
-    'Sequence',
-    'Class',
-    'State',
-    'ER',
-    'Gantt',
-    'User Journey',
-    'Git',
-    'Pie',
-    'Mindmap',
-    'ZenUML',
-    'QuadrantChart',
-    'XYChart',
-    'Block',
-    'Packet'
-  ];
+  const diagramOrder: SampleTypes[] = ['Flow', 'Sequence', 'Class', 'State', 'ER'];
 
   async function loadProjectDiagrams() {
     console.log('Loading project diagrams...');
     try {
       const userId = 'sA6ZeSlrP9Ri8tCNAncPNKi83Nz2';
-      const projectId = 'kwrDgZKyxff5V7Mwe2fG';
+      const projectId = '5ULCb6EwpVWYGIUivAc0';
 
-      const project = await projectService.getUserProject(userId, projectId);
+      const project = await projectService.getUserProject(projectId);
       console.log('Project:', project);
       if (!project) {
         console.error('Project not found');
@@ -240,11 +224,24 @@ packet-beta
         return;
       }
 
-      if (diagrams!.length > 0) {
-        console.log('dia');
+      function stripMermaid(code: string): string {
+        return code
+          .replace(/^```mermaid\s*/i, '') // remove starting ```mermaid
+          .replace(/\s*```$/i, '') // remove ending ```
+          .replace(/ {3,}/g, '\n'); // replace 3+ spaces with newline
       }
-      const formatedCode = diagrams[0].code.replace(/ {3,}/g, '\n');
-      samples.Class = formatedCode;
+
+      const formatedClassCode = stripMermaid(diagrams.classDiagram.content);
+      const formatedArchitectureCode = stripMermaid(diagrams.architectureDiagram.content);
+      const formatedErCode = stripMermaid(diagrams.erDiagram.content);
+      const formatedSequenceCode = stripMermaid(diagrams.sequenceDiagram.content);
+      const formatedUseCaseCode = stripMermaid(diagrams.useCaseDiagram.content);
+
+      samples.Class = formatedClassCode;
+      samples.State = formatedArchitectureCode;
+      samples.ER = formatedErCode;
+      samples.Sequence = formatedSequenceCode;
+      samples.Flow = formatedUseCaseCode;
     } catch (error) {
       console.error('Failed to load diagrams:', error);
     } finally {
