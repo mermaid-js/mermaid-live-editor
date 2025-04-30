@@ -17,12 +17,14 @@
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
   import { TID } from '$/constants';
+  import { getCurrentUser } from '$/firebase/firebase.client';
+  import { currentUser, type UserModel } from '$/models/user.model';
   import type { EditorMode, Tab } from '$/types';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
   import { initHandler } from '$/util/util';
   import { mode, setMode } from 'mode-watcher';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
@@ -47,18 +49,36 @@
     }
   ];
 
-  onMount(async () => {
-    await initHandler();
-  });
-
-  let isHistoryOpen = $state(false);
+  // Dropdown state
+  let isDropdownOpen = false;
   let project = { description: '' };
 
-  function autoResize(event) {
-    const textarea = event.target;
+  function toggleDropdown() {
+    isDropdownOpen = !isDropdownOpen;
+  }
+  let isHistoryOpen = false;
+
+  const handleDropdownFocusLoss = (event: FocusEvent) => {
+    const target = event.currentTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement | null;
+
+    if (!target) return;
+    if (relatedTarget && target.contains(relatedTarget)) return;
+
+    isDropdownOpen = false;
+  };
+
+  function autoResize(event: Event) {
+    const textarea = event.target as HTMLTextAreaElement;
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   }
+
+  onMount(async () => {
+    await initHandler();
+    const user: UserModel | null = await getCurrentUser();
+    currentUser.set(user);
+  });
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
@@ -76,18 +96,48 @@
       onclick={() => setMode($mode === 'dark' ? 'light' : 'dark')}>
       <ThemeIcon />
     </Button>
-    <McWrapper>
-      <Button
-        variant="accent"
-        size="sm"
-        href={$urlsStore.mermaidChart({ medium: 'save_diagram' }).save}
-        target="_blank">
-        <MermaidChartIcon />
-        Save diagram
-      </Button>
-    </McWrapper>
+    <div class="flex items-center gap-4">
+      {#if $currentUser}
+        <div class="dropdown relative" on:focusout={handleDropdownFocusLoss}>
+          <button
+            type="button"
+            on:click={toggleDropdown}
+            class="flex items-center focus:outline-none">
+            <img
+              src={$currentUser.photoURL}
+              alt="Avatar"
+              class="h-10 w-10 cursor-pointer rounded-full" />
+          </button>
+
+          {#if isDropdownOpen}
+            <div
+              class="dropdown-content absolute right-0 z-50 mt-2 w-48 rounded-lg border border-gray-200 bg-gradient-to-r from-gray-900 to-gray-800 p-2 shadow-lg">
+              <a href="/profile" class="dropdown-item block rounded-2xl p-3 hover:bg-primary"
+                >Profil</a>
+              <a href="/settings" class="dropdown-item block rounded-2xl p-3 hover:bg-primary"
+                >Settings</a>
+              <a href="/logout" class="dropdown-item block rounded-2xl p-3 hover:bg-primary"
+                >Logout</a>
+            </div>
+          {/if}
+        </div>
+      {:else}
+        <div class="h-[50px] w-[50px] animate-pulse rounded-full bg-gray-300"></div>
+      {/if}
+      <McWrapper>
+        <Button
+          variant="accent"
+          size="sm"
+          href={$urlsStore.mermaidChart({ medium: 'save_diagram' }).save}
+          target="_blank">
+          <MermaidChartIcon />
+          Save diagram
+        </Button>
+      </McWrapper>
+    </div>
   </Navbar>
 
+  <!-- Le reste de votre code reste inchangé -->
   <div class="flex flex-1 overflow-hidden">
     <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
       <Resizable.Pane defaultSize={30} minSize={15} class="hidden md:block">
@@ -107,7 +157,6 @@
           <div class="group flex flex-wrap justify-between gap-6">
             <Preset />
             <div class="w-full rounded-2xl bg-gray-700 px-4 py-2">
-              <!-- Zone de saisie -->
               <textarea
                 id="projectDescription"
                 bind:value={project.description}
@@ -116,9 +165,7 @@
                 placeholder="Message Lexi"
                 on:input={autoResize}></textarea>
 
-              <!-- Boutons en bas -->
               <div class="mt-2 flex items-center justify-between">
-                <!-- Boutons à gauche -->
                 <div class="flex space-x-2">
                   <button
                     class="flex items-center rounded-full bg-gray-600 px-3 py-1 text-gray-300 hover:bg-gray-500">
@@ -130,10 +177,10 @@
                   </button>
                 </div>
 
-                <!-- Icônes à droite -->
                 <div class="flex items-center space-x-3">
                   <i class="pi pi-paperclip cursor-pointer text-xl text-gray-400"></i>
                   <button
+                    aria-label="send request button"
                     class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-gray-300 hover:bg-gray-400">
                     <i class="pi pi-arrow-up"></i>
                   </button>

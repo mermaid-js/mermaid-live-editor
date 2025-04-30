@@ -14,7 +14,10 @@
   import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
   import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
   import MermaidChartIcon from './MermaidChartIcon.svelte';
+  import { onMount } from 'svelte';
 
+  import { get } from 'svelte/store';
+  import { getCurrentUser } from '$/firebase/firebase.client';
   const menuItems = $derived([
     { label: 'New Diagram', icon: AddIcon, href: $urlsStore.new },
     { label: 'Home', icon: HomeIcon, href: 'https://mermaid.js.org/' },

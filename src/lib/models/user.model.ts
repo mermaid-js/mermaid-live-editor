@@ -1,3 +1,6 @@
+// src/stores/user.ts
+import { writable } from 'svelte/store';
+
 export interface UserModel {
   uid: string;
   email: string;
@@ -7,3 +10,5 @@ export interface UserModel {
   createdAt: Date;
   lastLogin: Date;
 }
+
+export const currentUser = writable<UserModel | null>(null);

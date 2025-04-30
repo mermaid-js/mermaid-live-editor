@@ -97,7 +97,7 @@
       class:flex-row-reverse={isReferral}>
       <a href="/" class="whitespace-nowrap text-subtitle text-primary">
         {#if !isReferral}
-          LEXI - Mermaid
+          <b>LEXI</b> Mermaid
         {/if}
       </a>
 
@@ -131,9 +131,7 @@
       </McWrapper>
     </div>
   </div>
-  <div
-    id="menu"
-    class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
+  <div id="menu" class="w-[500px ] hidden flex-nowrap items-center justify-between gap-3 md:flex">
     <Separator orientation="vertical" />
     {@render children()}
   </div>
