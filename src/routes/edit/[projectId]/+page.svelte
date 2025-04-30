@@ -24,10 +24,12 @@
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
   import { initHandler } from '$/util/util';
   import { mode, setMode } from 'mode-watcher';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
+  import { get } from 'svelte/store';
+  import { page } from '$app/stores';
 
   const panZoomState = new PanZoomState();
 
@@ -73,7 +75,7 @@
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   }
-
+  const { projectId } = get(page).params;
   onMount(async () => {
     await initHandler();
     const user: UserModel | null = await getCurrentUser();
@@ -155,7 +157,7 @@
           </Card>
 
           <div class="group flex flex-wrap justify-between gap-6">
-            <Preset />
+            <Preset {projectId} />
             <div class="w-full rounded-2xl bg-gray-700 px-4 py-2">
               <textarea
                 id="projectDescription"

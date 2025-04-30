@@ -45,30 +45,6 @@ export class ProjectService {
     }
   }
 
-  async getUserProjectById(projectId: string): Promise<ProjectModel | null> {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser) {
-      console.log('Utilisateur non connecté');
-      return null;
-    }
-
-    try {
-      const projectReference = doc(db, `users/${currentUser.uid}/projects/${projectId}`);
-      const docSnap = await getDoc(projectReference);
-
-      if (!docSnap.exists()) return null;
-
-      return {
-        id: docSnap.id,
-        ...docSnap.data()
-      } as ProjectModel;
-    } catch (error) {
-      console.error(`Erreur lors de la récupération du projet ${projectId} :`, error);
-      throw error;
-    }
-  }
-
   async getAllUserProjects(): Promise<ProjectModel[]> {
     const currentUser = await getCurrentUser();
 

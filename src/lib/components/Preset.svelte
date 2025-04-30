@@ -6,6 +6,7 @@
   import { logEvent } from '$lib/util/stats';
   import { onMount } from 'svelte';
   import ShapesIcon from '~icons/material-symbols/account-tree-outline-rounded';
+  export let projectId: string;
 
   const samples = {
     Block: `block-beta
@@ -208,9 +209,6 @@ packet-beta
   async function loadProjectDiagrams() {
     console.log('Loading project diagrams...');
     try {
-      const userId = 'sA6ZeSlrP9Ri8tCNAncPNKi83Nz2';
-      const projectId = '5ULCb6EwpVWYGIUivAc0';
-
       const project = await projectService.getUserProject(projectId);
       console.log('Project:', project);
       if (!project) {
@@ -218,7 +216,6 @@ packet-beta
         return;
       }
       const diagrams = project?.analysisResultModel.design;
-      console.log('Diagrams:', diagrams);
       if (!diagrams) {
         console.error('No diagrams found in the project');
         return;
@@ -226,30 +223,24 @@ packet-beta
 
       function stripMermaid(code: string): string {
         return code
-          .replace(/^```mermaid\s*/i, '') // remove starting ```mermaid
-          .replace(/\s*```$/i, '') // remove ending ```
-          .replace(/ {3,}/g, '\n'); // replace 3+ spaces with newline
+          .replace(/^```mermaid\s*/i, '')
+          .replace(/\s*```$/i, '')
+          .replace(/ {3,}/g, '\n');
       }
 
-      const formatedClassCode = stripMermaid(diagrams.classDiagram.content);
-      const formatedArchitectureCode = stripMermaid(diagrams.architectureDiagram.content);
-      const formatedErCode = stripMermaid(diagrams.erDiagram.content);
-      const formatedSequenceCode = stripMermaid(diagrams.sequenceDiagram.content);
-      const formatedUseCaseCode = stripMermaid(diagrams.useCaseDiagram.content);
-
-      samples.Class = formatedClassCode;
-      samples.State = formatedArchitectureCode;
-      samples.ER = formatedErCode;
-      samples.Sequence = formatedSequenceCode;
-      samples.Flow = formatedUseCaseCode;
+      samples.Class = stripMermaid(diagrams.classDiagram.content);
+      samples.State = stripMermaid(diagrams.architectureDiagram.content);
+      samples.ER = stripMermaid(diagrams.erDiagram.content);
+      samples.Sequence = stripMermaid(diagrams.sequenceDiagram.content);
+      samples.Flow = stripMermaid(diagrams.useCaseDiagram.content);
     } catch (error) {
       console.error('Failed to load diagrams:', error);
-    } finally {
     }
   }
 
   onMount(() => {
     loadProjectDiagrams();
+    console.log('projectId', projectId);
   });
 </script>
 

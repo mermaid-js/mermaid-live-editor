@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import McWrapper from '$/components/McWrapper.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import { Button } from '$/components/ui/button';
@@ -180,4 +180,4 @@
       </div>
     {/if}
   {/if}
-</div>
+</div> -->

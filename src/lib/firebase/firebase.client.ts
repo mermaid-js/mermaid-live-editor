@@ -28,7 +28,7 @@ export interface UserProfile {
 export async function getCurrentUser(): Promise<UserModel | null> {
   try {
     const response = await fetch('http://localhost:3000/api/profile', {
-      credentials: 'include' // Ensure cookies are sent with the request
+      credentials: 'include'
     });
 
     if (!response.ok) {
