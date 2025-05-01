@@ -2,6 +2,9 @@
 
 import type * as Monaco from 'monaco-editor';
 
+// eslint-disable-next-line es/no-regexp-lookbehind-assertions
+const commentRegex = /(?<!["'])%%(?![^"']*["']\)).*$/;
+
 export const initEditor = (monacoEditor: typeof Monaco): void => {
   monacoEditor.languages.register({ id: 'mermaid' });
   const requirementDiagrams = [
@@ -255,7 +258,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
             }
           }
         ],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
+        [commentRegex, 'comment']
       ],
       c4DiagramParenthesis: [
         [/,/, 'delimiter.bracket'],
@@ -282,7 +285,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
             }
           }
         ],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
+        [commentRegex, 'comment'],
         [/(<<)(.+?)(>>)/, ['delimiter.bracket', 'annotation', 'delimiter.bracket']],
         [/".*?"/, 'string'],
         [/:::/, 'transition'],
@@ -297,7 +300,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/(:)(.*?$)/, ['delimiter.bracket', 'string']],
         [/[:{}]/, 'delimiter.bracket'],
         [/([A-Za-z]+)(\s+[A-Za-z]+)/, ['type', 'variable']],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
+        [commentRegex, 'comment'],
         [/[A-Z_a-z-][\w$]*/, 'variable']
       ],
       flowchart: [
@@ -325,7 +328,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/:::/, 'transition'],
         [/[&;]/, 'delimiter.bracket'],
         [/".*?"/, 'string'],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
+        [commentRegex, 'comment']
       ],
       gantt: [
         configDirectiveHandler,
@@ -341,7 +344,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
             }
           }
         ],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
+        [commentRegex, 'comment'],
         [/:/, 'delimiter.bracket']
       ],
       gitGraph: [
@@ -366,7 +369,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
             }
           }
         ],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
+        [commentRegex, 'comment'],
         [/\^/, 'delimiter.bracket']
       ],
       info: [
@@ -407,7 +410,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         ],
         [/,/, 'delimiter.bracket'],
         [/(^\s*.+?)(:)([^:]*?)$/, ['string', 'delimiter.bracket', 'variable']],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
+        [commentRegex, 'comment']
       ],
       optionsGitGraph: [
         [
@@ -434,7 +437,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/".*?"/, 'string'],
         [/\s*\d+/, 'number'],
         [/:/, 'delimiter.bracket'],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
+        [commentRegex, 'comment']
       ],
       requirementDiagram: [
         configDirectiveHandler,
@@ -450,7 +453,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
           }
         ],
         [/[/:{}]/, 'delimiter.bracket'],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
+        [commentRegex, 'comment'],
         [/".*?"/, 'string']
       ],
       root: [
@@ -482,7 +485,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/[A-Za-z]+/, 'string'],
         [/\s*\d+/, 'number'],
         [/,/, 'delimiter.bracket'],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
+        [commentRegex, 'comment']
       ],
       sequenceDiagram: [
         configDirectiveHandler,
@@ -518,7 +521,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         ],
         [/(--?>?>|--?[)x])[+-]?/, 'transition'],
         [/(:)([^\n:]*?$)/, ['delimiter.bracket', 'string']],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment']
+        [commentRegex, 'comment']
       ],
       sequenceDiagramLinksProps: [
         // [/^:/, { token: 'delimiter.bracket', nextEmbedded: 'json' }],
@@ -544,7 +547,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/".*?"/, 'string'],
         [/(:)([^\n:]*?$)/, ['delimiter.bracket', 'string']],
         [/{|}/, 'delimiter.bracket'],
-        [/%%[^$]([^%]*(?!%%$)%?)*$/, 'comment'],
+        [commentRegex, 'comment'],
         [/-->/, 'transition'],
         [/\[.*?]/, 'string']
       ],
