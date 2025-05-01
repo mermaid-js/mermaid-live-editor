@@ -1,3 +1,4 @@
+import { diagramData } from '@mermaid-js/examples';
 import elkLayouts from '@mermaid-js/layout-elk';
 import zenuml from '@mermaid-js/mermaid-zenuml';
 import type { MermaidConfig, RenderResult } from 'mermaid';
@@ -38,4 +39,24 @@ export const standardizeDiagramType = (diagramType: string) => {
       return diagramType;
     }
   }
+};
+
+type DiagramDefinition = (typeof diagramData)[number];
+
+const isValidDiagram = (diagram: DiagramDefinition): diagram is Required<DiagramDefinition> => {
+  return Boolean(diagram.name && diagram.examples && diagram.examples.length > 0);
+};
+
+export const getSampleDiagrams = () => {
+  const diagrams = diagramData
+    .filter((d) => isValidDiagram(d))
+    .map(({ examples, ...rest }) => ({
+      ...rest,
+      example: examples?.filter(({ isDefault }) => isDefault)[0]
+    }));
+  const examples: Record<string, string> = {};
+  for (const diagram of diagrams) {
+    examples[diagram.name.replace(/ (Diagram|Chart|Graph)/, '')] = diagram.example.code;
+  }
+  return examples;
 };
