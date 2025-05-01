@@ -24,11 +24,11 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
-    "@iconify-json/material-symbols": "^1.2.19",
+    "@iconify-json/material-symbols": "^1.2.20",
     "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "^1.51.1",
     "@sveltejs/adapter-static": "3.0.8",
-    "@sveltejs/kit": "2.20.6",
+    "@sveltejs/kit": "2.20.8",
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
     "@types/hammerjs": "^2.0.46",
     "@types/lodash-es": "^4.17.12",
@@ -67,7 +67,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "svelte": "^5.27.0",
+    "svelte": "^5.27.3",
     "svelte-preprocess": "^6.0.3",
     "svelte-sonner": "^0.3.28",
     "tailwind-merge": "^3.2.0",
@@ -77,7 +77,7 @@
     "tslib": "^2.8.1",
     "typescript": "^5.8.3",
     "unplugin-icons": "^22.1.0",
-    "vite": "^5.4.14",
+    "vite": "^5.4.19",
     "vitest": "^2.1.9",
     "vitest-dom": "^0.1.1"
   },
@@ -87,10 +87,10 @@
     "@codemirror/lang-yaml": "^6.1.2",
     "@codemirror/language": "^6.11.0",
     "@codemirror/state": "^6.5.2",
-    "@codemirror/view": "^6.36.5",
+    "@codemirror/view": "^6.36.6",
     "@fontsource-variable/recursive": "^5.2.5",
-    "@fsegurai/codemirror-theme-vscode-dark": "^6.1.2",
-    "@fsegurai/codemirror-theme-vscode-light": "^6.1.2",
+    "@fsegurai/codemirror-theme-vscode-dark": "^6.1.4",
+    "@fsegurai/codemirror-theme-vscode-light": "^6.1.4",
     "@mermaid-js/layout-elk": "^0.1.7",
     "@mermaid-js/mermaid-zenuml": "^0.2.0",
     "codemirror": "^6.0.1",
@@ -115,9 +115,9 @@
     ]
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=20.19.1"
   },
-  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971",
+  "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677",
   "pnpm": {
     "onlyBuiltDependencies": [
       "deasync",
