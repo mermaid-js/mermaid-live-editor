@@ -21,7 +21,38 @@
 
   const commonParams = { utm_source: C.utmSource, utm_medium: 'banner_ad' } as const;
 
-  const taglines: Taglines[] = [
+  const randomTagLines: Taglines[] = [
+    {
+      label: 'Customize your layout and design in Mermaid Chart’s whiteboard!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'whiteboard' }
+      }
+    },
+    {
+      label: 'Customize your layout and design in Mermaid Chart’s visual editor!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'visual_editor' }
+      }
+    },
+    {
+      label: 'Customize your layout and design with Mermaid Chart’s GUI!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'GUI' }
+      }
+    },
+    {
+      label: 'Customize your layout and design in Mermaid Chart!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'visual_editor_whiteboard_gui' }
+      }
+    }
+  ];
+
+  let taglines: Taglines[] = [
     {
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
       url: {
@@ -35,32 +66,33 @@
         path: '/landing',
         params: { utm_campaign: 'team_collaboration' }
       }
-    },
-    {
-      label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: {
-        path: '/landing',
-        params: { utm_campaign: 'visual_editor' }
-      }
-    },
-    {
-      label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: {
-        path: '/whiteboard',
-        params: { utm_campaign: 'whiteboard' }
-      }
     }
   ];
+  let selectedHeadlineIndex = getSessionHeadlineIndex();
 
-  let index = Math.floor(Math.random() * taglines.length);
-  let currentTagline = $state(taglines[index]);
+  let currentBannerSet = [...taglines, randomTagLines[selectedHeadlineIndex]];
+
+  let index = Math.floor(Math.random() * currentBannerSet.length);
+  let currentTagline = $state(currentBannerSet[index]);
 
   const interval = setInterval(() => {
     if (shouldAnimate) {
-      index = (index + 1) % taglines.length;
-      currentTagline = taglines[index];
+      index = (index + 1) % currentBannerSet.length;
+      currentTagline = currentBannerSet[index];
     }
   }, 5000);
+
+  function getSessionHeadlineIndex(): number {
+    const storedIndex = sessionStorage.getItem('mermaidBannerIndex');
+
+    if (storedIndex === null) {
+      const newIndex = Math.floor(Math.random() * randomTagLines.length);
+      sessionStorage.setItem('mermaidBannerIndex', newIndex.toString());
+      return newIndex;
+    }
+
+    return Number.parseInt(storedIndex, 10);
+  }
 
   onDestroy(() => {
     clearInterval(interval);
