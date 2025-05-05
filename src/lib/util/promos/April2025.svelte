@@ -68,37 +68,37 @@
       }
     }
   ];
-  let selectedHeadlineIndex = getSessionHeadlineIndex();
 
-  let currentBannerSet = [...taglines, randomTagLines[selectedHeadlineIndex]];
+  const getRandomIndex = (array: unknown[]) => Math.floor(Math.random() * array.length);
+  const getSessionHeadlineIndex = (): number => {
+    const storageKey = 'mermaidBannerIndex';
+    const storedIndex = sessionStorage.getItem(storageKey);
 
-  let index = Math.floor(Math.random() * currentBannerSet.length);
-  let currentTagline = $state(currentBannerSet[index]);
+    if (storedIndex) {
+      return Number.parseInt(storedIndex, 10);
+    }
+
+    const randomIndex = getRandomIndex(randomTagLines);
+    sessionStorage.setItem(storageKey, randomIndex.toString());
+    return randomIndex;
+  };
+
+  const selectedHeadlineIndex = getSessionHeadlineIndex();
+  const currentBannerSet = [...taglines, randomTagLines[selectedHeadlineIndex]];
+
+  let index = $state(getRandomIndex(currentBannerSet));
+  let currentTagline = $derived(currentBannerSet[index]);
+  let shouldAnimate = $state(true);
 
   const interval = setInterval(() => {
     if (shouldAnimate) {
       index = (index + 1) % currentBannerSet.length;
-      currentTagline = currentBannerSet[index];
     }
   }, 5000);
-
-  function getSessionHeadlineIndex(): number {
-    const storedIndex = sessionStorage.getItem('mermaidBannerIndex');
-
-    if (storedIndex === null) {
-      const newIndex = Math.floor(Math.random() * randomTagLines.length);
-      sessionStorage.setItem('mermaidBannerIndex', newIndex.toString());
-      return newIndex;
-    }
-
-    return Number.parseInt(storedIndex, 10);
-  }
 
   onDestroy(() => {
     clearInterval(interval);
   });
-
-  let shouldAnimate = $state(true);
 </script>
 
 <div
