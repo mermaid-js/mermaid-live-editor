@@ -40,7 +40,7 @@
       label: 'Customize your layout and design with Mermaid Chart’s GUI!',
       url: {
         path: '/whiteboard',
-        params: { utm_campaign: 'GUI' }
+        params: { utm_campaign: 'gui' }
       }
     },
     {
