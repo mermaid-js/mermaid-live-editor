@@ -21,7 +21,38 @@
 
   const commonParams = { utm_source: C.utmSource, utm_medium: 'banner_ad' } as const;
 
-  const taglines: Taglines[] = [
+  const randomTagLines: Taglines[] = [
+    {
+      label: 'Customize your layout and design in Mermaid Chart’s whiteboard!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'whiteboard' }
+      }
+    },
+    {
+      label: 'Customize your layout and design in Mermaid Chart’s visual editor!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'visual_editor' }
+      }
+    },
+    {
+      label: 'Customize your layout and design with Mermaid Chart’s GUI!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'gui' }
+      }
+    },
+    {
+      label: 'Customize your layout and design in Mermaid Chart!',
+      url: {
+        path: '/whiteboard',
+        params: { utm_campaign: 'visual_editor_whiteboard_gui' }
+      }
+    }
+  ];
+
+  let taglines: Taglines[] = [
     {
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
       url: {
@@ -35,38 +66,39 @@
         path: '/landing',
         params: { utm_campaign: 'team_collaboration' }
       }
-    },
-    {
-      label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: {
-        path: '/landing',
-        params: { utm_campaign: 'visual_editor' }
-      }
-    },
-    {
-      label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
-      url: {
-        path: '/whiteboard',
-        params: { utm_campaign: 'whiteboard' }
-      }
     }
   ];
 
-  let index = Math.floor(Math.random() * taglines.length);
-  let currentTagline = $state(taglines[index]);
+  const getRandomIndex = (array: unknown[]) => Math.floor(Math.random() * array.length);
+  const getSessionHeadlineIndex = (): number => {
+    const storageKey = 'mermaidBannerIndex';
+    const storedIndex = sessionStorage.getItem(storageKey);
+
+    if (storedIndex) {
+      return Number.parseInt(storedIndex, 10);
+    }
+
+    const randomIndex = getRandomIndex(randomTagLines);
+    sessionStorage.setItem(storageKey, randomIndex.toString());
+    return randomIndex;
+  };
+
+  const selectedHeadlineIndex = getSessionHeadlineIndex();
+  const currentBannerSet = [...taglines, randomTagLines[selectedHeadlineIndex]];
+
+  let index = $state(getRandomIndex(currentBannerSet));
+  let currentTagline = $derived(currentBannerSet[index]);
+  let shouldAnimate = $state(true);
 
   const interval = setInterval(() => {
     if (shouldAnimate) {
-      index = (index + 1) % taglines.length;
-      currentTagline = taglines[index];
+      index = (index + 1) % currentBannerSet.length;
     }
   }, 5000);
 
   onDestroy(() => {
     clearInterval(interval);
   });
-
-  let shouldAnimate = $state(true);
 </script>
 
 <div
