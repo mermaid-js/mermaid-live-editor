@@ -19,7 +19,7 @@
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
 
-  const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
+  const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}`;
 
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
@@ -32,7 +32,11 @@
     return svgElement;
   };
 
-  const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
+  const getBase64SVG = async (
+    svg?: HTMLElement,
+    width?: number,
+    height?: number
+  ): Promise<string> => {
     if (svg) {
       // Prevents the SVG size of the interface from being changed
       svg = svg.cloneNode(true) as HTMLElement;
@@ -44,13 +48,43 @@
       svg = getSvgElement();
     }
 
+    const [fontAwesomeCSS, fontBlob] = await Promise.all([
+      fetch(`${FONT_AWESOME_URL}/css/all.min.css`).then((response) => response.text()),
+      fetch(`${FONT_AWESOME_URL}/webfonts/fa-solid-900.woff2`).then((res) => res.blob())
+    ]);
+    const reader = new FileReader();
+    const fontBase64 = await new Promise<string>((resolve) => {
+      reader.onloadend = () => {
+        const base64 = reader.result as string;
+        // Remove the data URL prefix (data:application/octet-stream;base64,)
+        resolve(base64.split(',')[1]);
+      };
+      reader.readAsDataURL(fontBlob);
+    });
+    const fontFaceCSS = `
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  font-style: normal;
+  font-weight: 900;
+  src: url(data:font/woff2;base64,${fontBase64}) format('woff2');
+}
+
+.fa {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  // TODO: Make this dynamic from config
+  font-size: 16px;
+  width: 16px;
+  fill: black;
+}
+`;
+
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
-      .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
+      .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`)
+      .replace('<style>', `<style>${fontFaceCSS} ${fontAwesomeCSS}`);
 
-    return toBase64(`<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
-${svgString}`);
+    return toBase64(svgString);
   };
 
   const simulateDownload = (download: string, href: string): void => {
@@ -100,7 +134,7 @@ ${svgString}`);
       exporter(context, image)();
       $inputStateStore.panZoom = true;
     });
-    image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
+    image.src = `data:image/svg+xml;base64,${await getBase64SVG(svg, canvas.width, canvas.height)}`;
     // Fallback to set panZoom to true after 2 seconds
     // This is a workaround for the case when the image is not loaded
     setTimeout(() => {
@@ -160,8 +194,8 @@ ${svgString}`);
     });
   };
 
-  const onDownloadSVG = () => {
-    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
+  const onDownloadSVG = async () => {
+    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${await getBase64SVG()}`);
     logEvent('download', {
       type: 'svg'
     });
