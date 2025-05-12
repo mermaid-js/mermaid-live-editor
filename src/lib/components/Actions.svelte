@@ -32,6 +32,18 @@
     return svgElement;
   };
 
+  /**
+   * Converts a Blob to base64 string
+   */
+  export function blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result as string));
+      reader.addEventListener('error', () => reject(new Error('Failed to convert blob to base64')));
+      reader.readAsDataURL(blob);
+    });
+  }
+
   const getBase64SVG = async (
     svg?: HTMLElement,
     width?: number,
@@ -48,43 +60,88 @@
       svg = getSvgElement();
     }
 
-    const [fontAwesomeCSS, fontBlob] = await Promise.all([
-      fetch(`${FONT_AWESOME_URL}/css/all.min.css`).then((response) => response.text()),
-      fetch(`${FONT_AWESOME_URL}/webfonts/fa-solid-900.woff2`).then((res) => res.blob())
-    ]);
-    const reader = new FileReader();
-    const fontBase64 = await new Promise<string>((resolve) => {
-      reader.onloadend = () => {
-        const base64 = reader.result as string;
-        // Remove the data URL prefix (data:application/octet-stream;base64,)
-        resolve(base64.split(',')[1]);
-      };
-      reader.readAsDataURL(fontBlob);
-    });
-    const fontFaceCSS = `
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  font-style: normal;
-  font-weight: 900;
-  src: url(data:font/woff2;base64,${fontBase64}) format('woff2');
-}
+    try {
+      // Fetch both regular and brands Font Awesome CSS and font files
+      const [fontAwesomeCSS, solidFontBlob, brandsFontBlob, regularFontBlob] = await Promise.all([
+        fetch(`${FONT_AWESOME_URL}/css/all.min.css`).then((response) => response.text()),
+        fetch(`${FONT_AWESOME_URL}/webfonts/fa-solid-900.woff2`)
+          .then((res) => res.blob())
+          .catch(() => new Blob()),
+        fetch(`${FONT_AWESOME_URL}/webfonts/fa-brands-400.woff2`)
+          .then((res) => res.blob())
+          .catch(() => new Blob()),
+        fetch(`${FONT_AWESOME_URL}/webfonts/fa-regular-400.woff2`)
+          .then((res) => res.blob())
+          .catch(() => new Blob())
+      ]);
 
-.fa {
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  // TODO: Make this dynamic from config
-  font-size: 16px;
-  width: 16px;
-  fill: black;
-}
-`;
+      // Convert font blobs to base64
+      const [solidFontBase64, brandsFontBase64, regularFontBase64] = await Promise.all([
+        blobToBase64(solidFontBlob).then((data) => data.split(',')[1]),
+        blobToBase64(brandsFontBlob).then((data) => data.split(',')[1]),
+        blobToBase64(regularFontBlob).then((data) => data.split(',')[1])
+      ]);
 
-    const svgString = svg.outerHTML
-      .replaceAll('<br>', '<br/>')
-      .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`)
-      .replace('<style>', `<style>${fontFaceCSS} ${fontAwesomeCSS}`);
+      // Create font-face definitions for all Font Awesome types
+      const fontFaceCSS = `
+      @font-face {
+        font-family: 'Font Awesome 6 Free';
+        font-style: normal;
+        font-weight: 900;
+        src: url(data:font/woff2;base64,${solidFontBase64}) format('woff2');
+      }
+      
+      @font-face {
+        font-family: 'Font Awesome 6 Free';
+        font-style: normal;
+        font-weight: 400;
+        src: url(data:font/woff2;base64,${regularFontBase64}) format('woff2');
+      }
+      
+      @font-face {
+        font-family: 'Font Awesome 6 Brands';
+        font-style: normal;
+        font-weight: 400;
+        src: url(data:font/woff2;base64,${brandsFontBase64}) format('woff2');
+      }
+      
+      .fa, .fas {
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+      }
+      
+      .far {
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 400;
+      }
+      
+      .fab {
+        font-family: 'Font Awesome 6 Brands';
+        font-weight: 400;
+      }
+      
+      .fa, .fas, .far, .fab {
+        font-size: 16px;
+        width: 16px;
+        fill: currentColor;
+      }
+    `;
 
-    return toBase64(svgString);
+      // Fix self-closing tags for XML compatibility
+      const svgString = svg.outerHTML
+        .replaceAll('<br>', '<br/>')
+        .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`)
+        .replace('<style>', `<style>${fontFaceCSS} ${fontAwesomeCSS}`);
+
+      return toBase64(svgString);
+    } catch {
+      // Fallback to simple SVG if font loading fails
+      const svgString = svg.outerHTML
+        .replaceAll('<br>', '<br/>')
+        .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
+
+      return toBase64(svgString);
+    }
   };
 
   const simulateDownload = (download: string, href: string): void => {
