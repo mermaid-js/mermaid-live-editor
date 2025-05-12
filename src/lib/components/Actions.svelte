@@ -134,9 +134,7 @@
         .replace('<style>', `<style>${fontFaceCSS} ${fontAwesomeCSS}`);
 
       return toBase64(svgString);
-    } catch (error) {
-      console.error('Error generating SVG base64:', error);
-
+    } catch {
       // Fallback to simple SVG if font loading fails
       const svgString = svg.outerHTML
         .replaceAll('<br>', '<br/>')
