@@ -9,6 +9,7 @@
     "corg",
     "cssnano",
     "esserializer",
+    "fontawesome",
     "fsegurai",
     "gantt",
     "gitgraph",
@@ -30,6 +31,7 @@
     "Stackable",
     "tailwindcss",
     "uparrow",
+    "webfonts",
     "zenuml"
   ],
   "vitest.commandLine": "pnpm test:unit",
