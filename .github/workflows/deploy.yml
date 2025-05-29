@@ -47,7 +47,7 @@ jobs:
           path: ./docs
 
   deploy:
-    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -61,5 +61,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-            branch: gh-pages  # Deploy to gh-pages branch
