@@ -1,7 +1,7 @@
 import { C } from '$/constants';
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { debounce } from 'lodash-es';
-import type { MermaidConfig } from 'mermaid';
+import type { ExtendedMermaidConfig } from './ExtendedMermaidConfig';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
 import {
@@ -167,9 +167,9 @@ export const loadState = (data: string): void => {
     if (!state.mermaid) {
       state.mermaid = defaultState.mermaid;
     }
-    const mermaidConfig: MermaidConfig =
+    const mermaidConfig: ExtendedMermaidConfig =
       typeof state.mermaid === 'string'
-        ? (JSON.parse(state.mermaid) as MermaidConfig)
+        ? (JSON.parse(state.mermaid) as ExtendedMermaidConfig)
         : state.mermaid;
     if (
       mermaidConfig.securityLevel &&
@@ -224,7 +224,7 @@ export const updateConfig = (config: string): void => {
 
 export const toggleDarkTheme = (dark: boolean): void => {
   inputStateStore.update((state) => {
-    const config = JSON.parse(state.mermaid) as MermaidConfig;
+    const config = JSON.parse(state.mermaid) as ExtendedMermaidConfig;
     if (!config.theme || ['dark', 'default'].includes(config.theme)) {
       config.theme = dark ? 'dark' : 'default';
     }
