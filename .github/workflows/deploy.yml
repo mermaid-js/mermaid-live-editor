@@ -46,7 +46,7 @@ jobs:
           path: ./docs
 
   deploy:
-    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
     runs-on: ubuntu-latest
     environment:
