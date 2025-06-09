@@ -61,7 +61,7 @@
 
 <Popover.Root>
   <Popover.Trigger class="shrink-0">
-    <img class="size-10" src="/favicon.svg" alt="Lexi mermaid" />
+    <img class="size-10" src="/favicon.svg" alt="Idem mermaid" />
   </Popover.Trigger>
   <Popover.Content align="start" class="flex flex-col overflow-hidden p-0" sideOffset={16}>
     {#each menuItems as item}

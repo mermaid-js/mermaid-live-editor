@@ -97,7 +97,7 @@
       class:flex-row-reverse={isReferral}>
       <a href="/" class="whitespace-nowrap text-subtitle text-primary">
         {#if !isReferral}
-          <b>LEXI</b> Mermaid
+          <b>IDEM</b> Mermaid
         {/if}
       </a>
 

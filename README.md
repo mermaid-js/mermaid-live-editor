@@ -1,31 +1,72 @@
-[![Join our Discord!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=discord&label=discord)](https://discord.gg/sKeNQX4Wtj)
+# Idem Chart
+
+<div align="center">
+  <img src="public/assets/icons/logo_white.png" alt="Idem Logo" width="200">
+  <p><strong>Interactive Diagram Editor Module for the Idem Platform</strong></p>
+</div>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/27fa023d-7c73-4a3f-9791-b3b657a47100/deploy-status)](https://app.netlify.com/sites/mermaidjs/deploys)
 
-# Mermaid Live Editor
+## 🚀 Overview
 
-Edit, preview and share mermaid charts/diagrams.
+Idem Chart is a specialized module of the Idem platform, designed for editing, previewing, and sharing diagrams. As part of the AI-powered Idem software development lifecycle system, this module specializes in the visualization aspect, enabling developers to create and modify flowcharts, sequence diagrams, and other visual representations of their software architecture.
 
-## Features
+## ✨ Features
 
-- Edit and preview flowcharts, sequence diagrams, gantt diagrams in real time.
-- Save the result as a svg
-- Get a link to a viewer of the diagram so that you can share it with others.
-- Get a link to edit the diagram so that someone else can tweak it and send a new link back
+As part of the Idem ecosystem, this module provides powerful diagram capabilities:
 
-## Live demo
+- **Interactive Diagram Editor**: Edit and preview flowcharts, sequence diagrams, gantt diagrams in real time
+- **Export Options**: Save results as SVG files for easy integration into documentation
+- **Collaboration Tools**: Share diagrams with team members via viewer links
+- **Version Management**: Collaborate through editable diagram links for iterative design
+- **UML Visualization**: Create detailed UML diagrams for system architecture documentation
+- **Integration Support**: Seamlessly integrate with other Idem modules for complete software lifecycle management
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Svelte Kit
+- **Diagram Rendering**: Mermaid.js
+- **Package Manager**: pnpm
+- **Deployment**: Netlify
+
+## 🏁 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/) current LTS version
+- [pnpm](https://pnpm.io/) package manager. Install with `corepack enable pnpm`
+
+### Live Demo
 
 You can try out a live version [here](https://mermaid.live/).
 
-# Contributors are welcome!
+### Installation
 
-If you want to speed up the progress for mermaid-live-editor, join the Discord channel and contact knsv.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/idem-chart.git
+   cd idem-chart
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Start the development server:
+   ```bash
+   pnpm dev -- --open
+   ```
+
+4. Open your browser to view the application at the URL shown in your terminal
 
 ## Docker
 
 ### Run published image
 
 ```bash
-docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid-live-editor
+docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/idem-js/idem-chart
 ```
 
 ### To configure renderer URL
@@ -74,13 +115,13 @@ Then open http://localhost:3000
 #### Build
 
 ```bash
-docker build -t mermaid-js/mermaid-live-editor .
+docker build -t idem-js/idem-chart .
 ```
 
 #### Run
 
 ```bash
-docker run --detach --name mermaid-live-editor --publish 8080:8080 mermaid-js/mermaid-live-editor
+docker run --detach --name idem-chart --publish 8080:8080 idem-js/idem-chart
 ```
 
 Visit: <http://localhost:8080>
@@ -88,19 +129,8 @@ Visit: <http://localhost:8080>
 #### Stop
 
 ```bash
-docker stop mermaid-live-editor
+docker stop idem-chart
 ```
-
-## Setup
-
-Below link will help you making a copy of the repository in your local system.
-
-https://docs.github.com/en/get-started/quickstart/fork-a-repo
-
-## Requirements
-
-- [Node.js](https://nodejs.org/en/) current LTS version
-- [pnpm](https://pnpm.io/) package manager. Install with `corepack enable pnpm`
 
 ## Development
 
@@ -111,9 +141,62 @@ pnpm dev -- --open
 
 This app is created with Svelte Kit.
 
-## Release
+## Release Process
 
 When a PR is created targeting master, it will be built and deployed by Netlify.
 The URL will be indicated in a Comment in the PR.
 
 Once the PR is merged, it will automatically be released.
+
+## 🧪 Testing
+
+### Unit Tests
+
+To run unit tests for the application:
+
+```bash
+npm test
+```
+
+## 🏗️ Building
+
+To build the application for production:
+
+```bash
+npm run build
+```
+
+The build artifacts will be stored in the `dist/` directory.
+
+## 📝 Documentation
+
+For detailed documentation about using the diagram editor, please visit [our wiki](https://github.com/yourusername/idem/wiki/chart).
+
+To learn more about the entire Idem platform and how this module integrates with other components, visit the [main Idem documentation](https://github.com/yourusername/idem/wiki).
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for more details on how to get involved.
+
+## 📜 Code of Conduct
+
+This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## 📄 License
+
+Idem is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+[List core team members here]
+
+## 🙏 Acknowledgements
+
+- [List libraries, tools, and resources that helped build Idem]
+- [List contributors and supporters]
+
+---
+
+<div align="center">
+  <p>Built with ❤️ by the Idem team</p>
+</div>

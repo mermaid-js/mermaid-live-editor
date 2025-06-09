@@ -164,7 +164,7 @@
                 bind:value={project.description}
                 rows="1"
                 class="w-full resize-none overflow-y-auto bg-transparent text-lg text-gray-300 placeholder-gray-500 outline-none"
-                placeholder="Message Lexi"
+                placeholder="Message Idem"
                 on:input={autoResize}></textarea>
 
               <div class="mt-2 flex items-center justify-between">

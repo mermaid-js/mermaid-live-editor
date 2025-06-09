@@ -28,10 +28,10 @@ export function replaceLineNumberInErrorMessage(
   realLineNumber: number
 ): string {
   const regexParseError = /Parse error on line (\d+):/;
-  const regexLexError = /Lexical error on line (\d+)/;
+  const regexLexError = /Idemcal error on line (\d+)/;
   return errorMessage
     .replace(regexParseError, `Parse error on line ${realLineNumber}:`)
-    .replace(regexLexError, `Lexical error on line ${realLineNumber}:`);
+    .replace(regexLexError, `Idemcal error on line ${realLineNumber}:`);
 }
 
 export function extractErrorLineText(errorMessage: string): string {
@@ -41,7 +41,7 @@ export function extractErrorLineText(errorMessage: string): string {
     return match[1].slice(3);
   }
 
-  const regexLex = /Error: Lexical error on line \d+. Unrecognized text.\n(.+)\n-+/;
+  const regexLex = /Error: Idemcal error on line \d+. Unrecognized text.\n(.+)\n-+/;
   const matchLex = errorMessage.match(regexLex);
   return matchLex ? matchLex[1].slice(3) : '';
 }
