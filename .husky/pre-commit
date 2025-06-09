@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-pnpm pre-commit
+# Use npx instead of pnpm to run lint-staged directly
+npx lint-staged
