@@ -307,7 +307,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         configDirectiveHandler,
         [/[ox]?(--+|==+)[ox]/, 'transition'],
         [
-          /[A-Za-z][\w$]*/,
+          /\p{Letter}[\p{Letter}\d_$]*/u,
           {
             cases: {
               '@default': 'variable',
@@ -555,7 +555,8 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/^\s*end note$/, { next: '@pop', token: 'typeKeyword' }],
         [/.*/, 'string']
       ]
-    }
+    },
+    unicode: true
   });
 
   monacoEditor.editor.defineTheme('mermaid-dark', {
