@@ -1,0 +1,79 @@
+graph TD
+    A[Makine Öğrenmesi] --> B[Denetimli Öğrenme]
+    A --> C[Denetimsiz Öğrenme]
+    A --> D[Pekiştirmeli Öğrenme]
+    A --> E[Yarı-Denetimli Öğrenme]
+
+    %% 1. Denetimli Öğrenme Alt Kırılımları
+    B --> B1[Sınıflandırma]
+    B1 --> B11[İkili Sınıflandırma]
+    B11 --> B111[Lojistik Regresyon]
+    B11 --> B112[SVM]
+    B1 --> B12[Çok Sınıflı Sınıflandırma]
+    B12 --> B121[Random Forest]
+    B12 --> B122[Naive Bayes]
+    B12 --> B123[Yapay Sinir Ağları]
+    
+    B --> B2[Regresyon]
+    B2 --> B21[Doğrusal Regresyon]
+    B2 --> B22[Polinom Regresyon]
+    B2 --> B23[Karar Ağacı Regresyonu]
+    B2 --> B24[SVR]
+
+    %% 2. Denetimsiz Öğrenme Alt Kırılımları
+    C --> C1[Kümeleme]
+    C1 --> C11[K-Means]
+    C1 --> C12[Hiyerarşik Kümeleme]
+    C1 --> C13[DBSCAN]
+    C1 --> C14[GMM]
+    
+    C --> C2[Boyut İndirgeme]
+    C2 --> C21[PCA]
+    C2 --> C22[t-SNE]
+    C2 --> C23[UMAP]
+    
+    C --> C3[İlişki Kuralları]
+    C3 --> C31[Apriori]
+    C3 --> C32[FP-Growth]
+
+    %% 3. Pekiştirmeli Öğrenme Alt Kırılımları
+    D --> D1[Model-Free]
+    D1 --> D11[Q-Learning]
+    D1 --> D12[Deep Q-Networks]
+    
+    D --> D2[Model-Based]
+    D2 --> D21[Dinamik Programlama]
+    
+    D --> D3[Policy-Based]
+    D3 --> D31[REINFORCE]
+    D3 --> D32[Actor-Critic]
+
+    %% 4. Derin Öğrenme Alt Kırılımları (Cross-Cutting)
+    A --> F[Derin Öğrenme]
+    F --> F1[CNN]
+    F1 --> F11[ResNet]
+    F1 --> F12[EfficientNet]
+    
+    F --> F2[RNN]
+    F2 --> F21[LSTM]
+    F2 --> F22[GRU]
+    
+    F --> F3[Transformer]
+    F3 --> F31[BERT]
+    F3 --> F32[GPT]
+    
+    F --> F4[Autoencoder]
+    F4 --> F41[VAE]
+    F4 --> F42[Denoising AE]
+
+    %% 5. Diğer Önemli Alt Başlıklar
+    A --> G[Ensemble Yöntemler]
+    G --> G1[Bagging]
+    G1 --> G11[Random Forest]
+    G --> G2[Boosting]
+    G2 --> G21[XGBoost]
+    G2 --> G22[LightGBM]
+    
+    A --> H[Özellik Mühendisliği]
+    H --> H1[Özellik Seçimi]
+    H --> H2[Özellik Çıkarımı]
