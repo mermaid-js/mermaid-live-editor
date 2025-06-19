@@ -78,9 +78,9 @@
         class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
         in:fade={{ delay: 800 }}
         out:fade={{ duration: 1000 }}>
-        <span class="text-lg tracking-wider text-white">{currentTagline.label}</span>
+        <span class="text-base tracking-wider text-white">{currentTagline.label}</span>
         <Button
-          class="shrink-0 rounded-md bg-[#1E1A2E] px-3 py-1.5 text-sm font-semibold tracking-wide text-white hover:bg-[#261A56]">
+          class="shrink-0 rounded-md bg-[#1E1A2E] px-3 py-1.5 text-base font-semibold tracking-wide text-white hover:bg-[#261A56]">
           Try now
         </Button>
       </a>
