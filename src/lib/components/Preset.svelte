@@ -150,6 +150,14 @@ packet-beta
     Moving --> Still
     Moving --> Crash
     Crash --> [*]`,
+    Treemap: `treemap-beta
+"Section 1"
+    "Leaf 1.1": 12
+    "Section 1.2"
+      "Leaf 1.2.1": 12
+"Section 2"
+    "Leaf 2.1": 20
+    "Leaf 2.2": 25`,
     'User Journey': `journey
     title My working day
     section Go to work
@@ -216,7 +224,8 @@ packet-beta
     'QuadrantChart',
     'XYChart',
     'Block',
-    'Packet'
+    'Packet',
+    'Treemap'
   ];
 </script>
 
