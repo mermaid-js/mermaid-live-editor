@@ -19,38 +19,123 @@
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
 
-  const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
+  const fontAwesomeURLs = (() => {
+    const baseUrl = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}`;
+    return {
+      css: `${baseUrl}/css/all.min.css`,
+      woff2: `${baseUrl}/webfonts/fa-solid-900.woff2`
+    };
+  })();
 
   type Exporter = (context: CanvasRenderingContext2D, image: HTMLImageElement) => () => void;
 
   const getFileName = (extension: string) =>
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
-  const getSvgElement = () => {
-    const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
-    svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    return svgElement;
+  const getSvgElement = async () => {
+    try {
+      $inputStateStore.panZoom = false;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await waitForRender();
+      const svgElement = document.querySelector('#container svg');
+      if (!svgElement) {
+        throw new Error('svg not found');
+      }
+      svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+      return {
+        svg: svgElement.cloneNode(true) as HTMLElement,
+        box: svgElement.querySelector('g')!.getBoundingClientRect()
+      };
+    } finally {
+      setTimeout(() => {
+        $inputStateStore.panZoom = true;
+      }, 10000);
+    }
   };
 
-  const getBase64SVG = (svg?: HTMLElement, width?: number, height?: number): string => {
-    if (svg) {
-      // Prevents the SVG size of the interface from being changed
-      svg = svg.cloneNode(true) as HTMLElement;
+  const injectFontAwesome = async ({
+    svgString,
+    fontAwesomeEmbedMode
+  }: {
+    svgString: string;
+    fontAwesomeEmbedMode: 'raw' | 'url';
+  }) => {
+    if (fontAwesomeEmbedMode === 'url') {
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="${fontAwesomeURLs.css}" type="text/css"?>
+${svgString}`;
     }
-    height && svg?.setAttribute('height', `${height}px`);
-    width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
 
-    if (!svg) {
-      svg = getSvgElement();
+    const [fontAwesomeCSS, fontBlob] = await Promise.all([
+      fetch(fontAwesomeURLs.css).then((response) => response.text()),
+      fetch(fontAwesomeURLs.woff2).then((res) => res.blob())
+    ]);
+    const reader = new FileReader();
+    const fontBase64 = await new Promise<string>((resolve) => {
+      reader.onloadend = () => {
+        const base64 = reader.result as string;
+        // Remove the data URL prefix (data:application/octet-stream;base64,)
+        resolve(base64.split(',')[1]);
+      };
+      reader.readAsDataURL(fontBlob);
+    });
+    const styleString = `
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  font-style: normal;
+  font-weight: 900;
+  src: url(data:font/woff2;base64,${fontBase64}) format('woff2');
+}
+
+.fa {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  // TODO: Make this dynamic from config
+  font-size: 16px;
+  width: 16px;
+  fill: black;
+}
+
+${fontAwesomeCSS}
+`;
+    return svgString.replace('<style>', `<style>${styleString}`);
+  };
+
+  const getBase64SVG = async ({
+    svg,
+    box,
+    width,
+    height,
+    embedFontAwesome
+  }: {
+    svg?: HTMLElement;
+    box?: DOMRect;
+    width?: number;
+    height?: number;
+    embedFontAwesome?: boolean;
+  } = {}): Promise<string> => {
+    if (!svg || !box) {
+      ({ svg, box } = await getSvgElement());
     }
 
+    console.log(box);
+    // Prevents the SVG size of the interface from being changed
+    // svg = svg.cloneNode(true) as HTMLElement;
+
+    height && svg.setAttribute('height', `${height}px`);
+    width && svg.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
 
-    return toBase64(`<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
-${svgString}`);
+    const svgStringWithFontAwesome = await injectFontAwesome({
+      svgString,
+      fontAwesomeEmbedMode: embedFontAwesome ? 'raw' : 'url'
+    });
+
+    console.log(svgStringWithFontAwesome);
+    return toBase64(svgStringWithFontAwesome);
   };
 
   const simulateDownload = (download: string, href: string): void => {
@@ -62,16 +147,10 @@ ${svgString}`);
   };
 
   const exportImage = async (event: Event, exporter: Exporter) => {
-    $inputStateStore.panZoom = false;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    await waitForRender();
+    event.stopPropagation();
+    event.preventDefault();
     const canvas = document.createElement('canvas');
-    const svg = document.querySelector<HTMLElement>('#container svg');
-    if (!svg) {
-      throw new Error('svg not found');
-    }
-
-    const box = svg.getBoundingClientRect();
+    const { svg, box } = await getSvgElement();
 
     if (imageSizeMode === 'width') {
       const ratio = box.height / box.width;
@@ -98,18 +177,14 @@ ${svgString}`);
     const image = new Image();
     image.addEventListener('load', () => {
       exporter(context, image)();
-      $inputStateStore.panZoom = true;
     });
-    image.src = `data:image/svg+xml;base64,${getBase64SVG(svg, canvas.width, canvas.height)}`;
+    image.src = `data:image/svg+xml;base64,${await getBase64SVG({ svg, box, height: canvas.height, width: canvas.width, embedFontAwesome: true })}`;
     // Fallback to set panZoom to true after 2 seconds
     // This is a workaround for the case when the image is not loaded
-    setTimeout(() => {
-      if (!$inputStateStore.panZoom) {
-        $inputStateStore.panZoom = true;
-      }
-    }, 2000);
-    event.stopPropagation();
-    event.preventDefault();
+    // setTimeout(() => {
+    //   if (!$inputStateStore.panZoom) {
+    //   }
+    // }, 2000);
   };
 
   const downloadImage: Exporter = (context, image) => {
@@ -160,8 +235,8 @@ ${svgString}`);
     });
   };
 
-  const onDownloadSVG = () => {
-    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
+  const onDownloadSVG = async () => {
+    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${await getBase64SVG()}`);
     logEvent('download', {
       type: 'svg'
     });
