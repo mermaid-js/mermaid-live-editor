@@ -21,7 +21,7 @@
 
   const commonParams = { utm_source: C.utmSource, utm_medium: 'banner_ad' } as const;
 
-  const taglines: Taglines[] = [
+  let taglines: Taglines[] = [
     {
       label: 'Replace ChatGPT Pro, Mermaid.live, and Lucid Chart with Mermaid Chart',
       url: {
@@ -37,36 +37,29 @@
       }
     },
     {
-      label: 'Use the Visual Editor in Mermaid Chart to design and build diagrams',
-      url: {
-        path: '/landing',
-        params: { utm_campaign: 'visual_editor' }
-      }
-    },
-    {
-      label: 'Explore the Mermaid Whiteboard from the creators of Mermaid',
+      label: 'Customize your layout and design in Mermaid Chart’s visual editor!',
       url: {
         path: '/whiteboard',
-        params: { utm_campaign: 'whiteboard' }
+        params: { utm_campaign: 'visual_editor' }
       }
     }
   ];
 
-  let index = Math.floor(Math.random() * taglines.length);
-  let currentTagline = $state(taglines[index]);
+  const getRandomIndex = (array: unknown[]) => Math.floor(Math.random() * array.length);
+
+  let index = $state(getRandomIndex(taglines));
+  let currentTagline = $derived(taglines[index]);
+  let shouldAnimate = $state(true);
 
   const interval = setInterval(() => {
     if (shouldAnimate) {
       index = (index + 1) % taglines.length;
-      currentTagline = taglines[index];
     }
   }, 5000);
 
   onDestroy(() => {
     clearInterval(interval);
   });
-
-  let shouldAnimate = $state(true);
 </script>
 
 <div
@@ -85,9 +78,9 @@
         class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
         in:fade={{ delay: 800 }}
         out:fade={{ duration: 1000 }}>
-        <span class="text-sm tracking-wider text-white">{currentTagline.label}</span>
+        <span class="text-base tracking-wider text-white">{currentTagline.label}</span>
         <Button
-          class="shrink-0 rounded-md bg-[#1E1A2E] px-3 py-1.5 text-sm font-semibold tracking-wide text-white hover:bg-[#261A56]">
+          class="shrink-0 rounded-md bg-[#1E1A2E] px-3 py-1.5 text-base font-semibold tracking-wide text-white hover:bg-[#261A56]">
           Try now
         </Button>
       </a>

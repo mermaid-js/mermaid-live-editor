@@ -103,6 +103,13 @@ export class EditorPage {
       `Switch to ${theme === 'light' ? 'dark' : 'light'} theme`
     );
   }
+
+  async checkAIHelperVisibility(shouldBeVisible: boolean) {
+    const button = this.page.getByTestId(TID.aiRepairButton);
+    const helpText = this.page.getByTestId(TID.aiHelpText);
+    await expect(button)[shouldBeVisible ? 'toBeVisible' : 'toBeHidden']();
+    await expect(helpText)[shouldBeVisible ? 'toBeVisible' : 'toBeHidden']();
+  }
 }
 
 export const test = base.extend<{ editPage: EditorPage }>({
