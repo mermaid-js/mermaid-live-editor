@@ -17,6 +17,11 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
@@ -39,6 +44,7 @@ jobs:
           tags: |
             type=raw,value=${{ env.RELEASE_VERSION }}
       - uses: docker/build-push-action@v5
+        id: build
         with:
           context: .
           target: mermaid
@@ -47,3 +53,9 @@ jobs:
           pull: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Generate Build Attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
