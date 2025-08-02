@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env node
 
 import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
@@ -6,11 +6,16 @@ import { join } from 'path';
 const SCHEMA_URL = 'https://mermaid.js.org/schemas/config.schema.json';
 const OUTPUT_FOLDER = join(process.cwd(), 'static', 'schemas');
 
-interface Schema {
-  properties: Record<string, any>;
-  [key: string]: any;
-}
+/**
+ * @typedef {Object} Schema
+ * @property {Record<string, any>} properties - Schema properties
+ * @property {string} $id - Schema ID
+ */
 
+/**
+ * Fetches the Mermaid config schema and extends it with liveEditor properties
+ * @returns {Promise<void>}
+ */
 async function fetchAndExtendSchema() {
   try {
     console.log('Fetching Mermaid config schema...');
@@ -20,7 +25,8 @@ async function fetchAndExtendSchema() {
       throw new Error(`Failed to fetch schema: ${response.status} ${response.statusText}`);
     }
 
-    const schema: Schema = await response.json();
+    /** @type {Schema} */
+    const schema = await response.json();
 
     // Update the schema ID for mermaid.live
     schema.$id = 'https://mermaid.live/schemas/config.schema.json';
