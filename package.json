@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "dev:force": "MERMAID_LOCAL=true pnpm dev --force",
     "dev:test": "pnpm dev",
-    "build": "vite build && pnpm gen:schema",
+    "build": "pnpm gen:schema && vite build",
     "preview": "vite preview",
     "gen:schema": "node bin/generateSchema.js",
     "lint": "prettier --check --cache . && eslint --ignore-path .gitignore .",
