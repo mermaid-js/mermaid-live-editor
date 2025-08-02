@@ -77,6 +77,10 @@
       code: '/syntax/timeline.html',
       config: '/syntax/timeline.html#themes'
     },
+    treemap: {
+      code: '/syntax/treemap.html',
+      config: '/syntax/treemap.html#configuration-options'
+    },
     xychart: {
       code: '/syntax/xyChart.html',
       config: '/syntax/xyChart.html#chart-configurations'

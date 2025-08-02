@@ -132,10 +132,12 @@ export const stateStore: Readable<ValidatedState> = derived(
 
 export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   const { krokiRendererUrl, rendererUrl } = env;
-  const png = `${rendererUrl}/img/${serialized}?type=png`;
+  const png = rendererUrl ? `${rendererUrl}/img/${serialized}?type=png` : '';
   return {
-    kroki: `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}`,
-    mdCode: `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`,
+    kroki: krokiRendererUrl ? `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}` : '',
+    mdCode: png
+      ? `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`
+      : '',
     mermaidChart: ({
       medium
     }: {
@@ -154,7 +156,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     },
     new: `${window.location.protocol}//${window.location.host}${window.location.pathname}#${serializeState(defaultState)}`,
     png,
-    svg: `${rendererUrl}/svg/${serialized}`,
+    svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
     view: `/view#${serialized}`
   };
 });
