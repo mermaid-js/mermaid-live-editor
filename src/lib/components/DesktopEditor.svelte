@@ -52,7 +52,7 @@
       schemas: [
         {
           fileMatch: ['config.json'],
-          uri: 'https://mermaid.js.org/schemas/config.schema.json'
+          uri: window.location.origin + '/schemas/config.schema.json'
         }
       ]
     });
