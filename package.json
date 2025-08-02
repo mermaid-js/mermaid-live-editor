@@ -9,7 +9,7 @@
     "dev:test": "pnpm dev",
     "build": "vite build && pnpm gen:schema",
     "preview": "vite preview",
-    "gen:schema": "tsx bin/generateSchema.ts",
+    "gen:schema": "node bin/generateSchema.js",
     "lint": "prettier --check --cache . && eslint --ignore-path .gitignore .",
     "lint:fix": "prettier --write --cache . && eslint --fix --ignore-path .gitignore .",
     "format": "prettier --write --cache .",
