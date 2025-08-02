@@ -1,13 +1,12 @@
 <script lang="ts">
   import type { State, ValidatedState } from '$/types';
   import { recordRenderTime, shouldRefreshView } from '$/util/autoSync';
-  import { render as renderDiagram } from '$/util/mermaid';
+  import { render as renderDiagram, type ExtendedMermaidConfig } from '$/util/mermaid';
   import { PanZoomState } from '$/util/panZoom';
   import { inputStateStore, stateStore, updateCodeStore } from '$/util/state';
   import { logEvent, saveStatistics } from '$/util/stats';
   import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
   import uniqueID from 'lodash-es/uniqueId';
-  import type { ExtendedMermaidConfig } from '../util/ExtendedMermaidConfig.ts';
   import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';

@@ -1,7 +1,6 @@
 import { C } from '$/constants';
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { debounce } from 'lodash-es';
-import type { ExtendedMermaidConfig } from './ExtendedMermaidConfig';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
 import {
@@ -9,7 +8,7 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { parse } from './mermaid';
+import { parse, type ExtendedMermaidConfig } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, MCBaseURL } from './util';

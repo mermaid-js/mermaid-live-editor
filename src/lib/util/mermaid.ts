@@ -1,105 +1,41 @@
 import elkLayouts from '@mermaid-js/layout-elk';
 import zenuml from '@mermaid-js/mermaid-zenuml';
 import type { RenderResult } from 'mermaid';
-import type { ExtendedMermaidConfig } from './ExtendedMermaidConfig';
 import mermaid from 'mermaid';
+import type { MermaidConfig } from 'mermaid';
+import type { IconLoader } from 'mermaid/dist/rendering-util/icons.js';
+
+export interface ExtendedMermaidConfig extends MermaidConfig {
+  liveEditor?: {
+    icons?: {
+      [key: string]: string;
+    };
+  };
+}
 
 mermaid.registerLayoutLoaders(elkLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
-
-//--------------------------------------
-
-class MermaidIconsPack {
-  [x: string]: string
-}
-/*
-Mermaid Icons Pack
-
-refers to a dict of the shape
-{
-  name: package
+function getIconLoader(name: string, packageNameOrUrl: string): IconLoader {
+  const url = packageNameOrUrl.startsWith('https')
+    ? packageNameOrUrl
+    : `https://cdn.jsdelivr.net/npm/${packageNameOrUrl}/icons.json`;
+  return {
+    name: name,
+    loader: () => fetch(url).then((res) => res.json())
+  };
 }
 
-where each name is the name that you want to use for the icon pack
-and package is the icon npm package
-
-must be the package. For example
-
-@iconify-json/mdi-light
-
-*/
-
-class Alias {
-  parent: string;
-}
-class Aliases {
-  [x: string] : Alias;
-}
-
-class Icon {
-  body: string;
-  width: number;
-  height: number;
-}
-
-class IconNameData {
-  [x: string] : Icon;
-}
-
-class Module {
-  lastModified: number;
-  height: number;
-  width: number;
-  prefix: string;
-  icons: IconNameData;
-  aliases: Aliases;
-}
-
-type WrapFunction = () => Module; 
-
-class MermaidRegisterObject {
-  name: string;
-  loader: WrapFunction;
-}
-
-async function loader_function(url: string): Promise<Module> {
-  const response = await fetch(url);  // Type: Respones
-  const module = await response.json() as Module;  // `json()` type is `any` we assign it to Module, which is the expected structure.
-  return module;
-}
-
-async function UrlsToRegisterObject(name: string, package_: string): Promise<MermaidRegisterObject> {
-    
-    const start = 'https://unpkg.com/';
-    const end =  '/icons.json';
-    const url = start + package_ + end;
-
-    const module = await loader_function(url);
-
-    function wrap(): Module {return module;}
-
-    return {
-        name: name,
-        loader: wrap,
-    }
-}
-
-async function mermaidRegisterProcess(config: ExtendedMermaidConfig): Promise<void> {
-  const icon_packs: MermaidRegisterObject[] = [];
-  for (const name in config.icons){
-    const pack_name = config.icons[name];
-    const icon_pack = await UrlsToRegisterObject(name, pack_name);
-    icon_packs.push(icon_pack);
+function mermaidRegisterProcess(config: ExtendedMermaidConfig) {
+  const iconPacks: IconLoader[] = [];
+  for (const [name, packageName] of Object.entries(config.liveEditor?.icons ?? {})) {
+    const iconPack = getIconLoader(name, packageName);
+    iconPacks.push(iconPack);
   }
-  if (icon_packs){
-    mermaid.registerIconPacks(icon_packs);
+  if (iconPacks.length > 0) {
+    mermaid.registerIconPacks(iconPacks);
   }
 }
-
-
-//--------------------------------------
-
 
 export const render = async (
   config: ExtendedMermaidConfig,
@@ -110,7 +46,7 @@ export const render = async (
 
   // Should be able to call this multiple times without any issues.
   mermaid.initialize(config);
-  await mermaidRegisterProcess(config);
+  mermaidRegisterProcess(config);
   return await mermaid.render(id, code);
 };
 
