@@ -23,7 +23,12 @@ export const defaultState: State = {
   `,
   grid: true,
   mermaid: formatJSON({
-    theme: 'default'
+    theme: 'default',
+    liveEditor: {
+      icons: {
+        logos: '@iconify-json/logos'
+      }
+    }
   }),
   panZoom: true,
   rough: false,
