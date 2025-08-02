@@ -110,6 +110,8 @@
       unsubscribeState();
       unsubscribeMode();
       resizeObserver.disconnect();
+      jsonModel.dispose();
+      mermaidModel.dispose();
       editor?.dispose();
     };
   });
