@@ -4,6 +4,7 @@ import type { RenderResult } from 'mermaid';
 import mermaid from 'mermaid';
 import type { MermaidConfig } from 'mermaid';
 import type { IconLoader } from 'mermaid/dist/rendering-util/icons.js';
+import { logEvent } from './stats';
 
 export interface ExtendedMermaidConfig extends MermaidConfig {
   liveEditor?: {
@@ -22,21 +23,13 @@ const init = mermaid.registerExternalDiagrams([zenuml]);
  * @throws Error if the package name doesn't include a valid version
  */
 export function validatePackageVersion(packageName: string): void {
-  const parts = packageName.split('@');
-
-  // Handle scoped packages: @scope/package@version has 3 parts, regular packages: package@version has 2 parts
-  const expectedMinParts = packageName.startsWith('@') ? 3 : 2;
-
-  if (parts.length < expectedMinParts) {
+  // Accepts: package@1, @scope/package@1, package@1.2.3, @scope/package@1.2.3
+  // Rejects: package, @scope/package, package@, @scope/package@
+  const match = packageName.match(/^(?:@[^/]+\/)?[^@]+@\d/);
+  if (!match) {
     throw new Error(
       `Package name '${packageName}' must include at least a major version (e.g., 'package@1' or '@scope/package@1.0.0')`
     );
-  }
-
-  // Additional validation: ensure version part exists after the last @
-  const versionPart = parts.at(-1);
-  if (!versionPart || versionPart.trim() === '') {
-    throw new Error(`Package name '${packageName}' must include a valid version after '@'`);
   }
 }
 
@@ -60,6 +53,9 @@ async function fetchIconsJson(url: string) {
     if (!contentType?.includes('application/json')) {
       throw new Error(`Expected JSON response from ${url}, got: ${contentType || 'unknown'}`);
     }
+
+    // Track adoption and discuss integrating directly into mermaid
+    logEvent('fetchIcons');
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await response.json();
@@ -114,6 +110,9 @@ export const render = async (
 };
 
 export const parse = async (code: string, config: ExtendedMermaidConfig) => {
+  await init;
+
+  mermaid.initialize(config);
   mermaidRegisterProcess(config);
   return await mermaid.parse(code);
 };
