@@ -33,16 +33,14 @@
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
       icon: PluginIcon,
       label: 'Plugins',
-      sharesData: false,
-      tooltipPrefix: 'Opens a new tab in'
+      sharesData: false
     },
     {
       checkDiagramType: false,
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
       icon: MermaidChartIcon,
       label: 'MermaidChart',
-      sharesData: false,
-      tooltipPrefix: 'Opens a new tab in'
+      sharesData: false
     }
   ]);
 </script>
@@ -82,7 +80,7 @@
     {#each mermaidChartMenuItems as item}
       <McWrapper
         side="right"
-        labelPrefix={item.tooltipPrefix}
+        labelPrefix={item.sharesData === false ? 'Opens a new tab in' : undefined}
         sharesData={item.sharesData}
         shouldCheckDiagramType={item.checkDiagramType}>
         {@render menuItem({
