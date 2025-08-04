@@ -12,7 +12,7 @@ test.describe('Editor docs tests', () => {
   test('Test to see if the correct URL loads when changing from one diagram to other', async ({
     editPage
   }) => {
-    await editPage.loadSampleDiagram('Flow');
+    await editPage.loadSampleDiagram('Flowchart');
     await editPage.checkDocURL(/syntax\/flowchart\.html/);
     await editPage.setEditorMode('Config');
     await editPage.checkDocURL(/syntax\/flowchart\.html#configuration/);
