@@ -1,7 +1,7 @@
 <script>
+  import ExternalLinkWrapper from '$/components/ExternalLinkWrapper.svelte';
   import * as Dialog from '$/components/ui/dialog';
   import ShieldIcon from '~icons/material-symbols/shield-lock-outline-rounded';
-  import ExternalLinkWrapper from '$/components/ExternalLinkWrapper.svelte';
 </script>
 
 <Dialog.Root>
