@@ -205,10 +205,7 @@ ${svgString}`);
       <DownloadIcon />
       {text}
     </Button>
-    <ExternalLinkWrapper
-      labelPrefix="Opens your diagram in"
-      domain={getDomain(url)}
-      isVisible={!!url}>
+    <ExternalLinkWrapper domain={getDomain(url)} isVisible={!!url}>
       <Button class="rounded-l-none" href={url} target="_blank" rel="noreferrer noopener">
         <ExternalLinkIcon />
       </Button>
@@ -239,10 +236,7 @@ ${svgString}`);
     <div class="flex gap-2">
       {@render dualActionButton('PNG', onDownloadPNG, $urlsStore.png)}
       {@render dualActionButton('SVG', onDownloadSVG, $urlsStore.svg)}
-      <ExternalLinkWrapper
-        labelPrefix="Opens your diagram in"
-        domain={getDomain($urlsStore.kroki)}
-        isVisible={!!$urlsStore.kroki}>
+      <ExternalLinkWrapper domain={getDomain($urlsStore.kroki)} isVisible={!!$urlsStore.kroki}>
         <a target="_blank" rel="noreferrer" class="flex-grow" href={$urlsStore.kroki}>
           <Button class="action-btn flex w-full items-center gap-2">
             <ExternalLinkIcon /> Kroki
