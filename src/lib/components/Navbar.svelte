@@ -96,7 +96,7 @@
         Live Editor
       </a>
 
-      <McWrapper labelPrefix="Opens the current diagram in">
+      <McWrapper>
         <div class="hidden items-center justify-center gap-4 md:flex">
           <Separator orientation="vertical" />
           <Switch

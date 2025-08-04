@@ -29,16 +29,20 @@
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground
     },
     {
-      label: 'Plugins',
-      icon: PluginIcon,
+      checkDiagramType: false,
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
-      checkDiagramType: false
+      icon: PluginIcon,
+      label: 'Plugins',
+      sharesData: false,
+      tooltipPrefix: 'Opens a new tab in'
     },
     {
-      label: 'MermaidChart',
-      icon: MermaidChartIcon,
+      checkDiagramType: false,
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
-      checkDiagramType: false
+      icon: MermaidChartIcon,
+      label: 'MermaidChart',
+      sharesData: false,
+      tooltipPrefix: 'Opens a new tab in'
     }
   ]);
 </script>
@@ -76,7 +80,11 @@
     </div>
 
     {#each mermaidChartMenuItems as item}
-      <McWrapper side="right" shouldCheckDiagramType={item.checkDiagramType}>
+      <McWrapper
+        side="right"
+        labelPrefix={item.tooltipPrefix}
+        sharesData={item.sharesData}
+        shouldCheckDiagramType={item.checkDiagramType}>
         {@render menuItem({
           ...item,
           class: 'text-accent bg-background hover:bg-muted'
