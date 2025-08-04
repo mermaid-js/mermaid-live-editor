@@ -1,7 +1,6 @@
 import { C } from '$/constants';
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { debounce } from 'lodash-es';
-import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
 import {
@@ -9,7 +8,7 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { parse } from './mermaid';
+import { parse, type ExtendedMermaidConfig } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, MCBaseURL } from './util';
@@ -24,7 +23,12 @@ export const defaultState: State = {
   `,
   grid: true,
   mermaid: formatJSON({
-    theme: 'default'
+    theme: 'default',
+    liveEditor: {
+      icons: {
+        logos: '@iconify-json/logos@1'
+      }
+    }
   }),
   panZoom: true,
   rough: false,
@@ -69,14 +73,14 @@ const processState = async (state: State) => {
   // No changes should be done to fields part of `state`.
   try {
     processed.serialized = serializeState(state);
-    const { diagramType } = await parse(state.code);
+    const config = JSON.parse(state.mermaid ?? '{}') as ExtendedMermaidConfig;
+    const { diagramType } = await parse(state.code, config);
     processed.diagramType = diagramType;
     if (lastDiagramType === 'zenuml' && diagramType !== lastDiagramType) {
       // Temp Hack to refresh page after displaying ZenUML.
       setTimeout(() => window.location.reload(), 500);
     }
     lastDiagramType = diagramType;
-    JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
     errorDebug();
@@ -169,9 +173,9 @@ export const loadState = (data: string): void => {
     if (!state.mermaid) {
       state.mermaid = defaultState.mermaid;
     }
-    const mermaidConfig: MermaidConfig =
+    const mermaidConfig: ExtendedMermaidConfig =
       typeof state.mermaid === 'string'
-        ? (JSON.parse(state.mermaid) as MermaidConfig)
+        ? (JSON.parse(state.mermaid) as ExtendedMermaidConfig)
         : state.mermaid;
     if (
       mermaidConfig.securityLevel &&
@@ -226,7 +230,7 @@ export const updateConfig = (config: string): void => {
 
 export const toggleDarkTheme = (dark: boolean): void => {
   inputStateStore.update((state) => {
-    const config = JSON.parse(state.mermaid) as MermaidConfig;
+    const config = JSON.parse(state.mermaid) as ExtendedMermaidConfig;
     if (!config.theme || ['dark', 'default'].includes(config.theme)) {
       config.theme = dark ? 'dark' : 'default';
     }
