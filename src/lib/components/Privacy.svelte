@@ -1,13 +1,14 @@
 <script>
   import * as Dialog from '$/components/ui/dialog';
   import ShieldIcon from '~icons/material-symbols/shield-lock-outline-rounded';
+  import ExternalLinkWrapper from '$/components/ExternalLinkWrapper.svelte';
 </script>
 
 <Dialog.Root>
   <Dialog.Trigger>
     <ShieldIcon />
   </Dialog.Trigger>
-  <Dialog.Content class="max-h-full overflow-y-auto">
+  <Dialog.Content class="max-h-full overflow-hidden overflow-y-auto p-12">
     <Dialog.Header>
       <Dialog.Title class="flex items-center gap-2 text-xl">
         <ShieldIcon class="size-8 text-green-700" />
@@ -34,9 +35,11 @@
         target="_blank">publicly available</a
       >.
     </p>
-    <p>
-      External services (PNG/SVG/Kroki exports, "Save to Mermaid Chart", "Repair with AI") will
-      share your diagram with those 3rd parties, and are highlighted in the UI.
-    </p>
+    <ExternalLinkWrapper domain="example.com" isVisible>
+      <p class="text-left">
+        External services (PNG/SVG/Kroki exports, "Save to Mermaid Chart", "Repair with AI", etc)
+        will share your diagram with those 3rd parties, and are highlighted in the UI on hover.
+      </p>
+    </ExternalLinkWrapper>
   </Dialog.Content>
 </Dialog.Root>
