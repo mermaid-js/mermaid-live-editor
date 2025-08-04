@@ -26,10 +26,10 @@ test.describe('Check actions', () => {
 
     // Verify downloaded file is different for different diagrams
     await editPage.toggleSampleDiagrams();
-    await editPage.loadSampleDiagram('ER');
+    await editPage.loadSampleDiagram('Entity Relationship');
 
     const secondPngSize = await editPage.checkAndDownloadPNG(81_000);
-    const secondSvgSize = await editPage.downloadSVG(11_000);
+    const secondSvgSize = await editPage.downloadSVG(40_000);
 
     // Verify files are actually different
     expect(firstPngSize).not.toBe(secondPngSize);

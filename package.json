@@ -91,6 +91,7 @@
     "@fontsource-variable/recursive": "^5.2.5",
     "@fsegurai/codemirror-theme-vscode-dark": "^6.1.4",
     "@fsegurai/codemirror-theme-vscode-light": "^6.1.4",
+    "@mermaid-js/examples": "^1.0.0",
     "@mermaid-js/layout-elk": "^0.1.8",
     "@mermaid-js/mermaid-zenuml": "^0.2.1",
     "codemirror": "^6.0.1",
