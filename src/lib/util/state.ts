@@ -26,7 +26,7 @@ export const defaultState: State = {
     theme: 'default',
     liveEditor: {
       icons: {
-        logos: '@iconify-json/logos'
+        logos: '@iconify-json/logos@1'
       }
     }
   }),
@@ -73,14 +73,14 @@ const processState = async (state: State) => {
   // No changes should be done to fields part of `state`.
   try {
     processed.serialized = serializeState(state);
-    const { diagramType } = await parse(state.code);
+    const config = JSON.parse(state.mermaid ?? '{}') as ExtendedMermaidConfig;
+    const { diagramType } = await parse(state.code, config);
     processed.diagramType = diagramType;
     if (lastDiagramType === 'zenuml' && diagramType !== lastDiagramType) {
       // Temp Hack to refresh page after displaying ZenUML.
       setTimeout(() => window.location.reload(), 500);
     }
     lastDiagramType = diagramType;
-    JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
     errorDebug();

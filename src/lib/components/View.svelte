@@ -78,7 +78,7 @@
           svg,
           bindFunctions,
           diagramType: detectedDiagramType
-        } = await renderDiagram(JSON.parse(state.mermaid) as ExtendedMermaidConfig, code, viewID);
+        } = await renderDiagram(viewID, code, JSON.parse(state.mermaid) as ExtendedMermaidConfig);
         diagramType = detectedDiagramType;
         if (svg.length > 0) {
           container.innerHTML = svg;

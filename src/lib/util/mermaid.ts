@@ -16,13 +16,76 @@ export interface ExtendedMermaidConfig extends MermaidConfig {
 mermaid.registerLayoutLoaders(elkLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
+/**
+ * Validates that a package name includes at least a major version specification.
+ * @param packageName - The package name to validate (e.g., 'package@1' or '@scope/package@1.0.0')
+ * @throws Error if the package name doesn't include a valid version
+ */
+export function validatePackageVersion(packageName: string): void {
+  const parts = packageName.split('@');
+
+  // Handle scoped packages: @scope/package@version has 3 parts, regular packages: package@version has 2 parts
+  const expectedMinParts = packageName.startsWith('@') ? 3 : 2;
+
+  if (parts.length < expectedMinParts) {
+    throw new Error(
+      `Package name '${packageName}' must include at least a major version (e.g., 'package@1' or '@scope/package@1.0.0')`
+    );
+  }
+
+  // Additional validation: ensure version part exists after the last @
+  const versionPart = parts.at(-1);
+  if (!versionPart || versionPart.trim() === '') {
+    throw new Error(`Package name '${packageName}' must include a valid version after '@'`);
+  }
+}
+
+/**
+ * Fetches JSON data from a URL with proper error handling
+ * @param url - The URL to fetch from
+ * @returns Promise that resolves to the parsed JSON data
+ * @throws Error with descriptive message for various failure cases
+ */
+async function fetchIconsJson(url: string) {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch icons from ${url}: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      throw new Error(`Expected JSON response from ${url}, got: ${contentType || 'unknown'}`);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await response.json();
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new TypeError(`Network error while fetching icons from ${url}: ${error.message}`);
+    } else if (error instanceof SyntaxError) {
+      throw new SyntaxError(`Invalid JSON response from ${url}: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
 function getIconLoader(name: string, packageNameOrUrl: string): IconLoader {
-  const url = packageNameOrUrl.startsWith('https')
+  const isUrl = packageNameOrUrl.startsWith('https');
+
+  if (!isUrl) {
+    validatePackageVersion(packageNameOrUrl);
+  }
+
+  const url = isUrl
     ? packageNameOrUrl
     : `https://cdn.jsdelivr.net/npm/${packageNameOrUrl}/icons.json`;
   return {
     name: name,
-    loader: () => fetch(url).then((res) => res.json())
+    loader: () => fetchIconsJson(url)
   };
 }
 
@@ -38,9 +101,9 @@ function mermaidRegisterProcess(config: ExtendedMermaidConfig) {
 }
 
 export const render = async (
-  config: ExtendedMermaidConfig,
+  id: string,
   code: string,
-  id: string
+  config: ExtendedMermaidConfig
 ): Promise<RenderResult> => {
   await init;
 
@@ -50,7 +113,8 @@ export const render = async (
   return await mermaid.render(id, code);
 };
 
-export const parse = async (code: string) => {
+export const parse = async (code: string, config: ExtendedMermaidConfig) => {
+  mermaidRegisterProcess(config);
   return await mermaid.parse(code);
 };
 
