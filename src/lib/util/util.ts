@@ -5,6 +5,12 @@ import { applyMigrations } from './migrations';
 import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
 import { initAnalytics, plausible } from './stats';
 
+export const getDomain = (url?: string): string => {
+  if (!url) return '';
+  const domain = new URL(url).hostname;
+  return domain;
+};
+
 export const loadStateFromURL = (): void => {
   loadState(window.location.hash.slice(1));
 };
