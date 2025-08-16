@@ -6,6 +6,25 @@
 @tailwind utilities;
 
 @layer base {
+  /* Prevent flash of white content during initial load */
+  html {
+    background-color: hsl(222.2 84% 4.9%);
+  }
+  
+  body {
+    background-color: hsl(222.2 84% 4.9%);
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Light theme override */
+  html.light {
+    background-color: hsl(0 0% 100%);
+  }
+  
+  html.light body {
+    background-color: hsl(0 0% 100%);
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;

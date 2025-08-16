@@ -18,6 +18,65 @@
     %sveltekit.head%
   </head>
   <body>
+    <!-- Global initial loader - shown before Svelte hydrates -->
+    <div id="initial-loader" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: hsl(222.2 84% 4.9%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    ">
+      <div style="text-align: center; color: hsl(210 40% 98%); display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <div style="position: relative;">
+          <div style="
+            border: 0.125rem solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            border-top: 0.125rem solid rgb(59, 130, 246);
+            width: 4rem;
+            height: 4rem;
+            animation: spin 1s linear infinite;
+          "></div>
+          <div style="
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            background-color: rgba(59, 130, 246, 0.1);
+            backdrop-filter: blur(4px);
+          "></div>
+        </div>
+        <div style="font-family: 'Jura', sans-serif; font-size: 1.1rem; font-weight: 500;">
+          Loading Idem Chart...
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      
+      /* Light theme support */
+      @media (prefers-color-scheme: light) {
+        #initial-loader {
+          background-color: hsl(0 0% 100%) !important;
+          color: hsl(222.2 84% 4.9%) !important;
+        }
+      }
+    </style>
+
     <div id="svelte">%sveltekit.body%</div>
   </body>
 </html>

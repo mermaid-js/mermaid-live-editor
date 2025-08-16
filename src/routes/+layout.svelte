@@ -17,6 +17,20 @@
   // This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
   // Then move it into src and vite will bundle it automatically.
   onMount(() => {
+    // Hide the initial global loader once Svelte is ready
+    const hideInitialLoader = () => {
+      const loader = document.getElementById('initial-loader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 300);
+      }
+    };
+
+    // Hide loader after a short delay to ensure components are rendered
+    setTimeout(hideInitialLoader, 150);
+
     window.addEventListener('hashchange', () => {
       void initHandler();
     });
@@ -36,13 +50,17 @@
 
   $effect(() => {
     toggleDarkTheme($mode === 'dark');
+    // Update HTML class for theme-aware background
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('light', $mode === 'light');
+    }
   });
 </script>
 
 <ModeWatcher />
 <Toaster />
 
-<main class="h-screen">
+<main class="h-screen bg-background">
   {@render children()}
 </main>
 

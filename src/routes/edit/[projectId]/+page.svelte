@@ -35,6 +35,8 @@
   import Loader from '$/components/ui/Loader.svelte';
   import ErrorMessage from '$/components/ui/ErrorMessage.svelte';
   import DiagramViewer from '$/components/DiagramViewer.svelte';
+  import SkeletonLoader from '$/components/ui/SkeletonLoader.svelte';
+  import UserAvatarLoader from '$/components/ui/UserAvatarLoader.svelte';
 
   const panZoomState = new PanZoomState();
 
@@ -63,6 +65,7 @@
   let loadError = false;
   let errorMessage = '';
   let projectDescription = '';
+  let isInitialized = false;
 
   function toggleDropdown() {
     isDropdownOpen = !isDropdownOpen;
@@ -94,7 +97,7 @@
   async function loadProject() {
     if (!projectId) {
       loadError = true;
-      errorMessage = 'ID de projet manquant';
+      errorMessage = 'Missing project ID';
       isLoading = false;
       return;
     }
@@ -106,7 +109,7 @@
       
       if (!projectData) {
         loadError = true;
-        errorMessage = 'Projet non trouvé. Vérifiez que l\'ID du projet est correct et que vous avez les permissions nécessaires.';
+        errorMessage = "Project not found. Please verify the project ID and your permissions.";
       } else {
         project = projectData;
         projectDescription = projectData.description || '';
@@ -116,24 +119,28 @@
     } catch (error) {
       console.error('Error loading project:', error);
       loadError = true;
-      errorMessage = 'Erreur lors du chargement du projet. Veuillez réessayer.';
+      errorMessage = 'Error loading project. Please try again.';
     } finally {
       isLoading = false;
     }
   }
   
   onMount(async () => {
-    await initHandler();
-    const user: UserModel | null = await getCurrentUser();
-    currentUser.set(user);
-    
-    // Load project after user is authenticated
-    if (user) {
-      await loadProject();
-    } else {
-      loadError = true;
-      errorMessage = 'Vous devez être connecté pour accéder à ce projet.';
-      isLoading = false;
+    try {
+      await initHandler();
+      const user: UserModel | null = await getCurrentUser();
+      currentUser.set(user);
+      
+      // Load project after user is authenticated
+      if (user) {
+        await loadProject();
+      } else {
+        loadError = true;
+        errorMessage = 'You must be signed in to access this project.';
+        isLoading = false;
+      }
+    } finally {
+      isInitialized = true;
     }
   });
 </script>
@@ -170,7 +177,7 @@
             <div
               class="dropdown-content absolute right-0 z-50 mt-2 w-48 rounded-lg border border-gray-200 bg-gradient-to-r from-gray-900 to-gray-800 p-2 shadow-lg">
               <a href="/profile" class="dropdown-item block rounded-2xl p-3 hover:bg-primary"
-                >Profil</a>
+                >Profile</a>
               <a href="/settings" class="dropdown-item block rounded-2xl p-3 hover:bg-primary"
                 >Settings</a>
               <a href="/logout" class="dropdown-item block rounded-2xl p-3 hover:bg-primary"
@@ -179,7 +186,7 @@
           {/if}
         </div>
       {:else}
-        <div class="h-[50px] w-[50px] animate-pulse rounded-full bg-gray-300"></div>
+        <UserAvatarLoader size="md" />
       {/if}
       <McWrapper>
         <Button
@@ -196,13 +203,11 @@
 
   <!-- Conditional rendering based on loading state -->
   {#if isLoading}
-    <div class="flex flex-1 items-center justify-center">
-      <Loader size="lg" message="Chargement du projet..." />
-    </div>
+    <SkeletonLoader />
   {:else if loadError}
     <div class="flex flex-1 items-center justify-center">
       <ErrorMessage 
-        title="Erreur de chargement" 
+        title="Loading error" 
         message={errorMessage}
         showRetry={true}
         onRetry={loadProject} />
@@ -232,18 +237,18 @@
                   bind:value={projectDescription}
                   rows="1"
                   class="w-full resize-none overflow-y-auto bg-transparent text-lg text-gray-300 placeholder-gray-500 outline-none"
-                  placeholder="Message Idem"
+                  placeholder="Idem message"
                   on:input={autoResize}></textarea>
 
                 <div class="mt-2 flex items-center justify-between">
                   <div class="flex space-x-2">
                     <button
                       class="flex items-center rounded-full bg-gray-600 px-3 py-1 text-gray-300 hover:bg-gray-500">
-                      <i class="pi pi-brain mr-2"></i> Reformuler
+                      <i class="pi pi-brain mr-2"></i> Rephrase
                     </button>
                     <button
                       class="flex items-center rounded-full bg-blue-600 px-3 py-1 text-white hover:bg-blue-500">
-                      <i class="pi pi-globe mr-2"></i> Corriger
+                      <i class="pi pi-globe mr-2"></i> Correct
                     </button>
                   </div>
 

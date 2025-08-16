@@ -1,8 +1,10 @@
 import type { ProjectModel } from '$/models/project.model';
 import { getCurrentUser } from '$/firebase/firebase.client';
+import { env } from '$/util/env';
 
 export class ProjectService {
   async getUserProject(projectId: string): Promise<ProjectModel | undefined> {
+    console.log('Fetching project from API...', env.API_BASE_URL);
     const currentUser = await getCurrentUser();
     if (!currentUser || !projectId) {
       console.error('User authentication and Project ID are required');
@@ -10,7 +12,7 @@ export class ProjectService {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/projects/${projectId}`, {
+      const response = await fetch(`${env.API_BASE_URL}/api/projects/${projectId}`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
@@ -38,12 +40,12 @@ export class ProjectService {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      console.log('Utilisateur non connecté');
+      console.log('User not signed in');
       return [];
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/projects', {
+      const response = await fetch(`${env.API_BASE_URL}/api/projects`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
@@ -58,7 +60,7 @@ export class ProjectService {
       const projects = await response.json();
       return projects as ProjectModel[];
     } catch (error) {
-      console.error('Erreur lors de la récupération des projets :', error);
+      console.error('Error while fetching projects:', error);
       throw error;
     }
   }

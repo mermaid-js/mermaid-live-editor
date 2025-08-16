@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { DiagramModel } from '$/models/diagram.model';
   import type { SectionModel } from '$/models/section.model';
-  import { updateCode } from '$/util/state';
   import { onMount } from 'svelte';
+  import { stateStore, updateCode } from '$lib/util/state';
+  import Loader from '$/components/ui/Loader.svelte';
 
   export let diagram: DiagramModel | undefined = undefined;
   export let selectedSection: string = '';
@@ -46,7 +47,7 @@
 
   function getSectionDisplayName(name: string): string {
     // Use the name directly from the backend, but clean it up for display
-    return name || 'Diagramme';
+    return name || 'Diagram';
   }
 
   onMount(() => {
@@ -96,20 +97,20 @@
       <!-- Fallback for projects with content but no sections -->
       <div class="mb-4 rounded-lg bg-gray-50 dark:bg-gray-800 p-4">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-          {diagram.title || 'Diagramme du projet'}
+          {diagram.title || 'Project diagram'}
         </h3>
         <p class="text-sm text-gray-600 dark:text-gray-400">
-          Diagramme principal du projet
+          Main project diagram
         </p>
       </div>
     {:else}
       <!-- No diagram data available -->
       <div class="mb-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 p-4">
         <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
-          Aucun diagramme disponible
+          No diagram available
         </h3>
         <p class="text-sm text-yellow-600 dark:text-yellow-300">
-          Ce projet ne contient pas encore de diagrammes. Vous pouvez commencer à créer un diagramme dans l'éditeur.
+          This project does not contain any diagrams yet. You can start creating one in the editor.
         </p>
       </div>
     {/if}
@@ -117,14 +118,7 @@
 {:else}
   <!-- Loading state or no diagram -->
   <div class="diagram-viewer">
-    <div class="mb-4 rounded-lg bg-gray-50 dark:bg-gray-800 p-4">
-      <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-2">
-        Diagrammes du projet
-      </h3>
-      <p class="text-sm text-gray-400 dark:text-gray-500">
-        Chargement des diagrammes...
-      </p>
-    </div>
+    <Loader size="md" message="Loading diagrams..." />
   </div>
 {/if}
 

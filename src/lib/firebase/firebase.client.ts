@@ -1,4 +1,3 @@
-import type { ProjectModel } from '$/models/project.model';
 import type { UserModel } from '$/models/user.model';
 
 await getCurrentUser();
@@ -26,23 +25,5 @@ export async function getCurrentUser(): Promise<UserModel | null> {
   } catch (error) {
     console.error('Error fetching user:', error);
     return null;
-  }
-}
-
-export async function getUserProjects(): Promise<ProjectModel[] | null> {
-  try {
-    const response = await fetch(`http://localhost:3001/api/projects`, {
-      credentials: 'include'
-    });
-
-    if (!response.ok) {
-      console.error('Error getting projects from API:', response.statusText);
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
-    }
-
-    return (await response.json()) as ProjectModel[];
-  } catch (error) {
-    console.error('Error getting projects:', error);
-    throw error;
   }
 }

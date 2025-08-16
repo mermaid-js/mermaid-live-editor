@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let title: string = 'Erreur';
+  export let title: string = 'Error';
   export let message: string = '';
   export let showRetry: boolean = false;
   export let onRetry: (() => void) | undefined = undefined;
@@ -21,7 +21,7 @@
         on:click={onRetry}
         class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
       >
-        Réessayer
+        Retry
       </button>
     {/if}
   </div>
