@@ -1,22 +1,10 @@
+import type { SectionModel } from "./section.model";
+
 export interface DiagramModel {
-  useCaseDiagram: {
-    content: string;
-    summary: string;
-  };
-  classDiagram: {
-    content: string;
-    summary: string;
-  };
-  erDiagram: {
-    content: string;
-    summary: string;
-  };
-  sequenceDiagram: {
-    content: string;
-    summary: string;
-  };
-  architectureDiagram: {
-    content: string;
-    summary: string;
-  };
+  id?: string;
+  title?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  content?: string; // New content property for step-based generation
+  sections?: SectionModel[]; // Made optional for backward compatibility
 }

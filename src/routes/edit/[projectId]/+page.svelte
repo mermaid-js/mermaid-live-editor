@@ -34,6 +34,7 @@
   import type { ProjectModel } from '$/models/project.model';
   import Loader from '$/components/ui/Loader.svelte';
   import ErrorMessage from '$/components/ui/ErrorMessage.svelte';
+  import DiagramViewer from '$/components/DiagramViewer.svelte';
 
   const panZoomState = new PanZoomState();
 
@@ -224,7 +225,7 @@
             </Card>
 
             <div class="group flex flex-wrap justify-between gap-6">
-              <Preset {projectId} />
+              <DiagramViewer diagram={project?.analysisResultModel?.design} />
               <div class="w-full rounded-2xl bg-gray-700 px-4 py-2">
                 <textarea
                   id="projectDescription"

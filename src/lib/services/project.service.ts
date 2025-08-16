@@ -1,44 +1,33 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import type { ProjectModel } from '$/models/project.model';
-import type { AnalysisResultModel } from '$/models/analysisResult.model';
-import db, { getCurrentUser } from '$/firebase/firebase.client';
+import { getCurrentUser } from '$/firebase/firebase.client';
 
 export class ProjectService {
   async getUserProject(projectId: string): Promise<ProjectModel | undefined> {
     const currentUser = await getCurrentUser();
-    const userId = currentUser?.uid;
-    if (!userId || !projectId) {
-      console.error('User ID and Project ID are required');
+    if (!currentUser || !projectId) {
+      console.error('User authentication and Project ID are required');
       return undefined;
     }
 
     try {
-      const projectReference = doc(db, `users/${userId}/projects/${projectId}`);
+      const response = await fetch(`http://localhost:3001/api/projects/${projectId}`, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
-      const projectSnap = await getDoc(projectReference);
-
-      if (!projectSnap.exists()) {
-        console.log('Project not found');
-        return undefined;
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.log('Project not found');
+          return undefined;
+        }
+        console.error('Error getting project from API:', response.statusText);
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
-      const projectData = projectSnap.data();
-      return {
-        analysisResultModel: projectData.analysisResultModel as AnalysisResultModel,
-        budgetIntervals: projectData.budgetIntervals as string,
-        constraints: projectData.constraints as string[],
-        createdAt: projectData.createdAt as Date,
-        description: projectData.description as string,
-        id: projectSnap.id,
-        name: projectData.name as string,
-        scope: projectData.scope as string,
-        selectedPhases: projectData.selectedPhases as string[],
-        targets: projectData.targets as string,
-        teamSize: projectData.teamSize as string,
-        type: projectData.type as string,
-        updatedAt: projectData.updatedAt as Date,
-        userId: projectData.userId as string
-      } as ProjectModel;
+      const projectData = await response.json();
+      return projectData as ProjectModel;
     } catch (error) {
       console.error('Error getting project:', error);
       throw error;
@@ -54,13 +43,20 @@ export class ProjectService {
     }
 
     try {
-      const projectReference = collection(db, `users/${currentUser.uid}/projects`);
-      const snapshot = await getDocs(projectReference);
+      const response = await fetch('http://localhost:3001/api/projects', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      })) as ProjectModel[];
+      if (!response.ok) {
+        console.error('Error getting projects from API:', response.statusText);
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+
+      const projects = await response.json();
+      return projects as ProjectModel[];
     } catch (error) {
       console.error('Erreur lors de la récupération des projets :', error);
       throw error;
