@@ -30,6 +30,10 @@
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
   import { get } from 'svelte/store';
   import { page } from '$app/stores';
+  import { projectService } from '$/services/project.service';
+  import type { ProjectModel } from '$/models/project.model';
+  import Loader from '$/components/ui/Loader.svelte';
+  import ErrorMessage from '$/components/ui/ErrorMessage.svelte';
 
   const panZoomState = new PanZoomState();
 
@@ -53,7 +57,11 @@
 
   // Dropdown state
   let isDropdownOpen = false;
-  let project = { description: '' };
+  let project: ProjectModel | null = null;
+  let isLoading = true;
+  let loadError = false;
+  let errorMessage = '';
+  let projectDescription = '';
 
   function toggleDropdown() {
     isDropdownOpen = !isDropdownOpen;
@@ -76,10 +84,56 @@
     textarea.style.height = textarea.scrollHeight + 'px';
   }
   const { projectId } = get(page).params;
+  
+  // Reactive statement to sync project description changes
+  $: if (project && projectDescription !== project.description) {
+    project.description = projectDescription;
+  }
+  
+  async function loadProject() {
+    if (!projectId) {
+      loadError = true;
+      errorMessage = 'ID de projet manquant';
+      isLoading = false;
+      return;
+    }
+    
+    try {
+      isLoading = true;
+      loadError = false;
+      const projectData = await projectService.getUserProject(projectId);
+      
+      if (!projectData) {
+        loadError = true;
+        errorMessage = 'Projet non trouvé. Vérifiez que l\'ID du projet est correct et que vous avez les permissions nécessaires.';
+      } else {
+        project = projectData;
+        projectDescription = projectData.description || '';
+        // Load project data into the editor state if needed
+        // You can add logic here to populate the diagram with project data
+      }
+    } catch (error) {
+      console.error('Error loading project:', error);
+      loadError = true;
+      errorMessage = 'Erreur lors du chargement du projet. Veuillez réessayer.';
+    } finally {
+      isLoading = false;
+    }
+  }
+  
   onMount(async () => {
     await initHandler();
     const user: UserModel | null = await getCurrentUser();
     currentUser.set(user);
+    
+    // Load project after user is authenticated
+    if (user) {
+      await loadProject();
+    } else {
+      loadError = true;
+      errorMessage = 'Vous devez être connecté pour accéder à ce projet.';
+      isLoading = false;
+    }
   });
 </script>
 
@@ -139,78 +193,92 @@
     </div>
   </Navbar>
 
-  <!-- Le reste de votre code reste inchangé -->
-  <div class="flex flex-1 overflow-hidden">
-    <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
-      <Resizable.Pane defaultSize={30} minSize={15} class="hidden md:block">
-        <div class="flex h-full flex-col gap-6" id="editorPane">
-          <Card
-            onselect={tabSelectHandler}
-            isOpen
-            tabs={editorTabs}
-            activeTabID={$stateStore.editorMode}
-            isClosable={false}>
-            {#snippet actions()}
-              <DiagramDocButton />
-            {/snippet}
-            <Editor />
-          </Card>
+  <!-- Conditional rendering based on loading state -->
+  {#if isLoading}
+    <div class="flex flex-1 items-center justify-center">
+      <Loader size="lg" message="Chargement du projet..." />
+    </div>
+  {:else if loadError}
+    <div class="flex flex-1 items-center justify-center">
+      <ErrorMessage 
+        title="Erreur de chargement" 
+        message={errorMessage}
+        showRetry={true}
+        onRetry={loadProject} />
+    </div>
+  {:else if project}
+    <div class="flex flex-1 overflow-hidden">
+      <Resizable.PaneGroup direction="horizontal" autoSaveId="liveEditor" class="p-6 pt-0">
+        <Resizable.Pane defaultSize={30} minSize={15} class="hidden md:block">
+          <div class="flex h-full flex-col gap-6" id="editorPane">
+            <Card
+              onselect={tabSelectHandler}
+              isOpen
+              tabs={editorTabs}
+              activeTabID={$stateStore.editorMode}
+              isClosable={false}>
+              {#snippet actions()}
+                <DiagramDocButton />
+              {/snippet}
+              <Editor />
+            </Card>
 
-          <div class="group flex flex-wrap justify-between gap-6">
-            <Preset {projectId} />
-            <div class="w-full rounded-2xl bg-gray-700 px-4 py-2">
-              <textarea
-                id="projectDescription"
-                bind:value={project.description}
-                rows="1"
-                class="w-full resize-none overflow-y-auto bg-transparent text-lg text-gray-300 placeholder-gray-500 outline-none"
-                placeholder="Message Idem"
-                on:input={autoResize}></textarea>
+            <div class="group flex flex-wrap justify-between gap-6">
+              <Preset {projectId} />
+              <div class="w-full rounded-2xl bg-gray-700 px-4 py-2">
+                <textarea
+                  id="projectDescription"
+                  bind:value={projectDescription}
+                  rows="1"
+                  class="w-full resize-none overflow-y-auto bg-transparent text-lg text-gray-300 placeholder-gray-500 outline-none"
+                  placeholder="Message Idem"
+                  on:input={autoResize}></textarea>
 
-              <div class="mt-2 flex items-center justify-between">
-                <div class="flex space-x-2">
-                  <button
-                    class="flex items-center rounded-full bg-gray-600 px-3 py-1 text-gray-300 hover:bg-gray-500">
-                    <i class="pi pi-brain mr-2"></i> Reformuler
-                  </button>
-                  <button
-                    class="flex items-center rounded-full bg-blue-600 px-3 py-1 text-white hover:bg-blue-500">
-                    <i class="pi pi-globe mr-2"></i> Corriger
-                  </button>
-                </div>
+                <div class="mt-2 flex items-center justify-between">
+                  <div class="flex space-x-2">
+                    <button
+                      class="flex items-center rounded-full bg-gray-600 px-3 py-1 text-gray-300 hover:bg-gray-500">
+                      <i class="pi pi-brain mr-2"></i> Reformuler
+                    </button>
+                    <button
+                      class="flex items-center rounded-full bg-blue-600 px-3 py-1 text-white hover:bg-blue-500">
+                      <i class="pi pi-globe mr-2"></i> Corriger
+                    </button>
+                  </div>
 
-                <div class="flex items-center space-x-3">
-                  <i class="pi pi-paperclip cursor-pointer text-xl text-gray-400"></i>
-                  <button
-                    aria-label="send request button"
-                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-gray-300 hover:bg-gray-400">
-                    <i class="pi pi-arrow-up"></i>
-                  </button>
+                  <div class="flex items-center space-x-3">
+                    <i class="pi pi-paperclip cursor-pointer text-xl text-gray-400"></i>
+                    <button
+                      aria-label="send request button"
+                      class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-gray-300 hover:bg-gray-400">
+                      <i class="pi pi-arrow-up"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Resizable.Pane>
-      <Resizable.Handle class="mr-1 opacity-0" />
-      <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-        <View {panZoomState} shouldShowGrid={$stateStore.grid} />
-        <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
-        <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
-        <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
-        <div class="rounded bg-primary p-2 text-center shadow md:hidden">
-          Code editing not supported on mobile. Please use a desktop browser.
-        </div>
-      </Resizable.Pane>
-      {#if isHistoryOpen}
-        <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
-        <Resizable.Pane
-          minSize={15}
-          defaultSize={30}
-          class="hidden h-full flex-grow flex-col md:flex">
-          <History />
         </Resizable.Pane>
-      {/if}
-    </Resizable.PaneGroup>
-  </div>
+        <Resizable.Handle class="mr-1 opacity-0" />
+        <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
+          <View {panZoomState} shouldShowGrid={$stateStore.grid} />
+          <div class="absolute right-0 top-0"><PanZoomToolbar {panZoomState} /></div>
+          <div class="absolute bottom-0 right-0"><VersionSecurityToolbar /></div>
+          <div class="absolute bottom-0 left-5"><SyncRoughToolbar /></div>
+          <div class="rounded bg-primary p-2 text-center shadow md:hidden">
+            Code editing not supported on mobile. Please use a desktop browser.
+          </div>
+        </Resizable.Pane>
+        {#if isHistoryOpen}
+          <Resizable.Handle class="ml-1 hidden opacity-0 md:block" />
+          <Resizable.Pane
+            minSize={15}
+            defaultSize={30}
+            class="hidden h-full flex-grow flex-col md:flex">
+            <History />
+          </Resizable.Pane>
+        {/if}
+      </Resizable.PaneGroup>
+    </div>
+  {/if}
 </div>
