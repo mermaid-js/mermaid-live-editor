@@ -1,4 +1,5 @@
 import type { UserModel } from '$/models/user.model';
+import { env } from '$/util/env';
 
 await getCurrentUser();
 
@@ -11,7 +12,7 @@ export interface UserProfile {
 
 export async function getCurrentUser(): Promise<UserModel | null> {
   try {
-    const response = await fetch('http://localhost:3001/api/auth/profile', {
+    const response = await fetch(`${env.API_BASE_URL}/api/auth/profile`, {
       credentials: 'include'
     });
 

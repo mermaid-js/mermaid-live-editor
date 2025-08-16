@@ -26,7 +26,7 @@ export default defineConfig({
     }),
     alwaysFullReload
   ],
-  envPrefix: 'MERMAID_',
+  envPrefix: ['VITE_', 'MERMAID_'],
   server: {
     port: 3000,
     host: true
