@@ -33,16 +33,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get release version
-        run: |
-          RELEASE_VERSION=$([ "${{ github.ref_name }}" = "master" ] && echo "latest" || echo "nightly")
-          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "${GITHUB_ENV}"
       - uses: docker/metadata-action@v5
         id: meta
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ env.RELEASE_VERSION }}
+            type=raw,value=latest,enable=${{ github.ref_name == "master" }}
+            type=raw,value=nightly,enable=${{ github.ref_name == "develop" }}
       - uses: docker/build-push-action@v5
         id: build
         with:
