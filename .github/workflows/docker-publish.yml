@@ -38,8 +38,8 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref_name == "master" }}
-            type=raw,value=nightly,enable=${{ github.ref_name == "develop" }}
+            type=raw,value=latest,enable=${{ github.ref_name == 'master' }}
+            type=raw,value=nightly,enable=${{ github.ref_name == 'develop' }}
       - uses: docker/build-push-action@v5
         id: build
         with:
