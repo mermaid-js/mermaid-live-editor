@@ -22,7 +22,7 @@ test.describe('Check actions', () => {
 
   test('should download png and svg', async ({ editPage }) => {
     const firstPngSize = await editPage.checkAndDownloadPNG(80_000);
-    const firstSvgSize = await editPage.downloadSVG(10_000);
+    const firstSvgSize = await editPage.downloadSVG(30_000);
 
     // Verify downloaded file is different for different diagrams
     await editPage.toggleSampleDiagrams();
