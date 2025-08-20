@@ -37,13 +37,13 @@ importers:
         version: 6.1.4(@codemirror/language@6.11.0)(@codemirror/state@6.5.2)(@codemirror/view@6.36.7)(@lezer/highlight@1.2.1)
       '@mermaid-js/examples':
         specifier: ^1.0.0
-        version: 1.0.0(mermaid@11.9.0)
+        version: 1.0.0(mermaid@11.10.0)
       '@mermaid-js/layout-elk':
-        specifier: ^0.1.8
-        version: 0.1.8(mermaid@11.9.0)
+        specifier: ^0.1.9
+        version: 0.1.9(mermaid@11.10.0)
       '@mermaid-js/mermaid-zenuml':
-        specifier: ^0.2.1
-        version: 0.2.1(mermaid@11.9.0)
+        specifier: ^0.2.2
+        version: 0.2.2(mermaid@11.10.0)
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1
@@ -60,8 +60,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mermaid:
-        specifier: ^11.9.0
-        version: 11.9.0
+        specifier: ^11.10.0
+        version: 11.10.0
       mode-watcher:
         specifier: ^0.5.1
         version: 0.5.1(svelte@5.28.2)
@@ -704,13 +704,13 @@ packages:
     peerDependencies:
       mermaid: ~11.9.0
 
-  '@mermaid-js/layout-elk@0.1.8':
-    resolution: {integrity: sha512-uU+Glm1tQZScphrFuzf6dzPpYTrET3sz6Q2SqpLj/nr+FpO6cfgJmYdJ+vWA8oGoeNQZLVey480qbKAFk8DBuQ==}
+  '@mermaid-js/layout-elk@0.1.9':
+    resolution: {integrity: sha512-HuvaqFZBr6yT9PpWYockvKAZPJVd89yn/UjOYPxhzbZxlybL2v+2BjVCg7MVH6vRs1irUohb/s42HEdec1CCZw==}
     peerDependencies:
       mermaid: ^11.0.2
 
-  '@mermaid-js/mermaid-zenuml@0.2.1':
-    resolution: {integrity: sha512-hkyoQMQd0zZ3se2EvjZn2NWiHE1aWaun7bi9C5duIZznVgFhClDETsqG4mWVLrDpGgkpPPWiOfKaeOmPrVaWdA==}
+  '@mermaid-js/mermaid-zenuml@0.2.2':
+    resolution: {integrity: sha512-sUjwk4NWUpy9uaHypYSIGJDks10ZaZo5CHH9lx9xcmyqv9w7yvd4vecUmlUQxmlHStYO+aqSkYKX5/gFjDfypw==}
     peerDependencies:
       mermaid: ^10 || ^11
 
@@ -1209,8 +1209,8 @@ packages:
   '@vue/shared@3.5.13':
     resolution: {integrity: sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ==}
 
-  '@zenuml/core@3.32.4':
-    resolution: {integrity: sha512-Yqk6jbKTjuCGq7GZXjXYi5U7tTxJJ4Qq3VijGOif4/jMipeuT83zIsdn3MStRglXUNextW+ZH7faEnCNz2PKfg==}
+  '@zenuml/core@3.36.0':
+    resolution: {integrity: sha512-haEUgNrEvAG3Ub8dutKoQk3inReaoYexYoXDWkF0rZebSolgyrMvglrjl5kZzjib43sRkpyq+/kc/BbmWCWr3A==}
     engines: {node: '>=20'}
 
   abort-controller@3.0.0:
@@ -2550,8 +2550,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  mermaid@11.9.0:
-    resolution: {integrity: sha512-YdPXn9slEwO0omQfQIsW6vS84weVQftIyyTGAZCwM//MGhPzL1+l6vO6bkf0wnP4tHigH1alZ5Ooy3HXI2gOag==}
+  mermaid@11.10.0:
+    resolution: {integrity: sha512-oQsFzPBy9xlpnGxUqLbVY8pvknLlsNIJ0NWwi8SUJjhbP1IT0E0o1lfhU4iYV3ubpy+xkzkaOyDUQMn06vQElQ==}
 
   micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -4254,7 +4254,7 @@ snapshots:
   '@floating-ui/react@0.26.28(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@floating-ui/react-dom': 2.1.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@floating-ui/utils': 0.2.9
+      '@floating-ui/utils': 0.2.10
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       tabbable: 6.2.0
@@ -4417,20 +4417,20 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.2': {}
 
-  '@mermaid-js/examples@1.0.0(mermaid@11.9.0)':
+  '@mermaid-js/examples@1.0.0(mermaid@11.10.0)':
     dependencies:
-      mermaid: 11.9.0
+      mermaid: 11.10.0
 
-  '@mermaid-js/layout-elk@0.1.8(mermaid@11.9.0)':
+  '@mermaid-js/layout-elk@0.1.9(mermaid@11.10.0)':
     dependencies:
       d3: 7.9.0
       elkjs: 0.9.3
-      mermaid: 11.9.0
+      mermaid: 11.10.0
 
-  '@mermaid-js/mermaid-zenuml@0.2.1(mermaid@11.9.0)':
+  '@mermaid-js/mermaid-zenuml@0.2.2(mermaid@11.10.0)':
     dependencies:
-      '@zenuml/core': 3.32.4
-      mermaid: 11.9.0
+      '@zenuml/core': 3.36.0
+      mermaid: 11.10.0
     transitivePeerDependencies:
       - '@types/react'
       - ts-node
@@ -5012,7 +5012,7 @@ snapshots:
   '@vue/shared@3.5.13':
     optional: true
 
-  '@zenuml/core@3.32.4':
+  '@zenuml/core@3.36.0':
     dependencies:
       '@floating-ui/react': 0.27.13(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@headlessui/react': 2.2.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5027,6 +5027,7 @@ snapshots:
       immer: 10.1.1
       jotai: 2.12.5(react@19.1.0)
       marked: 4.3.0
+      pako: 2.1.0
       pino: 8.21.0
       radash: 12.1.1
       ramda: 0.28.0
@@ -6465,7 +6466,7 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  mermaid@11.9.0:
+  mermaid@11.10.0:
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 2.3.0
