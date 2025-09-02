@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import type { HistoryEntry } from '$lib/types';
-import { describe, it, expect } from 'vitest';
-import {
-  addHistoryEntry,
-  injectHistoryIDs,
-  clearHistoryData,
-  historyModeStore,
-  historyStore
-} from './history';
 import { defaultState } from '$lib/util/state';
 import { get } from 'svelte/store';
+import { describe, expect, it } from 'vitest';
+import {
+  addHistoryEntry,
+  clearHistoryData,
+  historyModeStore,
+  historyStore,
+  injectHistoryIDs
+} from './history';
 
 describe('history', () => {
   it('should handle saving individual history entry', () => {
@@ -105,11 +104,11 @@ describe('history migration', () => {
       '[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"auto","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","name":"needy-mosquito"}]'
     );
     let manualHistoryStore = JSON.parse(
-      window.localStorage.getItem('manualHistoryStore') ?? '[]'
-    ) as HistoryEntry[];
-    let autoHistoryStore = JSON.parse(
-      window.localStorage.getItem('autoHistoryStore') ?? '[]'
-    ) as HistoryEntry[];
+        window.localStorage.getItem('manualHistoryStore') ?? '[]'
+      ) as HistoryEntry[],
+      autoHistoryStore = JSON.parse(
+        window.localStorage.getItem('autoHistoryStore') ?? '[]'
+      ) as HistoryEntry[];
     expect(manualHistoryStore.every(({ id }) => id !== undefined)).toBe(false);
     expect(autoHistoryStore.every(({ id }) => id !== undefined)).toBe(false);
 

@@ -82,40 +82,6 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'off',
     'es/no-regexp-lookbehind-assertions': 'error',
     curly: ['error', 'all'],
-    'no-only-tests/no-only-tests': 'error',
-    'unicorn/no-null': 'off',
-    'unicorn/filename-case': [
-      'error',
-      {
-        case: 'camelCase'
-      }
-    ],
-    'unicorn/filename-case': 'off',
-    'unicorn/prevent-abbreviations': [
-      'error',
-      {
-        allowList: {
-          args: true,
-          ctx: true,
-          db: true,
-          doc: true,
-          env: true,
-          fn: true,
-          i: true,
-          j: true,
-          k: true,
-          param: true,
-          Params: true,
-          params: true,
-          Props: true,
-          props: true,
-          req: true,
-          res: true,
-          str: true,
-          temp: true,
-          ImportMetaEnv: true
-        }
-      }
-    ]
+    'no-only-tests/no-only-tests': 'error'
   }
 };

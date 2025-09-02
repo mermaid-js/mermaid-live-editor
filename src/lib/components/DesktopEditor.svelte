@@ -93,7 +93,9 @@
     });
 
     const unsubscribeMode = mode.subscribe((mode) => {
-      editor && monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
+      if (editor) {
+        monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
+      }
     });
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({

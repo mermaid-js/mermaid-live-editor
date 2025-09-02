@@ -147,6 +147,5 @@ export const injectHistoryIDs = (): void => {
 const validateEntry = (entry: HistoryEntry): boolean => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return entry.type && entry.state && entry.time && true;
 };

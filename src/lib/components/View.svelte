@@ -82,6 +82,7 @@
         } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
         diagramType = detectedDiagramType;
         if (svg.length > 0) {
+          // eslint-disable-next-line svelte/no-dom-manipulating
           container.innerHTML = svg;
           let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
           if (!graphDiv) {
@@ -138,6 +139,7 @@
     // Queue state changes to avoid race condition
     let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
     });
   });
