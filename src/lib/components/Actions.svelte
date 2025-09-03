@@ -50,6 +50,8 @@
       svg = getSvgElement();
     }
 
+    svg.style.backgroundColor = `hsl(${window.getComputedStyle(document.body).getPropertyValue('--background')})`;
+
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
       .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
