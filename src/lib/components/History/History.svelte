@@ -175,13 +175,13 @@
               {:else}
                 <span class="whitespace-nowrap">{name}</span>
               {/if}
-              <span class="whitespace-nowrap text-xs text-primary-foreground/30">
+              <span class="text-xs whitespace-nowrap text-primary-foreground/30">
                 {new Date(time).toLocaleString()}
               </span>
             </div>
 
             <div class="flex items-center gap-2">
-              <span class="whitespace-nowrap text-sm text-primary-foreground/50">
+              <span class="text-sm whitespace-nowrap text-primary-foreground/50">
                 {dayjs(time).fromNow()}
               </span>
               <Button size="icon" variant="ghost" onclick={() => restoreHistoryItem(state)}>
