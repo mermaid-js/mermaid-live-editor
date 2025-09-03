@@ -4,7 +4,7 @@ import prettier from 'eslint-config-prettier';
 import sortKeysPlugin from 'eslint-plugin-sort-keys';
 import svelte from 'eslint-plugin-svelte';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
@@ -14,7 +14,6 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
-  globalIgnores(['postcss.config.cjs']),
   js.configs.recommended,
   ...ts.configs.strict,
   ...ts.configs.stylistic,
