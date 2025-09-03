@@ -17,6 +17,7 @@
   import { urlsStore } from '$lib/util/state';
   import { MCBaseURL } from '$lib/util/util';
   import type { ComponentProps, Snippet } from 'svelte';
+  import MermaidIcon from '~icons/custom/mermaid';
   import CloseIcon from '~icons/material-symbols/close-rounded';
   import GithubIcon from '~icons/mdi/github';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
@@ -83,8 +84,9 @@
 {/if}
 
 <nav class="z-50 flex p-4 sm:p-6">
-  <div class="flex flex-1 items-center gap-4">
+  <div class="flex flex-1 items-center gap-2">
     <MainMenu />
+    <MermaidIcon class="size-6" />
     <div
       id="switcher"
       class="flex items-center justify-center gap-4 font-medium"

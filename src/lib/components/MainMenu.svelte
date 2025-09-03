@@ -6,13 +6,13 @@
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
   import type { Component, Snippet } from 'svelte';
-  import MermaidIcon from '~icons/custom/mermaid';
   import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import AddIcon from '~icons/material-symbols/add-2-rounded';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
   import DuplicateIcon from '~icons/material-symbols/content-copy-outline-rounded';
   import ContrastIcon from '~icons/material-symbols/contrast';
   import PluginIcon from '~icons/material-symbols/electrical-services-rounded';
+  import MenuIcon from '~icons/material-symbols/menu-rounded';
   import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
   import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
   import MermaidChartIcon from './MermaidChartIcon.svelte';
@@ -126,7 +126,7 @@
 
 <Popover.Root>
   <Popover.Trigger class="shrink-0">
-    <MermaidIcon class="size-6" />
+    <MenuIcon class="size-6" />
   </Popover.Trigger>
   <Popover.Content align="start" class="flex flex-col overflow-hidden border-2 p-0" sideOffset={16}>
     {#each menuItems as { renderer, ...item } (item.label)}
