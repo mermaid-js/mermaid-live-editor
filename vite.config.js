@@ -1,7 +1,9 @@
+import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
+import devtoolsJson from 'vite-plugin-devtools-json';
 
 /**
  * HMR creates state inconsistencies, so we always reload the page.
@@ -17,6 +19,7 @@ const alwaysFullReload = {
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     sveltekit(),
     Icons({
       compiler: 'svelte',
@@ -24,17 +27,12 @@ export default defineConfig({
         custom: FileSystemIconLoader('./static/icons')
       }
     }),
-    alwaysFullReload
+    alwaysFullReload,
+    devtoolsJson()
   ],
   envPrefix: 'MERMAID_',
-  server: {
-    port: 3000,
-    host: true
-  },
-  preview: {
-    port: 3000,
-    host: true
-  },
+  server: { port: 3000, host: true },
+  preview: { port: 3000, host: true },
   test: {
     environment: 'jsdom',
     // in-source testing
@@ -42,10 +40,10 @@ export default defineConfig({
     // Ignore E2E tests
     exclude: [
       'tests/**/*',
-      '**\/node_modules/**',
-      '**\/dist/**',
-      '**\/.{idea,git,cache,output,temp}/**',
-      '**\/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*'
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*'
     ],
     setupFiles: ['./src/tests/setup.ts'],
     coverage: {

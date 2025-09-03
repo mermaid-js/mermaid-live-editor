@@ -63,7 +63,7 @@
     <img class="size-6" src="/favicon.svg" alt="Mermaid Live Editor" />
   </Popover.Trigger>
   <Popover.Content align="start" class="flex flex-col overflow-hidden p-0" sideOffset={16}>
-    {#each menuItems as item}
+    {#each menuItems as item (item.label)}
       {@render menuItem(item)}
     {/each}
 
@@ -77,7 +77,7 @@
         onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
     </div>
 
-    {#each mermaidChartMenuItems as item}
+    {#each mermaidChartMenuItems as item (item.label)}
       <McWrapper
         side="right"
         labelPrefix={item.sharesData === false ? 'Opens a new tab in' : undefined}

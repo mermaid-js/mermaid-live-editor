@@ -89,7 +89,6 @@ const processState = async (state: State) => {
 
         let first_line: number, last_line: number, first_column: number, last_column: number;
         try {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           ({ first_line, last_line, first_column, last_column } = (error.hash as ErrorHash).loc);
         } catch {
           const lineNo = findMostRelevantLineNumber(errorString, state.code);

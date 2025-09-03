@@ -185,13 +185,11 @@ function getBrowserStorage(
     }
   };
   const connect = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (listenExternalChanges && typeof window !== 'undefined' && window.addEventListener) {
       window.addEventListener('storage', listenerFunction);
     }
   };
   const disconnect = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (listenExternalChanges && typeof window !== 'undefined' && window.removeEventListener) {
       window.removeEventListener('storage', listenerFunction);
     }
@@ -231,7 +229,6 @@ function getBrowserStorage(
  * @param listenExternalChanges - Update the store if the localStorage is updated from another page
  */
 export function localStorage<T>(listenExternalChanges = false): StorageInterface<T> {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (typeof window !== 'undefined' && window.localStorage) {
     return getBrowserStorage(window.localStorage, listenExternalChanges);
   }

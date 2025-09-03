@@ -29,7 +29,6 @@
   // Vite will automatically take care of adding this to our `<head>`
   let lazyLoadFontAwesomeCSS = import('./FontAwesomeCSS.svelte');
 
-  // eslint-disable-next-line unicorn/prefer-top-level-await
   let fontsLoaded = (async () => {
     await lazyLoadFontAwesomeCSS;
 

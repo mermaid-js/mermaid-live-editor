@@ -6,7 +6,7 @@
   import { base } from '$app/paths';
   import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
-  import '../app.postcss';
+  import '../app.css';
 
   interface Props {
     children: Snippet;
@@ -20,11 +20,10 @@
     window.addEventListener('hashchange', () => {
       void initHandler();
     });
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register(`${base}/service-worker.js`, {
-          scope: `${base}/`
-        })
+        .register(`${base}/service-worker.js`, { scope: `${base}/` })
         .then(function (registration) {
           console.log('Registration successful, scope is:', registration.scope);
         })
@@ -48,7 +47,7 @@
 
 {#if $loadingStateStore.loading}
   <div
-    class="absolute left-0 top-0 z-50 flex h-screen w-screen justify-center bg-gray-600 align-middle opacity-50">
+    class="absolute top-0 left-0 z-50 flex h-screen w-screen justify-center bg-gray-600 align-middle opacity-50">
     <div class="my-auto text-4xl font-bold text-indigo-100">
       <div class="loader mx-auto"></div>
       <div>{$loadingStateStore.message}</div>

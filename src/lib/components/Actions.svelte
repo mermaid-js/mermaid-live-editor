@@ -38,8 +38,13 @@
       // Prevents the SVG size of the interface from being changed
       svg = svg.cloneNode(true) as HTMLElement;
     }
-    height && svg?.setAttribute('height', `${height}px`);
-    width && svg?.setAttribute('width', `${width}px`); // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
+    if (height) {
+      svg?.setAttribute('height', `${height}px`);
+    }
+    if (width) {
+      svg?.setAttribute('width', `${width}px`);
+    }
+    // Workaround https://stackoverflow.com/questions/28690643/firefox-error-rendering-an-svg-image-to-html5-canvas-with-drawimage
 
     if (!svg) {
       svg = getSvgElement();
@@ -215,7 +220,7 @@ ${svgString}`);
 
 <Card title="Actions" isStackable icon={{ component: DownloadIcon, class: 'rotate-180' }}>
   <div class="flex min-w-fit flex-col gap-2 p-2">
-    <div class="flex w-full items-center gap-2 whitespace-nowrap py-2">
+    <div class="flex w-full items-center gap-2 py-2 whitespace-nowrap">
       PNG size
       <ToggleGroup.Root type="single" variant="outline" bind:value={imageSizeMode}>
         <ToggleGroup.Item value="auto">Auto</ToggleGroup.Item>
