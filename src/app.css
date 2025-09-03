@@ -33,6 +33,7 @@
     --destructive: hsl(0 72.22% 50.59%);
     --destructive-foreground: hsl(210 40% 98%);
     --border: hsl(214.3 31.8% 91.4%);
+    --border-dark: hsl(214.3 31.8% 81.4%);
     --input: hsl(214.3 31.8% 91.4%);
     --ring: hsl(222.2 84% 4.9%);
     --radius: 0.75rem;
@@ -55,6 +56,7 @@
     --destructive: hsl(0 62.8% 30.6%);
     --destructive-foreground: hsl(210 40% 98%);
     --border: hsl(217.2 32.6% 17.5%);
+    --border-dark: hsl(217.2 32.6% 27.5%);
     --input: hsl(217.2 32.6% 17.5%);
     --ring: hsl(212.7 26.8% 83.9%);
   }
@@ -77,6 +79,7 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
+  --color-border-dark: var(--border-dark);
   --color-input: var(--input);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);

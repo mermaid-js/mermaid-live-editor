@@ -1,56 +1,95 @@
 <script lang="ts">
   import McWrapper from '$/components/McWrapper.svelte';
-  import ThemeIcon from '$/components/ThemeIcon.svelte';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
   import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
-  import type { Component } from 'svelte';
+  import type { Component, Snippet } from 'svelte';
+  import MermaidIcon from '~icons/custom/mermaid';
+  import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import AddIcon from '~icons/material-symbols/add-2-rounded';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
-  import PluginIcon from '~icons/material-symbols/extension-outline';
-  import HomeIcon from '~icons/material-symbols/house-outline-rounded';
+  import DuplicateIcon from '~icons/material-symbols/content-copy-outline-rounded';
+  import ContrastIcon from '~icons/material-symbols/contrast';
+  import PluginIcon from '~icons/material-symbols/electrical-services-rounded';
   import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
   import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
   import MermaidChartIcon from './MermaidChartIcon.svelte';
 
-  const menuItems = $derived([
-    { label: 'New Diagram', icon: AddIcon, href: $urlsStore.new },
-    { label: 'Home', icon: HomeIcon, href: 'https://mermaid.js.org/' },
-    { label: 'Documentation', icon: BookIcon, href: 'https://mermaid.js.org/intro/' },
-    { label: 'Community', icon: CommunityIcon, href: 'https://discord.gg/sKeNQX4Wtj' }
-  ]);
+  interface MenuItem {
+    label: string;
+    icon: Component;
+    href: string;
+    class?: string;
+    sharesData?: boolean;
+    checkDiagramType?: boolean;
+    isSectionEnd?: boolean;
+    renderer: (item: Omit<MenuItem, 'renderer'>) => ReturnType<Snippet>;
+  }
 
-  const mermaidChartMenuItems = $derived([
+  const menuItems: MenuItem[] = $derived([
+    { label: 'New', icon: AddIcon, href: $urlsStore.new, renderer: menuItem },
+    { label: 'Duplicate', icon: DuplicateIcon, href: window.location.href, renderer: menuItem },
     {
-      label: 'Edit in Playground',
+      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground,
       icon: PlaygroundIcon,
-      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground
+      isSectionEnd: true,
+      label: 'Edit in Playground',
+      renderer: mcMenuItem
+    },
+    {
+      label: 'Mermaid.js',
+      icon: MermaidTailIcon,
+      href: 'https://mermaid.js.org/',
+      renderer: menuItem
+    },
+    {
+      label: 'Documentation',
+      icon: BookIcon,
+      href: 'https://mermaid.js.org/intro/',
+      renderer: menuItem
+    },
+    {
+      label: 'Community',
+      icon: CommunityIcon,
+      href: 'https://discord.gg/sKeNQX4Wtj',
+      renderer: menuItem
     },
     {
       checkDiagramType: false,
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
       icon: PluginIcon,
       label: 'Plugins',
+      renderer: mcMenuItem,
       sharesData: false
     },
     {
+      href: '#',
+      icon: ContrastIcon,
+      isSectionEnd: true,
+      label: 'Dark Mode',
+      renderer: darkModeMenuItem
+    },
+    {
       checkDiagramType: false,
+      class: 'text-accent bg-background hover:bg-muted border-b-0',
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
       icon: MermaidChartIcon,
-      label: 'MermaidChart',
+      label: 'Mermaid',
+      renderer: mcMenuItem,
       sharesData: false
     }
   ]);
 </script>
 
-{#snippet menuItem(options: { label: string; icon: Component; href: string; class?: string })}
+{#snippet menuItem(options: MenuItem)}
   <a
     href={options.href}
     target="_blank"
     class={cn(
-      'flex items-center justify-start gap-2 border-b bg-muted p-2 px-3 hover:bg-background',
+      'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-background',
+      options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
     <options.icon class="size-5" />
@@ -58,36 +97,40 @@
   </a>
 {/snippet}
 
+{#snippet mcMenuItem(item: MenuItem)}
+  <McWrapper
+    side="right"
+    labelPrefix={item.sharesData === false ? 'Opens a new tab in' : undefined}
+    sharesData={item.sharesData}
+    shouldCheckDiagramType={item.checkDiagramType}>
+    {@render menuItem(item)}
+  </McWrapper>
+{/snippet}
+
+{#snippet darkModeMenuItem(options: MenuItem)}
+  <div
+    class={cn(
+      'flex cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-background',
+      options.isSectionEnd && 'border-border-dark',
+      options.class
+    )}>
+    <span class="flex items-center gap-2">
+      <ContrastIcon />
+      Dark Mode
+    </span>
+    <Switch
+      checked={$mode === 'dark'}
+      onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
+  </div>
+{/snippet}
+
 <Popover.Root>
   <Popover.Trigger class="shrink-0">
-    <img class="size-6" src="/favicon.svg" alt="Mermaid Live Editor" />
+    <MermaidIcon class="size-6" />
   </Popover.Trigger>
-  <Popover.Content align="start" class="flex flex-col overflow-hidden p-0" sideOffset={16}>
-    {#each menuItems as item (item.label)}
-      {@render menuItem(item)}
-    {/each}
-
-    <div class="flex items-center justify-between border-b bg-muted px-3 py-2 hover:bg-background">
-      <span class="flex items-center gap-2">
-        <ThemeIcon />
-        Dark Mode
-      </span>
-      <Switch
-        checked={$mode === 'dark'}
-        onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
-    </div>
-
-    {#each mermaidChartMenuItems as item (item.label)}
-      <McWrapper
-        side="right"
-        labelPrefix={item.sharesData === false ? 'Opens a new tab in' : undefined}
-        sharesData={item.sharesData}
-        shouldCheckDiagramType={item.checkDiagramType}>
-        {@render menuItem({
-          ...item,
-          class: 'text-accent bg-background hover:bg-muted'
-        })}
-      </McWrapper>
+  <Popover.Content align="start" class="flex flex-col overflow-hidden border-2 p-0" sideOffset={16}>
+    {#each menuItems as { renderer, ...item } (item.label)}
+      {@render renderer(item)}
     {/each}
   </Popover.Content>
 </Popover.Root>
