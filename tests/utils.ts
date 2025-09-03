@@ -8,12 +8,10 @@ export interface EditorOptions {
   newline?: boolean;
 }
 
-interface WindowWithEditor {
-  editorLoaded: boolean;
-}
-
 declare global {
-  interface Window extends WindowWithEditor {}
+  interface Window {
+    editorLoaded: boolean;
+  }
 }
 
 export async function typeInEditor(

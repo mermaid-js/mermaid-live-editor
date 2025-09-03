@@ -17,6 +17,7 @@ export class EditorPage {
     await this.page.goto(url);
     await expect(this.page)
       .toHaveURL(/.*\/edit#pako/)
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .catch(() => {});
   }
 

@@ -29,16 +29,18 @@
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground
     },
     {
-      label: 'Plugins',
-      icon: PluginIcon,
+      checkDiagramType: false,
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
-      checkDiagramType: false
+      icon: PluginIcon,
+      label: 'Plugins',
+      sharesData: false
     },
     {
-      label: 'MermaidChart',
-      icon: MermaidChartIcon,
+      checkDiagramType: false,
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
-      checkDiagramType: false
+      icon: MermaidChartIcon,
+      label: 'MermaidChart',
+      sharesData: false
     }
   ]);
 </script>
@@ -61,7 +63,7 @@
     <img class="size-6" src="/favicon.svg" alt="Mermaid Live Editor" />
   </Popover.Trigger>
   <Popover.Content align="start" class="flex flex-col overflow-hidden p-0" sideOffset={16}>
-    {#each menuItems as item}
+    {#each menuItems as item (item.label)}
       {@render menuItem(item)}
     {/each}
 
@@ -75,8 +77,12 @@
         onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
     </div>
 
-    {#each mermaidChartMenuItems as item}
-      <McWrapper side="right" shouldCheckDiagramType={item.checkDiagramType}>
+    {#each mermaidChartMenuItems as item (item.label)}
+      <McWrapper
+        side="right"
+        labelPrefix={item.sharesData === false ? 'Opens a new tab in' : undefined}
+        sharesData={item.sharesData}
+        shouldCheckDiagramType={item.checkDiagramType}>
         {@render menuItem({
           ...item,
           class: 'text-accent bg-background hover:bg-muted'

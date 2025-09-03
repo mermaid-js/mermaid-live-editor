@@ -28,7 +28,7 @@
 
 <div class="flex w-fit cursor-default items-center gap-2">
   <ul class="flex gap-2 align-middle" transition:fade>
-    {#each tabs as tab, index}
+    {#each tabs as tab, index (tab.id)}
       <Button
         role="tab"
         variant="ghost"

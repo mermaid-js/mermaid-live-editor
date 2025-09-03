@@ -21,7 +21,7 @@
   <Popover.Content>
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <ul tabindex="0" class="flex flex-col">
-      {#each props.links as { href, title }}
+      {#each props.links as { href, title } (title)}
         <li class="rounded-md p-2 hover:bg-muted">
           <a
             role="menuitem"

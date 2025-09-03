@@ -2,7 +2,6 @@
 
 import type * as Monaco from 'monaco-editor';
 
-// eslint-disable-next-line es/no-regexp-lookbehind-assertions
 const commentRegex = /(?<!["'])%%(?![^"']*["']\)).*$/;
 
 export const initEditor = (monacoEditor: typeof Monaco): void => {
@@ -235,7 +234,6 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
           ])
         )
       )
-      // eslint-disable-next-line unicorn/no-array-reduce
       .reduce(
         (overallKeywords, nextKeyword) => ({
           ...overallKeywords,

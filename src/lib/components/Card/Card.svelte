@@ -54,7 +54,7 @@
     role="toolbar"
     tabindex="0"
     class={[
-      'flex h-11 flex-none cursor-pointer items-center justify-between whitespace-nowrap bg-muted p-2',
+      'flex h-11 flex-none cursor-pointer items-center justify-between bg-muted p-2 whitespace-nowrap',
       isTabsShown && 'pb-1'
     ]}
     onclick={toggleCardOpen}

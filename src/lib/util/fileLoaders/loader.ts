@@ -49,9 +49,10 @@ export const loadDataFromUrl = async (): Promise<void> => {
       }
     }
   }
-  loaded &&
+  if (loaded) {
     updateCodeStore({
       ...state,
       updateDiagram: true
     });
+  }
 };
