@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
@@ -18,6 +19,7 @@ const alwaysFullReload = {
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     sveltekit(),
     Icons({
       compiler: 'svelte',
