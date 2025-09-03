@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
-  import type { InputType } from '$/types';
   import { notify } from '$/util/notify';
   import { scale } from 'svelte/transition';
   import CheckIcon from '~icons/material-symbols/check-rounded';
@@ -9,7 +8,7 @@
   let {
     onclick,
     label = 'Copy'
-  }: { onclick: (event?: Event) => Promise<unknown>; label?: string; type?: InputType } = $props();
+  }: { onclick: (event?: Event) => Promise<unknown>; label?: string } = $props();
 
   let showCheckIcon = $state(false);
 </script>

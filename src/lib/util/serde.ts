@@ -1,6 +1,6 @@
-import { deflate, inflate } from 'pako';
-import { toUint8Array, fromUint8Array, toBase64, fromBase64 } from 'js-base64';
 import type { State } from '$lib/types';
+import { fromBase64, fromUint8Array, toBase64, toUint8Array } from 'js-base64';
+import { deflate, inflate } from 'pako';
 
 interface Serde {
   serialize: (state: string) => string;
@@ -30,7 +30,7 @@ export const pakoSerde: Serde = {
 
 export type SerdeType = 'base64' | 'pako';
 
-const serdes: { [key in SerdeType]: Serde } = {
+const serdes: Record<SerdeType, Serde> = {
   base64: base64Serde,
   pako: pakoSerde
 };
