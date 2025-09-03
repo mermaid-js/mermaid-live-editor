@@ -73,7 +73,7 @@
     },
     {
       checkDiagramType: false,
-      class: 'text-accent bg-background hover:bg-muted border-b-0',
+      class: 'text-accent border-b-0',
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
       icon: MermaidChartIcon,
       label: 'Mermaid',
@@ -88,7 +88,7 @@
     href={options.href}
     target="_blank"
     class={cn(
-      'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-background',
+      'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-muted',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
@@ -110,7 +110,7 @@
 {#snippet darkModeMenuItem(options: MenuItem)}
   <div
     class={cn(
-      'flex cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-background',
+      'flex cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-muted',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
