@@ -50,7 +50,7 @@
       svg = getSvgElement();
     }
 
-    svg.style.backgroundColor = `hsl(${window.getComputedStyle(document.body).getPropertyValue('--background')})`;
+    svg.style.backgroundColor = window.getComputedStyle(document.body).getPropertyValue('--background');
 
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
@@ -100,7 +100,7 @@ ${svgString}`);
       throw new Error('context not found');
     }
 
-    context.fillStyle = `hsl(${window.getComputedStyle(document.body).getPropertyValue('--background')})`;
+    context.fillStyle = window.getComputedStyle(document.body).getPropertyValue('--background');
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     const image = new Image();
