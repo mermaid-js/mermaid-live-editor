@@ -10,7 +10,7 @@ export interface UserProfile {
 
 export async function getCurrentUser(): Promise<UserModel | null> {
   try {
-    const response = await fetch(`${env.API_BASE_URL}/api/auth/profile`, {
+    const response = await fetch(`${env.API_BASE_URL}/auth/profile`, {
       credentials: 'include'
     });
 
