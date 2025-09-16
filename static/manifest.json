@@ -1,0 +1,24 @@
+{
+  "name": "Idem Chart",
+  "short_name": "Idem Chart",
+  "description": "A specialized diagram editing module of the Idem platform for creating and editing flowcharts, sequence diagrams, and gantt diagrams in real-time",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366F1",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["productivity", "developer", "utilities"],
+  "lang": "en"
+}

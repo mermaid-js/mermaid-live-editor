@@ -1,8 +1,6 @@
 import type { UserModel } from '$/models/user.model';
 import { env } from '$/util/env';
 
-await getCurrentUser();
-
 export interface UserProfile {
   uid: string;
   email: string | null;
