@@ -12,7 +12,7 @@ export class ProjectService {
     }
 
     try {
-      const response = await fetch(`${env.API_BASE_URL}/api/projects/${projectId}`, {
+      const response = await fetch(`${env.API_BASE_URL}/projects/${projectId}`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export class ProjectService {
     }
 
     try {
-      const response = await fetch(`${env.API_BASE_URL}/api/projects`, {
+      const response = await fetch(`${env.API_BASE_URL}/projects`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
