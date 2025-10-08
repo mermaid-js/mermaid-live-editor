@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "svelte": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@sveltejs/mcp"]
+    }
+  },
+  "inputs": []
+}

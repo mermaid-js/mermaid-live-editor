@@ -7,9 +7,10 @@
   import { TID } from '$/constants';
   import { env } from '$/util/env';
   import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
+  import { debounce } from 'lodash-es';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
-  let { isMobile }: { isMobile: boolean } = $props();
+  const { isMobile } = $props<{ isMobile: boolean }>();
   const onUpdate = (text: string) => {
     if ($stateStore.editorMode === 'code') {
       updateCode(text);
@@ -17,6 +18,25 @@
       updateConfig(text);
     }
   };
+
+  let showError = $state(false);
+
+  const showErrorDebounced = debounce(() => {
+    showError = true;
+  }, 5000);
+
+  $effect(() => {
+    if ($stateStore.error) {
+      showErrorDebounced();
+    } else {
+      showErrorDebounced.cancel();
+      showError = false;
+    }
+
+    return () => {
+      showErrorDebounced.cancel();
+    };
+  });
 </script>
 
 <div class="flex h-full flex-col">
@@ -25,7 +45,7 @@
   {:else}
     <DesktopEditor {onUpdate} />
   {/if}
-  {#if $stateStore.error instanceof Error}
+  {#if showError && $stateStore.error instanceof Error}
     <div class="flex flex-col text-sm" data-testid={TID.errorContainer}>
       <div class="flex items-center justify-between gap-2 bg-slate-900 p-2 text-white">
         <div class="flex w-fit items-center gap-2">
