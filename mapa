@@ -1,0 +1,28 @@
+A[Análisis De Datos] --> B[Estadística]
+    A --> C[Probabilidad]
+
+    B --> D[Población Y Muestra]
+    B --> E[Variables Aleatorias]
+    B --> F[Medidas De Tendencia Central]
+    B --> G[Medidas De Dispersión]
+    B --> H[Inferencia Estadística]
+    B --> I[Estimación]
+    B --> J[Pruebas De Hipótesis]
+
+    C --> K[Distribuciones De Probabilidad]
+    C --> L[Teorema De Bayes]
+    C --> M[Correlación Y Regresión]
+
+    style A fill:#FFD700,stroke:#B0B0B0,stroke-width:1px
+    style B fill:#FFE6E6,stroke:#B0B0B0,stroke-width:1px
+    style C fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style D fill:#FFE6E6,stroke:#B0B0B0,stroke-width:1px
+    style E fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style F fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style G fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style H fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style I fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style J fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style K fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style L fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
+    style M fill:#E6FFE6,stroke:#B0B0B0,stroke-width:1px
