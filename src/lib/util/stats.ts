@@ -15,8 +15,7 @@ export const initAnalytics = async (): Promise<void> => {
       // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
       apiHost: env.analyticsUrl,
       domain: env.domain,
-      hashMode: false,
-      trackLocalhost: true
+      hashMode: false
     });
   } catch (error) {
     console.log(error);
