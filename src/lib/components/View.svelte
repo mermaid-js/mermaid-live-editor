@@ -35,7 +35,11 @@
   };
 
   const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
-    panZoomState.updateElement(graphDiv, state);
+    try {
+      panZoomState.updateElement(graphDiv, state);
+    } catch (error) {
+      console.error('PanZoom error:', error);
+    }
   };
 
   const handleStateChange = async (state: ValidatedState) => {
