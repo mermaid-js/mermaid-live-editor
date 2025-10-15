@@ -5,19 +5,22 @@ import { env } from './env';
 export let plausible: ReturnType<typeof PlausibleInstance> | undefined;
 
 export const initAnalytics = async (): Promise<void> => {
-  if (browser && !plausible) {
-    try {
-      const { default: Plausible } = await import('plausible-tracker');
-      plausible = Plausible({
-        // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
-        apiHost: env.analyticsUrl,
-        domain: env.domain,
-        hashMode: false
-      });
-    } catch (error) {
-      console.log(error);
-      console.info('Analytics blocked ;)');
-    }
+  if (!env.analyticsUrl || !browser || plausible) {
+    return;
+  }
+
+  try {
+    const { default: Plausible } = await import('plausible-tracker');
+    plausible = Plausible({
+      // All tracked stats are public and available at https://p.mermaid.live/mermaid.live
+      apiHost: env.analyticsUrl,
+      domain: env.domain,
+      hashMode: false,
+      trackLocalhost: true
+    });
+  } catch (error) {
+    console.log(error);
+    console.info('Analytics blocked ;)');
   }
 };
 
