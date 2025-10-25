@@ -106,7 +106,10 @@
     @apply border-border;
   }
   body {
-    @apply h-screen w-screen overflow-hidden bg-background text-foreground;
+    @apply w-full overflow-hidden bg-background text-foreground;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
   }
 }
 
