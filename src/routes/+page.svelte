@@ -26,7 +26,6 @@
 `;
 
   const DEFAULT_FONT = '"Recursive Variable", "Recursive", sans-serif';
-  const PAN_ZOOM_MAX = 12;
 
   let surface: HTMLDivElement | undefined;
   let error: string | null = null;
@@ -157,7 +156,7 @@
           contain: true,
           controlIconsEnabled: false,
           fit: true,
-          maxZoom: PAN_ZOOM_MAX,
+          maxZoom: 12,
           minZoom: 0.1,
           panEnabled: true,
           zoomEnabled: true,
@@ -166,53 +165,19 @@
 
         const mediaQuery = window.matchMedia?.('(pointer: fine) and (min-width: 768px)');
         const isDesktop = mediaQuery?.matches ?? false;
+        const maxDefaultZoom = isDesktop ? 2.2 : 1.4;
+        const zoomBoost = isDesktop ? 1.18 : 1.0;
 
-        const calibrateInitialView = (attempt = 0) => {
-          if (!panZoomInstance) {
-            return;
-          }
+        panZoomInstance.resize();
+        panZoomInstance.fit();
+        panZoomInstance.center();
 
-          panZoomInstance.resize();
-          panZoomInstance.fit();
+        const currentZoom = panZoomInstance.getZoom();
+        const desiredZoom = Math.min(currentZoom * zoomBoost, maxDefaultZoom);
+        if (desiredZoom > currentZoom) {
+          panZoomInstance.zoom(desiredZoom);
           panZoomInstance.center();
-
-          const sizes = panZoomInstance.getSizes();
-          const bbox = svgElement.getBBox();
-
-          if (!sizes.width || !sizes.height || bbox.width === 0 || bbox.height === 0) {
-            if (attempt < 3) {
-              requestAnimationFrame(() => calibrateInitialView(attempt + 1));
-            }
-            return;
-          }
-
-          const maxDefaultZoom = isDesktop ? 3.2 : 2.1;
-          const marginRatio = isDesktop ? 0.08 : 0.12;
-          const zoomForWidth = sizes.width / bbox.width;
-          const zoomForHeight = sizes.height / bbox.height;
-          const boundingZoom = Math.min(zoomForWidth, zoomForHeight);
-          const currentZoom = panZoomInstance.getZoom();
-          const unclampedTarget = boundingZoom * (1 - marginRatio);
-          const targetZoom = Math.min(
-            Math.max(currentZoom, unclampedTarget),
-            maxDefaultZoom,
-            PAN_ZOOM_MAX
-          );
-
-          if (Number.isFinite(targetZoom) && targetZoom > 0 && targetZoom !== currentZoom) {
-            const centerX = bbox.x + bbox.width / 2;
-            const centerY = bbox.y + bbox.height / 2;
-
-            panZoomInstance.zoom(targetZoom);
-            panZoomInstance.centerOn(centerX, centerY);
-          } else if (Number.isFinite(targetZoom) && targetZoom > 0) {
-            const centerX = bbox.x + bbox.width / 2;
-            const centerY = bbox.y + bbox.height / 2;
-            panZoomInstance.centerOn(centerX, centerY);
-          }
-        };
-
-        requestAnimationFrame(() => calibrateInitialView());
+        }
       }
 
       result.bindFunctions?.(surface);
@@ -277,18 +242,14 @@
   .renderer {
     position: relative;
     display: flex;
-    inline-size: 100%;
-    block-size: 100%;
-    min-block-size: 100vh;
-    min-block-size: 100dvh;
+    width: 100vw;
+    height: 100dvh;
     overflow: hidden;
     color: inherit;
   }
 
   .diagram {
     flex: 1;
-    min-inline-size: 0;
-    min-block-size: 0;
     display: grid;
     place-items: center;
     touch-action: none;

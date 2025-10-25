@@ -16,9 +16,6 @@
 <style>
   .app-shell {
     min-height: 100dvh;
-    inline-size: 100%;
-    min-inline-size: 0;
-    display: flex;
-    flex-direction: column;
+    min-width: 100vw;
   }
 </style>
