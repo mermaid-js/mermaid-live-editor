@@ -4,6 +4,7 @@
   import { render as renderMermaid } from '$lib/util/mermaid';
   import panzoom from 'svg-pan-zoom';
   import { onDestroy, onMount } from 'svelte';
+  import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 
   const DEFAULT_DIAGRAM = `flowchart TD
   %% Multi-layer overview of the renderer pipeline
@@ -55,11 +56,15 @@
       const binary = atob(padded);
       const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
       return decoder ? decoder.decode(bytes) : binary;
-    } catch (err) {
+    } catch (err: unknown) {
       console.warn('Unable to decode base64 mermaid code', err);
       return value;
     }
   };
+
+  // Decode \uXXXX to actual Unicode and common JSON-style escapes
+  const decodeUnicodeEscapes = (value: string) =>
+    value.replace(/\\u([0-9a-fA-F]{4})/g, (_m, hex) => String.fromCharCode(parseInt(hex, 16)));
 
   const decodeMermaidCode = (params: URLSearchParams) => {
     if (!browser) {
@@ -78,7 +83,7 @@
     } else if (raw) {
       try {
         raw = decodeURIComponent(raw);
-      } catch (err) {
+      } catch (err: unknown) {
         console.warn('Unable to URI decode mermaid code', err);
       }
     }
@@ -87,8 +92,302 @@
       return DEFAULT_DIAGRAM;
     }
 
-    const normalized = raw.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+    const normalized = decodeUnicodeEscapes(raw)
+      .replace(/\\n/g, '\n')
+      .replace(/\\t/g, '\t')
+      .replace(/\\"/g, '"')
+      .replace(/\\\//g, '/')
+      .replace(/\\\\/g, '\\');
     return normalized.trim() ? normalized : DEFAULT_DIAGRAM;
+  };
+
+  // Robustly strip ```mermaid fences, supporting same-line content
+  const stripFence = (text: string): string => {
+    const m = text.match(/```(?:mermaid)?[ \t]*(?:\r?\n|\s+)([\s\S]*?)```/i);
+    if (m) return m[1].trim();
+    return text;
+  };
+
+  // ==== Preprocessing parity with server /preprocess ====
+  const INIT_PREAMBLE =
+    "%%{init: { 'themeVariables': { 'textColor': '#1E1E1E', 'primaryTextColor': '#1E1E1E', 'fontFamily': 'Inter, Arial, sans-serif', 'fontSize': '14px' } }}%%";
+
+  const detectType = (text: string): 'flowchart' | 'sequence' | 'state' | 'er' | 'mindmap' | '' => {
+    const lines = (text || '').split(/\r?\n/);
+    for (const raw of lines) {
+      const s = raw.trim();
+      if (!s || s.startsWith('%%')) continue;
+      const low = s.toLowerCase();
+      if (low.startsWith('flowchart') || low.startsWith('graph')) return 'flowchart';
+      if (low.startsWith('sequencediagram')) return 'sequence';
+      if (low.startsWith('statediagram')) return 'state';
+      if (low.startsWith('erdiagram')) return 'er';
+      if (low.startsWith('mindmap')) return 'mindmap';
+      break;
+    }
+    return '';
+  };
+
+  const wrapLabel = (text: string, maxLen = 28, maxLines = 3): string => {
+    if (!text) return '';
+    const parts = text.split(/<br\s*\/?>/i);
+    const out: string[] = [];
+    for (const partRaw of parts) {
+      const words = partRaw.trim().split(/\s+/).filter(Boolean);
+      let cur = '';
+      for (const w of words) {
+        if (!cur) cur = w;
+        else if (cur.length + 1 + w.length <= maxLen) cur += ' ' + w;
+        else {
+          out.push(cur);
+          cur = w;
+        }
+        if (out.length >= maxLines) break;
+      }
+      if (out.length < maxLines && cur) out.push(cur);
+      if (out.length >= maxLines) break;
+    }
+    if (out.length > maxLines) out.length = maxLines;
+    if (parts.length > 1 && out.length === maxLines) {
+      const last = out[out.length - 1];
+      if (!last.endsWith('…'))
+        out[out.length - 1] =
+          (last.length > maxLen ? last.slice(0, Math.max(0, maxLen - 1)) : last) + '…';
+    }
+    return out.join('<br/>');
+  };
+
+  const roundFlowNodes = (text: string): string => {
+    const pat =
+      /(?:(?<id>\b[A-Za-z_][\w]*)\s*)?\[\s*(?<label>"[^"]*"|[^[\]]*?)\s*\](?<cls>\s*:::[A-Za-z0-9_-]+)?/g;
+    const lines = (text || '').split(/\r?\n/);
+    const out: string[] = [];
+    for (const ln of lines) {
+      const ls = ln.trimStart();
+      if (
+        ls.startsWith('classDef') ||
+        ls.startsWith('linkStyle') ||
+        ls.startsWith('subgraph') ||
+        ls === 'end' ||
+        ls.startsWith('style ') ||
+        ls.startsWith('class ') ||
+        ls.startsWith('%%')
+      ) {
+        out.push(ln);
+        continue;
+      }
+      out.push(
+        ln.replace(pat, (_m, ...args) => {
+          const groups =
+            (args.at(-1) as { cls?: string; id?: string; label?: string } | undefined) ?? {};
+          const id = groups.id ?? '';
+          let label = (groups.label ?? '').trim();
+          const cls = groups.cls ?? '';
+          if (!(label.startsWith('"') && label.endsWith('"'))) label = '"' + label + '"';
+          return `${id}(${label})${cls}`;
+        })
+      );
+    }
+    return out.join('\n');
+  };
+
+  const ensureStyling = (text: string): string => {
+    let t = (text || '').replace(/\r\n?/g, '\n');
+    if (typeof String.prototype.normalize === 'function') {
+      t = t.normalize('NFKC');
+    }
+    if (!t.includes('%%{init:')) t = INIT_PREAMBLE + '\n' + t;
+    const ty = detectType(t);
+    if (ty === 'flowchart') {
+      t = roundFlowNodes(t);
+      const needsSurf = !t.includes('classDef surf ');
+      const needsSurf2 = !t.includes('classDef surf2 ');
+      const lines: string[] = [];
+      if (needsSurf)
+        lines.push('classDef surf fill:#F0EFEA,stroke:#7CA5A7,stroke-width:1px,color:#1E1E1E;');
+      if (needsSurf2)
+        lines.push('classDef surf2 fill:#FFFFFF,stroke:#b5b4b1,stroke-width:1px,color:#1E1E1E;');
+      if (t && lines.length) t += (t.endsWith('\n') ? '' : '\n') + lines.join('\n') + '\n';
+      if (!/\blinkStyle\s+\d+/.test(t)) {
+        const edgeCount = (t.match(/-->/g) || []).length;
+        if (edgeCount > 0) {
+          const palette = ['#7CA5A7', '#E4C890', '#BDD2D3', '#F8BDBD', '#EC9E9E', '#b5b4b1'];
+          const ls = Array.from(
+            { length: edgeCount },
+            (_v, i) => `linkStyle ${i} stroke:${palette[i % palette.length]},stroke-width:1.5px;`
+          ).join('\n');
+          t += ls + '\n';
+        }
+      }
+      t = t
+        .replace(/;[ \t]*linkStyle\b/g, ';\nlinkStyle ')
+        .replace(/;[ \t]*classDef\b/g, ';\nclassDef ')
+        .replace(/([^\n])\s+(classDef\b)/g, '$1\n$2')
+        .replace(/([^\n])\s+(linkStyle\b)/g, '$1\n$2');
+    }
+    return t;
+  };
+
+  const convertMindmapToFlowchart = (code: string): string => {
+    const lines = (code || '').replace(/\t/g, '  ').split(/\r?\n/);
+    interface Node {
+      class: string | null;
+      id: string;
+      indent: number;
+      label: string;
+    }
+    const nodes: Node[] = [];
+    const edges: [string, string][] = [];
+    const classdefLines: string[] = [];
+    const linkstyleLines: string[] = [];
+    const directives: string[] = [];
+    const usedIds = new SvelteSet<string>();
+    const ensureId = (base: string) => {
+      base = (base || 'node').replace(/[^A-Za-z0-9_]+/g, '_');
+      if (!/^[A-Za-z_]/.test(base)) base = 'n_' + base;
+      let cand = base;
+      let i = 2;
+      while (usedIds.has(cand)) {
+        cand = base + '_' + i++;
+      }
+      usedIds.add(cand);
+      return cand;
+    };
+    const tokenRegex =
+      /(?:(?<id>[A-Za-z_][\w]*)\s*)?(?<br>(\(\(\s*".*?"\s*\)\)|\(\s*".*?"\s*\)|\(\(\s*[^"]*?\s*\)\)|\(\s*[^"]*?\s*\)|\[\s*".*?"\s*\]|\[\s*[^"]*?\s*\]))(?<cls>\s*:::[A-Za-z0-9_-]+)?/g;
+    const tokenizeLine = (text: string) => {
+      const out: { class: string | null; id: string | null; label: string }[] = [];
+      text.replace(tokenRegex, (_m, ...args) => {
+        const g = (args.at(-1) as { br?: string; cls?: string; id?: string } | undefined) ?? {};
+        let inner = g.br ?? '';
+        if (inner.startsWith('((')) inner = inner.slice(2, -2).trim();
+        else if (inner.startsWith('(')) inner = inner.slice(1, -1).trim();
+        else inner = inner.slice(1, -1).trim();
+        const label = inner.startsWith('"') && inner.endsWith('"') ? inner.slice(1, -1) : inner;
+        const cls = (g.cls ?? '').trim().replace(/^:::/, '') || null;
+        out.push({ class: cls, id: g.id ?? null, label });
+        return _m;
+      });
+      return out;
+    };
+    const stack: { id: string; indent: number }[] = [];
+    for (const raw of lines) {
+      const line = raw.replace(/\s+$/, '');
+      if (!line.trim()) continue;
+      const sline = line.trim();
+      if (sline.startsWith('%%')) {
+        directives.push(sline);
+        continue;
+      }
+      if (/^mindmap\b/i.test(sline)) continue;
+      if (/^\s*classDef\b/.test(line)) {
+        classdefLines.push(sline);
+        continue;
+      }
+      if (/^\s*linkStyle\b/.test(line)) {
+        linkstyleLines.push(sline);
+        continue;
+      }
+      const indent = line.length - line.replace(/^\s+/, '').length;
+      const toks = tokenizeLine(sline);
+      if (toks.length === 0) continue;
+      while (stack.length && stack[stack.length - 1].indent >= indent) stack.pop();
+      const parentId = stack.length ? stack[stack.length - 1].id : null;
+      let lastId: string | null = null;
+      for (const tk of toks) {
+        const nodeId = ensureId(tk.id || tk.label);
+        nodes.push({ id: nodeId, label: tk.label, class: tk.class, indent });
+        if (parentId) edges.push([parentId, nodeId]);
+        lastId = nodeId;
+      }
+      if (lastId) stack.push({ indent, id: lastId });
+    }
+    const parents = new SvelteMap<string, string>();
+    for (const [a, b] of edges) parents.set(b, a);
+    let root: string | null = null;
+    let minIndent = Infinity;
+    for (const n of nodes) {
+      if (!parents.has(n.id) && n.indent < minIndent) {
+        root = n.id;
+        minIndent = n.indent;
+      }
+    }
+    const idNode = new SvelteMap<string, Node>(nodes.map((n) => [n.id, n] as const));
+    const children = new SvelteMap<string, string[]>();
+    for (const [a, b] of edges) {
+      if (!children.has(a)) {
+        children.set(a, []);
+      }
+      const list = children.get(a);
+      if (list) {
+        list.push(b);
+      }
+    }
+    const out: string[] = [];
+    out.push(...directives);
+    out.push('flowchart TD');
+    const esc = (s: string) => (s || '').replace(/"/g, '\\"');
+    const ensureLabel = (s: string) => {
+      const v = (s || '').trim();
+      return v ? v : '\u00A0';
+    };
+    if (!root && nodes.length) root = nodes[0].id;
+    const resolvedRoot = root ?? null;
+    if (resolvedRoot) {
+      const rootNode = idNode.get(resolvedRoot);
+      if (rootNode) {
+        const rlbl = ensureLabel(wrapLabel(rootNode.label));
+        let rseg = `${resolvedRoot}("${esc(rlbl)}")`;
+        rseg += rootNode.class ? `:::${rootNode.class}` : ':::surf';
+        out.push(`  ${rseg}`);
+      }
+      const mids = children.get(resolvedRoot) ?? [];
+      for (const mid of mids) {
+        const midNode = idNode.get(mid);
+        if (!midNode) {
+          continue;
+        }
+        const mlbl = ensureLabel(wrapLabel(midNode.label));
+        let mseg = `${mid}("${esc(mlbl)}")`;
+        mseg += midNode.class ? `:::${midNode.class}` : ':::surf';
+        out.push(`  ${mseg}`);
+        out.push(`  ${resolvedRoot} --> ${mid}`);
+        const leaves = children.get(mid) ?? [];
+        for (const lf of leaves) {
+          const leafNode = idNode.get(lf);
+          if (!leafNode) {
+            continue;
+          }
+          const llbl = ensureLabel(wrapLabel(leafNode.label));
+          let lseg = `${lf}("${esc(llbl)}")`;
+          lseg += leafNode.class ? `:::${leafNode.class}` : ':::surf';
+          out.push(`  ${lseg}`);
+          out.push(`  ${mid} --> ${lf}`);
+        }
+      }
+    }
+    out.push(...classdefLines.map((l) => '  ' + l));
+    out.push(...linkstyleLines.map((l) => '  ' + l));
+    return out.join('\n');
+  };
+
+  const preprocessMermaid = (
+    code: string,
+    mindmapMode: 'convert' | 'sanitize' | 'keep' = 'convert'
+  ): string => {
+    const inner = stripFence(code);
+    const dtype = detectType(inner);
+    let text = inner;
+    if (dtype === 'mindmap') {
+      if (mindmapMode === 'convert') text = convertMindmapToFlowchart(inner);
+      else if (mindmapMode === 'sanitize') {
+        const lines = (inner || '')
+          .split(/\r?\n/)
+          .filter((ln) => !/^\s*(classDef|linkStyle)\b/.test(ln));
+        text = lines.join('\n').replace(/\[(.*?)]/g, '($1)');
+      }
+    }
+    return ensureStyling(text);
   };
 
   const buildMermaidConfig = (params: URLSearchParams) => {
@@ -103,9 +402,41 @@
 
     return {
       config: {
-        startOnLoad: false,
+        flowchart: {
+          htmlLabels: true,
+          useMaxWidth: false
+        },
         securityLevel: 'loose',
+        startOnLoad: false,
         theme,
+        // Ensure label measurement uses HTML so boxes size to content
+        themeCSS: `
+          /* HTML label container inside foreignObject */
+          foreignObject > .label, foreignObject > div.label {
+            display: flex;
+            align-items: center;      /* vertical centering */
+            justify-content: center;  /* horizontal centering */
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            padding: 18px 14px;       /* top/bottom padding included in measurement */
+            box-sizing: border-box;
+            overflow: visible;
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            line-height: 1.25;
+          }
+          /* Actual label element */
+          foreignObject .nodeLabel, foreignObject .label .nodeLabel {
+            display: inline-block;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding-bottom: 10px;    /* breathing room below text */
+          }
+          /* SVG text edge labels readability */
+          .edgeLabel text { paint-order: stroke; stroke: #ffffff; stroke-width: 2px; }
+        `,
         themeVariables: {
           background,
           fontFamily: font,
@@ -133,9 +464,19 @@
 
     const token = ++renderToken;
     const { config, background, font } = buildMermaidConfig(params);
-    const code = decodeMermaidCode(params);
+    const codeRaw = decodeMermaidCode(params);
+    const mindmapMode = (params.get('mindmap') ?? 'convert') as 'convert' | 'sanitize' | 'keep';
+    const code = preprocessMermaid(codeRaw, mindmapMode);
 
     try {
+      // Ensure web fonts are loaded so Mermaid measures text accurately
+      if (document?.fonts?.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (fontError: unknown) {
+          console.warn('Font readiness wait failed', fontError);
+        }
+      }
       const result = await renderMermaid(config, code, `mermaid-${token}`);
       if (token !== renderToken) {
         return;
@@ -152,36 +493,106 @@
       panZoomInstance?.destroy();
 
       if (svgElement) {
+        // Expand viewBox to add virtual margins so zooming reveals that space
+        try {
+          const VIEW_MARGIN = 30;
+          const g = svgElement.querySelector('g');
+          const bbox = g ? (g as SVGGElement).getBBox() : svgElement.getBBox();
+          const nx = Math.floor(bbox.x - VIEW_MARGIN);
+          const ny = Math.floor(bbox.y - VIEW_MARGIN);
+          const nw = Math.ceil(bbox.width + 2 * VIEW_MARGIN);
+          const nh = Math.ceil(bbox.height + 2 * VIEW_MARGIN);
+          svgElement.setAttribute('viewBox', `${nx} ${ny} ${nw} ${nh}`);
+          svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+          const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+          style.textContent = `
+            foreignObject{overflow:visible}
+            /* Ensure HTML labels never clip and are vertically centered in their node */
+            .nodeLabel,.label{
+              display:flex;
+              align-items:center;          /* vertical centering */
+              justify-content:center;      /* horizontal centering */
+              height:100%;
+              width:100%;
+              text-align:center;
+              overflow:visible;
+              white-space:normal;
+              word-break:break-word;
+              overflow-wrap:anywhere;
+              line-height:1.25;
+              max-width:100%;
+              box-sizing:border-box;
+              padding-bottom:18px;         /* generous bottom breathing room */
+              margin:0;
+            }
+            .nodeLabel *,.label *{max-width:100%;box-sizing:border-box}
+            /* Improve edge label readability on busy backgrounds */
+            .edgeLabel text{paint-order:stroke;stroke:#fff;stroke-width:2px}
+          `;
+          svgElement.appendChild(style);
+        } catch (viewBoxError: unknown) {
+          console.warn('Unable to expand SVG viewBox', viewBoxError);
+        }
+
         panZoomInstance = panzoom(svgElement, {
           contain: true,
           controlIconsEnabled: false,
           fit: true,
           maxZoom: 12,
-          minZoom: 0.1,
+          minZoom: 0.05,
           panEnabled: true,
           zoomEnabled: true,
           zoomScaleSensitivity: 0.3
         });
 
-        const mediaQuery = window.matchMedia?.('(pointer: fine) and (min-width: 768px)');
-        const isDesktop = mediaQuery?.matches ?? false;
-        const maxDefaultZoom = isDesktop ? 2.2 : 1.4;
-        const zoomBoost = isDesktop ? 1.18 : 1.0;
-
-        panZoomInstance.resize();
-        panZoomInstance.fit();
-        panZoomInstance.center();
-
-        const currentZoom = panZoomInstance.getZoom();
-        const desiredZoom = Math.min(currentZoom * zoomBoost, maxDefaultZoom);
-        if (desiredZoom > currentZoom) {
-          panZoomInstance.zoom(desiredZoom);
+        const fitAndCenterWithMargin = () => {
+          if (!panZoomInstance || !surface) return;
+          panZoomInstance.resize();
+          panZoomInstance.fit();
           panZoomInstance.center();
+        };
+
+        fitAndCenterWithMargin();
+
+        // After initial layout, reduce label scale if any HTML label still overflows its box
+        const adjustOverflowLabels = () => {
+          const nodes = svgElement.querySelectorAll(
+            'foreignObject .nodeLabel, foreignObject .label'
+          );
+          nodes.forEach((n) => {
+            const el = n as HTMLElement;
+            // Flex centering is provided via injected CSS; avoid overriding with inline display
+            el.style.transformOrigin = el.style.transformOrigin || 'left top';
+            const cw = el.clientWidth;
+            const sw = el.scrollWidth;
+            if (sw > cw + 2 && cw > 0) {
+              const ratio = Math.max(0.85, Math.min(1, (cw / sw) * 0.98));
+              el.style.transform = `scale(${ratio})`;
+            }
+          });
+        };
+
+        // Allow the browser to paint once, then measure/adjust
+        requestAnimationFrame(() => requestAnimationFrame(adjustOverflowLabels));
+
+        // Refit on container or viewport size changes
+        if (window.ResizeObserver) {
+          const ro = new ResizeObserver(() => {
+            fitAndCenterWithMargin();
+            requestAnimationFrame(() => requestAnimationFrame(adjustOverflowLabels));
+          });
+          ro.observe(surface);
+        } else {
+          const handler = () => {
+            fitAndCenterWithMargin();
+            requestAnimationFrame(() => requestAnimationFrame(adjustOverflowLabels));
+          };
+          window.addEventListener('resize', handler);
         }
       }
 
       result.bindFunctions?.(surface);
-    } catch (err) {
+    } catch (err: unknown) {
       if (token !== renderToken) {
         return;
       }
