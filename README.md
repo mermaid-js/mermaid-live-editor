@@ -1,119 +1,63 @@
-[![Join our Discord!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=discord&label=discord)](https://discord.gg/sKeNQX4Wtj)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/27fa023d-7c73-4a3f-9791-b3b657a47100/deploy-status)](https://app.netlify.com/sites/mermaidjs/deploys)
+# Mermaid Renderer
 
-# Mermaid Live Editor
+A zero-UI, single-page Mermaid renderer built with SvelteKit. Point the browser to the app
+with Mermaid syntax encoded in the URL and it will render a full-viewport, pannable and
+zoomable SVG that can be embedded anywhere (including mobile WebViews).
 
-Edit, preview and share mermaid charts/diagrams.
-
-## Features
-
-- Edit and preview flowcharts, sequence diagrams, gantt diagrams in real time.
-- Save the result as a svg
-- Get a link to a viewer of the diagram so that you can share it with others.
-- Get a link to edit the diagram so that someone else can tweak it and send a new link back
-
-## Live demo
-
-You can try out a [live version](https://mermaid.live/).
-
-# Contributors are welcome!
-
-If you want to speed up the progress for mermaid-live-editor, join the Discord channel and contact knsv.
-
-## Docker
-
-### Run published image
+## Quick start
 
 ```bash
-docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid-live-editor
-```
-
-### To configure renderer URL
-
-When building set the MERMAID_RENDERER_URL build argument to the rendering
-service.
-Example:
-Default is`https://mermaid.ink`.
-Set to empty string to disable PNG and SVG links under Actions
-
-### To configure Kroki Instance URL
-
-When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki
-instance.
-Default is `https://kroki.io`
-Set to empty string to disable Kroki link under Actions
-
-### To configure Analytics
-
-When building set the MERMAID_ANALYTICS_URL build argument to your plausible instance, and MERMAID_DOMAIN to your domain.
-
-Default is empty, disabling analytics.
-
-### To enable Mermaid Chart links and promotion
-
-When building set the MERMAID_IS_ENABLED_MERMAID_CHART_LINKS build argument to `true`
-
-Default is empty, disabling button to save to Mermaid Chart and promotional banner.
-
-### To update the Security modal
-
-The modal shown on clicking the security link assumes analytics, renderer, Kroki
-and Mermaid chart are enabled. You can update it by modifying `Privacy.svelte`
-if you wish.
-
-### Development
-
-```bash
-docker compose up --build
-```
-
-Then open http://localhost:3000
-
-### Building and running images locally
-
-#### Build
-
-```bash
-docker build -t mermaid-js/mermaid-live-editor .
-```
-
-#### Run
-
-```bash
-docker run --detach --name mermaid-live-editor --publish 8080:8080 mermaid-js/mermaid-live-editor
-```
-
-Visit: <http://localhost:8080>
-
-#### Stop
-
-```bash
-docker stop mermaid-live-editor
-```
-
-## Setup
-
-Below link will help you making a copy of the repository in your local system.
-
-https://docs.github.com/en/get-started/quickstart/fork-a-repo
-
-## Requirements
-
-- [Node.js](https://nodejs.org/en/) current LTS version
-- [pnpm](https://pnpm.io/) package manager. Install with `corepack enable pnpm`
-
-## Development
-
-```sh
 pnpm install
-pnpm dev -- --open
+pnpm start
 ```
 
-This app is created with Svelte Kit.
+The development server runs on <http://localhost:5173> by default.
 
-## Release
+To generate a production bundle:
 
-When a PR is created targeting master, it will be built and deployed by Netlify.
-The URL will be indicated in a Comment in the PR.
+```bash
+pnpm build
+pnpm preview
+```
 
-Once the PR is merged, it will automatically be released.
+## Passing diagrams through the URL
+
+The renderer reads Mermaid syntax and theme configuration from query parameters. Provide
+at least one of `code`, `diagram`, `data`, `codeBase64`, or `code_b64`. If nothing is
+provided, a sample diagram is rendered.
+
+| Parameter                      | Purpose                                           |
+| ------------------------------ | ------------------------------------------------- |
+| `code` / `diagram` / `data`    | Mermaid definition (URI encoded).                 |
+| `encoding=base64`              | Treats the `code` value as base64.                |
+| `codeBase64` / `code_b64`      | Mermaid definition encoded in base64.             |
+| `theme`                        | Mermaid theme (`default`, `dark`, `forest`, ...). |
+| `background` / `bg`            | Background colour of the page and SVG.            |
+| `primaryColor` / `primary`     | Node fill colour.                                 |
+| `secondaryColor` / `secondary` | Secondary node fill colour.                       |
+| `accentColor` / `accent`       | Accent colour (tertiary areas).                   |
+| `lineColor` / `line`           | Edge and border colour.                           |
+| `textColor` / `text`           | Text colour override.                             |
+| `fontFamily` / `font`          | Font family applied to the SVG and container.     |
+
+Example:
+
+```
+https://your-host/?code=graph%20TD%0AA%5BStart%5D--%3E%7CActions%7C%20B%5BRender%5D&background=%230b1c2c&text=%23f7fafc&primary=%231f6feb
+```
+
+All parameters are optional; sensible defaults keep the renderer usable without any input.
+
+## Embedding tips
+
+- The application fills the viewport (`100vw` × `100dvh`), making it easy to place inside an
+  iframe or WebView.
+- Pan and zoom gestures work with both mouse and touch input thanks to
+  [`svg-pan-zoom`](https://github.com/svgdotjs/svg.pan-zoom.js).
+- Errors while parsing or rendering Mermaid are surfaced in-place so hosts can react or
+  display fallback UI around the iframe.
+
+## Documentation
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the high-level structure of the renderer and
+how the query parameters map into the rendering pipeline.
