@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "config:base",
+    ":rebaseStalePrs",
+    "group:allNonMajor",
+    "schedule:earlyMondays",
+    ":automergeMinor",
+    ":automergeTesters",
+    ":automergeLinters",
+    ":automergeTypes",
+    ":automergePatch"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^mermaid"],
+      "groupName": "Mermaid packages"
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ],
+  "dependencyDashboard": true,
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "dependencyDashboardAutoclose": true,
+  "rangeStrategy": "bump"
+}

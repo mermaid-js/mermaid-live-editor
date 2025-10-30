@@ -1,0 +1,17 @@
+.DS_Store
+.cache/
+.env.local
+.npmrc
+/.svelte-kit
+/build
+/coverage
+/docs
+/functions
+/node_modules
+/snapshots.js
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

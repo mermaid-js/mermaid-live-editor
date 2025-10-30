@@ -1,0 +1,6 @@
+#!/bin/bash
+pushd ../docs
+# find ./ -type f -exec sed -i 's/service-worker.js/mermaid-live-editor\/service-worker.js/g' {} \;
+find ./ -type f -exec sed -i 's/manifest.json/\/mermaid-live-editor\/manifest.json/g' {} \;
+find ./ -type f -exec sed -i 's/favicon.png/\/mermaid-live-editor\/favicon.png/g' {} \;
+popd

@@ -1,0 +1,18 @@
+{
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.svelte",
+    "static/**/*.js",
+    "static/**/*.json",
+    "playwright.config.ts",
+    "tests/**/*.ts"
+  ],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "types": ["vitest/importMeta", "@playwright/test"]
+  },
+  "extends": "./.svelte-kit/tsconfig.json"
+}

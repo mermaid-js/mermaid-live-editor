@@ -1,0 +1,62 @@
+name: Deploy Live Editor
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: sveltekit
+
+      - name: Build & Deploy
+        env:
+          MERMAID_DOMAIN: 'mermaid.live'
+          MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
+          MERMAID_RENDERER_URL: 'https://mermaid.ink'
+          MERMAID_KROKI_RENDERER_URL: 'https://kroki.io'
+          MERMAID_IS_ENABLED_MERMAID_CHART_LINKS: 'true'
+        run: |
+          export DEPLOY=true
+          [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
+          pnpm install
+          pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+  deploy:
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

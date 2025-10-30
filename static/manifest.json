@@ -1,0 +1,18 @@
+{
+	"short_name": "Mermaid",
+	"name": "Mermaid Live Editor",
+	"icons": [
+		{
+			"src": "/favicon.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": "/edit",
+	"background_color": "#ff3670",
+	"display": "standalone",
+	"scope": "/edit",
+	"theme_color": "#ff3670",
+	"description": "FlowChart & Diagrams Editor.",
+	"orientation": "natural"
+}

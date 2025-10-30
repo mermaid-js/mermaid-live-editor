@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Clone mermaid-js/docs parallel with the mermaid live editor.
+
+# git clone git@github.com:mermaid-js/docs.git
+# git clone https://github.com/mermaid-js/docs.git
+set -e
+rm -rf docs
+pnpm release
+pushd .
+if [ ! -d ../docs ]; then
+  echo "Clone https://github.com/mermaid-js/docs to parent folder before continuing." 
+  exit
+fi
+rm -rf ../docs/mermaid-live-editor-beta/* 
+cp -r docs/* ../docs/mermaid-live-editor-beta
+cd ../docs
+git add .
+git commit -m "Beta updated with latest changes"
+git push
+popd
