@@ -8,6 +8,7 @@
 </script>
 
 <script lang="ts">
+  import AIGenerator from './AIGenerator.svelte';
   import MainMenu from '$/components/MainMenu.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
   import { Button } from '$/components/ui/button';
@@ -55,6 +56,13 @@
       promotion: activePromotion.id
     });
   };
+
+  function handleAIGenerate(code: string) {
+    console.log('AI生成的代码:', code);
+    // 这里需要将代码传递给编辑器
+    // 例如：window.dispatchEvent(new CustomEvent('updateCode', { detail: code }));
+  }
+
 </script>
 
 {#if activePromotion}
@@ -131,6 +139,7 @@
   <div
     id="menu"
     class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
+    <AIGenerator onGenerate={handleAIGenerate} />
     <DropdownNavMenu icon={GithubIcon} links={githubLinks} />
     <Separator orientation="vertical" />
     {@render children()}
