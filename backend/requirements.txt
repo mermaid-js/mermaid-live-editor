@@ -1,0 +1,5 @@
+dashscope>=1.14.0
+flask
+flask-cors
+python-dotenv
+requests
