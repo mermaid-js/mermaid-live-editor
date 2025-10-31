@@ -143,8 +143,11 @@
     // Queue state changes to avoid race condition
     let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
+      pendingStateChange = pendingStateChange.then(() =>
+        handleStateChange(state).catch((e) => {
+          console.error('[View] handleStateChange error', e);
+        })
+      );
     });
   });
 </script>

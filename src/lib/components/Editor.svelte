@@ -3,6 +3,7 @@
   import McWrapper from '$/components/McWrapper.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import MobileEditor from '$/components/MobileEditor.svelte';
+  import AIGenerator from '$/components/AIGenerator.svelte';
   import { Button } from '$/components/ui/button';
   import { TID } from '$/constants';
   import { env } from '$/util/env';
@@ -40,6 +41,11 @@
 </script>
 
 <div class="flex h-full flex-col">
+  {#if $stateStore.editorMode === 'code'}
+    <div class="flex-none border-b bg-muted p-2">
+      <AIGenerator onGenerate={onUpdate} />
+    </div>
+  {/if}
   {#if isMobile}
     <MobileEditor {onUpdate} />
   {:else}
