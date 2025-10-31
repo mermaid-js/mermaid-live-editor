@@ -38,6 +38,7 @@ export class AIService {
   /**
    * 接收前端的自然语言描述，返回 Mermaid 代码
    */
+  // 完整的修复示例
   async generateMermaidCode(req: GenerateRequest): Promise<GenerateResult> {
     const description = req.description?.trim?.();
     if (!description) {
@@ -68,30 +69,30 @@ export class AIService {
           throw new Error(`HTTP ${resp.status} ${text}`);
         }
 
-        const data = (await resp.json()) as Record<string, unknown> | null;
+        const data = (await resp.json()) as Record<string, unknown>;
 
-        // 兼容后端返回的不同字段
-        const code =
-          (data && (data['code'] ?? data['mermaidCode'] ?? data['codeText'] ?? data['output'])) ??
-          null;
+        if (data && typeof data === 'object') {
+          const code =
+            data['code'] ?? data['mermaidCode'] ?? data['codeText'] ?? data['output'] ?? null;
 
-        if (!code) {
-          const errMsg = data.error || data.message || '未从后端获得 mermaid 代码';
-          return { success: false, error: String(errMsg) };
+          if (!code) {
+            const errMsg = data.error || data.message || '未从后端获得 mermaid 代码';
+            return { success: false, error: String(errMsg) };
+          }
+
+          const cleaned = AIService.extractMermaidCode(String(code)) || String(code);
+
+          return {
+            success: true,
+            mermaidCode: cleaned,
+            original: data.original ? String(data.original) : '', // 使用空字符串作为默认值
+            fixed: Boolean(data.fixed) // 强制转换为 boolean
+          };
+        } else {
+          return { success: false, error: '数据格式不正确' };
         }
-
-        // 确保剥离 ```mermaid ``` 标记
-        const cleaned = AIService.extractMermaidCode(String(code)) || String(code);
-
-        return {
-          success: true,
-          mermaidCode: cleaned,
-          original: data.original ?? String(code),
-          fixed: data.fixed ?? false
-        };
       } catch (err) {
         lastErr = err instanceof Error ? err : new Error(String(err));
-        // 若非最后一次尝试，则等待后重试
         if (attempt < this.maxRetries) {
           await AIService.delay(this.retryDelayMs * attempt);
         }
