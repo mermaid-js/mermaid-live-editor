@@ -1,14 +1,11 @@
-import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'path'; // ✅ 别忘了导入 path
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
-/**
- * HMR creates state inconsistencies, so we always reload the page.
- * @type {import('vite').PluginOption} PluginOption
- */
 const alwaysFullReload = {
   name: 'always-full-reload',
   handleHotUpdate({ server }) {
@@ -30,14 +27,22 @@ export default defineConfig({
     alwaysFullReload,
     devtoolsJson()
   ],
+
+  // ✅ 这里是主配置层级
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'), // "@/..." → src/
+      $: path.resolve(__dirname, 'src/lib') // "$/..." → src/lib/
+    }
+  },
+
   envPrefix: 'MERMAID_',
   server: { port: 3000, host: true },
   preview: { port: 3000, host: true },
+
   test: {
     environment: 'jsdom',
-    // in-source testing
     includeSource: ['src/**/*.{js,ts,svelte}'],
-    // Ignore E2E tests
     exclude: [
       'tests/**/*',
       '**/node_modules/**',

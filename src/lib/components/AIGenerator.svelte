@@ -1,4 +1,3 @@
-<!-- src/lib/components/AIGenerator.svelte -->
 <script lang="ts">
   export let onGenerate: (code: string) => void;
 
@@ -12,6 +11,8 @@
       alert('请输入图表描述');
       return;
     }
+    loading = true;
+    error = '';
 
     isLoading = true;
 

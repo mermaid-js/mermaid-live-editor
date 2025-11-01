@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI 生成测试 - 多输入回归</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 80px; }
+    button { padding: 8px 12px; margin: 6px 0; }
+    pre { background:#f6f8fa; padding:10px; border-radius:6px; }
+    table { width:100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:left; }
+  </style>
+</head>
+<body>
+  <h2>AI 多输入测试</h2>
+  <p>本页面使用 <code>services/aiService.browser.js</code> 与 <code>services/aiComponent.js</code> 进行多输入批量测试，结果展示在下方表格。</p>
+
+  <div>
+    <label>后端地址（包含路径）：</label>
+    <input id="baseUrl" style="width:60%" value="http://localhost:5000/api/generate-chart" />
+  </div>
+
+  <div>
+    <label>API Key（测试用，生产请勿在浏览器保存）：</label>
+    <input id="apiKey" style="width:60%" placeholder="sk-..." />
+  </div>
+
+  <div>
+    <label>Model：</label>
+    <select id="modelSelect"><option>qwen-max</option><option>qwen-plus</option><option>qwen-turbo</option></select>
+  </div>
+
+  <div>
+    <button id="runSamples">运行示例输入</button>
+  </div>
+
+  <table id="results">
+    <thead><tr><th>#</th><th>描述</th><th>状态</th><th>代码片段（前200字符）</th><th>备注</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module" src="./services/aiService.browser.js"></script>
+  <script type="module" src="./services/aiComponent.js"></script>
+  <script>
+    const samples = [
+      '生成一个用户登录的流程图，包含成功与失败分支',
+      '显示用户注册、邮箱验证和激活的时序图',
+      '绘制一个类图，描述用户、订单和商品之间的关系',
+      '画一个状态图，描述订单从创建到完成的状态机',
+      '需要一个饼图来显示市场份额：A 50%, B 30%, C 20%',
+      '简短：开始->结束',
+      '输入空描述',
+      '生成一个复杂的流程，包含条件判断、并行分支和子流程'
+    ];
+
+    const tbody = document.querySelector('#results tbody');
+    document.getElementById('runSamples').addEventListener('click', async () => {
+      tbody.innerHTML = '';
+      const baseUrl = document.getElementById('baseUrl').value.trim();
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const model = document.getElementById('modelSelect').value;
+
+      for (let i = 0; i < samples.length; i++) {
+        const desc = samples[i];
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${i+1}</td><td>${desc}</td><td>运行中</td><td>...</td><td></td>`;
+        tbody.appendChild(row);
+
+        try {
+          const code = await window.aiComponent.generate({
+            description: desc,
+            apiKey: apiKey || undefined,
+            model,
+            baseUrl,
+            timeoutMs: 25000,
+            retries: 2,
+            retryDelayMs: 800,
+            onLoading: (isLoading) => {
+              // no-op here
+            },
+            onRetry: (attempt, info) => {
+              row.cells[2].textContent = `重试 ${attempt}`;
+            },
+            onError: (errMsg) => {
+              row.cells[2].textContent = '错误';
+              row.cells[4].textContent = errMsg;
+            }
+          });
+
+          row.cells[2].textContent = '成功';
+          row.cells[3].textContent = code.substring(0, 200).replace(/\n/g, ' ');
+        } catch (err) {
+          row.cells[2].textContent = '失败';
+          row.cells[4].textContent = err.message || String(err);
+        }
+
+        // small delay between samples
+        await new Promise(r => setTimeout(r, 300));
+      }
+
+    });
+  </script>
+</body>
+</html>
