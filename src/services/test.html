@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mermaid图表生成器 - 自适应版</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .api-key-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, textarea, button {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-generate {
+            background-color: #2ecc71;
+        }
+        
+        .btn-generate:hover {
+            background-color: #27ae60;
+        }
+        
+        .api-status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status-loading {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        /* 编辑器区域样式 */
+        .editor-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .editor-container, .preview-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .code-editor {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            flex-grow: 1;
+            overflow: auto;
+            min-height: 300px;
+            border: 1px solid #ddd;
+        }
+        
+        .preview-display {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            overflow: auto;
+        }
+        
+        .mermaid-placeholder {
+            color: #7f8c8d;
+            text-align: center;
+        }
+        
+        .ai-input-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .ai-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        
+        .ai-input-group textarea {
+            flex: 1;
+            min-height: 80px;
+        }
+        
+        .ai-input-group button {
+            white-space: nowrap;
+        }
+        
+        .api-key-list {
+            margin-top: 15px;
+        }
+        
+        .api-key-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .key-masked {
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+        
+        .key-actions button {
+            padding: 5px 10px;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+        
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+        
+        .model-selector {
+            margin: 15px 0;
+        }
+        
+        .model-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .backend-status {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .backend-online {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .backend-offline {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .editor-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .editor-container, .preview-container {
+                min-height: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .editor-toolbar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .editor-actions {
+                justify-content: space-between;
+            }
+            
+            .ai-input-group {
+                flex-direction: column;
+            }
+            
+            .ai-input-group button {
+                align-self: flex-end;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                gap: 15px;
+            }
+            
+            .card {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .code-editor, .preview-display {
+                min-height: 250px;
+                padding: 10px;
+            }
+            
+            .editor-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .editor-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Mermaid图表生成器 - 自适应版</h1>
+        
+        <!-- 后端状态显示 -->
+        <div id="backend-status" class="backend-status" style="display: none;">
+            检查后端连接...
+        </div>
+        
+        <!-- API Key管理区域 -->
+        <div class="card">
+            <h2>API Key 管理</h2>
+            <div class="api-key-section">
+                <div class="input-group">
+                    <label for="api-key-name">API Key 名称</label>
+                    <input type="text" id="api-key-name" placeholder="输入API Key名称，例如：Qwen-Prod">
+                </div>
+                
+                <div class="input-group">
+                    <label for="api-key-value">API Key 值</label>
+                    <input type="text" id="api-key-value" placeholder="输入DashScope API Key">
+                </div>
+                
+                <button id="save-api-key">保存API Key</button>
+                
+                <div id="api-status" class="api-status"></div>
+                
+                <div class="api-key-list" id="api-key-list">
+                    <!-- API Key列表将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图表编辑和预览区域 -->
+        <div class="card">
+            <h2>图表编辑器 & 预览</h2>
+            
+            <div class="model-selector">
+                <label for="model-select">选择AI模型：</label>
+                <select id="model-select">
+                    <option value="qwen-max">Qwen-Max (最强)</option>
+                    <option value="qwen-plus">Qwen-Plus</option>
+                    <option value="qwen-turbo">Qwen-Turbo (最快)</option>
+                    <option value="qwen-7b-chat">Qwen-7B-Chat</option>
+                    <option value="qwen-14b-chat">Qwen-14B-Chat</option>
+                </select>
+            </div>
+            
+            <!-- AI输入区域 -->
+            <div class="ai-input-section">
+                <div class="input-group">
+                    <label for="chart-description">自然语言描述</label>
+                    <div class="ai-input-group">
+                        <textarea id="chart-description" placeholder="请详细描述您想要生成的图表，例如：创建一个显示用户从注册、登录到购买商品的完整流程图，包含错误处理分支"></textarea>
+                        <button id="generate-chart" class="btn-generate">
+                            <span id="generate-text">AI生成图表</span>
+                            <span id="generate-loading" class="loading" style="display: none;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="generation-status" class="api-status"></div>
+            
+            <!-- 编辑器和预览区域 -->
+            <div class="editor-section">
+                <div class="editor-container">
+                    <div class="editor-toolbar">
+                        <h3>Mermaid代码编辑器</h3>
+                        <div class="editor-actions">
+                            <button id="copy-code">复制代码</button>
+                            <button id="clear-editor">清空编辑器</button>
+                        </div>
+                    </div>
+                    <div id="code-editor" class="code-editor" contenteditable="true">
+// 生成的Mermaid代码将显示在这里
+// 您也可以直接在此编辑代码
+                    </div>
+                </div>
+                
+                <div class="preview-container">
+                    <div class="editor-toolbar">
+                        <h3>实时预览</h3>
+                        <div class="editor-actions">
+                            <button id="refresh-preview">刷新预览</button>
+                        </div>
+                    </div>
+                    <div id="preview-display" class="preview-display">
+                        <div class="mermaid-placeholder">图表预览区域</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./services/aiService.browser.js"></script>
+    <script>
+        // 后端API地址
+        const BACKEND_URL = 'http://localhost:5000';
+        
+        // 初始化Mermaid
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: 'default',
+            securityLevel: 'loose'
+        });
+        
+        // 检查后端连接状态
+        async function checkBackendStatus() {
+            const statusElement = document.getElementById('backend-status');
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/health`);
+                if (response.ok) {
+                    statusElement.textContent = '✅ 后端服务连接正常';
+                    statusElement.className = 'backend-status backend-online';
+                    statusElement.style.display = 'block';
+                    return true;
+                } else {
+                    throw new Error('后端服务异常');
+                }
+            } catch (error) {
+                statusElement.textContent = '❌ 后端服务未连接，请确保后端服务正在运行';
+                statusElement.className = 'backend-status backend-offline';
+                statusElement.style.display = 'block';
+                return false;
+            }
+        }
+        
+        // API Key管理功能
+        document.getElementById('save-api-key').addEventListener('click', function() {
+            const name = document.getElementById('api-key-name').value.trim();
+            const value = document.getElementById('api-key-value').value.trim();
+            const statusElement = document.getElementById('api-status');
+            
+            if (!name || !value) {
+                showStatus('请填写API Key名称和值', 'error');
+                return;
+            }
+            
+            if (!value.startsWith('sk-')) {
+                showStatus('API Key格式不正确，应以sk-开头', 'error');
+                return;
+            }
+            
+            saveApiKey(name, value);
+            showStatus('API Key保存成功！', 'success');
+            document.getElementById('api-key-name').value = '';
+            document.getElementById('api-key-value').value = '';
+            renderApiKeyList();
+        });
+        
+        // AI生成图表功能
+        document.getElementById('generate-chart').addEventListener('click', async function() {
+            const description = document.getElementById('chart-description').value.trim();
+            const selectedModel = document.getElementById('model-select').value;
+            const apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || [];
+            
+            if (!description) {
+                showGenerationStatus('请输入图表描述', 'error');
+                return;
+            }
+            
+            if (apiKeys.length === 0) {
+                showGenerationStatus('请先添加API Key', 'error');
+                return;
+            }
+            
+            // 检查后端连接
+            const backendOnline = await checkBackendStatus();
+            if (!backendOnline) {
+                showGenerationStatus('后端服务未连接，无法生成图表', 'error');
+                return;
+            }
+            
+            // 使用第一个保存的API Key
+            const apiKey = apiKeys[0].value;
+            
+            // 显示加载状态
+            setGenerateButtonLoading(true);
+            showGenerationStatus('正在调用AI生成图表...', 'loading');
+            
+            try {
+                const mermaidCode = await callBackendAPI(description, apiKey, selectedModel);
+                // 将生成的代码填入编辑器
+                document.getElementById('code-editor').textContent = mermaidCode;
+                // 立即渲染预览
+                renderMermaidPreview(mermaidCode);
+                showGenerationStatus('图表生成成功！', 'success');
+            } catch (error) {
+                console.error('API调用错误:', error);
+                showGenerationStatus('生成失败: ' + error.message, 'error');
+            } finally {
+                setGenerateButtonLoading(false);
+            }
+        });
+        
+        // 复制代码功能
+        document.getElementById('copy-code').addEventListener('click', function() {
+            const code = document.getElementById('code-editor').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showGenerationStatus('代码已复制到剪贴板', 'success');
+            }).catch(err => {
+                showGenerationStatus('复制失败: ' + err, 'error');
+            });
+        });
+        
+        // 清空编辑器功能
+        document.getElementById('clear-editor').addEventListener('click', function() {
+            document.getElementById('code-editor').textContent = '';
+            document.getElementById('preview-display').innerHTML = '<div class="mermaid-placeholder">图表预览区域</div>';
+            showGenerationStatus('编辑器已清空', 'success');
+        });
+        
+        // 刷新预览功能
+        document.getElementById('refresh-preview').addEventListener('click', function() {
+            const code = document.getElementById('code-editor').textContent;
+            if (code.trim()) {
+                renderMermaidPreview(code);
+                showGenerationStatus('预览已刷新', 'success');
+            } else {
+                showGenerationStatus('编辑器为空，无法刷新预览', 'error');
+            }
+        });
+        
+        // 编辑器内容变化时自动更新预览
+        document.getElementById('code-editor').addEventListener('input', function() {
+            const code = this.textContent;
+            if (code.trim()) {
+                // 防抖处理，避免频繁渲染
+                clearTimeout(this.debounceTimer);
+                this.debounceTimer = setTimeout(() => {
+                    renderMermaidPreview(code);
+                }, 1000);
+            }
+        });
+        
+        // 通过后端代理调用API（优先使用 window.aiServiceClient.generateMermaidCode，如果模块存在）
+        async function callBackendAPI(description, apiKey, model = 'qwen-max') {
+            // 优先使用注入的 aiServiceClient（在 services/aiService.browser.js 中定义）
+            try {
+                if (window.aiServiceClient && typeof window.aiServiceClient.generateMermaidCode === 'function') {
+                    const baseUrl = `${BACKEND_URL}/api/generate-chart`;
+                    const res = await window.aiServiceClient.generateMermaidCode({ description, apiKey, model, baseUrl });
+                    return res;
+                }
+
+                // 回退到直接 fetch 的方式
+                const response = await fetch(`${BACKEND_URL}/api/generate-chart`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        description: description,
+                        apiKey: apiKey,
+                        model: model
+                    })
+                });
+
+                if (!response.ok) {
+                    let errorText = '';
+                    try { errorText = await response.text(); } catch (e) {}
+                    throw new Error(errorText || `HTTP错误: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (!data.code) {
+                    throw new Error('未生成有效的代码');
+                }
+
+                return data.code;
+
+            } catch (error) {
+                throw new Error(`后端API调用失败: ${error.message}`);
+            }
+        }
+        
+        // 辅助函数
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('api-status');
+            statusElement.textContent = message;
+            statusElement.className = `api-status status-${type}`;
+            statusElement.style.display = 'block';
+            
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 3000);
+        }
+        
+        function showGenerationStatus(message, type) {
+            const statusElement = document.getElementById('generation-status');
+            statusElement.textContent = message;
+            statusElement.className = `api-status status-${type}`;
+            statusElement.style.display = 'block';
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    statusElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        function setGenerateButtonLoading(loading) {
+            const button = document.getElementById('generate-chart');
+            const text = document.getElementById('generate-text');
+            const loadingIcon = document.getElementById('generate-loading');
+            
+            if (loading) {
+                button.disabled = true;
+                text.textContent = '生成中...';
+                loadingIcon.style.display = 'inline-block';
+            } else {
+                button.disabled = false;
+                text.textContent = 'AI生成图表';
+                loadingIcon.style.display = 'none';
+            }
+        }
+        
+        function saveApiKey(name, value) {
+            let apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || [];
+            // 检查是否已存在同名Key
+            const existingIndex = apiKeys.findIndex(key => key.name === name);
+            if (existingIndex !== -1) {
+                apiKeys[existingIndex].value = value;
+            } else {
+                apiKeys.push({ name, value, id: Date.now() });
+            }
+            localStorage.setItem('apiKeys', JSON.stringify(apiKeys));
+        }
+        
+        function renderApiKeyList() {
+            const apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || [];
+            const listElement = document.getElementById('api-key-list');
+            
+            if (apiKeys.length === 0) {
+                listElement.innerHTML = '<p>暂无保存的API Key</p>';
+                return;
+            }
+            
+            listElement.innerHTML = apiKeys.map(key => `
+                <div class="api-key-item">
+                    <div>
+                        <strong>${key.name}</strong>
+                        <div class="key-masked">${maskApiKey(key.value)}</div>
+                    </div>
+                    <div class="key-actions">
+                        <button class="btn-delete" onclick="deleteApiKey(${key.id})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function maskApiKey(key) {
+            if (key.length <= 8) return '*'.repeat(key.length);
+            return key.substring(0, 6) + '*'.repeat(key.length - 10) + key.substring(key.length - 4);
+        }
+        
+        function deleteApiKey(id) {
+            let apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || [];
+            apiKeys = apiKeys.filter(key => key.id !== id);
+            localStorage.setItem('apiKeys', JSON.stringify(apiKeys));
+            renderApiKeyList();
+        }
+        
+        function renderMermaidPreview(code) {
+            const previewElement = document.getElementById('preview-display');
+            previewElement.innerHTML = '<div class="mermaid">' + code + '</div>';
+            
+            // 重新初始化Mermaid以渲染新图表
+            try {
+                mermaid.init(undefined, previewElement.querySelectorAll('.mermaid'));
+            } catch (error) {
+                console.error('Mermaid渲染错误:', error);
+                previewElement.innerHTML = '<div style="color: red; padding: 20px; text-align: center;">图表渲染错误: ' + error.message + '</div>';
+            }
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', async function() {
+            renderApiKeyList();
+            await checkBackendStatus();
+            
+            // 如果有保存的API Key，在控制台显示提示
+            const apiKeys = JSON.parse(localStorage.getItem('apiKeys')) || [];
+            if (apiKeys.length > 0) {
+                console.log('✅ 已加载保存的API Key，可以开始生成图表');
+            } else {
+                console.log('💡 请先添加DashScope API Key');
+            }
+        });
+        
+        // 暴露函数到全局作用域
+        window.deleteApiKey = deleteApiKey;
+    </script>
+</body>
+</html>

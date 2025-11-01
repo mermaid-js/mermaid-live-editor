@@ -8,7 +8,6 @@
 </script>
 
 <script lang="ts">
-  import AIGenerator from './AIGenerator.svelte';
   import MainMenu from '$/components/MainMenu.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
   import { Button } from '$/components/ui/button';
@@ -56,52 +55,33 @@
       promotion: activePromotion.id
     });
   };
-
-  function handleAIGenerate(code: string) {
-    console.log('AI生成的代码:', code);
-    // 这里需要将代码传递给编辑器
-    // 例如：window.dispatchEvent(new CustomEvent('updateCode', { detail: code }));
-  }
-
 </script>
 
 {#if activePromotion}
-  <div class="top-bar z-10 flex h-fit w-full bg-primary">
-    <div
-      class="flex flex-grow"
-      role="button"
-      tabindex="0"
-      onclick={trackBannerClick}
-      onkeypress={trackBannerClick}>
-      <activePromotion.component {closeBanner} />
-    </div>
-    {#snippet closeBanner()}
-      <Button
-        title="Dismiss banner"
-        variant="ghost"
-        class="hover:bg-transparent hover:text-[#261A56]"
-        size="sm"
-        onclick={() => {
-          dismissPromotion(activePromotion?.id);
-          activePromotion = undefined;
-        }}>
-        <CloseIcon />
-      </Button>
-    {/snippet}
+<div class="top-bar z-10 flex h-fit w-full bg-primary">
+  <div class="flex flex-grow" role="button" tabindex="0" onclick={trackBannerClick} onkeypress={trackBannerClick}>
+    <activePromotion.component {closeBanner} />
   </div>
+  {#snippet closeBanner()}
+  <Button title="Dismiss banner" variant="ghost" class="hover:bg-transparent hover:text-[#261A56]" size="sm"
+    onclick={()=> {
+    dismissPromotion(activePromotion?.id);
+    activePromotion = undefined;
+    }}>
+    <CloseIcon />
+  </Button>
+  {/snippet}
+</div>
 {/if}
 
 <nav class="z-50 flex p-4 sm:p-6">
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <div
-      id="switcher"
-      class="flex items-center justify-center gap-4 font-medium"
-      class:flex-row-reverse={isReferral}>
+    <div id="switcher" class="flex items-center justify-center gap-4 font-medium" class:flex-row-reverse={isReferral}>
       <a href="/" class="whitespace-nowrap text-accent">
         {#if !isReferral && !mobileToggle}
-          Mermaid
+        Mermaid
         {/if}
         Live Editor
       </a>
@@ -109,37 +89,27 @@
       <McWrapper>
         <div class="hidden items-center justify-center gap-4 md:flex">
           <Separator orientation="vertical" />
-          <Switch
-            id="editorMode"
-            class="data-[state=checked]:bg-secondary"
-            checked={isReferral}
-            onclick={() => {
-              logEvent('playgroundToggle', { isReferred: isReferral });
-              // Wait for the event to be logged
-              setTimeout(() => {
-                window.open(
-                  $urlsStore.mermaidChart({ medium: 'toggle' }).playground,
-                  '_self',
-                  // Do not send referrer header, if the user already came from playground
-                  isReferral ? 'noreferrer' : ''
-                );
-              }, 100);
+          <Switch id="editorMode" class="data-[state=checked]:bg-secondary" checked={isReferral} onclick={()=> {
+            logEvent('playgroundToggle', { isReferred: isReferral });
+            // Wait for the event to be logged
+            setTimeout(() => {
+            window.open(
+            $urlsStore.mermaidChart({ medium: 'toggle' }).playground,
+            '_self',
+            // Do not send referrer header, if the user already came from playground
+            isReferral ? 'noreferrer' : ''
+            );
+            }, 100);
             }} />
 
-          <a
-            href={$urlsStore.mermaidChart({ medium: 'toggle' }).playground}
-            class="whitespace-nowrap">
-            Playground <span class="hidden text-sm opacity-50 lg:inline"
-              >- more features, no account required</span>
-          </a>
+            <a href={$urlsStore.mermaidChart({ medium: 'toggle' }).playground} class="whitespace-nowrap">
+              Playground <span class="hidden text-sm opacity-50 lg:inline">- more features, no account required</span>
+            </a>
         </div>
       </McWrapper>
     </div>
   </div>
-  <div
-    id="menu"
-    class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
-    <AIGenerator onGenerate={handleAIGenerate} />
+  <div id="menu" class="hidden flex-nowrap items-center justify-between gap-3 overflow-hidden md:flex">
     <DropdownNavMenu icon={GithubIcon} links={githubLinks} />
     <Separator orientation="vertical" />
     {@render children()}
