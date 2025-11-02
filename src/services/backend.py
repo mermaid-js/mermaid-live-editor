@@ -10,6 +10,9 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+# 你的 API Key
+DASHSCOPE_API_KEY = "sk-ceedc33d580445b991bc563f998491e0"
+
 def validate_and_fix_mermaid_code(code):
     """
     验证和修复Mermaid代码的常见问题
@@ -39,107 +42,175 @@ def validate_and_fix_mermaid_code(code):
         elif 'title' in code and (' : ' in code or ':' in code):
             code = 'pie\n' + code
     
-    # 修复常见的中文引号问题
-    code = code.replace('“', '"').replace('”', '"').replace('‘', "'").replace('’', "'")
-    
-    # 确保有换行符
-    if '\n' not in code:
-        code = code.replace(';', ';\n').replace('{', '{\n').replace('}', '\n}')
-    
     return code
 
-@app.route('/api/generate-chart', methods=['POST'])
-def generate_chart():
+def call_dashscope_api(description):
     """
-    代理调用DashScope API生成图表
+    调用DashScope API
     """
     try:
-        data = request.json
-        description = data.get('description', '')
-        model = data.get('model', 'qwen-max')
-        api_key = data.get('apiKey', os.getenv('DASHSCOPE_API_KEY', ''))
+        # 方法1：使用新的API端点（兼容OpenAI格式）
+        url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
         
-        if not api_key:
-            return jsonify({'error': '未提供API Key'}), 400
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {DASHSCOPE_API_KEY}"
+        }
         
-        if not description:
-            return jsonify({'error': '未提供图表描述'}), 400
-
-        # 更详细的提示词
         prompt = f"""请将以下描述转换为正确、完整、可执行的Mermaid图表代码。
 
 要求：
 1. 只返回纯Mermaid代码，不要任何解释、注释或markdown标记
 2. 代码必须完整且语法正确
-3. 根据描述自动选择合适的图表类型：
-   - 流程、步骤 → graph TD 或 flowchart TD
-   - 交互、顺序 → sequenceDiagram
-   - 比例、百分比 → pie
-   - 状态变化 → stateDiagram
-   - 类关系 → classDiagram
+3. 根据描述自动选择合适的图表类型
 4. 使用中文标签
-5. 确保所有节点都有明确的标签
-6. 如果是流程图，使用 graph TD 或 flowchart TD
 
 描述：{description}
 
-请直接返回Mermaid代码："""
+Mermaid代码："""
 
-        # 调用DashScope API
-        response = requests.post(
-            'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation',
-            headers={
-                'Content-Type': 'application/json',
-                'Authorization': f'Bearer {api_key}'
-            },
-            json={
-                'model': model,
-                'input': {
-                    'messages': [
-                        {
-                            'role': 'user',
-                            'content': prompt
-                        }
-                    ]
-                },
-                'parameters': {
-                    'max_tokens': 1500,
-                    'temperature': 0.1
+        data = {
+            "model": "qwen-turbo",  # 使用qwen-turbo模型
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
                 }
-            },
-            timeout=30
-        )
+            ],
+            "temperature": 0.1,
+            "max_tokens": 2000
+        }
+        
+        print(f"调用DashScope API，描述: {description}")
+        response = requests.post(url, headers=headers, json=data, timeout=30)
+        
+        print(f"API响应状态: {response.status_code}")
         
         if response.status_code != 200:
-            error_msg = response.json().get('message', 'API调用失败')
-            return jsonify({'error': f'DashScope API错误: {error_msg}'}), 500
+            print(f"API错误响应: {response.text}")
+            return None
         
         result = response.json()
+        print(f"API返回: {result}")
         
-        if 'output' not in result or 'text' not in result['output']:
-            return jsonify({'error': 'API返回格式错误'}), 500
-        
-        # 获取生成的代码
-        generated_text = result['output']['text']
-        
-        # 验证和修复代码
-        fixed_code = validate_and_fix_mermaid_code(generated_text)
-        
-        return jsonify({
-            'code': fixed_code,
-            'original': generated_text,
-            'fixed': fixed_code != generated_text
-        })
-        
-    except requests.exceptions.Timeout:
-        return jsonify({'error': '请求超时，请重试'}), 500
+        # 解析响应
+        if 'choices' in result and len(result['choices']) > 0:
+            generated_text = result['choices'][0]['message']['content']
+            return generated_text.strip()
+        else:
+            print("无法解析API响应")
+            return None
+            
     except Exception as e:
-        return jsonify({'error': f'服务器错误: {str(e)}'}), 500
+        print(f"API调用异常: {str(e)}")
+        return None
 
-@app.route('/api/health', methods=['GET'])
+def generate_fallback_code(description):
+    """
+    API失败时的备选方案
+    """
+    desc_lower = description.lower()
+    
+    if any(word in desc_lower for word in ['流程', '步骤', '过程', 'flow']):
+        return f"""graph TD
+    A[开始] --> B["{description}"]
+    B --> C[处理中]
+    C --> D[完成]
+    
+    style A fill:#4CAF50
+    style D fill:#2196F3"""
+
+    elif any(word in desc_lower for word in ['序列', '时序', '顺序', 'sequence']):
+        return """sequenceDiagram
+    participant 用户
+    participant 系统
+    用户->>系统: 请求
+    系统->>用户: 响应"""
+
+    else:
+        return f"""graph LR
+    A[输入] --> B["{description}"]
+    B --> C[输出]"""
+
+@app.route('/api/generate-chart', methods=['POST'])
+def generate_chart():
+    """
+    生成图表接口
+    """
+    try:
+        data = request.json
+        description = data.get('description', '').strip()
+        
+        print(f"收到生成请求: {description}")
+        
+        if not description:
+            return jsonify({'error': '描述不能为空'}), 400
+
+        # 首先尝试调用DashScope API
+        generated_text = call_dashscope_api(description)
+        
+        if generated_text:
+            # 验证和修复代码
+            fixed_code = validate_and_fix_mermaid_code(generated_text)
+            print(f"API生成成功: {fixed_code}")
+            
+            return jsonify({
+                'code': fixed_code,
+                'success': True,
+                'message': 'AI生成成功',
+                'source': 'dashscope'
+            })
+        else:
+            # API调用失败，使用备选方案
+            print("API调用失败，使用备选方案")
+            fallback_code = generate_fallback_code(description)
+            
+            return jsonify({
+                'code': fallback_code,
+                'success': True,
+                'message': '使用本地生成（API不可用）',
+                'source': 'fallback'
+            })
+        
+    except Exception as e:
+        error_msg = f'服务器错误: {str(e)}'
+        print(f"生成失败: {error_msg}")
+        return jsonify({
+            'error': error_msg,
+            'success': False
+        }), 500
+
+@app.route('/health', methods=['GET'])
 def health_check():
-    """健康检查端点"""
-    return jsonify({'status': 'ok', 'message': '后端服务运行正常'})
+    return jsonify({
+        'status': 'healthy', 
+        'service': 'Mermaid AI Backend',
+        'api_key_set': bool(DASHSCOPE_API_KEY)
+    })
+
+@app.route('/test-api', methods=['GET'])
+def test_api():
+    """
+    测试API连接
+    """
+    try:
+        test_result = call_dashscope_api("测试流程图")
+        return jsonify({
+            'api_available': bool(test_result),
+            'test_result': test_result
+        })
+    except Exception as e:
+        return jsonify({
+            'api_available': False,
+            'error': str(e)
+        })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000, host='0.0.0.0')
+    print("=" * 60)
+    print("🚀 Mermaid AI 后端服务启动")
+    print(f"🔑 API Key: {'已设置' if DASHSCOPE_API_KEY else '未设置'}")
+    print("📍 访问地址: http://localhost:5000")
+    print("🧪 测试接口: http://localhost:5000/test-api")
+    print("=" * 60)
+    
+    app.run(host='0.0.0.0', port=5000, debug=True)
