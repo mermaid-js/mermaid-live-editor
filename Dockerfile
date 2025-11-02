@@ -22,6 +22,8 @@ ARG MERMAID_IS_ENABLED_MERMAID_CHART_LINKS
 
 COPY . ./
 
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 RUN pnpm build
 
 FROM mermaid-live-editor-builder AS mermaid-dev

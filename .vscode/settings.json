@@ -51,5 +51,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "explicit"
-  }
+  },
+  "liveServer.settings.port": 5501
 }
