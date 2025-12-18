@@ -9,24 +9,29 @@
   import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';
 
   let {
     panZoomState = new PanZoomState(),
     shouldShowGrid = true
   }: { panZoomState?: PanZoomState; shouldShowGrid?: boolean } = $props();
+
   let code = '';
   let config = '';
   let container: HTMLDivElement | undefined = $state();
-  let rough: boolean;
   let view: HTMLDivElement | undefined = $state();
+  let rough: boolean;
   let error = $state(false);
   let panZoom = true;
-  let manualUpdate = true;
   let waitForFontAwesomeToLoad: FontAwesome['waitForFontAwesomeToLoad'] | undefined = $state();
 
-  // Set up panZoom state observer to update the store when pan/zoom changes
+  let resizeObserver: ResizeObserver | undefined;
+  let latestState: ValidatedState | undefined;
+
+  /* -----------------------------------------
+     PAN / ZOOM OBSERVER
+  ----------------------------------------- */
   const setupPanZoomObserver = () => {
     panZoomState.onPanZoomChange = (pan, zoom) => {
       updateCodeStore({ pan, zoom });
@@ -42,110 +47,141 @@
     }
   };
 
+  /* -----------------------------------------
+     CORE RENDER HANDLER
+  ----------------------------------------- */
   const handleStateChange = async (state: ValidatedState) => {
+    latestState = state;
+
     const startTime = Date.now();
     if (state.error !== undefined) {
       error = true;
       return;
     }
+
     error = false;
     let diagramType: string | undefined;
+
     try {
-      if (container) {
-        manualUpdate = true;
-        // Do not render if there is no change in Code/Config/PanZoom
-        if (
-          code === state.code &&
-          config === state.mermaid &&
-          rough === state.rough &&
-          panZoom === state.panZoom
-        ) {
-          return;
-        }
+      if (!container) return;
 
-        if (!shouldRefreshView()) {
-          return;
-        }
-
-        code = state.code;
-        config = state.mermaid;
-        rough = state.rough;
-        panZoom = state.panZoom ?? true;
-
-        if (mayContainFontAwesome(code)) {
-          await waitForFontAwesomeToLoad?.();
-        }
-
-        const scroll = view?.parentElement?.scrollTop;
-        delete container.dataset.processed;
-        const viewID = uniqueID('graph-');
-        const {
-          svg,
-          bindFunctions,
-          diagramType: detectedDiagramType
-        } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
-        diagramType = detectedDiagramType;
-        if (svg.length > 0) {
-          // eslint-disable-next-line svelte/no-dom-manipulating
-          container.innerHTML = svg;
-          let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
-          if (!graphDiv) {
-            throw new Error('graph-div not found');
-          }
-          if (state.rough) {
-            const svg2roughjs = new Svg2Roughjs('#container');
-            svg2roughjs.svg = graphDiv;
-            await svg2roughjs.sketch();
-            graphDiv.remove();
-            const sketch = document.querySelector<SVGSVGElement>('#container > svg');
-            if (!sketch) {
-              throw new Error('sketch not found');
-            }
-            const height = sketch.getAttribute('height');
-            const width = sketch.getAttribute('width');
-            sketch.setAttribute('id', 'graph-div');
-            sketch.setAttribute('height', '100%');
-            sketch.setAttribute('width', '100%');
-            sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
-            sketch.style.maxWidth = '100%';
-            graphDiv = sketch;
-          } else {
-            graphDiv.setAttribute('height', '100%');
-            graphDiv.style.maxWidth = '100%';
-            if (bindFunctions) {
-              bindFunctions(graphDiv);
-            }
-          }
-          if (state.panZoom) {
-            handlePanZoom(state, graphDiv);
-          }
-        }
-        if (view?.parentElement && scroll) {
-          view.parentElement.scrollTop = scroll;
-        }
-        error = false;
-      } else if (manualUpdate) {
-        manualUpdate = false;
+      if (
+        code === state.code &&
+        config === state.mermaid &&
+        rough === state.rough &&
+        panZoom === state.panZoom
+      ) {
+        return;
       }
+
+      if (!shouldRefreshView()) return;
+
+      code = state.code;
+      config = state.mermaid;
+      rough = state.rough;
+      panZoom = state.panZoom ?? true;
+
+      if (mayContainFontAwesome(code)) {
+        await waitForFontAwesomeToLoad?.();
+      }
+
+      const scroll = view?.parentElement?.scrollTop;
+      delete container.dataset.processed;
+
+      const viewID = uniqueID('graph-');
+      const {
+        svg,
+        bindFunctions,
+        diagramType: detectedDiagramType
+      } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
+
+      diagramType = detectedDiagramType;
+
+      if (svg.length > 0) {
+        // eslint-disable-next-line svelte/no-dom-manipulating
+        container.innerHTML = svg;
+
+        let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
+        if (!graphDiv) throw new Error('graph-div not found');
+
+        if (state.rough) {
+          const svg2roughjs = new Svg2Roughjs('#container');
+          svg2roughjs.svg = graphDiv;
+          await svg2roughjs.sketch();
+          graphDiv.remove();
+
+          const sketch = document.querySelector<SVGSVGElement>('#container > svg');
+          if (!sketch) throw new Error('sketch not found');
+
+          const height = sketch.getAttribute('height');
+          const width = sketch.getAttribute('width');
+
+          sketch.setAttribute('id', 'graph-div');
+          sketch.setAttribute('height', '100%');
+          sketch.setAttribute('width', '100%');
+          sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
+          sketch.style.maxWidth = '100%';
+
+          graphDiv = sketch;
+        } else {
+          graphDiv.setAttribute('height', '100%');
+          graphDiv.style.maxWidth = '100%';
+          if (bindFunctions) bindFunctions(graphDiv);
+        }
+
+        if (state.panZoom) {
+          handlePanZoom(state, graphDiv);
+        }
+      }
+
+      if (view?.parentElement && scroll !== undefined) {
+        view.parentElement.scrollTop = scroll;
+      }
+
+      error = false;
     } catch (error_) {
       console.error('view fail', error_);
       error = true;
     }
+
     const renderTime = Date.now() - startTime;
     saveStatistics({ code, diagramType, isRough: state.rough, renderTime });
+
     recordRenderTime(renderTime, () => {
       $inputStateStore.updateDiagram = true;
     });
   };
 
+  /* -----------------------------------------
+     LIFECYCLE
+  ----------------------------------------- */
   onMount(() => {
     setupPanZoomObserver();
-    // Queue state changes to avoid race condition
+
     let pendingStateChange = Promise.resolve();
     stateStore.subscribe((state) => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
+      pendingStateChange = pendingStateChange.then(() =>
+        handleStateChange(state).catch((err) => {
+          console.debug('Deferred render skipped:', err);
+        })
+      );
     });
+
+    // ISSUE 5 FIX: re-render on container resize
+    if (container) {
+      resizeObserver = new ResizeObserver(() => {
+        if (latestState) {
+          handleStateChange(latestState).catch((err) => {
+            console.debug('Resize-triggered render skipped:', err);
+          });
+        }
+      });
+      resizeObserver.observe(container);
+    }
+  });
+
+  onDestroy(() => {
+    resizeObserver?.disconnect();
   });
 </script>
 
