@@ -52,7 +52,7 @@
 </script>
 
 {#if activePromotion}
-  <div class="top-bar bg-primary z-10 flex h-fit w-full">
+  <div class="top-bar z-10 flex h-fit w-full bg-primary">
     <div
       class="flex flex-grow"
       role="button"
@@ -81,7 +81,7 @@
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <a href="/" class="text-accent whitespace-nowrap">
+    <a href="/" class="whitespace-nowrap text-accent">
       {#if !mobileToggle}
         Mermaid
       {/if}

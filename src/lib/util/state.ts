@@ -5,9 +5,9 @@ import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
 import {
-    extractErrorLineText,
-    findMostRelevantLineNumber,
-    replaceLineNumberInErrorMessage
+  extractErrorLineText,
+  findMostRelevantLineNumber,
+  replaceLineNumberInErrorMessage
 } from './errorHandling';
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
