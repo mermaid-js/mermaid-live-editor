@@ -50,7 +50,9 @@
       svg = getSvgElement();
     }
 
-    svg.style.backgroundColor = window.getComputedStyle(document.body).getPropertyValue('--background');
+    svg.style.backgroundColor = window
+      .getComputedStyle(document.body)
+      .getPropertyValue('--background');
 
     const svgString = svg.outerHTML
       .replaceAll('<br>', '<br/>')
