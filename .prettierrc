@@ -4,7 +4,6 @@
   "bracketSameLine": true,
   "trailingComma": "none",
   "printWidth": 100,
-  "tailwindConfig": "./tailwind.config.js",
   "plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
   "tailwindStylesheet": "./src/app.css"
 }
