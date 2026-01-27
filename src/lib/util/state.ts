@@ -5,9 +5,9 @@ import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
 import {
-  extractErrorLineText,
-  findMostRelevantLineNumber,
-  replaceLineNumberInErrorMessage
+    extractErrorLineText,
+    findMostRelevantLineNumber,
+    replaceLineNumberInErrorMessage
 } from './errorHandling';
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
@@ -140,7 +140,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     mermaidChart: ({
       medium
     }: {
-      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'toggle';
+      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share';
     }) => {
       const params = new URLSearchParams({
         utm_source: C.utmSource,
