@@ -1,5 +1,6 @@
 [build.environment]
 	MERMAID_ANALYTICS_URL = 'https://p.mermaid.live'
+	MERMAID_DOCS_URL = 'https://mermaid.js.org'
 	MERMAID_DOMAIN = 'mermaid.live'
 	MERMAID_RENDERER_URL = 'https://mermaid.ink'
 	MERMAID_KROKI_RENDERER_URL = 'https://kroki.io'

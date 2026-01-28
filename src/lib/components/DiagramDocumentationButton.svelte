@@ -2,11 +2,12 @@
   import { Button } from '$/components/ui/button';
   import { TID } from '$/constants';
   import type { DocumentationConfig } from '$/types';
+  import { env } from '$/util/env';
   import { standardizeDiagramType } from '$/util/mermaid';
   import { stateStore } from '$/util/state';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
 
-  const docURLBase = 'https://mermaid.js.org';
+  const docURLBase = env.docsUrl;
   const docMap = {
     architecture: {
       code: '/syntax/architecture.html'
