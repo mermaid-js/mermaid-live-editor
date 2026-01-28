@@ -6,12 +6,19 @@
   let {
     children,
     ...props
-  }: Omit<ComponentProps<typeof ExternalLinkWrapper>, 'isVisible' | 'domain'> = $props();
+  }: Omit<
+    ComponentProps<typeof ExternalLinkWrapper>,
+    'isVisible' | 'domain' | 'showPopup'
+  > = $props();
+
+  const mermaidChartDomain = 'mermaid.ai';
+  const isMermaidAiDomain = env.domain === mermaidChartDomain;
 </script>
 
 <ExternalLinkWrapper
   {...props}
-  domain="MermaidChart.com"
-  isVisible={env.isEnabledMermaidChartLinks}>
+  domain={mermaidChartDomain}
+  isVisible={env.isEnabledMermaidChartLinks}
+  showPopup={!isMermaidAiDomain}>
   {@render children()}
 </ExternalLinkWrapper>
