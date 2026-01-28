@@ -35,7 +35,7 @@ export const initHandler = async (): Promise<void> => {
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
 export const MCBaseURL = env.isEnabledMermaidChartLinks
-  ? 'https://mermaidchart.com' // 'http://localhost:5174'
+  ? 'https://mermaid.ai' // 'http://localhost:5174'
   : 'https://example.com';
 
 let count = 0;

@@ -11,7 +11,8 @@
     side = 'bottom',
     labelPrefix = 'Opens your diagram in',
     isVisible = true,
-    sharesData = true
+    sharesData = true,
+    showPopup = true
   }: {
     children: Snippet;
     domain: string;
@@ -20,6 +21,7 @@
     labelPrefix?: string;
     isVisible?: boolean;
     sharesData?: boolean;
+    showPopup?: boolean;
   } = $props();
 
   let shouldDisableComponent = $derived(
@@ -35,25 +37,27 @@
           {@render children()}
         </div>
       </Tooltip.Trigger>
-      <Tooltip.Content {side} class="bg-secondary shadow-xl">
-        <div
-          class="flex cursor-help items-center gap-2"
-          title={sharesData
-            ? 'Your diagram will be sent to the external service'
-            : 'Your diagram is not shared'}>
-          {#if shouldDisableComponent}
-            <div class="text-muted-foreground">
-              This diagram type is not supported in {domain}
-            </div>
-          {:else}
-            <ExternalLinkIcon />
-            <span class="flex items-center gap-1">
-              {labelPrefix}
-              <div class="text-accent">{domain}</div>
-            </span>
-          {/if}
-        </div>
-      </Tooltip.Content>
+      {#if showPopup}
+        <Tooltip.Content {side} class="bg-secondary shadow-xl">
+          <div
+            class="flex cursor-help items-center gap-2"
+            title={sharesData
+              ? 'Your diagram will be sent to the external service'
+              : 'Your diagram is not shared'}>
+            {#if shouldDisableComponent}
+              <div class="text-muted-foreground">
+                This diagram type is not supported in {domain}
+              </div>
+            {:else}
+              <ExternalLinkIcon />
+              <span class="flex items-center gap-1">
+                {labelPrefix}
+                <div class="text-accent">{domain}</div>
+              </span>
+            {/if}
+          </div>
+        </Tooltip.Content>
+      {/if}
     </Tooltip.Root>
   </Tooltip.Provider>
 {/if}

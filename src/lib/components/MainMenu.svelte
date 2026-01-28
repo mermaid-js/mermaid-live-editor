@@ -2,6 +2,7 @@
   import McWrapper from '$/components/McWrapper.svelte';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
+  import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
@@ -41,13 +42,13 @@
     {
       label: 'Mermaid.js',
       icon: MermaidTailIcon,
-      href: 'https://mermaid.js.org/',
+      href: env.docsUrl,
       renderer: menuItem
     },
     {
       label: 'Documentation',
       icon: BookIcon,
-      href: 'https://mermaid.js.org/intro/',
+      href: `${env.docsUrl}/intro/`,
       renderer: menuItem
     },
     {

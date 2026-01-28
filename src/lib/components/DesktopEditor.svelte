@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { EditorProps } from '$/types';
+  import { env } from '$/util/env';
   import { stateStore } from '$/util/state';
   import { initEditor } from '$lib/util/monacoExtra';
   import { errorDebug } from '$lib/util/util';
@@ -52,7 +53,7 @@
       schemas: [
         {
           fileMatch: ['config.json'],
-          uri: 'https://mermaid.js.org/schemas/config.schema.json'
+          uri: `${env.docsUrl}/schemas/config.schema.json`
         }
       ]
     });
