@@ -140,7 +140,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     mermaidChart: ({
       medium
     }: {
-      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'toggle';
+      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share';
     }) => {
       const params = new URLSearchParams({
         utm_source: C.utmSource,
