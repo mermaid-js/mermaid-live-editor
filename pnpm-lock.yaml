@@ -42,8 +42,8 @@ importers:
         specifier: ^0.1.9
         version: 0.1.9(mermaid@11.12.0)
       '@mermaid-js/layout-tidy-tree':
-        specifier: ^0.2.0
-        version: 0.2.0(mermaid@11.12.0)
+        specifier: ^0.2.1
+        version: 0.2.1(mermaid@11.12.0)
       '@mermaid-js/mermaid-zenuml':
         specifier: ^0.2.2
         version: 0.2.2(mermaid@11.12.0)
@@ -792,8 +792,8 @@ packages:
     peerDependencies:
       mermaid: ^11.0.2
 
-  '@mermaid-js/layout-tidy-tree@0.2.0':
-    resolution: {integrity: sha512-0bZFuMQKgpW16cQ4MlUkLTi8l4UUz1pQ0tokGAuR/uVSo2BYvixYBPGxYm13fyQ5M/UUSjUQQ0Zo2nrWUKPwSA==}
+  '@mermaid-js/layout-tidy-tree@0.2.1':
+    resolution: {integrity: sha512-LZFmu6SZmAR5N/aesR7ya5JwEjCrGh7J64n7vFmHqVDHDJjIx+LsEi0dmt0WTYbP4wdKFLLykpvRsemRgAnLXA==}
     peerDependencies:
       mermaid: ^11.0.2
 
@@ -2858,9 +2858,6 @@ packages:
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
-  non-layered-tidy-tree-layout@2.0.2:
-    resolution: {integrity: sha512-gkXMxRzUH+PB0ax9dUN0yYF0S25BqeAYqhgMaLUFmpXLEk7Fcu8f4emJuOAY0V8kjDICxROIKsTAKsV/v355xw==}
-
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -4676,11 +4673,10 @@ snapshots:
       elkjs: 0.9.3
       mermaid: 11.12.0
 
-  '@mermaid-js/layout-tidy-tree@0.2.0(mermaid@11.12.0)':
+  '@mermaid-js/layout-tidy-tree@0.2.1(mermaid@11.12.0)':
     dependencies:
       d3: 7.9.0
       mermaid: 11.12.0
-      non-layered-tidy-tree-layout: 2.0.2
 
   '@mermaid-js/mermaid-zenuml@0.2.2(mermaid@11.12.0)':
     dependencies:
@@ -5311,7 +5307,7 @@ snapshots:
       '@vue/compiler-ssr': 3.5.13
       '@vue/shared': 3.5.13
       estree-walker: 2.0.2
-      magic-string: 0.30.17
+      magic-string: 0.30.21
       postcss: 8.5.6
       source-map-js: 1.2.1
     optional: true
@@ -6873,8 +6869,6 @@ snapshots:
       he: 1.2.0
 
   node-releases@2.0.19: {}
-
-  non-layered-tidy-tree-layout@2.0.2: {}
 
   normalize-path@3.0.0: {}
 
