@@ -126,6 +126,7 @@
         popupPosition = {
           top: mouseEvent.posy - rect.top
         };
+        e.event.browserEvent.stopPropagation();
         showPopup = !showPopup;
         renderQuickEditHint();
       }

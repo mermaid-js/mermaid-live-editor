@@ -14,6 +14,7 @@
   let { top, show, suggestion = $bindable(), onClose, onTryFree }: Props = $props();
 
   let textarea = $state<HTMLTextAreaElement>();
+  let container = $state<HTMLDivElement>();
 
   function resizeTextarea() {
     if (!textarea) return;
@@ -37,10 +38,25 @@
       resizeTextarea();
     }
   });
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (show && e.key === 'Escape') {
+      onClose();
+    }
+  }
+
+  function handleOutsideClick(e: MouseEvent) {
+    if (show && container && e.target instanceof Node && !container.contains(e.target)) {
+      onClose();
+    }
+  }
 </script>
+
+<svelte:window onkeydown={handleKeydown} onmousedown={handleOutsideClick} />
 
 {#if show}
   <div
+    bind:this={container}
     class={cn(
       'button-container-for-animation absolute right-4 left-12 z-50 flex flex-col gap-2 rounded-xl border-2 border-border bg-background p-2 shadow-xl dark:border-border-dark dark:bg-secondary',
       !suggestion.trim() && 'rainbow-border'
