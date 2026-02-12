@@ -29,6 +29,7 @@
   let decorationsCollection: monaco.editor.IEditorDecorationsCollection | undefined;
   let hintCollection: monaco.editor.IEditorDecorationsCollection | undefined;
   let suggestion = $state('');
+  let lastMouseLine = 0;
 
   const quickEditHintStyle = `--quick-edit-hint-text: '${isMac ? 'Quick edit (⌘⏎)' : 'Quick edit (Ctrl+⏎)'}'`;
 
@@ -45,26 +46,41 @@
 
   const renderQuickEditHint = () => {
     hintCollection?.clear();
+    decorationsCollection?.clear();
     if (!editor || showPopup) {
       return;
     }
     const model = editor.getModel();
     const position = editor.getPosition();
-    if (!model || !position) {
+    if (!model) {
       return;
     }
 
-    const { lineNumber } = position;
-    if (model.getLineContent(lineNumber).trim() === '') {
-      const column = model.getLineMaxColumn(lineNumber);
-      hintCollection?.set([
+    if (lastMouseLine > 0 && model.id === mermaidModel.id) {
+      decorationsCollection?.set([
         {
-          range: new monaco.Range(lineNumber, column, lineNumber, column),
+          range: new monaco.Range(lastMouseLine, 1, lastMouseLine, 1),
           options: {
-            afterContentClassName: 'quick-edit-hint'
+            isWholeLine: true,
+            glyphMarginClassName: 'suggestion-icon'
           }
         }
       ]);
+    }
+
+    if (position) {
+      const { lineNumber } = position;
+      if (model.getLineContent(lineNumber).trim() === '') {
+        const column = model.getLineMaxColumn(lineNumber);
+        hintCollection?.set([
+          {
+            range: new monaco.Range(lineNumber, column, lineNumber, column),
+            options: {
+              afterContentClassName: 'quick-edit-hint'
+            }
+          }
+        ]);
+      }
     }
   };
 
@@ -113,6 +129,19 @@
         showPopup = !showPopup;
         renderQuickEditHint();
       }
+    });
+
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+      const position = editor?.getPosition();
+      if (position) {
+        popupPosition = {
+          top:
+            (editor?.getTopForLineNumber(position.lineNumber) ?? 0) - (editor?.getScrollTop() ?? 0)
+        };
+        showPopup = true;
+      }
+
+      renderQuickEditHint();
     });
 
     editor.onDidChangeCursorPosition(() => {
@@ -164,24 +193,13 @@
       if (showPopup) return;
       if (editor.getModel()?.id !== mermaidModel.id) return;
 
-      if (e.target.position?.lineNumber) {
-        const line = e.target.position.lineNumber;
-        decorationsCollection?.set([
-          {
-            range: new monaco.Range(line, 1, line, 1),
-            options: {
-              isWholeLine: true,
-              glyphMarginClassName: 'suggestion-icon'
-            }
-          }
-        ]);
-      } else {
-        decorationsCollection?.clear();
-      }
+      lastMouseLine = e.target.position?.lineNumber ?? 0;
+      renderQuickEditHint();
     });
 
     editor.onMouseLeave(() => {
-      decorationsCollection?.clear();
+      lastMouseLine = 0;
+      renderQuickEditHint();
     });
 
     const unsubscribeMode = mode.subscribe((mode) => {
@@ -219,12 +237,12 @@
     top={popupPosition.top}
     show={showPopup}
     bind:suggestion
-    onclose={() => {
+    onClose={() => {
       showPopup = false;
       suggestion = '';
       renderQuickEditHint();
     }}
-    ontryFree={() => {
+    onTryFree={() => {
       window.open($urlsStore.mermaidChart({ medium: 'vibe_diagramming' }).save, '_blank');
       showPopup = false;
       suggestion = '';

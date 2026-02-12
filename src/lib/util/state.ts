@@ -11,7 +11,7 @@ import {
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, pakoSerde, serializeState } from './serde';
-import { errorDebug, formatJSON, getSource, MCBaseURL } from './util';
+import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
 
 export const defaultState: State = {
   code: `flowchart TD
@@ -141,7 +141,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     }: {
       medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'vibe_diagramming';
     }) => {
-      const utmSource = getSource();
+      const utmSource = getUTMSource();
       const params = new URLSearchParams({
         utm_source: utmSource,
         utm_medium: medium
