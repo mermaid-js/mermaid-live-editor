@@ -262,14 +262,6 @@
     opacity: 0.6;
   }
 
-  :global(.ai-glyph-margin) {
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="%23a855f7" d="M9 21.035l-1.185-5.917L2 14.154l5.815-1.139L9 7.098l1.328 5.917l5.672 1.139l-5.672 1.157L9 21.035zM15.42 11.22l-1.614-2.822l-2.86-.948l2.86-.928l1.614-2.86l1.248 2.86l2.902.928l-2.902.948l-1.248 2.822zm2.083 10.39l-1.04-2.583l-2.607-.647l2.607-.625l1.04-2.606l.855 2.606l2.585.625l-2.585.647l-.855 2.583z"%2F%3E%3C%2Fsvg%3E');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    cursor: pointer;
-  }
-
   :global(.suggestion-icon) {
     background-color: #e8eaf9;
     width: 20px !important;
