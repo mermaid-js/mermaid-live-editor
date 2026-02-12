@@ -10,5 +10,6 @@ export const TID = {
 } as const;
 
 export const C = {
+  aiLiveEditor: 'ai_live_editor',
   utmSource: 'mermaid_live_editor'
 } as const;

@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { EditorProps } from '$/types';
   import { env } from '$/util/env';
-  import { stateStore } from '$/util/state';
+  import { stateStore, urlsStore } from '$/util/state';
+  import { isMac } from '$/util/util';
   import { initEditor } from '$lib/util/monacoExtra';
   import { errorDebug } from '$lib/util/util';
   import { mode } from 'mode-watcher';
@@ -9,6 +10,7 @@
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
   import { onMount } from 'svelte';
+  import AIGlyphPopup from './AIGlyphPopup.svelte';
 
   const { onUpdate }: EditorProps = $props();
 
@@ -18,9 +20,17 @@
     minimap: {
       enabled: false
     },
-    overviewRulerLanes: 0
+    overviewRulerLanes: 0,
+    glyphMargin: true
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
+  let showPopup = $state(false);
+  let popupPosition = $state({ top: 0 });
+  let decorationsCollection: monaco.editor.IEditorDecorationsCollection | undefined;
+  let hintCollection: monaco.editor.IEditorDecorationsCollection | undefined;
+  let suggestion = $state('');
+
+  const quickEditHintStyle = `--quick-edit-hint-text: '${isMac ? 'Quick edit (⌘⏎)' : 'Quick edit (Ctrl+⏎)'}'`;
 
   const jsonModel = monaco.editor.createModel(
     '',
@@ -32,6 +42,31 @@
     'mermaid',
     monaco.Uri.parse('internal://mermaid.mmd')
   );
+
+  const renderQuickEditHint = () => {
+    hintCollection?.clear();
+    if (!editor || showPopup) {
+      return;
+    }
+    const model = editor.getModel();
+    const position = editor.getPosition();
+    if (!model || !position) {
+      return;
+    }
+
+    const { lineNumber } = position;
+    if (model.getLineContent(lineNumber).trim() === '') {
+      const column = model.getLineMaxColumn(lineNumber);
+      hintCollection?.set([
+        {
+          range: new monaco.Range(lineNumber, column, lineNumber, column),
+          options: {
+            afterContentClassName: 'quick-edit-hint'
+          }
+        }
+      ]);
+    }
+  };
 
   onMount(() => {
     self.MonacoEnvironment = {
@@ -61,7 +96,31 @@
     initEditor(monaco);
     errorDebug();
     editor = monaco.editor.create(divElement, editorOptions);
+    decorationsCollection = editor.createDecorationsCollection([]);
+    hintCollection = editor.createDecorationsCollection([]);
+
+    editor.onMouseDown((e) => {
+      if (
+        e.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN &&
+        e.target.position?.lineNumber
+      ) {
+        const mouseEvent = e.event;
+        if (!divElement) return;
+        const rect = divElement.getBoundingClientRect();
+        popupPosition = {
+          top: mouseEvent.posy - rect.top
+        };
+        showPopup = !showPopup;
+        renderQuickEditHint();
+      }
+    });
+
+    editor.onDidChangeCursorPosition(() => {
+      renderQuickEditHint();
+    });
+
     editor.onDidChangeModelContent(({ isFlush }) => {
+      renderQuickEditHint();
       const newText = editor?.getValue();
       if (!newText || currentText === newText || isFlush) {
         return;
@@ -79,6 +138,12 @@
 
       if (editor.getModel()?.id !== model.id) {
         editor.setModel(model);
+        renderQuickEditHint();
+      }
+
+      // Clear decorations if not in 'code' mode, or if the model changes
+      if (editorMode !== 'code' || editor.getModel()?.id !== mermaidModel.id) {
+        decorationsCollection?.clear();
       }
 
       // Update editor text if it's different
@@ -87,10 +152,36 @@
         editor.setScrollTop(0);
         editor.setValue(newText);
         currentText = newText;
+        renderQuickEditHint();
       }
 
       // Display/clear errors
       monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
+    });
+
+    editor.onMouseMove((e) => {
+      if (!editor) return;
+      if (showPopup) return;
+      if (editor.getModel()?.id !== mermaidModel.id) return;
+
+      if (e.target.position?.lineNumber) {
+        const line = e.target.position.lineNumber;
+        decorationsCollection?.set([
+          {
+            range: new monaco.Range(line, 1, line, 1),
+            options: {
+              isWholeLine: true,
+              glyphMarginClassName: 'suggestion-icon'
+            }
+          }
+        ]);
+      } else {
+        decorationsCollection?.clear();
+      }
+    });
+
+    editor.onMouseLeave(() => {
+      decorationsCollection?.clear();
     });
 
     const unsubscribeMode = mode.subscribe((mode) => {
@@ -109,6 +200,8 @@
       resizeObserver.observe(divElement);
     }
 
+    renderQuickEditHint();
+
     return () => {
       unsubscribeState();
       unsubscribeMode();
@@ -120,4 +213,54 @@
   });
 </script>
 
-<div bind:this={divElement} id="editor" class="h-full flex-grow overflow-hidden"></div>
+<div class="relative h-full grow overflow-hidden" style={quickEditHintStyle}>
+  <div bind:this={divElement} id="editor" class="h-full w-full"></div>
+  <AIGlyphPopup
+    top={popupPosition.top}
+    show={showPopup}
+    bind:suggestion
+    onclose={() => {
+      showPopup = false;
+      suggestion = '';
+      renderQuickEditHint();
+    }}
+    ontryFree={() => {
+      window.open($urlsStore.mermaidChart({ medium: 'vibe_diagramming' }).save, '_blank');
+      showPopup = false;
+      suggestion = '';
+      renderQuickEditHint();
+    }} />
+</div>
+
+<style>
+  :global(.quick-edit-hint::after) {
+    content: var(--quick-edit-hint-text);
+    color: #a1a1aa;
+    font-size: small;
+    pointer-events: none;
+    user-select: none;
+    margin-left: 4px;
+    opacity: 0.6;
+  }
+
+  :global(.ai-glyph-margin) {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="%23a855f7" d="M9 21.035l-1.185-5.917L2 14.154l5.815-1.139L9 7.098l1.328 5.917l5.672 1.139l-5.672 1.157L9 21.035zM15.42 11.22l-1.614-2.822l-2.86-.948l2.86-.928l1.614-2.86l1.248 2.86l2.902.928l-2.902.948l-1.248 2.822zm2.083 10.39l-1.04-2.583l-2.607-.647l2.607-.625l1.04-2.606l.855 2.606l2.585.625l-2.585.647l-.855 2.583z"%2F%3E%3C%2Fsvg%3E');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  :global(.suggestion-icon) {
+    background-color: #e8eaf9;
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 4px;
+    background-image: url('/icons/use-chat.svg');
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>

@@ -1,3 +1,4 @@
+import { C } from '../constants';
 import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
@@ -9,6 +10,13 @@ export const getDomain = (url?: string): string => {
   if (!url) return '';
   const domain = new URL(url).hostname;
   return domain;
+};
+
+export const getSource = (): string => {
+  if (typeof window !== 'undefined' && window.location.host.includes('mermaid.ai')) {
+    return C.aiLiveEditor;
+  }
+  return C.utmSource;
 };
 
 export const loadStateFromURL = (): void => {
