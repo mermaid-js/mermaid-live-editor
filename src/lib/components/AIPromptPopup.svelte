@@ -4,17 +4,30 @@
   import CloseIcon from '~icons/material-symbols/close-rounded';
 
   interface Props {
-    top: number;
     show: boolean;
-    suggestion: string;
+    input: string;
     onClose: () => void;
+    onHeightChange?: (height: number) => void;
     onTryFree: () => void;
   }
 
-  let { top, show, suggestion = $bindable(), onClose, onTryFree }: Props = $props();
+  let { show, input = $bindable(), onClose, onHeightChange, onTryFree }: Props = $props();
 
   let textarea = $state<HTMLTextAreaElement>();
   let container = $state<HTMLDivElement>();
+
+  $effect(() => {
+    if (!container || !onHeightChange) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target instanceof HTMLElement) {
+          onHeightChange(entry.target.offsetHeight);
+        }
+      }
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  });
 
   function resizeTextarea() {
     if (!textarea) return;
@@ -34,7 +47,7 @@
   }
 
   $effect(() => {
-    if (suggestion !== undefined) {
+    if (input !== undefined) {
       resizeTextarea();
     }
   });
@@ -58,21 +71,20 @@
   <div
     bind:this={container}
     class={cn(
-      'button-container-for-animation absolute right-4 left-12 z-50 flex flex-col gap-2 rounded-xl border-2 border-border bg-background p-2 shadow-xl dark:border-border-dark dark:bg-secondary',
-      !suggestion.trim() && 'rainbow-border'
+      'button-container-for-animation relative z-50 mr-6 flex w-auto flex-col gap-2 rounded-xl border-2 border-border bg-background p-2 shadow-xl dark:border-border-dark dark:bg-secondary',
+      !input.trim() && 'rainbow-border'
     )}
-    style="top: {top}px;"
     role="dialog"
     aria-modal="true"
     tabindex="-1">
     <div class="relative flex min-h-2 items-start gap-1 px-1">
       <textarea
         bind:this={textarea}
-        bind:value={suggestion}
+        bind:value={input}
         onkeydown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            if (suggestion.trim()) {
+            if (input.trim()) {
               onTryFree();
             }
           }
@@ -88,9 +100,8 @@
 
     <div class="flex items-center justify-between">
       <span class="font-recursive text-xs font-normal text-foreground dark:text-foreground"
-        >Signup to Mermaid.ai to try AI</span>
+        >Sign Up at Mermaid.ai to try AI</span>
       <Button
-        disabled={!suggestion.trim()}
         class="font-recursive h-6 w-16 gap-1.5 rounded-sm bg-accent p-1 text-xs font-medium text-white no-underline hover:bg-accent/90 hover:text-white hover:no-underline active:bg-accent/80 dark:bg-accent dark:text-white! dark:hover:bg-accent/90 dark:active:bg-accent/80"
         onclick={onTryFree}>
         Try free
