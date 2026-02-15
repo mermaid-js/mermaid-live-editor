@@ -27,9 +27,70 @@
   const getFileName = (extension: string) =>
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
+  /**
+   * Fix text visibility issues in exported SVG.
+   * Handles <text> elements and <foreignObject> elements (Mermaid's text containers).
+   */
+  const ensureTextVisibility = (svg: HTMLElement) => {
+    const textElements = svg.querySelectorAll('text, tspan');
+    const foreignObjects = svg.querySelectorAll('foreignObject');
+
+    // Fix <text> elements with CJK characters
+    textElements.forEach((el) => {
+      if (el.getAttribute('data-text-fixed') === 'true') {
+        return;
+      }
+
+      const text = el.textContent || '';
+      const hasCJK = /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]/.test(text);
+
+      if (hasCJK) {
+        el.setAttribute('dominant-baseline', 'middle');
+        el.setAttribute('data-text-fixed', 'true');
+      }
+    });
+
+    // Fix <foreignObject> elements (Mermaid's primary text containers)
+    foreignObjects.forEach((foreignObj) => {
+      const content = foreignObj.textContent || '';
+      const hasCJK = /[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]/.test(content);
+
+      if (hasCJK) {
+        // Increase foreignObject height to prevent CJK text clipping
+        const currentHeight = parseFloat(foreignObj.getAttribute('height') || '24');
+        const currentY = parseFloat(foreignObj.getAttribute('y') || '0');
+        const newHeight = currentHeight * 1.5;
+
+        // Adjust y coordinate to compensate for height increase, keeping text visually centered
+        const heightDiff = newHeight - currentHeight;
+        const newY = currentY - heightDiff / 2;
+
+        foreignObj.setAttribute('height', newHeight.toString());
+        foreignObj.setAttribute('y', newY.toString());
+
+        // Apply vertical centering styles to inner HTML elements
+        const htmlElements = foreignObj.querySelectorAll('div, span, p');
+        htmlElements.forEach((htmlEl) => {
+          const el = htmlEl as HTMLElement;
+          el.style.display = 'flex';
+          el.style.alignItems = 'center';
+          el.style.justifyContent = 'center';
+          el.style.height = '100%';
+          el.style.lineHeight = '1.2';
+        });
+      }
+    });
+  };
+
   const getSvgElement = () => {
     const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
     svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+
+    // Ensure CJK text visibility in hand-drawn (rough) mode export
+    if ($stateStore.rough) {
+      ensureTextVisibility(svgElement);
+    }
+
     return svgElement;
   };
 
