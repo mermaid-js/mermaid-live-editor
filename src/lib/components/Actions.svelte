@@ -60,11 +60,6 @@
   const getSvgElement = () => {
     const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
     svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-
-    if ($stateStore.rough) {
-      fixForeignObjectClipping(svgElement);
-    }
-
     return svgElement;
   };
 
@@ -83,6 +78,10 @@
 
     if (!svg) {
       svg = getSvgElement();
+    }
+
+    if ($stateStore.rough) {
+      fixForeignObjectClipping(svg);
     }
 
     svg.style.backgroundColor = window
