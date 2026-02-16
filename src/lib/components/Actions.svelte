@@ -117,18 +117,25 @@ ${svgString}`);
 
     const box = svg.getBoundingClientRect();
 
+    // In rough mode, SVG has width/height="100%" so getBoundingClientRect returns
+    // the container size, not the actual diagram size. Use viewBox dimensions instead.
+    const svgEl = svg as unknown as SVGSVGElement;
+    const viewBox = svgEl.viewBox?.baseVal;
+    const contentWidth = viewBox && viewBox.width > 0 ? viewBox.width : box.width;
+    const contentHeight = viewBox && viewBox.height > 0 ? viewBox.height : box.height;
+
     if (imageSizeMode === 'width') {
-      const ratio = box.height / box.width;
+      const ratio = contentHeight / contentWidth;
       canvas.width = imageSize;
       canvas.height = imageSize * ratio;
     } else if (imageSizeMode === 'height') {
-      const ratio = box.width / box.height;
+      const ratio = contentWidth / contentHeight;
       canvas.width = imageSize * ratio;
       canvas.height = imageSize;
     } else {
       const multiplier = 2;
-      canvas.width = box.width * multiplier;
-      canvas.height = box.height * multiplier;
+      canvas.width = contentWidth * multiplier;
+      canvas.height = contentHeight * multiplier;
     }
 
     const context = canvas.getContext('2d');
