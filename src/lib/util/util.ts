@@ -1,3 +1,4 @@
+import { C } from '$/constants';
 import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
@@ -88,3 +89,10 @@ function fallbackCopyToClipboard(text: string) {
     textArea.remove();
   }
 }
+
+export const getUTMSource = (): string => {
+  if (typeof window !== 'undefined' && window.location.host.includes('mermaid.ai')) {
+    return C.aiLiveEditor;
+  }
+  return C.utmSource;
+};
