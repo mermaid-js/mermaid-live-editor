@@ -12,7 +12,7 @@
   const utmSource = env.domain === 'mermaid.ai' ? 'mermaid_ai_live' : 'mermaid_live_editor';
 
   const url = `https://mermaid.ai/app/user/billing/checkout?${new URLSearchParams({
-    coupon: 'NEWYEAR',
+    coupon: 'dmIuNbqx',
     tier: 'plus',
     utm_campaign: 'newyear',
     utm_medium: 'banner_ad',
