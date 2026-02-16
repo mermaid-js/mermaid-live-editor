@@ -22,7 +22,8 @@
       enabled: false
     },
     overviewRulerLanes: 0,
-    glyphMargin: true
+    glyphMargin: true,
+    lineNumbersMinChars: 4
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
   let showPopup = $state(false);
@@ -184,6 +185,7 @@
     const unsubscribeMode = mode.subscribe((mode) => {
       if (editor) {
         monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
+        divElement?.classList.toggle('mermaid-dark', mode === 'dark');
       }
     });
     const resizeObserver = new ResizeObserver((entries) => {
@@ -238,5 +240,10 @@
     background-position: center;
     border-radius: 4px;
     cursor: pointer;
+  }
+
+  :global(#editor.mermaid-dark .suggestion-icon) {
+    background-color: #2e4d6b;
+    background-image: url('/icons/use-chat-dark.svg');
   }
 </style>
