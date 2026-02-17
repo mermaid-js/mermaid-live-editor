@@ -159,7 +159,14 @@
       const newText = editorMode === 'code' ? code : mermaid;
       if (newText !== currentText) {
         editor.setScrollTop(0);
-        editor.setValue(newText);
+        editor.pushUndoStop();
+        editor.executeEdits('updateCode', [
+          {
+            range: model.getFullModelRange(),
+            text: newText
+          }
+        ]);
+        editor.pushUndoStop();
         currentText = newText;
         renderAIPromptGutterGlyphIcon();
       }
