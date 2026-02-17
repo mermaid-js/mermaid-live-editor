@@ -27,6 +27,36 @@
   const getFileName = (extension: string) =>
     `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
 
+  /**
+   * Fix text clipping in exported SVG for hand-drawn (rough) mode.
+   * svg2roughjs copies foreignObject elements but their height is often insufficient,
+   * causing text bottom edges to be cut off regardless of language.
+   */
+  const fixForeignObjectClipping = (svg: HTMLElement) => {
+    const foreignObjects = svg.querySelectorAll('foreignObject');
+    foreignObjects.forEach((foreignObj) => {
+      const currentHeight = parseFloat(foreignObj.getAttribute('height') || '0');
+      if (currentHeight <= 0) return;
+
+      const currentY = parseFloat(foreignObj.getAttribute('y') || '0');
+      const newHeight = currentHeight * 1.5;
+      const heightDiff = newHeight - currentHeight;
+
+      foreignObj.setAttribute('height', newHeight.toString());
+      foreignObj.setAttribute('y', (currentY - heightDiff / 2).toString());
+
+      // Ensure inner HTML elements are vertically centered within the expanded area
+      const htmlElements = foreignObj.querySelectorAll('div, span, p');
+      htmlElements.forEach((htmlEl) => {
+        const el = htmlEl as HTMLElement;
+        el.style.display = 'flex';
+        el.style.alignItems = 'center';
+        el.style.justifyContent = 'center';
+        el.style.height = '100%';
+      });
+    });
+  };
+
   const getSvgElement = () => {
     const svgElement = document.querySelector('#container svg')?.cloneNode(true) as HTMLElement;
     svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
@@ -48,6 +78,10 @@
 
     if (!svg) {
       svg = getSvgElement();
+    }
+
+    if ($stateStore.rough) {
+      fixForeignObjectClipping(svg);
     }
 
     svg.style.backgroundColor = window
@@ -83,18 +117,25 @@ ${svgString}`);
 
     const box = svg.getBoundingClientRect();
 
+    // In rough mode, SVG has width/height="100%" so getBoundingClientRect returns
+    // the container size, not the actual diagram size. Use viewBox dimensions instead.
+    const svgEl = svg as unknown as SVGSVGElement;
+    const viewBox = svgEl.viewBox?.baseVal;
+    const contentWidth = viewBox && viewBox.width > 0 ? viewBox.width : box.width;
+    const contentHeight = viewBox && viewBox.height > 0 ? viewBox.height : box.height;
+
     if (imageSizeMode === 'width') {
-      const ratio = box.height / box.width;
+      const ratio = contentHeight / contentWidth;
       canvas.width = imageSize;
       canvas.height = imageSize * ratio;
     } else if (imageSizeMode === 'height') {
-      const ratio = box.width / box.height;
+      const ratio = contentWidth / contentHeight;
       canvas.width = imageSize * ratio;
       canvas.height = imageSize;
     } else {
       const multiplier = 2;
-      canvas.width = box.width * multiplier;
-      canvas.height = box.height * multiplier;
+      canvas.width = contentWidth * multiplier;
+      canvas.height = contentHeight * multiplier;
     }
 
     const context = canvas.getContext('2d');
