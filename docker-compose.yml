@@ -7,5 +7,10 @@ services:
     volumes:
       - ./src:/app/src
     ports:
-      - 3000:3000
-      - 24678:24678
+      - "${PORT_WEB:-3000}:3000"
+      - "${PORT_PRIVATE:-24678}:24678"
+    networks:
+      - ben
+networks:
+  ben:
+    external: true
