@@ -31,7 +31,7 @@ export default defineConfig({
     devtoolsJson()
   ],
   envPrefix: 'MERMAID_',
-  server: { port: 3000, host: true, allowedHosts: "draw.benthunder.io.vn" },
+  server: { port: 3000, host: true, allowedHosts: "all" },
   preview: { port: 3000, host: true },
   test: {
     environment: 'jsdom',
