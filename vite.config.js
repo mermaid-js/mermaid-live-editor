@@ -1,5 +1,5 @@
-import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
@@ -31,7 +31,7 @@ export default defineConfig({
     devtoolsJson()
   ],
   envPrefix: 'MERMAID_',
-  server: { port: 3000, host: true },
+  server: { port: 3000, host: true, allowedHosts: "draw.benthunder.io.vn" },
   preview: { port: 3000, host: true },
   test: {
     environment: 'jsdom',
