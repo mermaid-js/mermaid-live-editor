@@ -81,14 +81,14 @@ const noDelay = 0;
 const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
   bannerClick: noDelay,
+  chooseEditor: noDelay,
   copyClipboard: defaultDelay,
   copyMarkdown: defaultDelay,
   download: defaultDelay,
-  editorChooserOpenSource: noDelay,
-  editorChooserPlus: noDelay,
   history: defaultDelay,
   loadGist: defaultDelay,
   loadSampleDiagram: defaultDelay,
+  mermaidChartClick: noDelay,
   migration: defaultDelay,
   mobileViewToggle: defaultDelay,
   panZoom: minutesToMilliSeconds(10),
@@ -122,4 +122,8 @@ export const logEvent = (
     key,
     window.setTimeout(() => timeouts.delete(key), delaysPerEvent[name])
   );
+};
+
+export const logMermaidChartClick = (source: string): void => {
+  logEvent('mermaidChartClick', { source });
 };

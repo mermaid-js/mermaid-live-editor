@@ -22,7 +22,7 @@
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
-  import { logEvent } from '$/util/stats';
+  import { logEvent, logMermaidChartClick } from '$/util/stats';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
@@ -95,7 +95,8 @@
         variant="accent"
         size="sm"
         href={$urlsStore.mermaidChart({ medium: 'save_diagram' }).save}
-        target="_blank">
+        target="_blank"
+        onclick={() => logMermaidChartClick('saveDiagram')}>
         <MermaidChartIcon />
         Save diagram
       </Button>

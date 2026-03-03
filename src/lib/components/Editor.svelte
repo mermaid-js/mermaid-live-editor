@@ -7,6 +7,7 @@
   import { TID } from '$/constants';
   import { env } from '$/util/env';
   import { stateStore, updateCode, updateConfig, urlsStore } from '$lib/util/state';
+  import { logMermaidChartClick } from '$lib/util/stats';
   import { debounce } from 'lodash-es';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
@@ -65,7 +66,9 @@
               variant="accent"
               size="sm"
               data-testid={TID.aiRepairButton}
-              href={$urlsStore.mermaidChart({ medium: 'ai_repair' }).save}>
+              href={$urlsStore.mermaidChart({ medium: 'ai_repair' }).save}
+              target="_blank"
+              onclick={() => logMermaidChartClick('aiRepair')}>
               <MermaidChartIcon />
               AI Repair
             </Button>

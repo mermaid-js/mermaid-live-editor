@@ -2,6 +2,7 @@
   import type { EditorProps } from '$/types';
   import { env } from '$/util/env';
   import { stateStore, urlsStore } from '$/util/state';
+  import { logMermaidChartClick } from '$/util/stats';
   import { AIPromptViewZoneManager } from '$lib/util/AIPromptViewZoneManager';
   import { initEditor } from '$lib/util/monacoExtra';
   import { errorDebug } from '$lib/util/util';
@@ -222,6 +223,7 @@
       onHeightChange={(height) => aiPromptManager.updateHeight(height)}
       onClose={closePopup}
       onTryFree={() => {
+        logMermaidChartClick('vibeDiagramming');
         window.open($urlsStore.mermaidChart({ medium: 'vibe_diagramming' }).save, '_blank');
         closePopup();
       }} />
