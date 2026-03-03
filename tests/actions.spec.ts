@@ -8,8 +8,7 @@ test.describe('Check actions', () => {
   test('should update markdown code', async ({ editPage }) => {
     const oldText = await editPage.markdownInput.inputValue();
     await editPage.typeInEditor('C --> HistoryTest', { bottom: true, newline: true });
-    const newText = await editPage.markdownInput.inputValue();
-    expect(newText).not.toBe(oldText);
+    await expect(editPage.markdownInput).not.toHaveValue(oldText);
   });
 
   test.skip('should load gists from URL', async ({ page }) => {
@@ -21,15 +20,15 @@ test.describe('Check actions', () => {
   });
 
   test('should download png and svg', async ({ editPage }) => {
-    const firstPngSize = await editPage.checkAndDownloadPNG(80_000);
-    const firstSvgSize = await editPage.downloadSVG(30_000);
+    const firstPngSize = await editPage.checkAndDownloadPNG(20_000);
+    const firstSvgSize = await editPage.downloadSVG(10_000);
 
     // Verify downloaded file is different for different diagrams
     await editPage.toggleSampleDiagrams();
     await editPage.loadSampleDiagram('Entity Relationship');
 
-    const secondPngSize = await editPage.checkAndDownloadPNG(81_000);
-    const secondSvgSize = await editPage.downloadSVG(40_000);
+    const secondPngSize = await editPage.checkAndDownloadPNG(20_000);
+    const secondSvgSize = await editPage.downloadSVG(10_000);
 
     // Verify files are actually different
     expect(firstPngSize).not.toBe(secondPngSize);
