@@ -1,6 +1,11 @@
 <script lang="ts">
   import { Toaster } from '$/components/ui/sonner/index.js';
   import { loadingStateStore } from '$/util/loading';
+  import {
+    checkAndRedirectIfNeeded,
+    handleIncomingRedirect,
+    handleStayParam
+  } from '$/util/migration/domainMigration';
   import { toggleDarkTheme } from '$/util/state';
   import { initHandler } from '$/util/util';
   import { base } from '$app/paths';
@@ -17,6 +22,20 @@
   // This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
   // Then move it into src and vite will bundle it automatically.
   onMount(() => {
+    // Domain migration: Handle ?stay=1 escape hatch parameter first
+    // This sets a bypass cookie and cleans the URL
+    handleStayParam();
+
+    // Domain migration: Check for redirects early in the lifecycle
+    // On mermaid.live: redirect to mermaid.ai if no pako data and no bypass cookie
+    // On mermaid.ai: handle incoming redirects from mermaid.live
+    const wasRedirected = checkAndRedirectIfNeeded();
+    if (wasRedirected) {
+      // If we're redirecting, don't continue with the rest of the setup
+      return;
+    }
+    handleIncomingRedirect();
+
     window.addEventListener('hashchange', () => {
       void initHandler();
     });
@@ -41,7 +60,7 @@
 <ModeWatcher />
 <Toaster />
 
-<main class="h-[100dvh]">
+<main class="h-dvh">
   {@render children()}
 </main>
 

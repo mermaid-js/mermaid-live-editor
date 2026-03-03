@@ -6,6 +6,7 @@
   import History from '$/components/History/History.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
+  import WelcomeBanner from '$/components/migration/WelcomeBanner.svelte';
   import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Preset from '$/components/Preset.svelte';
@@ -18,6 +19,7 @@
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
   import type { EditorMode, Tab } from '$/types';
+  import { isOnMermaidAI, shouldShowWelcomeBanner } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
   import { logEvent } from '$/util/stats';
@@ -50,12 +52,18 @@
   let width = $state(0);
   let isMobile = $derived(width < 640);
   let isViewMode = $state(true);
+  let showWelcomeBanner = $state(false);
 
   onMount(async () => {
     await initHandler();
     window.addEventListener('appinstalled', () => {
       logEvent('pwaInstalled', { isMobile });
     });
+
+    // Check if we should show welcome banner on mermaid.ai
+    if (isOnMermaidAI() && shouldShowWelcomeBanner()) {
+      showWelcomeBanner = true;
+    }
   });
 
   let isHistoryOpen = $state(false);
@@ -81,7 +89,7 @@
     </div>
   {/snippet}
 
-  <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
+  <Navbar mobileToggle={isMobile ? mobileToggle : undefined} hidePromotion={showWelcomeBanner}>
     <Toggle bind:pressed={isHistoryOpen} size="sm">
       <HistoryIcon />
     </Toggle>
@@ -97,6 +105,11 @@
       </Button>
     </McWrapper>
   </Navbar>
+
+  <!-- Domain migration: Welcome banner for mermaid.ai visitors redirected from mermaid.live -->
+  {#if showWelcomeBanner}
+    <WelcomeBanner />
+  {/if}
 
   <div class="flex flex-1 flex-col overflow-hidden" bind:clientWidth={width}>
     <div
@@ -137,10 +150,7 @@
         </Resizable.Pane>
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
-          <Resizable.Pane
-            minSize={15}
-            defaultSize={30}
-            class="hidden h-full flex-grow flex-col sm:flex">
+          <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full grow flex-col sm:flex">
             <History />
           </Resizable.Pane>
         {/if}

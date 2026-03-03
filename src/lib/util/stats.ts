@@ -80,18 +80,26 @@ const minutesToMilliSeconds = (minutes: number): number => {
 const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
   bannerClick: defaultDelay,
+  bannerDismissed: defaultDelay,
+  bannerEscapeClicked: defaultDelay,
   copyClipboard: defaultDelay,
   copyMarkdown: defaultDelay,
   download: defaultDelay,
+  explainerOpened: defaultDelay,
   history: defaultDelay,
   loadGist: defaultDelay,
   loadSampleDiagram: defaultDelay,
   migration: defaultDelay,
   mobileViewToggle: defaultDelay,
+  nudgeClicked: defaultDelay,
+  nudgeDismissed: defaultDelay,
   panZoom: minutesToMilliSeconds(10),
   pwaInstalled: defaultDelay,
+  // Domain migration events (mermaid.live → mermaid.ai)
+  redirectTriggered: defaultDelay,
   render: minutesToMilliSeconds(5),
   renderDiagram: defaultDelay,
+  stayOnMermaidLive: defaultDelay,
   themeChange: defaultDelay,
   version: defaultDelay
 } as const;
