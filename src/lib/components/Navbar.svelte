@@ -21,9 +21,10 @@
   interface Props {
     mobileToggle?: Snippet;
     children: Snippet;
+    hidePromotion?: boolean;
   }
 
-  let { children, mobileToggle }: Props = $props();
+  let { children, mobileToggle, hidePromotion = false }: Props = $props();
 
   type Links = ComponentProps<typeof DropdownNavMenu>['links'];
 
@@ -39,7 +40,7 @@
     }
   ];
 
-  let activePromotion = $state(getActivePromotion());
+  let activePromotion = $state(hidePromotion ? undefined : getActivePromotion());
 
   const trackBannerClick = () => {
     if (!plausible || !activePromotion) {
@@ -54,7 +55,7 @@
 {#if activePromotion}
   <div class="top-bar z-10 flex h-fit w-full bg-primary">
     <div
-      class="flex flex-grow"
+      class="flex grow"
       role="button"
       tabindex="0"
       onclick={trackBannerClick}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
-  import { env } from '$/util/env';
+  import { isOnMermaidAI } from '$/util/migration/domainMigration';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -9,7 +9,7 @@
 
   let { closeBanner }: Props = $props();
 
-  const utmSource = env.domain === 'mermaid.ai' ? 'mermaid_ai_live' : 'mermaid_live_editor';
+  const utmSource = isOnMermaidAI() ? 'mermaid_ai_live' : 'mermaid_live_editor';
 
   const url = `https://mermaid.ai/app/user/billing/checkout?${new URLSearchParams({
     coupon: 'dmIuNbqx',

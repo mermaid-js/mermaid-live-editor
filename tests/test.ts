@@ -1,4 +1,4 @@
-import { TID } from '$/constants';
+import { C, TID } from '$/constants';
 import { test as base, expect, type Locator, type Page } from '@playwright/test';
 import { verifyFileSizeGreaterThan, type EditorOptions } from './utils';
 
@@ -115,6 +115,10 @@ export class EditorPage {
 
 export const test = base.extend<{ editPage: EditorPage }>({
   editPage: async ({ page }, use) => {
+    // Dismiss the editor chooser modal so it doesn't block interactions
+    await page.addInitScript((key) => {
+      window.localStorage.setItem(key, 'true');
+    }, C.editorChooserDismissedKey);
     const editorPage = new EditorPage(page);
     await editorPage.start();
     await editorPage.toggleSampleDiagrams();

@@ -41,7 +41,7 @@
 <ModeWatcher />
 <Toaster />
 
-<main class="h-[100dvh]">
+<main class="h-dvh">
   {@render children()}
 </main>
 

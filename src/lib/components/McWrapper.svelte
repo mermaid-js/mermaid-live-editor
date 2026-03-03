@@ -1,5 +1,6 @@
 <script lang="ts">
   import { env } from '$/util/env';
+  import { isOnMermaidAI } from '$/util/migration/domainMigration';
   import type { ComponentProps } from 'svelte';
   import ExternalLinkWrapper from './ExternalLinkWrapper.svelte';
 
@@ -12,13 +13,12 @@
   > = $props();
 
   const mermaidChartDomain = 'mermaid.ai';
-  const isMermaidAiDomain = env.domain === mermaidChartDomain;
 </script>
 
 <ExternalLinkWrapper
   {...props}
   domain={mermaidChartDomain}
   isVisible={env.isEnabledMermaidChartLinks}
-  showPopup={!isMermaidAiDomain}>
+  showPopup={!isOnMermaidAI()}>
   {@render children()}
 </ExternalLinkWrapper>

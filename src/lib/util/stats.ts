@@ -77,12 +77,15 @@ const minutesToMilliSeconds = (minutes: number): number => {
   return minutes * 60_000;
 };
 
+const noDelay = 0;
 const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
-  bannerClick: defaultDelay,
+  bannerClick: noDelay,
   copyClipboard: defaultDelay,
   copyMarkdown: defaultDelay,
   download: defaultDelay,
+  editorChooserOpenSource: noDelay,
+  editorChooserPlus: noDelay,
   history: defaultDelay,
   loadGist: defaultDelay,
   loadSampleDiagram: defaultDelay,
