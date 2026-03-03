@@ -43,6 +43,25 @@ const hasPakoData = (): boolean => {
 };
 
 /**
+ * Check if the user arrived from a known Mermaid domain (mermaid.ai or mermaid.js.org).
+ */
+const isReferredFromMermaid = (): boolean => {
+  try {
+    const referrer = document.referrer;
+    if (!referrer) return false;
+    const hostname = new URL(referrer).hostname;
+    return (
+      hostname === 'mermaid.ai' ||
+      hostname.endsWith('.mermaid.ai') ||
+      hostname === 'mermaid.js.org' ||
+      hostname.endsWith('.mermaid.js.org')
+    );
+  } catch {
+    return false;
+  }
+};
+
+/**
  * Check if the editor chooser modal should be shown.
  * Shows for new users who haven't dismissed it and aren't viewing a shared link.
  */
@@ -51,6 +70,7 @@ export const shouldShowEditorChooser = (): boolean => {
   if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
   if (hasStoredUserData()) return false;
   if (hasPakoData()) return false;
+  if (isReferredFromMermaid()) return false;
   return true;
 };
 
