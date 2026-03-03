@@ -64,9 +64,11 @@ const isReferredFromMermaid = (): boolean => {
 /**
  * Check if the editor chooser modal should be shown.
  * Shows for new users who haven't dismissed it and aren't viewing a shared link.
+ * Not shown on mobile (viewport width < 640px).
  */
 export const shouldShowEditorChooser = (): boolean => {
   if (!env.isEnabledMermaidChartLinks) return false;
+  if (window.innerWidth < 640) return false;
   if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
   if (hasStoredUserData()) return false;
   if (hasPakoData()) return false;
