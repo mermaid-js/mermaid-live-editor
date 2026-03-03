@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { logEvent, plausible } from '$lib/util/stats';
+  import { logEvent, logMermaidChartClick } from '$lib/util/stats';
   import { version } from 'mermaid/package.json';
 
   void logEvent('version', {
@@ -43,12 +43,13 @@
   let activePromotion = $state(hidePromotion ? undefined : getActivePromotion());
 
   const trackBannerClick = () => {
-    if (!plausible || !activePromotion) {
+    if (!activePromotion) {
       return;
     }
     logEvent('bannerClick', {
       promotion: activePromotion.id
     });
+    logMermaidChartClick('banner');
   };
 </script>
 

@@ -4,6 +4,7 @@
   import { Switch } from '$/components/ui/switch';
   import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
+  import { logMermaidChartClick } from '$/util/stats';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
   import type { Component, Snippet } from 'svelte';
@@ -23,6 +24,7 @@
     icon: Component;
     href: string;
     class?: string;
+    onclick?: () => void;
     sharesData?: boolean;
     checkDiagramType?: boolean;
     isSectionEnd?: boolean;
@@ -37,6 +39,7 @@
       icon: PlaygroundIcon,
       isSectionEnd: true,
       label: 'Edit in Playground',
+      onclick: () => logMermaidChartClick('editInPlayground'),
       renderer: mcMenuItem
     },
     {
@@ -62,6 +65,7 @@
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
       icon: PluginIcon,
       label: 'Plugins',
+      onclick: () => logMermaidChartClick('plugins'),
       renderer: mcMenuItem,
       sharesData: false
     },
@@ -78,6 +82,7 @@
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
       icon: MermaidChartIcon,
       label: 'Mermaid',
+      onclick: () => logMermaidChartClick('mermaidHome'),
       renderer: mcMenuItem,
       sharesData: false
     }
@@ -88,6 +93,7 @@
   <a
     href={options.href}
     target="_blank"
+    onclick={options.onclick}
     class={cn(
       'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-muted',
       options.isSectionEnd && 'border-border-dark',

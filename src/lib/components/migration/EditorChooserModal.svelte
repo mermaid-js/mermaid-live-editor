@@ -2,7 +2,7 @@
   import { Button } from '$/components/ui/button';
   import * as Dialog from '$/components/ui/dialog';
   import { dismissEditorChooser, isOnMermaidAI } from '$/util/migration/domainMigration';
-  import { logEvent } from '$/util/stats';
+  import { logEvent, logMermaidChartClick } from '$/util/stats';
   import CodeIcon from '~icons/custom/code';
   import OpenSourceIcon from '~icons/material-symbols/book-2-outline-rounded';
   import ChatIcon from '~icons/material-symbols/chat-outline-rounded';
@@ -25,7 +25,8 @@
   };
 
   const handleStartTrial = () => {
-    logEvent('editorChooserPlus');
+    logEvent('chooseEditor', { choice: 'plus' });
+    logMermaidChartClick('editorPicker');
     close();
     const utmSource = isOnMermaidAI() ? 'mermaid_ai_live' : 'mermaid_live_editor';
     window.open(
@@ -41,7 +42,7 @@
   };
 
   const handleStartFree = () => {
-    logEvent('editorChooserOpenSource');
+    logEvent('chooseEditor', { choice: 'openSource' });
     close();
   };
 </script>
