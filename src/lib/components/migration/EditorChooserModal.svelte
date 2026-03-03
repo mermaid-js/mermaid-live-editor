@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
   import * as Dialog from '$/components/ui/dialog';
-  import { dismissEditorChooser, isOnMermaidAI } from '$/util/migration/domainMigration';
+  import { dismissEditorChooser } from '$/util/migration/domainMigration';
   import { logEvent, logMermaidChartClick } from '$/util/stats';
+  import { getCheckoutUrl } from '$/util/util';
   import CodeIcon from '~icons/custom/code';
   import OpenSourceIcon from '~icons/material-symbols/book-2-outline-rounded';
   import ChatIcon from '~icons/material-symbols/chat-outline-rounded';
@@ -28,15 +29,8 @@
     logEvent('chooseEditor', { choice: 'plus' });
     logMermaidChartClick('editorPicker');
     close();
-    const utmSource = isOnMermaidAI() ? 'mermaid_ai_live' : 'mermaid_live_editor';
     window.open(
-      `https://mermaid.ai/app/user/billing/checkout?${new URLSearchParams({
-        coupon: 'dmIuNbqx',
-        tier: 'plus',
-        utm_campaign: 'start_plus',
-        utm_medium: '2_editor_selection',
-        utm_source: utmSource
-      }).toString()}`,
+      getCheckoutUrl({ utmCampaign: 'start_plus', utmMedium: '2_editor_selection' }),
       '_blank'
     );
   };
@@ -75,7 +69,7 @@
           <div class="mb-2 flex justify-center">
             <span
               class="rounded-full bg-pink-100 px-3 py-0.5 text-xs font-semibold text-pink-700 dark:bg-pink-950 dark:text-pink-300">
-              Limited time: 10% off
+              10% off with code JS26
             </span>
           </div>
 

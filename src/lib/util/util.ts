@@ -40,6 +40,23 @@ export const MCBaseURL = env.isEnabledMermaidChartLinks
   ? 'https://mermaid.ai' // 'http://localhost:5174'
   : 'https://example.com';
 
+export const getCheckoutUrl = ({
+  utmCampaign,
+  utmMedium
+}: {
+  utmCampaign: string;
+  utmMedium: string;
+}): string => {
+  const params = new URLSearchParams({
+    coupon: 'arDfyFT8',
+    tier: 'plus',
+    utm_campaign: utmCampaign,
+    utm_medium: utmMedium,
+    utm_source: getUTMSource()
+  });
+  return `${MCBaseURL}/app/user/billing/checkout?${params.toString()}`;
+};
+
 let count = 0;
 export const errorDebug = (limit = 1000) => {
   count += 1;
