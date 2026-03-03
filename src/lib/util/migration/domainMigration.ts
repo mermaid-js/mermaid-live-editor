@@ -1,3 +1,4 @@
+import { C } from '$/constants';
 import { env } from '$/util/env';
 
 const mermaidAiDomain = 'mermaid.ai';
@@ -41,15 +42,13 @@ const hasPakoData = (): boolean => {
   );
 };
 
-const editorChooserStorageKey = 'mermaid-editor-chooser-dismissed';
-
 /**
  * Check if the editor chooser modal should be shown.
  * Shows for new users who haven't dismissed it and aren't viewing a shared link.
  */
 export const shouldShowEditorChooser = (): boolean => {
   if (!env.isEnabledMermaidChartLinks) return false;
-  if (window.localStorage.getItem(editorChooserStorageKey) === 'true') return false;
+  if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
   if (hasStoredUserData()) return false;
   if (hasPakoData()) return false;
   return true;
@@ -59,5 +58,5 @@ export const shouldShowEditorChooser = (): boolean => {
  * Dismiss the editor chooser modal permanently
  */
 export const dismissEditorChooser = (): void => {
-  window.localStorage.setItem(editorChooserStorageKey, 'true');
+  window.localStorage.setItem(C.editorChooserDismissedKey, 'true');
 };
