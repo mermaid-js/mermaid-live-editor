@@ -2,6 +2,7 @@ import { C } from '$/constants';
 import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading';
+import { isOnMermaidAI } from './migration/domainMigration';
 import { applyMigrations } from './migrations';
 import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
 import { initAnalytics, plausible } from './stats';
@@ -91,7 +92,7 @@ function fallbackCopyToClipboard(text: string) {
 }
 
 export const getUTMSource = (): string => {
-  if (typeof window !== 'undefined' && window.location.host.includes('mermaid.ai')) {
+  if (typeof window !== 'undefined' && isOnMermaidAI()) {
     return C.aiLiveEditor;
   }
   return C.utmSource;
