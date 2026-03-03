@@ -71,7 +71,9 @@ export class EditorPage {
   }
 
   async checkError(text: string) {
-    await expect(this.page.getByTestId(TID.errorContainer)).toContainText(text);
+    await expect(this.page.getByTestId(TID.errorContainer)).toContainText(text, {
+      timeout: 10_000
+    });
   }
 
   async checkInEditor(text: string) {

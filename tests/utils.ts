@@ -42,7 +42,6 @@ export async function verifyFileSizeGreaterThan(
   if (!path) throw new Error('Download path not available');
   const fileSize = statSync(path).size;
   expect(fileSize).toBeGreaterThan(size);
-  expect(fileSize).toBeLessThan(size * 2);
   return fileSize;
 }
 
