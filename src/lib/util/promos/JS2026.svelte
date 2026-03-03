@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
-  import { isOnMermaidAI } from '$/util/migration/domainMigration';
+  import { getCheckoutUrl } from '$/util/util';
   import type { Snippet } from 'svelte';
 
   interface Props {
@@ -9,15 +9,7 @@
 
   let { closeBanner }: Props = $props();
 
-  const utmSource = isOnMermaidAI() ? 'mermaid_ai_live' : 'mermaid_live_editor';
-
-  const url = `https://mermaid.ai/app/user/billing/checkout?${new URLSearchParams({
-    coupon: 'dmIuNbqx',
-    tier: 'plus',
-    utm_campaign: 'newyear',
-    utm_medium: 'banner_ad',
-    utm_source: utmSource
-  }).toString()}`;
+  const url = getCheckoutUrl({ utmCampaign: 'oss_coupon', utmMedium: 'banner_ad' });
 </script>
 
 <div class="flex w-full items-center bg-[#E0095F] p-1.5" role="banner">
@@ -27,11 +19,11 @@
       target="_blank"
       class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline">
       <span class="text-base tracking-wider text-white">
-        Limited time: 10% off Mermaid Advanced Editor with code NEWYEAR
+        Try Mermaid Advanced Editor — OSS users get 10% off with code JS26
       </span>
       <Button
         class="shrink-0 rounded-md bg-[#1E1A2E] px-3 py-1.5 text-base font-semibold tracking-wide text-white hover:bg-[#261A56]">
-        Claim discount
+        Get started
       </Button>
     </a>
   </div>
