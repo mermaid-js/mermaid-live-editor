@@ -55,7 +55,7 @@
   let showEditorChooser = $state(false);
 
   onMount(async () => {
-    showEditorChooser = shouldShowEditorChooser();
+    showEditorChooser = shouldShowEditorChooser() && window.innerWidth >= 640;
     await initHandler();
     window.addEventListener('appinstalled', () => {
       logEvent('pwaInstalled', { isMobile });
