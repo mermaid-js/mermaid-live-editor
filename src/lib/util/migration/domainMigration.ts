@@ -1,3 +1,5 @@
+import { env } from '$/util/env';
+
 const mermaidAiDomain = 'mermaid.ai';
 
 /**
@@ -46,6 +48,7 @@ const editorChooserStorageKey = 'mermaid-editor-chooser-dismissed';
  * Shows for new users who haven't dismissed it and aren't viewing a shared link.
  */
 export const shouldShowEditorChooser = (): boolean => {
+  if (!env.isEnabledMermaidChartLinks) return false;
   if (window.localStorage.getItem(editorChooserStorageKey) === 'true') return false;
   if (hasStoredUserData()) return false;
   if (hasPakoData()) return false;
