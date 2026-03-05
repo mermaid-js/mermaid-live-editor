@@ -2,7 +2,6 @@ import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
-import { env } from './env';
 import {
   extractErrorLineText,
   findMostRelevantLineNumber,
@@ -10,8 +9,8 @@ import {
 } from './errorHandling';
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
-import { deserializeState, pakoSerde, serializeState } from './serde';
-import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
+import { deserializeState, serializeState } from './serde';
+import { errorDebug, formatJSON } from './util';
 
 export const defaultState: State = {
   code: `flowchart TD
@@ -39,7 +38,7 @@ const urlParseFailedState = `flowchart TD
     E -->|No| G{Did you copy <br/> the complete URL?}
     G --> |Yes| D
     G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
-    click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
+    click D href "#" "Check console for details"`;
 
 // inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
 export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
@@ -128,34 +127,9 @@ export const stateStore: Readable<ValidatedState> = derived(
   currentState
 );
 
-export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
-  const { krokiRendererUrl, rendererUrl } = env;
-  const png = rendererUrl ? `${rendererUrl}/img/${serialized}?type=png` : '';
+export const urlsStore = derived([stateStore], ([{ serialized }]) => {
   return {
-    kroki: krokiRendererUrl ? `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}` : '',
-    mdCode: png
-      ? `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`
-      : '',
-    mermaidChart: ({
-      medium
-    }: {
-      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'vibe_diagramming';
-    }) => {
-      const utmSource = getUTMSource();
-      const params = new URLSearchParams({
-        utm_source: utmSource,
-        utm_medium: medium
-      }).toString();
-      return {
-        save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${params}`,
-        playground: `${MCBaseURL}/play?${params}#${serialized}`,
-        plugins: `${MCBaseURL}/plugins?${params}`,
-        home: `${MCBaseURL}/?${params}`
-      };
-    },
-    new: `${window.location.protocol}//${window.location.host}${window.location.pathname}#${serializeState(defaultState)}`,
-    png,
-    svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
+    new: `${window.location.pathname}#${serializeState(defaultState)}`,
     view: `/view#${serialized}`
   };
 });

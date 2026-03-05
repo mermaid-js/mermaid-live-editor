@@ -1,4 +1,3 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Sitemap: https://mermaid.live/sitemap.xml
-Disallow: 
+Disallow: /

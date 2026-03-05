@@ -1,8 +1,10 @@
+// All external service URLs hardcoded to empty for privacy.
+// This fork disables all external connectivity.
 export const env = {
-  analyticsUrl: import.meta.env.MERMAID_ANALYTICS_URL ?? '',
-  docsUrl: import.meta.env.MERMAID_DOCS_URL ?? 'https://mermaid.js.org',
-  domain: import.meta.env.MERMAID_DOMAIN ?? '',
-  isEnabledMermaidChartLinks: import.meta.env.MERMAID_IS_ENABLED_MERMAID_CHART_LINKS === 'true',
-  krokiRendererUrl: import.meta.env.MERMAID_KROKI_RENDERER_URL ?? '',
-  rendererUrl: import.meta.env.MERMAID_RENDERER_URL ?? ''
+  analyticsUrl: '',
+  docsUrl: '',
+  domain: '',
+  isEnabledMermaidChartLinks: false,
+  krokiRendererUrl: '',
+  rendererUrl: ''
 } as const;
