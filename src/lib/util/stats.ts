@@ -91,7 +91,6 @@ const delaysPerEvent = {
   mermaidChartClick: noDelay,
   migration: defaultDelay,
   mobileViewToggle: defaultDelay,
-  panZoom: minutesToMilliSeconds(10),
   pwaInstalled: defaultDelay,
   render: minutesToMilliSeconds(5),
   renderDiagram: defaultDelay,
