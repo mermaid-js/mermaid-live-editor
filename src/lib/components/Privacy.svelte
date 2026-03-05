@@ -1,5 +1,4 @@
 <script>
-  import ExternalLinkWrapper from '$/components/ExternalLinkWrapper.svelte';
   import * as Dialog from '$/components/ui/dialog';
   import ShieldIcon from '~icons/material-symbols/shield-lock-outline-rounded';
 </script>
@@ -19,27 +18,11 @@
     <p class="text-xl font-semibold">Your diagrams never leave your browser.</p>
     <p>They're only stored in the URL and your browser's local storage.</p>
     <p>
-      This is a fully open source, client-side app deployed on <a
-        href="https://github.com/mermaid-js/mermaid-live-editor/deployments"
-        class="underline"
-        target="_blank">GitHub Pages</a>
-      that works offline as a
-      <a href="https://web.dev/explore/progressive-web-apps" target="_blank">Progressive Web App</a
-      >.
+      This is a privacy-focused fork with all external services disabled. No analytics, no external
+      rendering services, no third-party connections. The app works entirely offline.
     </p>
     <p>
-      We use self hosted, privacy-friendly Plausible Analytics to collect anonymous usage metadata
-      (diagram types, feature usage, etc.). All data is <a
-        href="https://p.mermaid.live/mermaid.live"
-        class="underline"
-        target="_blank">publicly available</a
-      >.
+      No data is sent to any external server. All diagram rendering happens locally in your browser.
     </p>
-    <ExternalLinkWrapper domain="example.com" isVisible>
-      <p class="text-left">
-        External services (PNG/SVG/Kroki exports, "Save to Mermaid Chart", "Repair with AI", etc)
-        will share your diagram with those 3rd parties, and are highlighted in the UI on hover.
-      </p>
-    </ExternalLinkWrapper>
   </Dialog.Content>
 </Dialog.Root>

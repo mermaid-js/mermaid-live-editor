@@ -106,7 +106,6 @@
     "mode-watcher": "^0.5.1",
     "monaco-editor": "0.52.2",
     "pako": "2.1.0",
-    "plausible-tracker": "^0.3.9",
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.2",
     "svg2roughjs": "^3.2.1",
