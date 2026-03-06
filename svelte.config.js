@@ -7,6 +7,9 @@ const config = {
   // for more information about preprocessors
   preprocess: [sveltePreprocess({})],
   kit: {
+    paths: {
+      base: process.env.BASE_PATH || ''
+    },
     alias: {
       '$/*': './src/lib/*'
     },

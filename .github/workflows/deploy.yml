@@ -2,11 +2,10 @@ name: Deploy Live Editor
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
-      - develop
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,6 +28,7 @@ jobs:
 
       - name: Build & Deploy
         env:
+          BASE_PATH: '/mermaid-live-editor'
           MERMAID_DOMAIN: ''
           MERMAID_ANALYTICS_URL: ''
           MERMAID_RENDERER_URL: ''
@@ -46,7 +46,7 @@ jobs:
           path: ./docs
 
   deploy:
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
     runs-on: ubuntu-latest
     environment:
