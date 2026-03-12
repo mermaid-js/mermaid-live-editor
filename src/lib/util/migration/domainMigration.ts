@@ -11,27 +11,6 @@ export const isOnMermaidAI = (): boolean => {
   return domain === mermaidAiDomain || domain.endsWith(`.${mermaidAiDomain}`);
 };
 
-// localStorage keys that indicate a returning user.
-// Note: codeStore is excluded because it's always populated with the default state on first load.
-const userDataStorageKeys = [
-  'manualHistoryStore', // Manual history entries
-  'autoHistoryStore' // Auto history entries
-];
-
-/**
- * Check if user has any stored data in localStorage.
- * This includes saved diagrams, history entries, etc.
- */
-const hasStoredUserData = (): boolean => {
-  for (const key of userDataStorageKeys) {
-    const value = window.localStorage.getItem(key);
-    if (value && value !== '[]' && value !== 'null' && value !== '{}') {
-      return true;
-    }
-  }
-  return false;
-};
-
 /**
  * Check if the current URL has pako data (diagram content from a shared link).
  */
@@ -70,7 +49,6 @@ export const shouldShowEditorChooser = (): boolean => {
   if (!env.isEnabledMermaidChartLinks) return false;
   if (window.innerWidth < 640) return false;
   if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
-  if (hasStoredUserData()) return false;
   if (hasPakoData()) return false;
   if (isReferredFromMermaid()) return false;
   return true;
