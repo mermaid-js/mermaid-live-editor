@@ -5,6 +5,7 @@
   import { logEvent, logMermaidChartClick } from '$/util/stats';
   import { getCheckoutUrl } from '$/util/util';
   import CodeIcon from '~icons/custom/code';
+  import ArrowIcon from '~icons/material-symbols/arrow-forward-rounded';
   import OpenSourceIcon from '~icons/material-symbols/book-2-outline-rounded';
   import ChatIcon from '~icons/material-symbols/chat-outline-rounded';
   import EditIcon from '~icons/material-symbols/edit-outline-rounded';
@@ -39,6 +40,12 @@
     logEvent('chooseEditor', { choice: 'openSource' });
     close();
   };
+
+  const handleContinueToNewHome = () => {
+    logEvent('chooseEditor', { choice: 'newHome' });
+    close();
+    window.open('https://mermaid.ai/live', '_blank');
+  };
 </script>
 
 <Dialog.Root
@@ -46,15 +53,15 @@
   onOpenChange={(v) => {
     if (!v) handleStartFree();
   }}>
-  <Dialog.Content class="max-w-2xl bg-pink-50 p-0 dark:bg-background">
-    <Dialog.Header class="px-8 pt-8 pb-0">
+  <Dialog.Content class="flex max-w-2xl flex-col gap-6 bg-pink-50 p-6 dark:bg-background">
+    <Dialog.Header>
       <Dialog.Title class="text-center text-2xl font-semibold">Choose your editor</Dialog.Title>
-      <Dialog.Description class="-mt-2 text-center text-sm font-light">
+      <Dialog.Description class="text-center text-sm font-light">
         You'll never see this again
       </Dialog.Description>
     </Dialog.Header>
 
-    <div class="grid gap-4 px-6 pt-4 pb-8 sm:grid-cols-2">
+    <div class="grid gap-4 sm:grid-cols-2">
       <!-- Mermaid Plus Card -->
       <div
         class="relative flex flex-col overflow-hidden rounded-xl border-2 border-accent bg-white shadow dark:bg-card">
@@ -62,20 +69,24 @@
           Recommended
         </div>
 
-        <div class="flex flex-col p-6">
-          <h3 class="text-xl font-bold">Mermaid Plus</h3>
-          <p class="mb-4 text-sm text-muted-foreground">Unlock AI, storage and collaboration</p>
-
-          <div class="mb-2 flex justify-center">
-            <span
-              class="rounded-full bg-pink-100 px-3 py-0.5 text-xs font-semibold text-pink-700 dark:bg-pink-950 dark:text-pink-300">
-              10% off with code JS26
-            </span>
+        <div class="flex flex-col gap-4 p-6">
+          <div>
+            <h3 class="text-xl font-bold">Mermaid Plus</h3>
+            <p class="text-sm text-muted-foreground">Unlock AI, storage and collaboration</p>
           </div>
 
-          <Button variant="accent" class="mb-6 w-full" onclick={handleStartTrial}>
-            Start free trial
-          </Button>
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-center">
+              <span
+                class="rounded-full bg-pink-100 px-3 py-0.5 text-xs font-semibold text-pink-700 dark:bg-pink-950 dark:text-pink-300">
+                10% off with code JS26
+              </span>
+            </div>
+
+            <Button variant="accent" class="w-full" onclick={handleStartTrial}>
+              Start free trial
+            </Button>
+          </div>
 
           <ul class="space-y-3 text-sm">
             <li class="flex items-center gap-2">
@@ -103,13 +114,22 @@
       </div>
 
       <!-- Open Source Card -->
-      <div class="flex flex-col rounded-xl border bg-white p-6 shadow dark:bg-card">
-        <h3 class="mt-10 text-xl font-bold">Open Source</h3>
-        <p class="mb-4 text-sm text-muted-foreground">Code only, no login, always free</p>
+      <div class="flex flex-col gap-4 rounded-xl border bg-white p-6 shadow dark:bg-card">
+        <div class="flex flex-col justify-end pt-10">
+          <h3 class="text-xl font-bold">Open Source</h3>
+          <p class="text-sm text-muted-foreground">Code only, no login, always free</p>
+        </div>
 
-        <Button variant="outline" class="mb-6 w-full border-accent" onclick={handleStartFree}>
-          Start free
-        </Button>
+        <div class="flex flex-col gap-2">
+          <p class="mt-2 text-sm text-muted-foreground">Mermaid has a new home</p>
+          <Button variant="outline" class="w-full border-accent" onclick={handleContinueToNewHome}>
+            Continue to mermaid.ai/live
+            <ArrowIcon class="ml-1 size-4" />
+          </Button>
+          <Button variant="outline" class="w-full" onclick={handleStartFree}>
+            Stay on mermaid.live
+          </Button>
+        </div>
 
         <ul class="space-y-3 text-sm">
           <li class="flex items-center gap-2">
@@ -130,6 +150,15 @@
           </li>
         </ul>
       </div>
+    </div>
+
+    <div class="text-center">
+      <a
+        href="https://mermaid.ai/privacy-policy"
+        target="_blank"
+        class="text-sm text-foreground underline hover:text-accent">
+        mermaid.ai Privacy Policy
+      </a>
     </div>
   </Dialog.Content>
 </Dialog.Root>
