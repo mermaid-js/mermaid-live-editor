@@ -2,6 +2,7 @@ import { C } from '$/constants';
 import { env } from '$/util/env';
 
 const mermaidAiDomain = 'mermaid.ai';
+const mermaidLiveDomain = 'mermaid.live';
 
 /**
  * Check if we're on mermaid.ai
@@ -9,6 +10,14 @@ const mermaidAiDomain = 'mermaid.ai';
 export const isOnMermaidAI = (): boolean => {
   const domain = window.location.hostname;
   return domain === mermaidAiDomain || domain.endsWith(`.${mermaidAiDomain}`);
+};
+
+/**
+ * Check if we're on mermaid.live
+ */
+export const isOnMermaidLive = (): boolean => {
+  const domain = window.location.hostname;
+  return domain === mermaidLiveDomain || domain.endsWith(`.${mermaidLiveDomain}`);
 };
 
 /**
@@ -47,6 +56,7 @@ const isReferredFromMermaid = (): boolean => {
  */
 export const shouldShowEditorChooser = (): boolean => {
   if (!env.isEnabledMermaidChartLinks) return false;
+  if (!isOnMermaidAI() && !isOnMermaidLive()) return false;
   if (window.innerWidth < 640) return false;
   if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
   if (hasPakoData()) return false;
