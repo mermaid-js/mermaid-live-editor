@@ -4,6 +4,7 @@
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import { TID } from '$/constants';
+  import { env } from '$/util/env';
   import { version } from 'mermaid/package.json';
   import { mode, setMode } from 'mode-watcher';
   import ThemeIcon from './ThemeIcon.svelte';
@@ -11,11 +12,13 @@
 
 <FloatingToolbar>
   <span class="text-sm font-semibold opacity-60">v{version}</span>
-  <Button variant="ghost" size="icon" title="Privacy & Security">
-    <Privacy />
-  </Button>
+  {#if !env.hidePrivacyPolicy}
+    <Button variant="ghost" size="icon" title="Privacy & Security">
+      <Privacy />
+    </Button>
 
-  <Separator orientation="vertical" />
+    <Separator orientation="vertical" />
+  {/if}
   <Button
     variant="ghost"
     size="icon"
