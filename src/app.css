@@ -16,49 +16,58 @@
 
 @layer base {
   :root {
-    --background: hsl(0 0% 100%);
-    --foreground: hsl(222.2 84% 4.9%);
+    --background: hsl(220 14% 98%);
+    --foreground: hsl(0 0% 10%);
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(222.2 84% 4.9%);
     --popover: hsl(0 0% 100%);
     --popover-foreground: hsl(222.2 84% 4.9%);
-    --primary: hsl(240 10% 91%);
-    --primary-foreground: hsl(255 20% 15%);
+    --primary: hsl(217 91% 44%);
+    --primary-foreground: hsl(0 0% 100%);
+    --primary-light: hsl(217 91% 55%);
     --secondary: hsl(210 40% 96.1%);
     --secondary-foreground: hsl(222.2 47.4% 11.2%);
-    --muted: hsl(228 24% 96%);
-    --muted-foreground: hsl(215.4 16.3% 46.9%);
-    --accent: hsl(340 100% 44%);
-    --accent-foreground: hsl(210 40% 98%);
+    --muted: hsl(220 14% 95%);
+    --muted-foreground: hsl(220 9% 46%);
+    --accent: hsl(173 58% 39%);
+    --accent-foreground: hsl(0 0% 100%);
+    --success: hsl(134 61% 41%);
+    --info: hsl(173 58% 39%);
     --destructive: hsl(0 72.22% 50.59%);
     --destructive-foreground: hsl(210 40% 98%);
-    --border: hsl(214.3 31.8% 91.4%);
-    --border-dark: hsl(214.3 31.8% 81.4%);
-    --input: hsl(214.3 31.8% 91.4%);
+    --border: hsl(220 13% 91%);
+    --border-dark: hsl(220 13% 83%);
+    --input: hsl(220 13% 91%);
     --ring: hsl(222.2 84% 4.9%);
     --radius: 0.75rem;
+    --shadow-color: hsl(220 13% 70% / 0.15);
+    --canvas-border: hsl(220 13% 88%);
   }
   .dark {
-    --background: hsl(222.2 84% 4.9%);
-    --foreground: hsl(210 40% 98%);
-    --card: hsl(222.2 84% 4.9%);
-    --card-foreground: hsl(210 40% 98%);
-    --popover: hsl(222.2 84% 4.9%);
-    --popover-foreground: hsl(210 40% 98%);
-    --primary: hsl(210 40% 30%);
-    --primary-foreground: hsl(222.2 47.4% 90%);
-    --secondary: hsl(217.2 32.6% 17.5%);
-    --secondary-foreground: hsl(210 40% 98%);
-    --muted: hsl(217.2 32.6% 17.5%);
-    --muted-foreground: hsl(215 20.2% 65.1%);
-    --accent: hsl(340 100% 44%);
-    --accent-foreground: hsl(210 40% 98%);
+    --background: hsl(222 47% 11%);
+    --foreground: hsl(220 13% 91%);
+    --card: hsl(222 47% 14%);
+    --card-foreground: hsl(220 13% 91%);
+    --popover: hsl(222 47% 14%);
+    --popover-foreground: hsl(220 13% 91%);
+    --primary: hsl(217 91% 50%);
+    --primary-foreground: hsl(0 0% 100%);
+    --secondary: hsl(222 47% 18%);
+    --secondary-foreground: hsl(220 13% 91%);
+    --muted: hsl(222 47% 16%);
+    --muted-foreground: hsl(220 7% 70%);
+    --accent: hsl(173 58% 39%);
+    --accent-foreground: hsl(0 0% 100%);
     --destructive: hsl(0 62.8% 30.6%);
     --destructive-foreground: hsl(210 40% 98%);
-    --border: hsl(217.2 32.6% 17.5%);
-    --border-dark: hsl(217.2 32.6% 27.5%);
-    --input: hsl(217.2 32.6% 17.5%);
-    --ring: hsl(212.7 26.8% 83.9%);
+    --border: hsl(222 47% 20%);
+    --border-dark: hsl(222 47% 25%);
+    --input: hsl(222 47% 18%);
+    --ring: hsl(217 91% 60%);
+    --gradient-start: hsl(222 47% 11%);
+    --gradient-end: hsl(222 47% 16%);
+    --shadow-color: hsl(222 47% 5% / 0.4);
+    --canvas-border: hsl(222 47% 20%);
   }
 }
 
@@ -91,6 +100,13 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-ring: var(--ring);
   --color-radius: var(--radius);
+  --color-primary-light: var(--primary-light);
+  --color-success: var(--success);
+  --color-info: var(--info);
+  --color-gradient-start: var(--gradient-start);
+  --color-gradient-end: var(--gradient-end);
+  --color-shadow-color: var(--shadow-color);
+  --color-canvas-border: var(--canvas-border);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -107,6 +123,12 @@
   }
   body {
     @apply h-screen w-screen overflow-hidden bg-background text-foreground;
+  }
+  .dark body {
+    /* Solid color fallback for browsers without gradient support */
+    background: var(--gradient-start);
+    /* Gradient background using CSS variables */
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
   }
 }
 

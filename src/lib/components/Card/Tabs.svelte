@@ -32,10 +32,7 @@
       <Button
         role="tab"
         variant="ghost"
-        class={[
-          'px-2',
-          activeTabID === tab.id && 'rounded-b-none border-b-2 border-b-primary-foreground/50'
-        ]}
+        class={['px-2', activeTabID === tab.id && 'rounded-b-none border-b-2 border-b-accent']}
         onclick={toggleTabs(tab)}
         onkeypress={toggleTabs(tab)}>
         <tab.icon />

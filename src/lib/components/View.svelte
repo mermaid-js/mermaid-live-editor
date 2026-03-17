@@ -153,18 +153,26 @@
 <div
   id="view"
   bind:this={view}
-  class={['h-full w-full', shouldShowGrid && `grid-bg-${$mode}`, error && 'opacity-50']}>
+  class={[
+    'h-full w-full transition-[background-image] duration-300',
+    shouldShowGrid && `grid-bg-${$mode}`,
+    error && 'opacity-50'
+  ]}>
   <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 
 <style>
   .grid-bg-light {
-    background-size: 30px 30px;
-    background-image: radial-gradient(circle, #e4e4e48c 2px, #0000 2px);
+    background-size: 24px 24px;
+    background-image:
+      linear-gradient(to right, hsl(220 13% 90% / 0.5) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(220 13% 90% / 0.5) 1px, transparent 1px);
   }
 
   .grid-bg-dark {
-    background-size: 30px 30px;
-    background-image: radial-gradient(circle, #46464646 2px, #0000 2px);
+    background-size: 24px 24px;
+    background-image:
+      linear-gradient(to right, hsl(222 47% 20% / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(222 47% 20% / 0.4) 1px, transparent 1px);
   }
 </style>

@@ -95,7 +95,7 @@
     target="_blank"
     onclick={options.onclick}
     class={cn(
-      'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-muted',
+      'flex items-center justify-start gap-2 border-b p-2 px-3 hover:bg-muted',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
@@ -117,7 +117,7 @@
 {#snippet darkModeMenuItem(options: MenuItem)}
   <div
     class={cn(
-      'flex cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-muted',
+      'flex cursor-pointer items-center justify-between border-b px-3 py-2 hover:bg-muted',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>

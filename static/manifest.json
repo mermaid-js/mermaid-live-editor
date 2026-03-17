@@ -1,18 +1,18 @@
 {
-	"short_name": "Mermaid",
-	"name": "Mermaid Live Editor",
+	"short_name": "SotaTek",
+	"name": "SotaTek Live Editor",
 	"icons": [
 		{
-			"src": "/favicon.png",
-			"type": "image/png",
+			"src": "/icons/sotatek_logo.jpg",
+			"type": "image/jpeg",
 			"sizes": "512x512"
 		}
 	],
 	"start_url": "/edit",
-	"background_color": "#ff3670",
+	"background_color": "#0052CC",
 	"display": "standalone",
 	"scope": "/edit",
-	"theme_color": "#ff3670",
+	"theme_color": "#0052CC",
 	"description": "FlowChart & Diagrams Editor.",
 	"orientation": "natural"
 }

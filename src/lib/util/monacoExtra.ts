@@ -558,32 +558,57 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
 
   monacoEditor.editor.defineTheme('mermaid-dark', {
     base: 'vs-dark',
-    colors: {},
+    colors: {
+      'editor.background': '#1a2035',
+      'editor.foreground': '#c8cdd8',
+      'editor.lineHighlightBackground': '#1e2845',
+      'editor.selectionBackground': '#2a3a5c',
+      'editorCursor.foreground': '#56b6c2',
+      'editorLineNumber.activeForeground': '#8892a8',
+      'editorLineNumber.foreground': '#4a5568'
+    },
     inherit: true,
     rules: [
-      { fontStyle: 'bold', foreground: '9650c8', token: 'typeKeyword' },
-      { fontStyle: 'bold', foreground: '008800', token: 'transition' },
-      { foreground: '9cdcfe', token: 'identifier' }
+      { fontStyle: 'bold', foreground: 'c792ea', token: 'typeKeyword' },
+      { foreground: '89ddff', token: 'keyword' },
+      { fontStyle: 'bold', foreground: 'c3e88d', token: 'transition' },
+      { foreground: 'ffcb6b', token: 'string' },
+      { foreground: 'f78c6c', token: 'number' },
+      { foreground: '82aaff', token: 'variable' },
+      { foreground: 'ff5370', fontStyle: 'bold', token: 'custom-error' },
+      { foreground: '676e95', token: 'comment' },
+      { foreground: '89ddff', token: 'delimiter.bracket' },
+      { foreground: 'ffcb6b', token: 'annotation' },
+      { foreground: 'f07178', token: 'type' },
+      { foreground: '82aaff', token: 'identifier' }
     ]
   });
 
   monacoEditor.editor.defineTheme('mermaid', {
     base: 'vs',
-    colors: {},
+    colors: {
+      'editor.background': '#fafbfc',
+      'editor.foreground': '#24292e',
+      'editor.lineHighlightBackground': '#f1f3f5',
+      'editor.selectionBackground': '#c8e1ff',
+      'editorCursor.foreground': '#0366d6',
+      'editorLineNumber.activeForeground': '#6a737d',
+      'editorLineNumber.foreground': '#b0b7c3'
+    },
     inherit: true,
     rules: [
-      { fontStyle: 'bold', foreground: '9650c8', token: 'typeKeyword' },
-      { foreground: '649696', token: 'keyword' },
-      { fontStyle: 'bold', foreground: 'ff0000', token: 'custom-error' },
-      { foreground: 'AA8500', token: 'string' },
-      { fontStyle: 'bold', foreground: '008800', token: 'transition' },
-      { fontStyle: 'bold', foreground: '000000', token: 'delimiter.bracket' },
-      { foreground: '4b4b96', token: 'annotation' },
-      { foreground: '4b4b96', token: 'number' },
-      { foreground: '888c89', token: 'comment' },
-      { foreground: 'A22889', token: 'variable' },
-      { foreground: '2BDEA8', token: 'type' },
-      { foreground: '9cdcfe', token: 'identifier' }
+      { fontStyle: 'bold', foreground: '6f42c1', token: 'typeKeyword' },
+      { foreground: '005cc5', token: 'keyword' },
+      { fontStyle: 'bold', foreground: '22863a', token: 'transition' },
+      { foreground: '032f62', token: 'string' },
+      { foreground: '005cc5', token: 'number' },
+      { foreground: 'e36209', token: 'variable' },
+      { foreground: 'cb2431', fontStyle: 'bold', token: 'custom-error' },
+      { foreground: '6a737d', token: 'comment' },
+      { foreground: '24292e', fontStyle: 'bold', token: 'delimiter.bracket' },
+      { foreground: '6f42c1', token: 'annotation' },
+      { foreground: '22863a', token: 'type' },
+      { foreground: '005cc5', token: 'identifier' }
     ]
   });
 

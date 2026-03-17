@@ -232,7 +232,7 @@
 
 <style>
   :global(.suggestion-icon) {
-    background-color: #e8eaf9;
+    background-color: #eef1f5;
     width: 20px !important;
     height: 20px !important;
     margin-left: 4px;
@@ -245,7 +245,7 @@
   }
 
   :global(#editor.mermaid-dark .suggestion-icon) {
-    background-color: #2e4d6b;
+    background-color: #1e2845;
     background-image: url('/icons/use-chat-dark.svg');
   }
 </style>

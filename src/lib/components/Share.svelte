@@ -22,8 +22,8 @@
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <h2 class="flex items-center gap-2">
-          <img class="size-5" src="/favicon.svg" alt="Mermaid Live Editor" />
-          Mermaid Live Editor
+          <img class="size-5" src="/icons/sotatek_logo.jpg" alt="SotaTek Live Editor" />
+          SotaTek Live Editor
         </h2>
         <CopyInput value={window.location.href} />
         <Dialog.Description>

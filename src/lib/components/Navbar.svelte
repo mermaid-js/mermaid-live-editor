@@ -13,7 +13,6 @@
   import { Separator } from '$/components/ui/separator';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
   import type { ComponentProps, Snippet } from 'svelte';
-  import MermaidIcon from '~icons/custom/mermaid';
   import CloseIcon from '~icons/material-symbols/close-rounded';
   import GithubIcon from '~icons/mdi/github';
   import DropdownNavMenu from './DropdownNavMenu.svelte';
@@ -79,13 +78,13 @@
   </div>
 {/if}
 
-<nav class="z-50 flex p-4 sm:p-6">
+<nav class="z-50 flex px-4 py-3 sm:px-6 sm:py-4">
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
-    <MermaidIcon class="size-6" />
-    <a href="/" class="whitespace-nowrap text-accent">
+    <img src="/icons/sotatek_logo.jpg" alt="SotaTek" class="size-6 rounded" />
+    <a href="/" class="font-semibold whitespace-nowrap text-accent">
       {#if !mobileToggle}
-        Mermaid
+        SotaTek
       {/if}
       Live Editor
     </a>

@@ -134,11 +134,13 @@
           </div>
         </Resizable.Pane>
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
-        <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
+        <Resizable.Pane
+          minSize={15}
+          class="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl border border-canvas-border shadow-sm">
           <View {panZoomState} shouldShowGrid={$stateStore.grid} />
-          <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
-          <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
-          <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
+          <div class="absolute top-2 right-2"><PanZoomToolbar {panZoomState} /></div>
+          <div class="absolute right-2 bottom-2"><VersionSecurityToolbar /></div>
+          <div class="absolute bottom-2 left-2 sm:left-4"><SyncRoughToolbar /></div>
         </Resizable.Pane>
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
