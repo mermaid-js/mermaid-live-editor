@@ -2,17 +2,15 @@
   import Actions from '$/components/Actions.svelte';
   import Card from '$/components/Card/Card.svelte';
   import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
+  import DownloadDiagramModal from '$/components/DownloadDiagramModal.svelte';
   import Editor from '$/components/Editor.svelte';
   import History from '$/components/History/History.svelte';
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import EditorChooserModal from '$/components/migration/EditorChooserModal.svelte';
   import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Preset from '$/components/Preset.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
-  import { Button } from '$/components/ui/button';
   import * as Resizable from '$/components/ui/resizable';
   import { Switch } from '$/components/ui/switch';
   import { Toggle } from '$/components/ui/toggle';
@@ -21,8 +19,8 @@
   import type { EditorMode, Tab } from '$/types';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
-  import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
-  import { logEvent, logMermaidChartClick } from '$/util/stats';
+  import { stateStore, updateCodeStore } from '$/util/state';
+  import { logEvent } from '$/util/stats';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
@@ -93,17 +91,7 @@
       <HistoryIcon />
     </Toggle>
     <Share />
-    <McWrapper>
-      <Button
-        variant="accent"
-        size="sm"
-        href={$urlsStore.mermaidChart({ medium: 'save_diagram' }).save}
-        target="_blank"
-        onclick={() => logMermaidChartClick('saveDiagram')}>
-        <MermaidChartIcon />
-        Save diagram
-      </Button>
-    </McWrapper>
+    <DownloadDiagramModal />
   </Navbar>
 
   <div class="flex flex-1 flex-col overflow-hidden" bind:clientWidth={width}>
