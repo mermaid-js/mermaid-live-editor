@@ -114,6 +114,7 @@ This app is created with Svelte Kit.
 ## Release
 
 When a PR is created targeting master, it will be built and deployed by Netlify.
+
 The URL will be indicated in a Comment in the PR.
 
 Once the PR is merged, it will automatically be released.
