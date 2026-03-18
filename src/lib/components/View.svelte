@@ -6,6 +6,7 @@
   import { inputStateStore, stateStore, updateCodeStore } from '$/util/state';
   import { saveStatistics } from '$/util/stats';
   import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
+  import { postProcessDiagramSvg } from '$/util/svg-post-processor';
   import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
@@ -111,6 +112,8 @@
           } else {
             graphDiv.setAttribute('height', '100%');
             graphDiv.style.maxWidth = '100%';
+            // Post-process SVG for ultra-modern styling (gradients, shadows, animations)
+            postProcessDiagramSvg(graphDiv, $mode === 'dark');
             if (bindFunctions) {
               bindFunctions(graphDiv);
             }
@@ -170,9 +173,13 @@
   }
 
   .grid-bg-dark {
-    background-size: 24px 24px;
+    background-size:
+      100% 100%,
+      24px 24px,
+      24px 24px;
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      radial-gradient(ellipse at 50% 40%, rgba(0, 82, 204, 0.06) 0%, transparent 70%),
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
 </style>

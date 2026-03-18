@@ -5,6 +5,8 @@ import zenuml from '@mermaid-js/mermaid-zenuml';
 import type { MermaidConfig, RenderResult } from 'mermaid';
 import mermaid from 'mermaid';
 
+import { mergeThemeIntoConfig } from './diagram-theme-builder';
+
 mermaid.registerLayoutLoaders([...elkLayouts, ...tidyTreeLayouts]);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
@@ -15,8 +17,9 @@ export const render = async (
 ): Promise<RenderResult> => {
   await init;
 
-  // Should be able to call this multiple times without any issues.
-  mermaid.initialize(config);
+  // Merge SotaTek theme (themeVariables, themeCSS, layout) into user config
+  const themedConfig = mergeThemeIntoConfig(config);
+  mermaid.initialize(themedConfig);
   return await mermaid.render(id, code);
 };
 

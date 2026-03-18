@@ -1,4 +1,6 @@
 @import '@fontsource-variable/recursive/crsv.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
