@@ -78,11 +78,11 @@
   </div>
 {/if}
 
-<nav class="z-50 flex px-4 py-3 sm:px-6 sm:py-4">
-  <div class="flex flex-1 items-center gap-2">
+<nav class="z-50 flex border-b border-glass-border px-4 py-3 backdrop-blur-xl sm:px-6 sm:py-4">
+  <div class="flex flex-1 items-center gap-3">
     <MainMenu />
-    <img src="/icons/sotatek_logo.jpg" alt="SotaTek" class="size-6 rounded" />
-    <a href="/" class="font-semibold whitespace-nowrap text-accent">
+    <img src="/icons/sotatek_logo.jpg" alt="SotaTek" class="size-7 rounded-md shadow-sm" />
+    <a href="/" class="text-sm font-semibold tracking-wide whitespace-nowrap text-accent uppercase">
       {#if !mobileToggle}
         SotaTek
       {/if}

@@ -86,7 +86,10 @@
   {/snippet}
 
   <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
-    <Toggle bind:pressed={isHistoryOpen} size="sm">
+    <Toggle
+      bind:pressed={isHistoryOpen}
+      size="sm"
+      class="data-[state=on]:bg-accent data-[state=on]:text-accent-foreground">
       <HistoryIcon />
     </Toggle>
     <Share />
@@ -136,7 +139,7 @@
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane
           minSize={15}
-          class="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl border border-canvas-border shadow-sm">
+          class="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl border border-canvas-border shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
           <View {panZoomState} shouldShowGrid={$stateStore.grid} />
           <div class="absolute top-2 right-2"><PanZoomToolbar {panZoomState} /></div>
           <div class="absolute right-2 bottom-2"><VersionSecurityToolbar /></div>

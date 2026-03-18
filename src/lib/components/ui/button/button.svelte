@@ -13,9 +13,11 @@
         outline: 'border-input bg-background hover:bg-muted hover:text-foreground border shadow-sm',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/70 shadow-sm',
         accent:
-          'bg-accent text-accent-foreground hover:bg-accent/90 hover:-translate-y-px hover:shadow-md shadow-sm',
+          'bg-gradient-to-r from-[#0052CC] to-[#007BFF] text-white hover:-translate-y-px hover:shadow-lg hover:shadow-blue-500/25 shadow-sm',
         ghost: 'hover:bg-muted hover:text-foreground',
-        link: 'text-primary underline-offset-4 hover:underline'
+        link: 'text-primary underline-offset-4 hover:underline',
+        'ghost-outline':
+          'border border-border/60 bg-transparent text-muted-foreground hover:border-accent hover:text-accent hover:bg-accent/10'
       },
       size: {
         default: 'h-9 px-4 py-2',

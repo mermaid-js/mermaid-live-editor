@@ -135,7 +135,10 @@
   <Popover.Trigger class="shrink-0">
     <MenuIcon class="size-6" />
   </Popover.Trigger>
-  <Popover.Content align="start" class="flex flex-col overflow-hidden border-2 p-0" sideOffset={16}>
+  <Popover.Content
+    align="start"
+    class="flex flex-col overflow-hidden border border-glass-border bg-popover/95 p-0 backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+    sideOffset={16}>
     {#each menuItems as { renderer, ...item } (item.label)}
       {@render renderer(item)}
     {/each}

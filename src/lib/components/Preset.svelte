@@ -63,6 +63,7 @@
   <div class="flex h-fit max-h-52 flex-wrap gap-2 overflow-y-auto p-2">
     {#each diagramOrder as sample (sample)}
       <Button
+        variant="ghost-outline"
         size="sm"
         class="w-fit min-w-20 flex-grow normal-case"
         onclick={() => loadSampleDiagram(sample)}>

@@ -165,14 +165,14 @@
   .grid-bg-light {
     background-size: 24px 24px;
     background-image:
-      linear-gradient(to right, hsl(220 13% 90% / 0.5) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(220 13% 90% / 0.5) 1px, transparent 1px);
+      linear-gradient(to right, hsl(220 13% 90% / 0.35) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(220 13% 90% / 0.35) 1px, transparent 1px);
   }
 
   .grid-bg-dark {
     background-size: 24px 24px;
     background-image:
-      linear-gradient(to right, hsl(222 47% 20% / 0.4) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(222 47% 20% / 0.4) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   }
 </style>

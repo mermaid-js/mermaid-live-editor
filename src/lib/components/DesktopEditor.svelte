@@ -245,7 +245,7 @@
   }
 
   :global(#editor.mermaid-dark .suggestion-icon) {
-    background-color: #1e2845;
+    background-color: #0f1f3a;
     background-image: url('/icons/use-chat-dark.svg');
   }
 </style>

@@ -42,32 +42,36 @@
     --radius: 0.75rem;
     --shadow-color: hsl(220 13% 70% / 0.15);
     --canvas-border: hsl(220 13% 88%);
+    --glass-border: hsl(220 13% 88%);
+    --glass-bg: hsl(0 0% 100% / 0.7);
   }
   .dark {
-    --background: hsl(222 47% 11%);
-    --foreground: hsl(220 13% 91%);
-    --card: hsl(222 47% 14%);
-    --card-foreground: hsl(220 13% 91%);
-    --popover: hsl(222 47% 14%);
-    --popover-foreground: hsl(220 13% 91%);
+    --background: hsl(214 80% 8%);
+    --foreground: hsl(213 20% 88%);
+    --card: hsl(214 60% 12%);
+    --card-foreground: hsl(213 20% 88%);
+    --popover: hsl(214 60% 12%);
+    --popover-foreground: hsl(213 20% 88%);
     --primary: hsl(217 91% 50%);
     --primary-foreground: hsl(0 0% 100%);
-    --secondary: hsl(222 47% 18%);
-    --secondary-foreground: hsl(220 13% 91%);
-    --muted: hsl(222 47% 16%);
-    --muted-foreground: hsl(220 7% 70%);
-    --accent: hsl(173 58% 39%);
-    --accent-foreground: hsl(0 0% 100%);
+    --secondary: hsl(214 55% 16%);
+    --secondary-foreground: hsl(213 20% 88%);
+    --muted: hsl(214 55% 14%);
+    --muted-foreground: hsl(213 15% 60%);
+    --accent: hsl(187 72% 48%);
+    --accent-foreground: hsl(214 80% 8%);
     --destructive: hsl(0 62.8% 30.6%);
     --destructive-foreground: hsl(210 40% 98%);
-    --border: hsl(222 47% 20%);
-    --border-dark: hsl(222 47% 25%);
-    --input: hsl(222 47% 18%);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-dark: rgba(255, 255, 255, 0.14);
+    --input: hsl(214 55% 16%);
     --ring: hsl(217 91% 60%);
-    --gradient-start: hsl(222 47% 11%);
-    --gradient-end: hsl(222 47% 16%);
-    --shadow-color: hsl(222 47% 5% / 0.4);
-    --canvas-border: hsl(222 47% 20%);
+    --gradient-start: hsl(214 80% 8%);
+    --gradient-end: hsl(214 65% 12%);
+    --shadow-color: hsl(214 80% 3% / 0.6);
+    --canvas-border: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.04);
   }
 }
 
@@ -107,6 +111,8 @@
   --color-gradient-end: var(--gradient-end);
   --color-shadow-color: var(--shadow-color);
   --color-canvas-border: var(--canvas-border);
+  --color-glass-border: var(--glass-border);
+  --color-glass-bg: var(--glass-bg);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -133,7 +139,43 @@
 }
 
 body {
-  font-family: 'Recursive Variable', sans-serif;
+  font-family:
+    'Recursive Variable',
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* Ultra-thin custom scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 128, 128, 0.25) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.25);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.4);
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .d {
