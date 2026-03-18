@@ -23,6 +23,15 @@ export const initAnalytics = async (): Promise<void> => {
   }
 };
 
+/**
+ * Build the current page URL for analytics tracking.
+ * Includes origin, pathname, and search (for UTM params),
+ * but never the hash (which contains diagram data).
+ */
+export const getAnalyticsSafeUrl = (): string => {
+  return window.location.origin + window.location.pathname + window.location.search;
+};
+
 export const countLines = (code: string): number => {
   return (code.match(/\n/g)?.length ?? 0) + 1;
 };
@@ -111,11 +120,7 @@ export const logEvent = (
   if (timeouts.has(key)) {
     clearTimeout(timeouts.get(key));
   } else {
-    plausible.trackEvent(
-      name,
-      { props: data },
-      { url: window.location.origin + window.location.pathname }
-    );
+    plausible.trackEvent(name, { props: data }, { url: getAnalyticsSafeUrl() });
   }
   timeouts.set(
     key,
