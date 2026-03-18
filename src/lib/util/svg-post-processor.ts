@@ -1,30 +1,39 @@
 /**
- * SVG post-processing engine for ultra-modern diagram styling.
+ * SVG post-processing engine for ultra-clean diagram styling.
  * Runs after mermaid renders the SVG, before pan/zoom is applied.
+ *
+ * Covers ALL 9 target diagram types uniformly:
+ * Flowchart, Sequence, Class, Use Case, Activity, State, Component, Deployment, ER.
+ *
  * Adds: gradient arrows, hollow arrowheads, marching-ants animation,
  * enhanced shadow filters, border-radius enforcement, and font injection.
  */
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** SotaTek gradient colors */
+/** SotaTek gradient colors for arrow strokes */
 const LIGHT_GRADIENT = { start: '#0052CC', end: '#00B4DB' };
 const DARK_GRADIENT = { start: '#3B82F6', end: '#60A5FA' };
 
+/** Unified border-radius for all diagram element shapes */
+const NODE_BORDER_RADIUS = 16;
+const NOTE_BORDER_RADIUS = 12;
+
 /**
  * Main entry point — applies all post-processing to the rendered SVG.
- * Call after container.innerHTML = svg and before pan/zoom setup.
  * Skipped for rough mode (svg2roughjs replaces the SVG entirely).
  */
 export function postProcessDiagramSvg(svg: SVGSVGElement, isDark: boolean): void {
   const defs = getOrCreateDefs(svg);
+
+  // Inject reusable SVG definitions
   injectShadowFilter(defs, isDark);
   injectHollowArrowMarker(defs, isDark);
-  injectDotMarker(defs, isDark);
   injectGradientDef(defs, isDark);
 
-  enhanceNodeShadows(svg);
+  // Apply enhancements uniformly across all diagram types
   refineBorderRadius(svg);
+  enhanceNodeShadows(svg);
   addGradientArrows(svg, defs, isDark);
   replaceArrowheadMarkers(svg);
   addMarchingAntsAnimation(svg);
@@ -41,22 +50,22 @@ function getOrCreateDefs(svg: SVGSVGElement): SVGDefsElement {
   return defs;
 }
 
-/** Dual-layer shadow filter — sharp inner stroke + soft outer blur */
+/** Dual-layer shadow filter — sharp 1px inner + soft 6px outer blur */
 function injectShadowFilter(defs: SVGDefsElement, isDark: boolean): void {
   if (defs.querySelector('#sotatek-shadow')) return;
 
-  const shadowColor = isDark ? 'rgba(59,130,246,0.25)' : 'rgba(0,82,204,0.15)';
-  const blurColor = isDark ? 'rgba(10,25,47,0.45)' : 'rgba(0,82,204,0.08)';
+  const innerColor = isDark ? 'rgba(59,130,246,0.20)' : 'rgba(0,82,204,0.12)';
+  const outerColor = isDark ? 'rgba(10,25,47,0.40)' : 'rgba(0,82,204,0.06)';
 
   const filter = document.createElementNS(SVG_NS, 'filter');
   filter.setAttribute('id', 'sotatek-shadow');
-  filter.setAttribute('x', '-20%');
-  filter.setAttribute('y', '-20%');
-  filter.setAttribute('width', '140%');
+  filter.setAttribute('x', '-15%');
+  filter.setAttribute('y', '-15%');
+  filter.setAttribute('width', '130%');
   filter.setAttribute('height', '140%');
   filter.innerHTML = `
-    <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="${shadowColor}" flood-opacity="1"/>
-    <feDropShadow dx="0" dy="4" stdDeviation="7.5" flood-color="${blurColor}" flood-opacity="1"/>
+    <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="${innerColor}" flood-opacity="1"/>
+    <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="${outerColor}" flood-opacity="1"/>
   `;
   defs.appendChild(filter);
 }
@@ -74,28 +83,11 @@ function injectHollowArrowMarker(defs: SVGDefsElement, isDark: boolean): void {
   marker.setAttribute('markerWidth', '10');
   marker.setAttribute('markerHeight', '10');
   marker.setAttribute('orient', 'auto-start-reverse');
-  marker.innerHTML = `<path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  marker.innerHTML = `<path d="M 2 2 L 10 6 L 2 10" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
   defs.appendChild(marker);
 }
 
-/** Minimalist dot marker for endpoints */
-function injectDotMarker(defs: SVGDefsElement, isDark: boolean): void {
-  if (defs.querySelector('#dot-arrow')) return;
-
-  const color = isDark ? '#60A5FA' : '#0052CC';
-  const marker = document.createElementNS(SVG_NS, 'marker');
-  marker.setAttribute('id', 'dot-arrow');
-  marker.setAttribute('viewBox', '0 0 10 10');
-  marker.setAttribute('refX', '5');
-  marker.setAttribute('refY', '5');
-  marker.setAttribute('markerWidth', '6');
-  marker.setAttribute('markerHeight', '6');
-  marker.setAttribute('orient', 'auto');
-  marker.innerHTML = `<circle cx="5" cy="5" r="3" fill="${color}"/>`;
-  defs.appendChild(marker);
-}
-
-/** Shared gradient for arrow strokes */
+/** Shared linear gradient for arrow strokes (source -> destination color) */
 function injectGradientDef(defs: SVGDefsElement, isDark: boolean): void {
   if (defs.querySelector('#arrow-gradient')) return;
 
@@ -110,42 +102,89 @@ function injectGradientDef(defs: SVGDefsElement, isDark: boolean): void {
   defs.appendChild(gradient);
 }
 
-/** Apply shadow filter to node shapes */
-function enhanceNodeShadows(svg: SVGSVGElement): void {
-  const nodes = svg.querySelectorAll('.node rect, .node polygon, .node circle, .node ellipse');
-  nodes.forEach((node) => {
-    // Only apply if no filter is already set by themeCSS
-    if (!node.getAttribute('filter')) {
-      node.setAttribute('filter', 'url(#sotatek-shadow)');
-    }
-  });
-}
-
-/** Ensure border-radius on flowchart rects — fallback for themeCSS */
+/**
+ * Enforce unified border-radius on ALL diagram element rects.
+ * Covers: flowchart nodes, state groups, class boxes, ER entities,
+ * sequence actors, clusters, notes, composite states.
+ */
 function refineBorderRadius(svg: SVGSVGElement): void {
-  const rects = svg.querySelectorAll('.node rect, .cluster rect, .stateGroup rect');
-  rects.forEach((rect) => {
+  // Primary elements — 16px radius
+  const primaryRects = svg.querySelectorAll(
+    '.node rect, .cluster rect, .stateGroup rect, .actor, g.classGroup rect, .composit, .entityBox'
+  );
+  primaryRects.forEach((rect) => {
     const rx = rect.getAttribute('rx');
-    // Only set if not already rounded
-    if (!rx || parseFloat(rx) < 4) {
-      rect.setAttribute('rx', '12');
-      rect.setAttribute('ry', '12');
+    if (!rx || parseFloat(rx) < NODE_BORDER_RADIUS) {
+      rect.setAttribute('rx', String(NODE_BORDER_RADIUS));
+      rect.setAttribute('ry', String(NODE_BORDER_RADIUS));
+    }
+  });
+
+  // Secondary elements — 12px radius (notes, activation bars)
+  const secondaryRects = svg.querySelectorAll('.note, .activation0, .activation1, .activation2');
+  secondaryRects.forEach((rect) => {
+    const rx = rect.getAttribute('rx');
+    if (!rx || parseFloat(rx) < 6) {
+      rect.setAttribute('rx', String(NOTE_BORDER_RADIUS));
+      rect.setAttribute('ry', String(NOTE_BORDER_RADIUS));
     }
   });
 }
 
-/** Apply gradient stroke to flowchart links */
+/**
+ * Apply shadow filter to all diagram node shapes uniformly.
+ * Covers: flowchart nodes, state boxes, class boxes, ER entities, sequence actors.
+ * Excludes: clusters (they stay flat as swimlanes).
+ */
+function enhanceNodeShadows(svg: SVGSVGElement): void {
+  const selectors = [
+    // Flowchart / Use Case / Activity / Component / Deployment
+    '.node rect',
+    '.node polygon',
+    '.node circle',
+    '.node ellipse',
+    // Sequence diagram
+    '.actor',
+    // Class diagram
+    'g.classGroup rect',
+    // State diagram
+    '.stateGroup rect',
+    // ER diagram
+    '.entityBox'
+  ].join(', ');
+
+  const elements = svg.querySelectorAll(selectors);
+  elements.forEach((el) => {
+    if (!el.getAttribute('filter')) {
+      el.setAttribute('filter', 'url(#sotatek-shadow)');
+    }
+  });
+}
+
+/**
+ * Apply subtle gradient stroke to ALL connector lines.
+ * Covers: flowchart links, sequence messages, state transitions,
+ * class relations, ER relationship lines.
+ */
 function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, isDark: boolean): void {
-  const links = svg.querySelectorAll<SVGPathElement>(
-    '.flowchart-link, .edge-pattern-solid, .messageLine0'
-  );
+  const linkSelectors = [
+    '.flowchart-link',
+    '.edge-pattern-solid',
+    '.messageLine0',
+    '.messageLine1',
+    '.relation',
+    '.transition',
+    'path.er.relationshipLine'
+  ].join(', ');
+
+  const links = svg.querySelectorAll<SVGPathElement>(linkSelectors);
   if (links.length === 0) return;
 
-  // Compute bounding box of all links to orient the gradient
-  let minX = Infinity,
-    minY = Infinity,
-    maxX = -Infinity,
-    maxY = -Infinity;
+  // Compute bounding box of all links to orient the gradient along flow
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
 
   links.forEach((link) => {
     try {
@@ -159,7 +198,7 @@ function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, isDark: boo
     }
   });
 
-  // Update gradient coordinates based on overall flow direction
+  // Update gradient coordinates to span the full diagram flow
   const gradient = defs.querySelector('#arrow-gradient');
   if (gradient && isFinite(minX)) {
     gradient.setAttribute('x1', String(minX));
@@ -172,7 +211,6 @@ function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, isDark: boo
   const fallbackColor = isDark ? '#3B82F6' : '#0052CC';
   links.forEach((link) => {
     try {
-      // Test if gradient works (element must be in DOM)
       link.setAttribute('stroke', 'url(#arrow-gradient)');
     } catch {
       link.setAttribute('stroke', fallbackColor);
@@ -180,38 +218,39 @@ function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, isDark: boo
   });
 }
 
-/** Replace default filled arrowheads with hollow modern style */
+/**
+ * Replace default filled arrowheads with hollow modern style.
+ * Applied across all diagram types that use marker-end.
+ */
 function replaceArrowheadMarkers(svg: SVGSVGElement): void {
-  // Find all paths that use marker-end
   const paths = svg.querySelectorAll<SVGElement>('[marker-end]');
   paths.forEach((path) => {
     const existing = path.getAttribute('marker-end');
-    // Only replace mermaid's default flowchart markers, not all markers
-    if (existing && existing.includes('flowchart-')) {
+    // Replace mermaid's default flowchart/state markers
+    if (existing && (existing.includes('flowchart-') || existing.includes('stateDiagram-'))) {
       path.setAttribute('marker-end', 'url(#hollow-arrow)');
     }
   });
 }
 
-/** Add marching-ants animation to dashed links */
+/** Add marching-ants animation to dashed/dotted links across all diagram types */
 function addMarchingAntsAnimation(svg: SVGSVGElement): void {
   const dashedLinks = svg.querySelectorAll<SVGPathElement>(
-    '.edge-pattern-dotted, .edge-pattern-dashed, [stroke-dasharray]'
+    '.edge-pattern-dotted, .edge-pattern-dashed, .loopLine, [stroke-dasharray]'
   );
 
   dashedLinks.forEach((link) => {
-    // Skip if already animated
+    // Skip if already animated or if it's a cluster border
     if (link.querySelector('animate')) return;
+    if (link.closest('.cluster')) return;
 
-    // Set consistent dash pattern
     link.setAttribute('stroke-dasharray', '8 4');
     link.setAttribute('stroke-width', '2');
 
-    // Create animation element
     const animate = document.createElementNS(SVG_NS, 'animate');
     animate.setAttribute('attributeName', 'stroke-dashoffset');
     animate.setAttribute('values', '0;-24');
-    animate.setAttribute('dur', '1.2s');
+    animate.setAttribute('dur', '1.5s');
     animate.setAttribute('repeatCount', 'indefinite');
     link.appendChild(animate);
   });
@@ -219,7 +258,6 @@ function addMarchingAntsAnimation(svg: SVGSVGElement): void {
 
 /** Inject font-face declarations for SVG export portability */
 function injectFontFaces(svg: SVGSVGElement): void {
-  // Skip if already injected
   if (svg.querySelector('style[data-sotatek-fonts]')) return;
 
   const style = document.createElementNS(SVG_NS, 'style');

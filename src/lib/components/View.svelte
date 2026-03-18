@@ -167,19 +167,15 @@
 <style>
   .grid-bg-light {
     background-size: 24px 24px;
-    background-image:
-      linear-gradient(to right, hsl(220 13% 90% / 0.35) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(220 13% 90% / 0.35) 1px, transparent 1px);
+    background-image: radial-gradient(circle, hsl(220 13% 75% / 0.25) 1px, transparent 1px);
   }
 
   .grid-bg-dark {
     background-size:
       100% 100%,
-      24px 24px,
       24px 24px;
     background-image:
       radial-gradient(ellipse at 50% 40%, rgba(0, 82, 204, 0.06) 0%, transparent 70%),
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
 </style>

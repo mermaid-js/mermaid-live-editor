@@ -172,23 +172,45 @@ export const darkThemeVariables: Record<string, string> = {
   titleColor: '#60A5FA'
 };
 
-/** Diagram-specific layout configs for increased spacing and bezier curves */
+/**
+ * Diagram-specific layout configs — massive spacing (150%+ increase)
+ * to eliminate overlap and create clean "Blueprint" separation.
+ * Covers all 9 target diagram types uniformly.
+ * Note: Use Case/Activity/Component/Deployment are flowchart variants in mermaid.
+ */
 export const diagramLayoutConfig = {
+  class: {
+    diagramPadding: 40,
+    nodeSpacing: 100,
+    rankSpacing: 80
+  },
+  er: {
+    diagramPadding: 40,
+    entityPadding: 20,
+    minEntityHeight: 60,
+    minEntityWidth: 120
+  },
   flowchart: {
-    curve: 'basis' as const,
-    diagramPadding: 20,
-    nodeSpacing: 70,
-    rankSpacing: 80,
-    wrappingWidth: 200
+    curve: 'monotoneY' as const,
+    diagramPadding: 40,
+    htmlLabels: true,
+    nodeSpacing: 120,
+    padding: 25,
+    rankSpacing: 100,
+    useMaxWidth: true,
+    wrappingWidth: 250
   },
   sequence: {
-    actorMargin: 80,
-    diagramMarginX: 30,
-    diagramMarginY: 20,
+    actorMargin: 120,
+    diagramMarginX: 50,
+    diagramMarginY: 30,
+    messageMargin: 50,
     mirrorActors: true,
-    noteMargin: 15
+    noteMargin: 20
   },
-  class: {
-    diagramPadding: 20
+  state: {
+    diagramPadding: 40,
+    nodeSpacing: 80,
+    rankSpacing: 80
   }
 };
