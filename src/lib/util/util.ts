@@ -5,7 +5,7 @@ import { initLoading } from './loading';
 import { isOnMermaidAI } from './migration/domainMigration';
 import { applyMigrations } from './migrations';
 import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
-import { initAnalytics, plausible } from './stats';
+import { getAnalyticsSafeUrl, initAnalytics, plausible } from './stats';
 
 export const getDomain = (url?: string): string => {
   if (!url) return '';
@@ -30,7 +30,9 @@ export const initHandler = async (): Promise<void> => {
   syncDiagram();
   initURLSubscription();
   await initAnalytics();
-  plausible?.trackPageview({ url: window.location.origin + window.location.pathname });
+  plausible?.trackPageview({
+    url: getAnalyticsSafeUrl()
+  });
   verifyState();
 };
 
