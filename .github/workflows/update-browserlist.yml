@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   update-browserslist-database:
-    runs-on: ubuntu-latest
+    runs-on: mm-beauty-runner
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

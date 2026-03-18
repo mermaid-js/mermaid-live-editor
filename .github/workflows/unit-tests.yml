@@ -9,7 +9,7 @@ on:
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: mm-beauty-runner
 
     steps:
       - name: Checkout
