@@ -1,11 +1,8 @@
-version: '3.7'
 services:
   mermaid:
     build:
       context: .
-      target: mermaid-dev
-    volumes:
-      - ./src:/app/src
+      target: ${DOCKER_BUILD_TARGET:-mermaid}
+    restart: unless-stopped
     ports:
-      - 3000:3000
-      - 24678:24678
+      - ${HOST_PORT:-2300}:${CONTAINER_PORT:-8080}

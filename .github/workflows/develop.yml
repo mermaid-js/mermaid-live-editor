@@ -1,0 +1,40 @@
+name: Develop CI/CD
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+concurrency:
+  group: develop-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: mm-beauty-runner
+    env:
+      COMPOSE_PROJECT_NAME: mermaid-live-editor-beauty-develop
+      DOCKER_BUILD_TARGET: mermaid
+      HOST_PORT: 2300
+      CONTAINER_PORT: 8080
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Show Docker and Compose version
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Stop current stack
+        run: |
+          docker compose down --remove-orphans || true
+
+      - name: Build and start stack
+        run: docker compose up -d --build
+
+      - name: Verify stack
+        run: |
+          docker compose ps
+          docker compose logs --tail 50 mermaid
