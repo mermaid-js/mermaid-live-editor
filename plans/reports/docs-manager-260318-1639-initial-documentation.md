@@ -15,16 +15,16 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 
 ## Files Created
 
-| File | Lines | Size | Purpose |
-|------|-------|------|---------|
-| `project-overview-pdr.md` | 142 | 5.3K | Product requirements, features, tech stack, metrics |
-| `codebase-summary.md` | 224 | 8.3K | Directory structure, tech dependencies, patterns |
-| `code-standards.md` | 425 | 9.2K | Svelte 5, TypeScript, ESLint, Prettier, testing standards |
-| `system-architecture.md` | 545 | 14K | State flow, rendering pipeline, URL serialization, subsystems |
-| `deployment-guide.md` | 409 | 8.6K | Dev setup, build, Docker, Netlify, CI/CD, troubleshooting |
-| `design-guidelines.md` | 539 | 11K | Theme system, typography, UI components, layout, accessibility |
-| `project-roadmap.md` | 310 | 7.8K | Current status, roadmap phases, metrics, risks, decisions |
-| **Total** | **2,594** | **64K** | Comprehensive project knowledge base |
+| File                      | Lines     | Size    | Purpose                                                        |
+| ------------------------- | --------- | ------- | -------------------------------------------------------------- |
+| `project-overview-pdr.md` | 142       | 5.3K    | Product requirements, features, tech stack, metrics            |
+| `codebase-summary.md`     | 224       | 8.3K    | Directory structure, tech dependencies, patterns               |
+| `code-standards.md`       | 425       | 9.2K    | Svelte 5, TypeScript, ESLint, Prettier, testing standards      |
+| `system-architecture.md`  | 545       | 14K     | State flow, rendering pipeline, URL serialization, subsystems  |
+| `deployment-guide.md`     | 409       | 8.6K    | Dev setup, build, Docker, Netlify, CI/CD, troubleshooting      |
+| `design-guidelines.md`    | 539       | 11K     | Theme system, typography, UI components, layout, accessibility |
+| `project-roadmap.md`      | 310       | 7.8K    | Current status, roadmap phases, metrics, risks, decisions      |
+| **Total**                 | **2,594** | **64K** | Comprehensive project knowledge base                           |
 
 ---
 
@@ -35,6 +35,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/project-overview-pdr.md` (142 LOC)
 
 **Coverage:**
+
 - Project purpose & target users
 - Core features (15 listed)
 - Non-functional requirements (table)
@@ -51,6 +52,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/codebase-summary.md` (224 LOC)
 
 **Coverage:**
+
 - Complete directory tree (30+ key locations)
 - Tech stack table (25 technologies)
 - Key patterns (5 architectural patterns with diagrams)
@@ -67,6 +69,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/code-standards.md` (425 LOC)
 
 **Coverage:**
+
 - File naming conventions (table)
 - Svelte 5 runes (`$state`, `$derived`, `$effect`, `$props`)
 - TypeScript strictness settings
@@ -91,6 +94,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/system-architecture.md` (545 LOC)
 
 **Coverage:**
+
 - High-level overview diagram (ASCII)
 - Core state architecture flow (3 levels: input, derived, computed)
 - Data flow example (user input to rendered diagram)
@@ -113,6 +117,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/deployment-guide.md` (409 LOC)
 
 **Coverage:**
+
 - Prerequisites (Node, pnpm, Git, Docker)
 - Local development (setup, dev server, quality checks)
 - Production build (pnpm build, adapter output, workaround)
@@ -133,6 +138,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/design-guidelines.md` (539 LOC)
 
 **Coverage:**
+
 - Theme system (CSS variables, light/dark, sotatek custom variant)
 - Color palette (light & dark with tokens)
 - Typography (Recursive font, scale, weights)
@@ -152,6 +158,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 **File:** `/docs/project-roadmap.md` (310 LOC)
 
 **Coverage:**
+
 - Current status (v2.0.67, stable, active development)
 - Completed features (20 items)
 - Known limitations (5 items)
@@ -176,6 +183,7 @@ Successfully created comprehensive documentation suite for Mermaid Live Editor (
 ### Line Count Limit (800 LOC per file)
 
 All files compliant:
+
 - Largest: `system-architecture.md` (545 LOC, 68% of limit)
 - Smallest: `project-overview-pdr.md` (142 LOC, 18% of limit)
 - Average: 370 LOC per file
@@ -203,7 +211,7 @@ All files compliant:
 
 - Proper heading hierarchy (H1-H3)
 - Tables for structured data
-- Code blocks with language (```ts, ```svelte, etc.)
+- Code blocks with language (`ts, `svelte, etc.)
 - Bold for emphasis, inline code for technical terms
 - No markdown linting errors
 - **Status:** PASS
@@ -215,6 +223,7 @@ All files compliant:
 ### 1. Complete Codebase Knowledge
 
 Documentation captures all major components, patterns, and flows. New developers can understand:
+
 - What each module does (`util/`, `components/`, `routes/`)
 - How data flows from user input to rendered diagram
 - Which tools/libraries are used and why
@@ -223,6 +232,7 @@ Documentation captures all major components, patterns, and flows. New developers
 ### 2. Standards Enforcement
 
 Code standards document aligns with actual tooling:
+
 - ESLint config matches `eslint.config.js`
 - Prettier rules match `.prettierrc` defaults
 - TypeScript strictness in `tsconfig.json`
@@ -231,6 +241,7 @@ Code standards document aligns with actual tooling:
 ### 3. Custom Sotatek Theme
 
 Documented the custom sotatek theme variant:
+
 - Custom CSS variables in design-guidelines.md
 - How to override theme colors
 - Future path to generalize to theme builder UI
@@ -239,6 +250,7 @@ Documented the custom sotatek theme variant:
 ### 4. Real-World Deployment
 
 Deployment guide covers actual targets:
+
 - Netlify (primary, with netlify.toml config)
 - Docker (with Dockerfile walkthrough)
 - GitHub Actions CI/CD (existing workflows)
@@ -247,6 +259,7 @@ Deployment guide covers actual targets:
 ### 5. Architectural Clarity
 
 System architecture explains:
+
 - State management at 3 levels (input → derived → computed)
 - Rendering pipeline with debouncing
 - URL encoding process (Base64 + pako)
@@ -255,6 +268,7 @@ System architecture explains:
 ### 6. Accessibility First
 
 Design guidelines emphasize:
+
 - WCAG 2.1 AA compliance
 - Color contrast ratios
 - Keyboard navigation
@@ -269,24 +283,29 @@ Design guidelines emphasize:
 Suggested reading order for different roles:
 
 **For New Team Members:**
+
 1. `project-overview-pdr.md` (2 min) — understand project
 2. `codebase-summary.md` (5 min) — see structure
 3. `code-standards.md` (15 min) — learn standards
 4. `system-architecture.md` (20 min) — deep dive
 
 **For Designers:**
+
 1. `design-guidelines.md` (20 min) — theme, colors, components
 2. `codebase-summary.md` (5 min) — find component files
 
 **For DevOps / Infrastructure:**
+
 1. `deployment-guide.md` (25 min) — all deployment paths
 2. `project-overview-pdr.md` (2 min) — context
 
 **For Product Managers:**
+
 1. `project-overview-pdr.md` (2 min) — features, metrics
 2. `project-roadmap.md` (15 min) — timeline, risks
 
 **For Contributors:**
+
 1. `project-overview-pdr.md` (2 min) — context
 2. `code-standards.md` (15 min) — how to contribute
 3. `project-roadmap.md` (10 min) — where help needed
@@ -295,16 +314,16 @@ Suggested reading order for different roles:
 
 ## Quality Metrics
 
-| Metric | Target | Achieved | Status |
-|--------|--------|----------|--------|
-| Total LOC | <2,800 | 2,594 | PASS |
-| Files | 7 | 7 | PASS |
-| Max file size | 800 LOC | 545 max | PASS |
-| Code examples | >20 | 45+ | PASS |
-| Diagrams | 5+ | 8+ | PASS |
-| Cross-references | Comprehensive | Yes | PASS |
-| Accuracy | 100% verified | Yes | PASS |
-| Formatting | Consistent | Yes | PASS |
+| Metric           | Target        | Achieved | Status |
+| ---------------- | ------------- | -------- | ------ |
+| Total LOC        | <2,800        | 2,594    | PASS   |
+| Files            | 7             | 7        | PASS   |
+| Max file size    | 800 LOC       | 545 max  | PASS   |
+| Code examples    | >20           | 45+      | PASS   |
+| Diagrams         | 5+            | 8+       | PASS   |
+| Cross-references | Comprehensive | Yes      | PASS   |
+| Accuracy         | 100% verified | Yes      | PASS   |
+| Formatting       | Consistent    | Yes      | PASS   |
 
 ---
 

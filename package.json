@@ -117,7 +117,7 @@
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md,json}": [
-      "prettier --plugin-search-dir=. --write",
+      "prettier --write",
       "eslint "
     ]
   },
