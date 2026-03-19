@@ -29,14 +29,11 @@ jobs:
           if [ -n "$GOOGLE_CHAT_WEBHOOK" ]; then
             COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
             COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-            TEXT=$(cat <<EOF
-🚀 Starting Deploy [develop] Mermaid Live Editor FE...
-
-👤 Deployed by: ${{ github.actor }}
-🔗 Commit: ${COMMIT_URL}
-📝 Message: ${COMMIT_MESSAGE}
-EOF
-)
+            TEXT=$(printf '%s\n\n%s\n%s\n%s\n' \
+              '🚀 Starting Deploy [develop] Mermaid Live Editor FE...' \
+              '👤 Deployed by: ${{ github.actor }}' \
+              "🔗 Commit: ${COMMIT_URL}" \
+              "📝 Message: ${COMMIT_MESSAGE}")
             PAYLOAD=$(TEXT="$TEXT" python3 -c 'import json, os; print(json.dumps({"text": os.environ["TEXT"]}))')
             curl -sS -X POST "$GOOGLE_CHAT_WEBHOOK" \
               -H 'Content-Type: application/json' \
@@ -73,14 +70,11 @@ EOF
           if [ -n "$GOOGLE_CHAT_WEBHOOK" ]; then
             COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
             COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-            TEXT=$(cat <<EOF
-✅ Deploy Success [develop] Mermaid Live Editor FE
-
-👤 Deployed by: ${{ github.actor }}
-🔗 Commit: ${COMMIT_URL}
-📝 Message: ${COMMIT_MESSAGE}
-EOF
-)
+            TEXT=$(printf '%s\n\n%s\n%s\n%s\n' \
+              '✅ Deploy Success [develop] Mermaid Live Editor FE' \
+              '👤 Deployed by: ${{ github.actor }}' \
+              "🔗 Commit: ${COMMIT_URL}" \
+              "📝 Message: ${COMMIT_MESSAGE}")
             PAYLOAD=$(TEXT="$TEXT" python3 -c 'import json, os; print(json.dumps({"text": os.environ["TEXT"]}))')
             curl -sS -X POST "$GOOGLE_CHAT_WEBHOOK" \
               -H 'Content-Type: application/json' \
@@ -95,14 +89,11 @@ EOF
           if [ -n "$GOOGLE_CHAT_WEBHOOK" ]; then
             COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
             COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-            TEXT=$(cat <<EOF
-❌ Deploy Failed [develop] Mermaid Live Editor FE
-
-👤 Deployed by: ${{ github.actor }}
-🔗 Commit: ${COMMIT_URL}
-📝 Message: ${COMMIT_MESSAGE}
-EOF
-)
+            TEXT=$(printf '%s\n\n%s\n%s\n%s\n' \
+              '❌ Deploy Failed [develop] Mermaid Live Editor FE' \
+              '👤 Deployed by: ${{ github.actor }}' \
+              "🔗 Commit: ${COMMIT_URL}" \
+              "📝 Message: ${COMMIT_MESSAGE}")
             PAYLOAD=$(TEXT="$TEXT" python3 -c 'import json, os; print(json.dumps({"text": os.environ["TEXT"]}))')
             curl -sS -X POST "$GOOGLE_CHAT_WEBHOOK" \
               -H 'Content-Type: application/json' \
