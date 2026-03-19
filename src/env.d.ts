@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  readonly MERMAID_BEAUTY_SERVICE_URL?: string;
   readonly MERMAID_RENDERER_URL?: string;
   readonly MERMAID_KROKI_RENDERER_URL?: string;
   readonly MERMAID_ANALYTICS_URL?: string;

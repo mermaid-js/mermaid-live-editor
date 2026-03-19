@@ -22,6 +22,32 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Notify deploy started
+        env:
+          GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+        run: |
+          if [ -n "$GOOGLE_CHAT_WEBHOOK" ]; then
+            COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+            TEXT=$(cat <<EOF
+🚀 Starting Deploy [develop] Mermaid Live Editor FE...
+
+👤 Deployed by: ${{ github.actor }}
+🔗 Commit: ${COMMIT_URL}
+📝 Message: ${COMMIT_MESSAGE}
+EOF
+)
+            PAYLOAD=$(TEXT="$TEXT" python3 -c 'import json, os; print(json.dumps({"text": os.environ["TEXT"]}))')
+            curl -sS -X POST "$GOOGLE_CHAT_WEBHOOK" \
+              -H 'Content-Type: application/json' \
+              -d "$PAYLOAD"
+          fi
+
+      - name: Prepare environment file
+        run: |
+          test -n "${{ vars.MERMAID_LIVE_EDITOR_BEAUTY_DEV_ENV }}"
+          printf '%s\n' "${{ vars.MERMAID_LIVE_EDITOR_BEAUTY_DEV_ENV }}" > .env
+
       - name: Show Docker and Compose version
         run: |
           docker --version
@@ -38,3 +64,47 @@ jobs:
         run: |
           docker compose ps
           docker compose logs --tail 50 mermaid
+
+      - name: Notify deploy success
+        if: success()
+        env:
+          GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+        run: |
+          if [ -n "$GOOGLE_CHAT_WEBHOOK" ]; then
+            COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+            TEXT=$(cat <<EOF
+✅ Deploy Success [develop] Mermaid Live Editor FE
+
+👤 Deployed by: ${{ github.actor }}
+🔗 Commit: ${COMMIT_URL}
+📝 Message: ${COMMIT_MESSAGE}
+EOF
+)
+            PAYLOAD=$(TEXT="$TEXT" python3 -c 'import json, os; print(json.dumps({"text": os.environ["TEXT"]}))')
+            curl -sS -X POST "$GOOGLE_CHAT_WEBHOOK" \
+              -H 'Content-Type: application/json' \
+              -d "$PAYLOAD"
+          fi
+
+      - name: Notify deploy failure
+        if: failure()
+        env:
+          GOOGLE_CHAT_WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+        run: |
+          if [ -n "$GOOGLE_CHAT_WEBHOOK" ]; then
+            COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+            TEXT=$(cat <<EOF
+❌ Deploy Failed [develop] Mermaid Live Editor FE
+
+👤 Deployed by: ${{ github.actor }}
+🔗 Commit: ${COMMIT_URL}
+📝 Message: ${COMMIT_MESSAGE}
+EOF
+)
+            PAYLOAD=$(TEXT="$TEXT" python3 -c 'import json, os; print(json.dumps({"text": os.environ["TEXT"]}))')
+            curl -sS -X POST "$GOOGLE_CHAT_WEBHOOK" \
+              -H 'Content-Type: application/json' \
+              -d "$PAYLOAD"
+          fi

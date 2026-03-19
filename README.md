@@ -49,6 +49,18 @@ When building set the MERMAID_ANALYTICS_URL build argument to your plausible ins
 
 Default is empty, disabling analytics.
 
+### To configure Mermaid Beauty Service URL
+
+When building set `MERMAID_BEAUTY_SERVICE_URL` to the public base URL of the backend service used for GIF export flows.
+
+Example:
+
+```bash
+MERMAID_BEAUTY_SERVICE_URL=http://your-server:2400
+```
+
+Do not use `localhost` for deployed frontend builds unless the browser is expected to run on the same server.
+
 ### To enable Mermaid Chart links and promotion
 
 When building set the MERMAID_IS_ENABLED_MERMAID_CHART_LINKS build argument to `true`
