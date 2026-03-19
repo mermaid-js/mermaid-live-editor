@@ -3,11 +3,11 @@
   import Privacy from '$/components/Privacy.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
-  import { TID } from '$/constants';
   import { env } from '$/util/env';
+  import { colorMode, toggleColorMode } from '$lib/themes/theme-store';
   import { version } from 'mermaid/package.json';
-  import { mode, setMode } from 'mode-watcher';
-  import ThemeIcon from './ThemeIcon.svelte';
+  import MoonIcon from '~icons/material-symbols/dark-mode-outline-rounded';
+  import SunIcon from '~icons/material-symbols/light-mode-outline-rounded';
 </script>
 
 <FloatingToolbar>
@@ -22,10 +22,13 @@
   <Button
     variant="ghost"
     size="icon"
-    data-testid={TID.themeToggleButton}
-    title="Switch to {$mode === 'dark' ? 'light' : 'dark'} theme"
-    class="[&_svg]:size-5"
-    onclick={() => setMode($mode === 'dark' ? 'light' : 'dark')}>
-    <ThemeIcon />
+    title={$colorMode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+    onclick={toggleColorMode}
+    class="[&_svg]:size-5">
+    {#if $colorMode === 'dark'}
+      <SunIcon />
+    {:else}
+      <MoonIcon />
+    {/if}
   </Button>
 </FloatingToolbar>

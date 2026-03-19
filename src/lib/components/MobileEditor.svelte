@@ -10,7 +10,7 @@
   import { vsCodeDark } from '@fsegurai/codemirror-theme-vscode-dark';
   import { vsCodeLight } from '@fsegurai/codemirror-theme-vscode-light';
   import { basicSetup } from 'codemirror';
-  import { mode } from 'mode-watcher';
+  import { activeTheme } from '$lib/themes/theme-store';
   import { onMount } from 'svelte';
 
   let editorView: EditorView | undefined;
@@ -56,9 +56,11 @@
       parent: editorContainer
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
+    const unsubscribeMode = activeTheme.subscribe((theme) => {
       editorView?.dispatch({
-        effects: themeCompartment.reconfigure(mode === 'dark' ? vsCodeDark : vsCodeLight)
+        effects: themeCompartment.reconfigure(
+          theme.colorScheme === 'dark' ? vsCodeDark : vsCodeLight
+        )
       });
     });
 

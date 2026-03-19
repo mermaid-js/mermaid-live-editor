@@ -2,6 +2,7 @@ import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
+import type { ThemeDefinition } from '$lib/themes/types';
 import { env } from './env';
 import {
   extractErrorLineText,
@@ -11,7 +12,8 @@ import {
 import { parse } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, pakoSerde, serializeState } from './serde';
-import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
+import { errorDebug, getUTMSource, MCBaseURL } from './util';
+import { formatJSON } from './format-json';
 
 export const defaultState: State = {
   code: `flowchart TD
@@ -223,11 +225,12 @@ export const updateConfig = (config: string): void => {
   updateCodeStore({ mermaid: config });
 };
 
-export const toggleDarkTheme = (dark: boolean): void => {
+/** Sync the mermaid config theme property based on the active ThemeDefinition */
+export const syncDiagramTheme = (theme: ThemeDefinition): void => {
   inputStateStore.update((state) => {
     const config = JSON.parse(state.mermaid) as MermaidConfig;
     if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-      config.theme = dark ? 'dark' : 'default';
+      config.theme = theme.colorScheme === 'dark' ? 'dark' : 'default';
     }
     return { ...state, mermaid: formatJSON(config) };
   });

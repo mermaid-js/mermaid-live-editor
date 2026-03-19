@@ -6,7 +6,7 @@
   import { AIPromptViewZoneManager } from '$lib/util/AIPromptViewZoneManager';
   import { initEditor } from '$lib/util/monacoExtra';
   import { errorDebug } from '$lib/util/util';
-  import { mode } from 'mode-watcher';
+  import { activeTheme } from '$lib/themes/theme-store';
   import * as monaco from 'monaco-editor';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
   import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
@@ -183,10 +183,11 @@
       renderAIPromptGutterGlyphIcon();
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
+    const unsubscribeMode = activeTheme.subscribe((theme) => {
       if (editor) {
-        monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
-        divElement?.classList.toggle('mermaid-dark', mode === 'dark');
+        const isDark = theme.colorScheme === 'dark';
+        monaco.editor.setTheme(`mermaid${isDark ? '-dark' : ''}`);
+        divElement?.classList.toggle('mermaid-dark', isDark);
       }
     });
     const resizeObserver = new ResizeObserver((entries) => {

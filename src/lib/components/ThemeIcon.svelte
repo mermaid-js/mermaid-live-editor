@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { mode } from 'mode-watcher';
+  import { diagramThemeId } from '$lib/themes/theme-store';
   import { cubicInOut } from 'svelte/easing';
   import { type TransitionConfig } from 'svelte/transition';
-  import MoonIcon from '~icons/material-symbols/dark-mode-outline-rounded';
+  import ArchitectureIcon from '~icons/material-symbols/draw-outline-rounded';
+  import GlassIcon from '~icons/material-symbols/kid-star-outline';
   import SunIcon from '~icons/material-symbols/light-mode-outline-rounded';
 
   const spin = (
@@ -21,19 +22,22 @@
       `
     };
   };
+
+  const iconMap: Record<string, typeof SunIcon> = {
+    default: SunIcon,
+    glassmorphism: GlassIcon,
+    blueprint: ArchitectureIcon
+  };
 </script>
 
 <div class="inline-grid">
-  {#key $mode}
+  {#key $diagramThemeId}
+    {@const Icon = iconMap[$diagramThemeId] ?? SunIcon}
     <div
       in:spin={{ clockWise: true }}
       out:spin={{ clockWise: false }}
       class="col-start-1 row-start-1">
-      {#if $mode === 'dark'}
-        <MoonIcon />
-      {:else}
-        <SunIcon />
-      {/if}
+      <Icon />
     </div>
   {/key}
 </div>

@@ -11,9 +11,14 @@
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** SotaTek gradient colors for arrow strokes */
-const LIGHT_GRADIENT = { start: '#0052CC', end: '#00B4DB' };
-const DARK_GRADIENT = { start: '#3B82F6', end: '#60A5FA' };
+/** SotaTek gradient colors for arrow strokes — parameterized per theme */
+interface GradientColors {
+  start: string;
+  end: string;
+}
+
+const DEFAULT_LIGHT_GRADIENT: GradientColors = { start: '#0052CC', end: '#00B4DB' };
+const DEFAULT_DARK_GRADIENT: GradientColors = { start: '#3B82F6', end: '#60A5FA' };
 
 /** Unified border-radius for all diagram element shapes */
 const NODE_BORDER_RADIUS = 16;
@@ -23,18 +28,38 @@ const NOTE_BORDER_RADIUS = 12;
  * Main entry point — applies all post-processing to the rendered SVG.
  * Skipped for rough mode (svg2roughjs replaces the SVG entirely).
  */
-export function postProcessDiagramSvg(svg: SVGSVGElement, isDark: boolean): void {
+export function postProcessDiagramSvg(
+  svg: SVGSVGElement,
+  isDark: boolean,
+  gradientColors?: {
+    gradientStart: string;
+    gradientEnd: string;
+    shadowInnerColor?: string;
+    shadowOuterColor?: string;
+    hollowArrowColor?: string;
+  }
+): void {
   const defs = getOrCreateDefs(svg);
+  const colors: GradientColors = gradientColors
+    ? { start: gradientColors.gradientStart, end: gradientColors.gradientEnd }
+    : isDark
+      ? DEFAULT_DARK_GRADIENT
+      : DEFAULT_LIGHT_GRADIENT;
 
   // Inject reusable SVG definitions
-  injectShadowFilter(defs, isDark);
-  injectHollowArrowMarker(defs, isDark);
-  injectGradientDef(defs, isDark);
+  injectShadowFilter(
+    defs,
+    isDark,
+    gradientColors?.shadowInnerColor,
+    gradientColors?.shadowOuterColor
+  );
+  injectHollowArrowMarker(defs, isDark, gradientColors?.hollowArrowColor);
+  injectGradientDef(defs, colors);
 
   // Apply enhancements uniformly across all diagram types
   refineBorderRadius(svg);
   enhanceNodeShadows(svg);
-  addGradientArrows(svg, defs, isDark);
+  addGradientArrows(svg, defs, colors);
   replaceArrowheadMarkers(svg);
   addMarchingAntsAnimation(svg);
   injectFontFaces(svg);
@@ -50,12 +75,22 @@ function getOrCreateDefs(svg: SVGSVGElement): SVGDefsElement {
   return defs;
 }
 
-/** Dual-layer shadow filter — sharp 1px inner + soft 6px outer blur */
-function injectShadowFilter(defs: SVGDefsElement, isDark: boolean): void {
+/** Dual-layer shadow filter — parameterized per theme */
+function injectShadowFilter(
+  defs: SVGDefsElement,
+  isDark: boolean,
+  customInnerColor?: string,
+  customOuterColor?: string
+): void {
   if (defs.querySelector('#sotatek-shadow')) return;
 
-  const innerColor = isDark ? 'rgba(59,130,246,0.20)' : 'rgba(0,82,204,0.12)';
-  const outerColor = isDark ? 'rgba(10,25,47,0.40)' : 'rgba(0,82,204,0.06)';
+  const innerColor = customInnerColor ?? (isDark ? 'rgba(59,130,246,0.20)' : 'rgba(0,82,204,0.12)');
+  const outerColor = customOuterColor ?? (isDark ? 'rgba(10,25,47,0.40)' : 'rgba(0,82,204,0.06)');
+  // Deeper blur values when custom colors provided (theme-specific shadow depth)
+  const innerDy = customInnerColor ? '4' : '1';
+  const innerStd = customInnerColor ? '6' : '1';
+  const outerDy = customOuterColor ? '20' : '3';
+  const outerStd = customOuterColor ? '20' : '6';
 
   const filter = document.createElementNS(SVG_NS, 'filter');
   filter.setAttribute('id', 'sotatek-shadow');
@@ -64,17 +99,21 @@ function injectShadowFilter(defs: SVGDefsElement, isDark: boolean): void {
   filter.setAttribute('width', '130%');
   filter.setAttribute('height', '140%');
   filter.innerHTML = `
-    <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="${innerColor}" flood-opacity="1"/>
-    <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="${outerColor}" flood-opacity="1"/>
+    <feDropShadow dx="0" dy="${innerDy}" stdDeviation="${innerStd}" flood-color="${innerColor}" flood-opacity="1"/>
+    <feDropShadow dx="0" dy="${outerDy}" stdDeviation="${outerStd}" flood-color="${outerColor}" flood-opacity="1"/>
   `;
   defs.appendChild(filter);
 }
 
 /** Hollow modern arrowhead — open chevron, no fill */
-function injectHollowArrowMarker(defs: SVGDefsElement, isDark: boolean): void {
+function injectHollowArrowMarker(
+  defs: SVGDefsElement,
+  isDark: boolean,
+  customColor?: string
+): void {
   if (defs.querySelector('#hollow-arrow')) return;
 
-  const color = isDark ? '#60A5FA' : '#0052CC';
+  const color = customColor ?? (isDark ? '#60A5FA' : '#0052CC');
   const marker = document.createElementNS(SVG_NS, 'marker');
   marker.setAttribute('id', 'hollow-arrow');
   marker.setAttribute('viewBox', '0 0 12 12');
@@ -88,10 +127,9 @@ function injectHollowArrowMarker(defs: SVGDefsElement, isDark: boolean): void {
 }
 
 /** Shared linear gradient for arrow strokes (source -> destination color) */
-function injectGradientDef(defs: SVGDefsElement, isDark: boolean): void {
+function injectGradientDef(defs: SVGDefsElement, colors: GradientColors): void {
   if (defs.querySelector('#arrow-gradient')) return;
 
-  const colors = isDark ? DARK_GRADIENT : LIGHT_GRADIENT;
   const gradient = document.createElementNS(SVG_NS, 'linearGradient');
   gradient.setAttribute('id', 'arrow-gradient');
   gradient.setAttribute('gradientUnits', 'userSpaceOnUse');
@@ -166,7 +204,7 @@ function enhanceNodeShadows(svg: SVGSVGElement): void {
  * Covers: flowchart links, sequence messages, state transitions,
  * class relations, ER relationship lines.
  */
-function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, isDark: boolean): void {
+function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, colors: GradientColors): void {
   const linkSelectors = [
     '.flowchart-link',
     '.edge-pattern-solid',
@@ -208,7 +246,7 @@ function addGradientArrows(svg: SVGSVGElement, defs: SVGDefsElement, isDark: boo
   }
 
   // Apply gradient stroke to each link
-  const fallbackColor = isDark ? '#3B82F6' : '#0052CC';
+  const fallbackColor = colors.start;
   links.forEach((link) => {
     try {
       link.setAttribute('stroke', 'url(#arrow-gradient)');

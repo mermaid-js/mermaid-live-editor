@@ -1,19 +1,11 @@
 /**
- * CSS strings injected into mermaid SVGs via themeCSS config.
- * Unified design language across ALL 9 target diagram types:
- * Flowchart, Sequence, Class, Use Case, Activity, State, Component, Deployment, ER.
- *
- * Note: Use Case / Activity / Component / Deployment are flowchart variants in mermaid,
- * so flowchart selectors cover them. State and ER have their own dedicated selectors.
- *
- * Design: "Ultra-Clean Blueprint" — unified 16px rounded rects, generous spacing,
- * subtle shadows, clean connectors, metadata-style cluster labels.
+ * Structural diagram CSS reused by all themes.
+ * Extracted from diagram-theme-css.ts sharedThemeCSS.
  */
 
-/** Shared CSS rules applied in both light and dark modes */
-const sharedThemeCSS = `
+export const sharedDiagramCSS = `
 /* ============================================================
-   UNIVERSAL — applies to all diagram types
+   UNIVERSAL - applies to all diagram types
    ============================================================ */
 
 /* Unified 16px rounded rectangles for all node shapes */
@@ -29,7 +21,7 @@ g.classGroup rect {
   ry: 16;
 }
 
-/* Typography — primary labels (semibold, 1.1em) */
+/* Typography - primary labels (semibold, 1.1em) */
 .nodeLabel,
 g.classGroup .title-text,
 .stateGroup .state-title,
@@ -42,7 +34,7 @@ text.er.entityLabel,
   line-height: 1.4;
 }
 
-/* Typography — secondary/metadata labels (regular, subdued) */
+/* Typography - secondary/metadata labels (regular, subdued) */
 .edgeLabel,
 .noteText,
 .messageText,
@@ -53,7 +45,7 @@ text.er.entityLabel,
   opacity: 0.7;
 }
 
-/* Typography — technical/monospace text */
+/* Typography - technical/monospace text */
 .entityBox .attribute,
 .classLabel .label,
 .node .label code,
@@ -88,7 +80,7 @@ path.er.relationshipLine {
    FLOWCHART (also covers Use Case, Activity, Component, Deployment)
    ============================================================ */
 
-/* Cluster/Subgraph — ultra-subtle "swimlane" partitioning */
+/* Cluster/Subgraph - ultra-subtle "swimlane" partitioning */
 .cluster rect {
   rx: 16 !important;
   ry: 16 !important;
@@ -108,13 +100,12 @@ path.er.relationshipLine {
    SEQUENCE DIAGRAM
    ============================================================ */
 
-/* Actor boxes */
 .actor {
   rx: 16;
   ry: 16;
 }
 
-/* Activation bars — slightly rounded */
+/* Activation bars - slightly rounded */
 .activation0,
 .activation1,
 .activation2 {
@@ -122,7 +113,7 @@ path.er.relationshipLine {
   ry: 6;
 }
 
-/* Loop/alt/opt boxes — consistent rounding */
+/* Loop/alt/opt boxes - consistent rounding */
 .loopLine {
   stroke-width: 1.5px !important;
   stroke-dasharray: 4 3 !important;
@@ -132,21 +123,17 @@ path.er.relationshipLine {
    CLASS DIAGRAM
    ============================================================ */
 
-/* Class header emphasis */
 g.classGroup .title-text {
   font-weight: 600 !important;
   font-size: 1.1em;
 }
-/* Section dividers between properties/methods */
 g.classGroup rect.divider {
   stroke-width: 1.5px;
 }
-/* Class box unified rounding */
 g.classGroup rect {
   rx: 16 !important;
   ry: 16 !important;
 }
-/* Composition/aggregation markers */
 #compositionStart, #compositionEnd,
 #aggregationStart, #aggregationEnd,
 #dependencyStart, #dependencyEnd {
@@ -161,22 +148,18 @@ g.classGroup rect {
   rx: 16;
   ry: 16;
 }
-/* State label text */
 .stateGroup text {
   font-family: "Inter Variable", system-ui, sans-serif !important;
   font-weight: 600;
 }
-/* Start/end circles */
 .start-state,
 .end-state-outer,
 .end-state-inner {
   stroke-width: 2px;
 }
-/* Transition arrows */
 .transition {
   stroke-width: 2px !important;
 }
-/* Composite state containers (nested states) */
 .composit {
   rx: 16;
   ry: 16;
@@ -186,28 +169,23 @@ g.classGroup rect {
    ER DIAGRAM (Entity-Relationship)
    ============================================================ */
 
-/* Entity boxes */
 .entityBox {
   rx: 16;
   ry: 16;
   stroke-width: 1.5px;
 }
-/* Entity name labels */
 text.er.entityLabel {
   font-family: "Inter Variable", system-ui, sans-serif !important;
   font-weight: 600;
   font-size: 1.1em;
 }
-/* Attribute text — monospace */
 .er.attributeBoxEven,
 .er.attributeBoxOdd {
   rx: 0;
 }
-/* Relationship lines */
 path.er.relationshipLine {
   stroke-width: 2px !important;
 }
-/* Relationship labels */
 .er.relationshipLabel {
   font-family: "Inter Variable", system-ui, sans-serif !important;
   font-size: 0.85em;
@@ -215,7 +193,7 @@ path.er.relationshipLine {
 }
 
 /* ============================================================
-   NOTES — all diagram types
+   NOTES - all diagram types
    ============================================================ */
 
 .note {
@@ -231,116 +209,3 @@ path.er.relationshipLine {
   ry: 6;
 }
 `;
-
-/** Light mode CSS — subtle blue-tinted elevation */
-export function getLightThemeCSS(): string {
-  return `${sharedThemeCSS}
-
-/* === Light Mode Shadows — unified across all diagram types === */
-
-/* Flowchart/Use Case/Activity/Component/Deployment nodes */
-.node rect,
-.node circle,
-.node polygon,
-.node ellipse,
-.node .label-container {
-  filter: drop-shadow(0 1px 2px rgba(0, 82, 204, 0.10))
-          drop-shadow(0 3px 10px rgba(0, 82, 204, 0.05));
-}
-
-/* Sequence actors */
-.actor {
-  filter: drop-shadow(0 1px 2px rgba(0, 82, 204, 0.10))
-          drop-shadow(0 3px 10px rgba(0, 82, 204, 0.05));
-}
-
-/* Class diagram boxes */
-g.classGroup rect {
-  filter: drop-shadow(0 1px 2px rgba(0, 82, 204, 0.10))
-          drop-shadow(0 3px 10px rgba(0, 82, 204, 0.05));
-}
-
-/* State diagram boxes */
-.stateGroup rect {
-  filter: drop-shadow(0 1px 2px rgba(0, 82, 204, 0.10))
-          drop-shadow(0 3px 10px rgba(0, 82, 204, 0.05));
-}
-
-/* ER diagram entities */
-.entityBox {
-  filter: drop-shadow(0 1px 2px rgba(0, 82, 204, 0.10))
-          drop-shadow(0 3px 10px rgba(0, 82, 204, 0.05));
-}
-
-/* Cluster — nearly invisible background */
-.cluster rect {
-  fill-opacity: 0.04 !important;
-  filter: none !important;
-}
-
-/* Notes */
-.note {
-  filter: drop-shadow(0 1px 3px rgba(0, 82, 204, 0.06));
-}
-`;
-}
-
-/** Dark mode CSS — deeper shadows with navy tint */
-export function getDarkThemeCSS(): string {
-  return `${sharedThemeCSS}
-
-/* === Dark Mode Shadows — unified across all diagram types === */
-
-/* Flowchart/Use Case/Activity/Component/Deployment nodes */
-.node rect,
-.node circle,
-.node polygon,
-.node ellipse,
-.node .label-container {
-  filter: drop-shadow(0 1px 3px rgba(59, 130, 246, 0.18))
-          drop-shadow(0 5px 12px rgba(10, 25, 47, 0.35));
-}
-
-/* Sequence actors */
-.actor {
-  filter: drop-shadow(0 1px 3px rgba(59, 130, 246, 0.18))
-          drop-shadow(0 5px 12px rgba(10, 25, 47, 0.35));
-}
-
-/* Class diagram boxes */
-g.classGroup rect {
-  filter: drop-shadow(0 1px 3px rgba(59, 130, 246, 0.18))
-          drop-shadow(0 5px 12px rgba(10, 25, 47, 0.35));
-}
-
-/* State diagram boxes */
-.stateGroup rect {
-  filter: drop-shadow(0 1px 3px rgba(59, 130, 246, 0.18))
-          drop-shadow(0 5px 12px rgba(10, 25, 47, 0.35));
-}
-
-/* ER diagram entities */
-.entityBox {
-  filter: drop-shadow(0 1px 3px rgba(59, 130, 246, 0.18))
-          drop-shadow(0 5px 12px rgba(10, 25, 47, 0.35));
-}
-
-/* Cluster — ultra-subtle swimlane in dark mode */
-.cluster rect {
-  fill-opacity: 0.05 !important;
-  filter: none !important;
-}
-
-/* Notes */
-.note {
-  filter: drop-shadow(0 1px 4px rgba(59, 130, 246, 0.10));
-}
-
-/* Brighter edge labels in dark mode for readability */
-.edgeLabel,
-.messageText,
-.er.relationshipLabel {
-  opacity: 0.8;
-}
-`;
-}

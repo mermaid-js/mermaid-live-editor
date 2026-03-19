@@ -67,7 +67,7 @@ export const errorDebug = (limit = 1000) => {
   }
 };
 
-export const formatJSON = (data: unknown): string => JSON.stringify(data, undefined, 2);
+export { formatJSON } from './format-json';
 export const fetchJSON = async <T>(url: string): Promise<T> => {
   const res = await fetch(url);
   return res.json() as T;

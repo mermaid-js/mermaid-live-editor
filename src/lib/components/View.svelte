@@ -7,9 +7,9 @@
   import { saveStatistics } from '$/util/stats';
   import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
   import { postProcessDiagramSvg } from '$/util/svg-post-processor';
+  import { activeTheme } from '$lib/themes/theme-store';
   import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
-  import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
   import { Svg2Roughjs } from 'svg2roughjs';
 
@@ -25,6 +25,7 @@
   let error = $state(false);
   let panZoom = true;
   let manualUpdate = true;
+  let lastThemeId = '';
   let waitForFontAwesomeToLoad: FontAwesome['waitForFontAwesomeToLoad'] | undefined = $state();
 
   // Set up panZoom state observer to update the store when pan/zoom changes
@@ -53,12 +54,14 @@
     try {
       if (container) {
         manualUpdate = true;
-        // Do not render if there is no change in Code/Config/PanZoom
+        // Do not render if there is no change in Code/Config/PanZoom/Theme
+        const currentThemeId = $activeTheme.id;
         if (
           code === state.code &&
           config === state.mermaid &&
           rough === state.rough &&
-          panZoom === state.panZoom
+          panZoom === state.panZoom &&
+          lastThemeId === currentThemeId
         ) {
           return;
         }
@@ -71,6 +74,7 @@
         config = state.mermaid;
         rough = state.rough;
         panZoom = state.panZoom ?? true;
+        lastThemeId = currentThemeId;
 
         if (mayContainFontAwesome(code)) {
           await waitForFontAwesomeToLoad?.();
@@ -113,7 +117,11 @@
             graphDiv.setAttribute('height', '100%');
             graphDiv.style.maxWidth = '100%';
             // Post-process SVG for ultra-modern styling (gradients, shadows, animations)
-            postProcessDiagramSvg(graphDiv, $mode === 'dark');
+            postProcessDiagramSvg(
+              graphDiv,
+              $activeTheme.colorScheme === 'dark',
+              $activeTheme.svgPostProcess
+            );
             if (bindFunctions) {
               bindFunctions(graphDiv);
             }
@@ -148,6 +156,11 @@
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
     });
+
+    // Re-render diagram when theme changes
+    activeTheme.subscribe(() => {
+      $inputStateStore.updateDiagram = true;
+    });
   });
 </script>
 
@@ -158,7 +171,7 @@
   bind:this={view}
   class={[
     'h-full w-full transition-[background-image] duration-300',
-    shouldShowGrid && `grid-bg-${$mode}`,
+    shouldShowGrid && `grid-bg-${$activeTheme.canvasBgClass ?? $activeTheme.colorScheme}`,
     error && 'opacity-50'
   ]}>
   <div id="container" bind:this={container} class="h-full overflow-auto"></div>
@@ -177,5 +190,25 @@
     background-image:
       radial-gradient(ellipse at 50% 40%, rgba(0, 82, 204, 0.06) 0%, transparent 70%),
       radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
+  .grid-bg-blueprint {
+    background-color: #030712;
+    background-image:
+      radial-gradient(ellipse at 50% 40%, rgba(0, 180, 219, 0.04) 0%, transparent 70%),
+      radial-gradient(circle, rgba(148, 163, 184, 0.06) 0.5px, transparent 0.5px);
+    background-size:
+      100% 100%,
+      20px 20px;
+  }
+
+  .grid-bg-blueprint-light {
+    background-color: hsl(210 20% 98%);
+    background-image:
+      radial-gradient(ellipse at 50% 40%, rgba(0, 180, 219, 0.04) 0%, transparent 70%),
+      radial-gradient(circle, rgba(148, 163, 184, 0.12) 0.5px, transparent 0.5px);
+    background-size:
+      100% 100%,
+      20px 20px;
   }
 </style>

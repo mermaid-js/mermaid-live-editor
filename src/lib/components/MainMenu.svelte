@@ -1,12 +1,11 @@
 <script lang="ts">
   import McWrapper from '$/components/McWrapper.svelte';
   import * as Popover from '$/components/ui/popover';
-  import { Switch } from '$/components/ui/switch';
   import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
   import { logMermaidChartClick } from '$/util/stats';
   import { cn } from '$/utils';
-  import { mode, setMode } from 'mode-watcher';
+  import { activeTheme, cycleTheme } from '$lib/themes/theme-store';
   import type { Component, Snippet } from 'svelte';
   import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import AddIcon from '~icons/material-symbols/add-2-rounded';
@@ -73,8 +72,8 @@
       href: '#',
       icon: ContrastIcon,
       isSectionEnd: true,
-      label: 'Dark Mode',
-      renderer: darkModeMenuItem
+      label: 'Theme',
+      renderer: themeMenuItem
     },
     {
       checkDiagramType: false,
@@ -114,21 +113,21 @@
   </McWrapper>
 {/snippet}
 
-{#snippet darkModeMenuItem(options: MenuItem)}
-  <div
+{#snippet themeMenuItem(options: MenuItem)}
+  <button
+    type="button"
+    onclick={() => cycleTheme()}
     class={cn(
-      'flex cursor-pointer items-center justify-between border-b px-3 py-2 hover:bg-muted',
+      'flex w-full cursor-pointer items-center justify-between border-b px-3 py-2 hover:bg-muted',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
     <span class="flex items-center gap-2">
       <ContrastIcon />
-      Dark Mode
+      Theme
     </span>
-    <Switch
-      checked={$mode === 'dark'}
-      onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
-  </div>
+    <span class="text-xs text-muted-foreground">{$activeTheme.name}</span>
+  </button>
 {/snippet}
 
 <Popover.Root>

@@ -1,10 +1,12 @@
 <script lang="ts">
   import { Toaster } from '$/components/ui/sonner/index.js';
   import { loadingStateStore } from '$/util/loading';
-  import { toggleDarkTheme } from '$/util/state';
   import { initHandler } from '$/util/util';
+  import { applyTheme } from '$lib/themes/apply-theme';
+  import { activeTheme } from '$lib/themes/theme-store';
+  import { syncDiagramTheme } from '$/util/state';
   import { base } from '$app/paths';
-  import { mode, ModeWatcher } from 'mode-watcher';
+  import { ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
   import '../app.css';
 
@@ -34,7 +36,11 @@
   });
 
   $effect(() => {
-    toggleDarkTheme($mode === 'dark');
+    const unsubscribe = activeTheme.subscribe((theme) => {
+      applyTheme(theme);
+      syncDiagramTheme(theme);
+    });
+    return unsubscribe;
   });
 </script>
 

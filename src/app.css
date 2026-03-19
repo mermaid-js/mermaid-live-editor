@@ -16,6 +16,8 @@
   }
 }
 
+/* Fallback CSS variables for initial render before JS hydrates.
+   Runtime applyTheme() overrides these via inline styles on <html>. */
 @layer base {
   :root {
     --background: hsl(220 14% 98%);
@@ -46,34 +48,6 @@
     --canvas-border: hsl(220 13% 88%);
     --glass-border: hsl(220 13% 88%);
     --glass-bg: hsl(0 0% 100% / 0.7);
-  }
-  .dark {
-    --background: hsl(214 80% 8%);
-    --foreground: hsl(213 20% 88%);
-    --card: hsl(214 60% 12%);
-    --card-foreground: hsl(213 20% 88%);
-    --popover: hsl(214 60% 12%);
-    --popover-foreground: hsl(213 20% 88%);
-    --primary: hsl(217 91% 50%);
-    --primary-foreground: hsl(0 0% 100%);
-    --secondary: hsl(214 55% 16%);
-    --secondary-foreground: hsl(213 20% 88%);
-    --muted: hsl(214 55% 14%);
-    --muted-foreground: hsl(213 15% 60%);
-    --accent: hsl(187 72% 48%);
-    --accent-foreground: hsl(214 80% 8%);
-    --destructive: hsl(0 62.8% 30.6%);
-    --destructive-foreground: hsl(210 40% 98%);
-    --border: rgba(255, 255, 255, 0.08);
-    --border-dark: rgba(255, 255, 255, 0.14);
-    --input: hsl(214 55% 16%);
-    --ring: hsl(217 91% 60%);
-    --gradient-start: hsl(214 80% 8%);
-    --gradient-end: hsl(214 65% 12%);
-    --shadow-color: hsl(214 80% 3% / 0.6);
-    --canvas-border: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-bg: rgba(255, 255, 255, 0.04);
   }
 }
 
