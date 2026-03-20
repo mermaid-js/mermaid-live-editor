@@ -36,21 +36,21 @@
       side="top"
       align="start"
       sideOffset={8}
-      class="flex flex-col gap-1 border border-glass-border bg-popover/95 p-2 backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      class="border-glass-border bg-popover/95 flex flex-col gap-1 border p-2 backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
       {#each diagramThemes as theme (theme.id)}
         <button
           type="button"
           onclick={() => ($diagramThemeId = theme.id)}
-          class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted
+          class="hover:bg-muted flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors
             {$diagramThemeId === theme.id
-            ? 'bg-muted font-semibold text-primary'
+            ? 'bg-muted text-primary font-semibold'
             : 'text-foreground'}">
           <span
-            class="size-3 rounded-full border border-border"
+            class="border-border size-3 rounded-full border"
             style="background: {theme.dark.cssVariables['--background']}"></span>
           {theme.name}
           {#if $diagramThemeId === theme.id}
-            <span class="ml-auto text-xs text-primary">&#10003;</span>
+            <span class="text-primary ml-auto text-xs">&#10003;</span>
           {/if}
         </button>
       {/each}

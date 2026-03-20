@@ -126,7 +126,7 @@
       <ContrastIcon />
       Theme
     </span>
-    <span class="text-xs text-muted-foreground">{$activeTheme.name}</span>
+    <span class="text-muted-foreground text-xs">{$activeTheme.name}</span>
   </button>
 {/snippet}
 
@@ -136,7 +136,7 @@
   </Popover.Trigger>
   <Popover.Content
     align="start"
-    class="flex flex-col overflow-hidden border border-[var(--border-strong)] bg-[var(--surface-elevated)] p-0 text-foreground shadow-[var(--shadow-floating)] backdrop-blur-xl"
+    class="text-foreground flex flex-col overflow-hidden border border-[var(--border-strong)] bg-[var(--surface-elevated)] p-0 shadow-[var(--shadow-floating)] backdrop-blur-xl"
     sideOffset={16}>
     {#each menuItems as { renderer, ...item } (item.label)}
       {@render renderer(item)}

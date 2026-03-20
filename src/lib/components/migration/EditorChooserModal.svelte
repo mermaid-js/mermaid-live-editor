@@ -53,7 +53,7 @@
   onOpenChange={(v) => {
     if (!v) handleStartFree();
   }}>
-  <Dialog.Content class="flex max-w-2xl flex-col gap-6 bg-pink-50 p-6 dark:bg-background">
+  <Dialog.Content class="dark:bg-background flex max-w-2xl flex-col gap-6 bg-pink-50 p-6">
     <Dialog.Header>
       <Dialog.Title class="text-center text-2xl font-semibold">Choose your editor</Dialog.Title>
       <Dialog.Description class="text-center text-sm font-light">
@@ -64,15 +64,15 @@
     <div class="grid gap-4 sm:grid-cols-2">
       <!-- Mermaid Plus Card -->
       <div
-        class="relative flex flex-col overflow-hidden rounded-xl border-2 border-accent bg-white shadow dark:bg-card">
-        <div class="bg-accent px-6 py-2 text-center text-sm font-semibold text-accent-foreground">
+        class="border-accent dark:bg-card relative flex flex-col overflow-hidden rounded-xl border-2 bg-white shadow">
+        <div class="bg-accent text-accent-foreground px-6 py-2 text-center text-sm font-semibold">
           Recommended
         </div>
 
         <div class="flex flex-col gap-4 p-6">
           <div>
             <h3 class="text-xl font-bold">Mermaid Plus</h3>
-            <p class="text-sm text-muted-foreground">Unlock AI, storage and collaboration</p>
+            <p class="text-muted-foreground text-sm">Unlock AI, storage and collaboration</p>
           </div>
 
           <div class="flex flex-col gap-2">
@@ -90,23 +90,23 @@
 
           <ul class="space-y-3 text-sm">
             <li class="flex items-center gap-2">
-              <EditIcon class="size-4 shrink-0 text-muted-foreground" />
+              <EditIcon class="text-muted-foreground size-4 shrink-0" />
               Visual editor
             </li>
             <li class="flex items-center gap-2">
-              <SparklesIcon class="size-4 shrink-0 text-muted-foreground" />
+              <SparklesIcon class="text-muted-foreground size-4 shrink-0" />
               300 AI credits
             </li>
             <li class="flex items-center gap-2">
-              <HomeIcon class="size-4 shrink-0 text-muted-foreground" />
+              <HomeIcon class="text-muted-foreground size-4 shrink-0" />
               Unlimited diagram storage
             </li>
             <li class="flex items-center gap-2">
-              <WidthIcon class="size-4 shrink-0 text-muted-foreground" />
+              <WidthIcon class="text-muted-foreground size-4 shrink-0" />
               Limitless diagram size
             </li>
             <li class="flex items-center gap-2">
-              <ChatIcon class="size-4 shrink-0 text-muted-foreground" />
+              <ChatIcon class="text-muted-foreground size-4 shrink-0" />
               View & comment collaboration
             </li>
           </ul>
@@ -114,15 +114,15 @@
       </div>
 
       <!-- Open Source Card -->
-      <div class="flex flex-col gap-4 rounded-xl border bg-white p-6 shadow dark:bg-card">
+      <div class="dark:bg-card flex flex-col gap-4 rounded-xl border bg-white p-6 shadow">
         <div class="flex flex-col justify-end pt-10">
           <h3 class="text-xl font-bold">Open Source</h3>
-          <p class="text-sm text-muted-foreground">Code only, no login, always free</p>
+          <p class="text-muted-foreground text-sm">Code only, no login, always free</p>
         </div>
 
         <div class="flex flex-col gap-2">
-          <p class="mt-2 text-sm text-muted-foreground">Mermaid has a new home</p>
-          <Button variant="outline" class="w-full border-accent" onclick={handleContinueToNewHome}>
+          <p class="text-muted-foreground mt-2 text-sm">Mermaid has a new home</p>
+          <Button variant="outline" class="border-accent w-full" onclick={handleContinueToNewHome}>
             Continue to mermaid.ai/live
             <ArrowIcon class="ml-1 size-4" />
           </Button>
@@ -133,19 +133,19 @@
 
         <ul class="space-y-3 text-sm">
           <li class="flex items-center gap-2">
-            <LanguageIcon class="size-4 shrink-0 text-muted-foreground" />
+            <LanguageIcon class="text-muted-foreground size-4 shrink-0" />
             Diagram stored in URL
           </li>
           <li class="flex items-center gap-2">
-            <CodeIcon class="size-4 shrink-0 text-muted-foreground" />
+            <CodeIcon class="text-muted-foreground size-4 shrink-0" />
             Code editor
           </li>
           <li class="flex items-center gap-2">
-            <OpenSourceIcon class="size-4 shrink-0 text-muted-foreground" />
+            <OpenSourceIcon class="text-muted-foreground size-4 shrink-0" />
             Open source
           </li>
           <li class="flex items-center gap-2">
-            <HistoryIcon class="size-4 shrink-0 text-muted-foreground" />
+            <HistoryIcon class="text-muted-foreground size-4 shrink-0" />
             Version history
           </li>
         </ul>
@@ -156,7 +156,7 @@
       <a
         href="https://mermaid.ai/privacy-policy"
         target="_blank"
-        class="text-sm text-foreground underline hover:text-accent">
+        class="text-foreground hover:text-accent text-sm underline">
         mermaid.ai Privacy Policy
       </a>
     </div>

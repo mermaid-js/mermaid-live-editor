@@ -50,12 +50,11 @@
     --surface-soft: color-mix(in srgb, var(--muted) 74%, var(--card) 26%);
     --surface-frost: color-mix(in srgb, var(--glass-bg) 85%, white 15%);
     --border-strong: color-mix(in srgb, var(--border) 78%, var(--foreground) 22%);
-    --app-background-image:
-      linear-gradient(
-        160deg,
-        color-mix(in srgb, var(--background) 96%, white 4%) 0%,
-        color-mix(in srgb, var(--background) 88%, var(--primary) 12%) 100%
-      );
+    --app-background-image: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--background) 96%, white 4%) 0%,
+      color-mix(in srgb, var(--background) 88%, var(--primary) 12%) 100%
+    );
     --shadow-elevated: 0 18px 48px hsl(220 24% 42% / 0.14);
     --shadow-floating: 0 20px 56px hsl(220 24% 42% / 0.18);
   }
@@ -65,12 +64,11 @@
     --surface-soft: color-mix(in srgb, var(--muted) 68%, var(--card) 32%);
     --surface-frost: color-mix(in srgb, var(--glass-bg) 84%, var(--card) 16%);
     --border-strong: color-mix(in srgb, var(--border) 64%, white 36%);
-    --app-background-image:
-      linear-gradient(
-        145deg,
-        color-mix(in srgb, var(--background) 92%, black 8%) 0%,
-        color-mix(in srgb, var(--background) 82%, var(--primary) 18%) 100%
-      );
+    --app-background-image: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--background) 92%, black 8%) 0%,
+      color-mix(in srgb, var(--background) 82%, var(--primary) 18%) 100%
+    );
     --shadow-elevated: 0 22px 60px hsl(220 46% 4% / 0.42);
     --shadow-floating: 0 24px 64px hsl(220 46% 4% / 0.34);
   }

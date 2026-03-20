@@ -10,7 +10,7 @@ services:
       - --host
       - 0.0.0.0
       - --port
-      - "8080"
+      - '8080'
     volumes:
       - ./.env:/app/.env:ro
       - ./src:/app/src

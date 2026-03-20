@@ -53,7 +53,7 @@
 </script>
 
 {#if activePromotion}
-  <div class="top-bar z-10 flex h-fit w-full bg-primary">
+  <div class="top-bar bg-primary z-10 flex h-fit w-full">
     <div
       class="flex grow cursor-pointer"
       role="button"
@@ -78,11 +78,12 @@
   </div>
 {/if}
 
-<nav class="z-50 flex border-b border-[var(--border-strong)] bg-[var(--surface-frost)] px-4 py-3 shadow-[0_1px_0_hsl(0_0%_100%_/_0.06)] backdrop-blur-xl sm:px-6 sm:py-4">
+<nav
+  class="z-50 flex border-b border-[var(--border-strong)] bg-[var(--surface-frost)] px-4 py-3 shadow-[0_1px_0_hsl(0_0%_100%_/_0.06)] backdrop-blur-xl sm:px-6 sm:py-4">
   <div class="flex flex-1 items-center gap-3">
     <MainMenu />
     <img src="/icons/sotatek_logo.jpg" alt="SotaTek" class="size-7 rounded-md shadow-sm" />
-    <a href="/" class="text-sm font-semibold tracking-wide whitespace-nowrap text-accent uppercase">
+    <a href="/" class="text-accent text-sm font-semibold tracking-wide whitespace-nowrap uppercase">
       {#if !mobileToggle}
         SotaTek
       {/if}

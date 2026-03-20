@@ -294,7 +294,7 @@ body {
 
 ```html
 <div
-  class="flex h-12 items-center justify-between gap-2 rounded-2xl border border-glass-border bg-glass-bg p-3 shadow-lg backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]"></div>
+  class="border-glass-border bg-glass-bg flex h-12 items-center justify-between gap-2 rounded-2xl border p-3 shadow-lg backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]"></div>
 ```
 
 - Glassmorphism: `bg-glass-bg` (hsl(0 0% 100% / 0.7) light, rgba(255,255,255,0.04) dark)
