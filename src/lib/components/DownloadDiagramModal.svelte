@@ -2,12 +2,7 @@
   import { buttonVariants, Button } from '$/components/ui/button';
   import * as Dialog from '$/components/ui/dialog';
   import { notify } from '$/util/notify';
-  import {
-    GifExportError,
-    downloadDiagram,
-    isDownloadFormatSupported,
-    type DownloadFormat
-  } from '$/util/download';
+  import { downloadDiagram, isDownloadFormatSupported, type DownloadFormat } from '$/util/download';
   import { logEvent } from '$/util/stats';
   import DownloadIcon from '~icons/material-symbols/download';
 
@@ -24,6 +19,12 @@
       description: 'Vector format, best for editing and scaling.'
     },
     {
+      format: 'animated-svg',
+      label: 'Animated SVG',
+      description:
+        'Animated vector export that matches the current frontend rendering more closely.'
+    },
+    {
       format: 'png',
       label: 'PNG',
       description: 'Lossless image, good for docs and chat.'
@@ -37,59 +38,21 @@
       format: 'webp',
       label: 'WEBP',
       description: 'Modern compressed image when browser supports it.'
-    },
-    {
-      format: 'gif',
-      label: 'GIF',
-      description: 'Animated GIF rendered by the Mermaid Beauty service.'
     }
   ];
 
   let open = $state(false);
   let pendingFormat = $state<DownloadFormat | null>(null);
-  let gifStatus = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
-  let gifMessage = $state('');
-
-  const gifStatusMessage = (error: GifExportError): string => {
-    switch (error.code) {
-      case 'complexity_budget_exceeded':
-        return 'This diagram is too complex to render as an animated GIF synchronously.';
-      case 'too_many_active_renders':
-      case 'rate_limited':
-        return 'Too many animated GIF renders are running right now. Please retry in a moment.';
-      case 'render_timeout':
-        return 'Animated GIF rendering took too long and was stopped.';
-      case 'timeline_planning_failed':
-        return 'The current diagram could not be converted into a stable animation sequence.';
-      case 'render_engine_unavailable':
-        return 'The Mermaid Beauty render engine is temporarily unavailable.';
-      default:
-        return error.message || 'Animated GIF export failed.';
-    }
-  };
 
   const handleDownload = async (format: DownloadFormat) => {
     pendingFormat = format;
-    if (format === 'gif') {
-      gifStatus = 'loading';
-      gifMessage = 'Generating animated GIF...';
-    }
 
     try {
       await downloadDiagram(format, { imageSize: 1080, imageSizeMode: 'auto' });
       logEvent('download', { type: format, source: 'saveDiagramModal' });
-      if (format === 'gif') {
-        gifStatus = 'success';
-        gifMessage = 'Animated GIF download started.';
-      }
     } catch (error) {
       console.error(error);
-      if (format === 'gif' && error instanceof GifExportError) {
-        gifStatus = 'error';
-        gifMessage = gifStatusMessage(error);
-      } else {
-        notify(`Failed to save ${format.toUpperCase()}`);
-      }
+      notify(`Failed to save ${format.toUpperCase()}`);
     } finally {
       pendingFormat = null;
     }
@@ -113,21 +76,6 @@
       </Dialog.Description>
     </Dialog.Header>
 
-    {#if gifStatus !== 'idle'}
-      <div
-        class={[
-          'rounded-md border px-4 py-3 text-sm',
-          gifStatus === 'error'
-            ? 'border-destructive/30 bg-destructive/10 text-destructive'
-            : gifStatus === 'success'
-              ? 'border-accent/30 bg-accent/10 text-accent'
-              : 'border-border bg-muted/60 text-foreground'
-        ]}>
-        <span class="font-medium">GIF export:</span>
-        {gifMessage}
-      </div>
-    {/if}
-
     <div class="grid gap-3 sm:grid-cols-2">
       {#each options as option (option.format)}
         {@const supported = isDownloadFormatSupported(option.format)}
@@ -145,7 +93,7 @@
               {#if supported}
                 {option.description}
               {:else}
-                GIF export service is not configured for this environment.
+                This export format is not supported in this environment.
               {/if}
             </span>
             {#if pendingFormat === option.format}

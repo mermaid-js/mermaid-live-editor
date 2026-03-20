@@ -1,7 +1,5 @@
 import { browser } from '$app/environment';
-import { beautyServiceEndpoints } from '$lib/util/beauty-service';
 import { waitForRender } from '$lib/util/autoSync';
-import { env } from '$lib/util/env';
 import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
 import { get } from 'svelte/store';
 import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
@@ -11,32 +9,21 @@ import { toBase64 } from 'js-base64';
 const FONT_AWESOME_URL = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/${FAVersion}/css/all.min.css`;
 
 export type ImageSizeMode = 'auto' | 'width' | 'height';
-export type DownloadFormat = 'svg' | 'png' | 'jpeg' | 'webp' | 'gif';
+export type DownloadFormat = 'svg' | 'animated-svg' | 'png' | 'jpeg' | 'webp';
 
 export interface DownloadOptions {
   imageSize: number;
   imageSizeMode: ImageSizeMode;
 }
 
-export class GifExportError extends Error {
-  code: string;
-
-  constructor(code: string, message: string) {
-    super(message);
-    this.name = 'GifExportError';
-    this.code = code;
-  }
-}
-
-const mimeTypes: Record<Exclude<DownloadFormat, 'svg'>, string> = {
-  gif: 'image/gif',
+const mimeTypes: Record<Exclude<DownloadFormat, 'svg' | 'animated-svg'>, string> = {
   jpeg: 'image/jpeg',
   png: 'image/png',
   webp: 'image/webp'
 };
 
 const extensions: Record<DownloadFormat, string> = {
-  gif: 'gif',
+  'animated-svg': 'svg',
   jpeg: 'jpg',
   png: 'png',
   svg: 'svg',
@@ -44,7 +31,9 @@ const extensions: Record<DownloadFormat, string> = {
 };
 
 const getFileName = (format: DownloadFormat) =>
-  `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extensions[format]}`;
+  format === 'animated-svg'
+    ? `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}-animated.${extensions[format]}`
+    : `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extensions[format]}`;
 
 const simulateDownload = (download: string, href: string): void => {
   const a = document.createElement('a');
@@ -52,12 +41,6 @@ const simulateDownload = (download: string, href: string): void => {
   a.href = href;
   a.click();
   a.remove();
-};
-
-const simulateBlobDownload = (download: string, blob: Blob): void => {
-  const url = URL.createObjectURL(blob);
-  simulateDownload(download, url);
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
 const getSvgElement = (): HTMLElement => {
@@ -71,81 +54,97 @@ const getSvgElement = (): HTMLElement => {
   return svgElement;
 };
 
-const getRenderPayload = (options: DownloadOptions) => {
-  const svg = document.querySelector<SVGSVGElement>('#container svg');
-  const box = svg?.getBoundingClientRect();
-  const viewBox = svg?.viewBox?.baseVal;
-  const width =
-    viewBox && viewBox.width > 0 ? Math.round(viewBox.width) : Math.round(box?.width ?? 0);
-  const height =
-    viewBox && viewBox.height > 0 ? Math.round(viewBox.height) : Math.round(box?.height ?? 0);
+const getAnimatedSVG = (): string => {
+  const svg = getSvgElement();
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
 
-  let resolvedWidth = 0;
-  let resolvedHeight = 0;
+  const background = window.getComputedStyle(document.body).getPropertyValue('--background').trim();
+  svg.style.backgroundColor = background;
 
-  if (options.imageSizeMode === 'width') {
-    resolvedWidth = options.imageSize;
-  } else if (options.imageSizeMode === 'height') {
-    resolvedHeight = options.imageSize;
-  } else {
-    resolvedWidth = width;
-    resolvedHeight = height;
+  const width = svg.viewBox?.baseVal?.width || svg.getBoundingClientRect().width || 0;
+  const height = svg.viewBox?.baseVal?.height || svg.getBoundingClientRect().height || 0;
+
+  if (
+    width > 0 &&
+    height > 0 &&
+    !svg.querySelector(':scope > rect[data-animated-svg-background="true"]')
+  ) {
+    const backgroundRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    backgroundRect.setAttribute('data-animated-svg-background', 'true');
+    backgroundRect.setAttribute('x', '0');
+    backgroundRect.setAttribute('y', '0');
+    backgroundRect.setAttribute('width', `${width}`);
+    backgroundRect.setAttribute('height', `${height}`);
+    backgroundRect.setAttribute('fill', background);
+    svg.insertBefore(backgroundRect, svg.firstChild);
   }
 
-  let theme = '';
-  try {
-    const parsed = JSON.parse(get(stateStore).mermaid) as { theme?: string };
-    theme = parsed.theme ?? '';
-  } catch {
-    // Ignore invalid config here; the editor already surfaces config errors.
-  }
-
-  return {
-    background: window.getComputedStyle(document.body).getPropertyValue('--background').trim(),
-    code: get(inputStateStore).code,
-    height: resolvedHeight,
-    scale: options.imageSizeMode === 'auto' ? 2 : 0,
-    theme,
-    width: resolvedWidth
-  };
-};
-
-const downloadGifDiagram = async (options: DownloadOptions): Promise<void> => {
-  if (!env.beautyServiceUrl) {
-    throw new GifExportError('service_not_configured', 'GIF export service is not configured');
-  }
-
-  const response = await fetch(beautyServiceEndpoints.gifRender(), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(getRenderPayload(options))
+  const revealElements = Array.from(svg.querySelectorAll<SVGElement>('[id]')).filter((element) => {
+    const tagName = element.tagName.toLowerCase();
+    const id = element.id || '';
+    if (!id) return false;
+    if (
+      [
+        'svg',
+        'defs',
+        'style',
+        'marker',
+        'clipPath',
+        'linearGradient',
+        'radialGradient',
+        'filter'
+      ].includes(tagName)
+    ) {
+      return false;
+    }
+    if (
+      id.startsWith('marker') ||
+      id.startsWith('clipPath') ||
+      id.startsWith('filter') ||
+      id.startsWith('gradient')
+    ) {
+      return false;
+    }
+    return true;
   });
 
-  if (!response.ok) {
-    let message = 'GIF export failed';
-    let code = 'gif_export_failed';
-    try {
-      const payload = (await response.json()) as { error?: string; message?: string };
-      code = payload.error ?? code;
-      message = payload.message ?? message;
-    } catch {
-      const text = await response.text();
-      if (text) {
-        message = text;
-      }
+  const stepDuration = 140;
+  const finalPause = 400;
+  const rules = revealElements.map((element, index) => {
+    element.classList.add('animated-svg-step');
+    return `[id="${cssEscape(element.id)}"]{animation-delay:${index * stepDuration}ms;}`;
+  });
+  const totalDuration = revealElements.length * stepDuration + finalPause;
+
+  const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+  style.textContent = `
+    @keyframes mermaidFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-    throw new GifExportError(code, message);
-  }
+    .animated-svg-step {
+      opacity: 0;
+      animation-name: mermaidFadeIn;
+      animation-duration: 220ms;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-out;
+    }
+    ${rules.join('\n')}
+    svg {
+      animation: mermaidReplay ${totalDuration}ms linear infinite;
+    }
+    @keyframes mermaidReplay {
+      from { }
+      to { }
+    }
+  `;
+  svg.appendChild(style);
 
-  const blob = await response.blob();
-  if (!blob.size) {
-    throw new GifExportError('empty_gif', 'GIF export returned an empty file');
-  }
-
-  simulateBlobDownload(getFileName('gif'), blob);
+  return `<?xml version="1.0" encoding="UTF-8"?>\n${svg.outerHTML}`;
 };
+
+const cssEscape = (value: string): string => value.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
 
 /**
  * Fix text clipping in exported SVG for hand-drawn (rough) mode.
@@ -280,15 +279,11 @@ const renderToCanvas = async ({
 
 export const isDownloadFormatSupported = (format: DownloadFormat): boolean => {
   if (!browser) {
-    return format !== 'gif';
-  }
-
-  if (format === 'svg') {
     return true;
   }
 
-  if (format === 'gif') {
-    return !!env.beautyServiceUrl;
+  if (format === 'svg' || format === 'animated-svg') {
+    return true;
   }
 
   const canvas = document.createElement('canvas');
@@ -322,13 +317,16 @@ export const downloadDiagram = async (
   format: DownloadFormat,
   options: DownloadOptions
 ): Promise<void> => {
-  if (format === 'gif') {
-    await downloadGifDiagram(options);
+  if (format === 'svg') {
+    simulateDownload(getFileName(format), `data:image/svg+xml;base64,${getBase64SVG()}`);
     return;
   }
 
-  if (format === 'svg') {
-    simulateDownload(getFileName(format), `data:image/svg+xml;base64,${getBase64SVG()}`);
+  if (format === 'animated-svg') {
+    simulateDownload(
+      getFileName(format),
+      `data:image/svg+xml;base64,${toBase64(getAnimatedSVG())}`
+    );
     return;
   }
 

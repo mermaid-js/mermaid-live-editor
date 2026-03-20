@@ -12,6 +12,7 @@ services:
       - --port
       - "8080"
     volumes:
+      - ./.env:/app/.env:ro
       - ./src:/app/src
     ports:
       - 24678:24678
