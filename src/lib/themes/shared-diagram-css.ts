@@ -138,9 +138,10 @@ g.classGroup rect {
   rx: 16 !important;
   ry: 16 !important;
 }
-#compositionStart, #compositionEnd,
-#aggregationStart, #aggregationEnd,
-#dependencyStart, #dependencyEnd {
+/* Mermaid v11 prefixes marker IDs: {svgId}_class-compositionStart etc. */
+[id$="compositionStart"], [id$="compositionEnd"],
+[id$="aggregationStart"], [id$="aggregationEnd"],
+[id$="dependencyStart"], [id$="dependencyEnd"] {
   stroke-width: 1.5px;
 }
 

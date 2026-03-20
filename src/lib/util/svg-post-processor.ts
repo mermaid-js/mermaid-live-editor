@@ -46,6 +46,7 @@ export function postProcessDiagramSvg(
   }
 ): void {
   const defs = getOrCreateDefs(svg);
+
   const colors = gradientColors
     ? { start: gradientColors.gradientStart, end: gradientColors.gradientEnd }
     : isDark

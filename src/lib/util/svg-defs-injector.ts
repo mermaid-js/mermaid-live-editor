@@ -97,6 +97,9 @@ export function injectFontFaces(svg: SVGSVGElement): void {
  * Fix Class diagram relationship markers (diamonds, arrows, dependencies)
  * so they snap to the outer border of nodes instead of bleeding inside.
  *
+ * Mermaid v11 prefixes marker IDs: `{svgId}_class-compositionStart` etc.
+ * We find them by substring match rather than exact ID.
+ *
  * Mermaid's default marker refX values assume sharp-cornered rects.
  * With rx:16 rounded corners, the visible border curves inward, so
  * markers must be pushed outward to compensate.
@@ -104,11 +107,9 @@ export function injectFontFaces(svg: SVGSVGElement): void {
  * Also sets overflow:visible so markers aren't clipped by parent elements.
  */
 export function fixClassDiagramMarkers(svg: SVGSVGElement): void {
-  const defs = svg.querySelector('defs');
-  if (!defs) return;
-
-  // Mermaid class diagram marker IDs
-  const markerIds = [
+  // Mermaid v11 generates IDs like "graph-2_class-compositionStart"
+  // Match by suffix: IDs ending with these marker type names
+  const markerSuffixes = [
     'compositionStart',
     'compositionEnd',
     'aggregationStart',
@@ -121,21 +122,22 @@ export function fixClassDiagramMarkers(svg: SVGSVGElement): void {
     'lollipopEnd'
   ];
 
-  // Marker refX adjustment: push outward so diamond/arrow tip stops at node border
-  // Default mermaid refX is typically 1 (Start) or 19 (End) for an 18px-wide diamond
-  // We increase End refX and decrease Start refX to account for rounded corners
-  const OUTWARD_OFFSET = 5; // additional px to push marker away from node center
+  // Mermaid v11 scatters markers across multiple <defs> elements, so query from SVG root
+  const allMarkers = svg.querySelectorAll<SVGMarkerElement>('defs marker');
+  // Additional px to push marker away from node center for rounded corners
+  const OUTWARD_OFFSET = 5;
 
-  markerIds.forEach((id) => {
-    const marker = defs.querySelector<SVGMarkerElement>(`#${id}`);
-    if (!marker) return;
+  allMarkers.forEach((marker) => {
+    const id = marker.id;
+    const matchedSuffix = markerSuffixes.find((s) => id.endsWith(s));
+    if (!matchedSuffix) return;
 
     // Ensure markers paint outside clipped regions
     marker.setAttribute('overflow', 'visible');
 
     // Adjust refX to account for rounded corners
     const currentRefX = parseFloat(marker.getAttribute('refX') ?? '0');
-    if (id.endsWith('End')) {
+    if (matchedSuffix.endsWith('End')) {
       // End markers: increase refX to push tip further from node center
       marker.setAttribute('refX', String(currentRefX + OUTWARD_OFFSET));
     } else {

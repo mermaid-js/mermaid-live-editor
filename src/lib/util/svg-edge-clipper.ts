@@ -46,7 +46,6 @@ function collectNodeShapes(svg: SVGSVGElement): NodeShapeBounds[] {
     '.node ellipse',
     '.node polygon',
     '.actor',
-    'g.classGroup rect',
     '.stateGroup rect',
     '.entityBox'
   ].join(', ');
@@ -317,46 +316,19 @@ function clipERRelationshipLines(svg: SVGSVGElement, defs: SVGDefsElement): void
 /**
  * Ensure correct SVG paint order per diagram type:
  *
- * Flowchart/State: nodes paint ABOVE edges (path trimming handles the gap).
- * Class: edges paint ABOVE nodes (marker refX fix + overflow:visible handles
- *   the boundary; no clip-path so markers aren't clipped).
+ * All diagram types: nodes paint ABOVE edges (path trimming handles the gap).
  * Edge labels always paint last (above everything).
+ *
+ * Note: Mermaid v11 class diagrams use the same DOM structure as flowcharts
+ * (.nodes, .edgePaths, .edgeLabels groups), not the legacy g.classGroup.
  */
 function ensureCorrectPaintOrder(svg: SVGSVGElement): void {
-  // --- Flowchart: .nodes group should paint after .edgePaths ---
-  const flowchartNodeGroups = svg.querySelectorAll<SVGGElement>('.nodes');
-  flowchartNodeGroups.forEach((group) => {
+  // --- Nodes group should paint after .edgePaths (all diagram types) ---
+  const nodeGroups = svg.querySelectorAll<SVGGElement>('.nodes');
+  nodeGroups.forEach((group) => {
     const parent = group.parentElement;
     if (parent) {
       parent.appendChild(group);
-    }
-  });
-
-  // --- Class diagram: edges (relation lines + markers) must paint ABOVE classGroup boxes ---
-  // Move relation paths and their container groups to end of parent
-  const classEdgeGroups = svg.querySelectorAll<SVGGElement>('g.edgePath, g[id^="edge"]');
-  classEdgeGroups.forEach((group) => {
-    const parent = group.parentElement;
-    if (parent && parent.querySelector('.classGroup')) {
-      parent.appendChild(group);
-    }
-  });
-
-  // Also handle bare relation path/line elements (not wrapped in groups)
-  const bareRelations = svg.querySelectorAll<SVGElement>('path.relation, line.relation');
-  bareRelations.forEach((el) => {
-    const parent = el.parentElement;
-    if (parent && parent.querySelector('.classGroup')) {
-      parent.appendChild(el);
-    }
-  });
-
-  // --- Relation label text above everything ---
-  const classDiagramLabels = svg.querySelectorAll<SVGGElement>('g.classLabel, .edgeLabel');
-  classDiagramLabels.forEach((label) => {
-    const parent = label.parentElement;
-    if (parent) {
-      parent.appendChild(label);
     }
   });
 
