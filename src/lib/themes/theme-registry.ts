@@ -5,10 +5,16 @@
 import { blueprintTheme } from './blueprint';
 import { defaultTheme } from './default';
 import { glassmorphismTheme } from './glassmorphism';
+import { neonTheme } from './neon';
 import type { ColorMode, DiagramTheme, ThemeDefinition } from './types';
 
-/** All diagram themes (3 items — each has light + dark variants) */
-export const diagramThemes: DiagramTheme[] = [defaultTheme, glassmorphismTheme, blueprintTheme];
+/** All diagram themes (4 items — each has light + dark variants) */
+export const diagramThemes: DiagramTheme[] = [
+  defaultTheme,
+  glassmorphismTheme,
+  blueprintTheme,
+  neonTheme
+];
 
 export function getDiagramThemeById(id: string): DiagramTheme {
   return diagramThemes.find((t) => t.id === id) ?? defaultTheme;

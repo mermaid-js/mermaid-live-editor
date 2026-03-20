@@ -211,4 +211,24 @@
       100% 100%,
       20px 20px;
   }
+
+  .grid-bg-neon {
+    background-color: #0a0510;
+    background-image:
+      radial-gradient(ellipse at 50% 40%, rgba(236, 72, 153, 0.06) 0%, transparent 60%),
+      radial-gradient(circle, rgba(236, 72, 153, 0.05) 0.5px, transparent 0.5px);
+    background-size:
+      100% 100%,
+      24px 24px;
+  }
+
+  .grid-bg-neon-light {
+    background-color: hsl(280 10% 98%);
+    background-image:
+      radial-gradient(ellipse at 50% 40%, rgba(236, 72, 153, 0.04) 0%, transparent 60%),
+      radial-gradient(circle, rgba(236, 72, 153, 0.08) 0.5px, transparent 0.5px);
+    background-size:
+      100% 100%,
+      24px 24px;
+  }
 </style>

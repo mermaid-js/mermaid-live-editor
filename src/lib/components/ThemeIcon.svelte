@@ -4,6 +4,7 @@
   import { type TransitionConfig } from 'svelte/transition';
   import ArchitectureIcon from '~icons/material-symbols/draw-outline-rounded';
   import GlassIcon from '~icons/material-symbols/kid-star-outline';
+  import NeonIcon from '~icons/material-symbols/bolt-rounded';
   import SunIcon from '~icons/material-symbols/light-mode-outline-rounded';
 
   const spin = (
@@ -26,7 +27,8 @@
   const iconMap: Record<string, typeof SunIcon> = {
     default: SunIcon,
     glassmorphism: GlassIcon,
-    blueprint: ArchitectureIcon
+    blueprint: ArchitectureIcon,
+    neon: NeonIcon
   };
 </script>
 
