@@ -33,11 +33,8 @@ export function clipEdgesAtNodeBorders(svg: SVGSVGElement, defs: SVGDefsElement)
   // ER-specific clip paths for relationship lines
   clipERRelationshipLines(svg, defs);
 
-  // Class diagram: clip relation lines at class box borders
-  clipClassRelationLines(svg, defs);
-
   // Fix SVG paint order per diagram type
-  ensureNodesPaintAboveEdges(svg);
+  ensureCorrectPaintOrder(svg);
 }
 
 /** Collect bounding boxes + border-radius of all node shapes in the SVG */
@@ -318,106 +315,14 @@ function clipERRelationshipLines(svg: SVGSVGElement, defs: SVGDefsElement): void
 }
 
 /**
- * Class diagrams: create inverted clip paths from classGroup rects to mask
- * any relation line segments that penetrate inside class boxes.
- * Same approach as ER clip paths but targets classGroup elements.
- */
-function clipClassRelationLines(svg: SVGSVGElement, defs: SVGDefsElement): void {
-  const classBoxes = svg.querySelectorAll<SVGRectElement>('g.classGroup rect');
-  if (classBoxes.length === 0) return;
-
-  const clipId = 'class-box-clip';
-  if (defs.querySelector(`#${clipId}`)) return;
-
-  const clipPath = document.createElementNS(SVG_NS, 'clipPath');
-  clipPath.setAttribute('id', clipId);
-
-  try {
-    const svgBBox = svg.getBBox();
-    const padding = 100;
-    const bgRect = document.createElementNS(SVG_NS, 'rect');
-    bgRect.setAttribute('x', String(svgBBox.x - padding));
-    bgRect.setAttribute('y', String(svgBBox.y - padding));
-    bgRect.setAttribute('width', String(svgBBox.width + 2 * padding));
-    bgRect.setAttribute('height', String(svgBBox.height + 2 * padding));
-    bgRect.setAttribute('fill', 'white');
-    clipPath.appendChild(bgRect);
-
-    // Subtract class box interiors (clip-rule: evenodd)
-    // Only use the main class rect (first rect in each classGroup)
-    const seenGroups = new Set<Element>();
-    classBoxes.forEach((box) => {
-      const group = box.closest('g.classGroup');
-      if (!group || seenGroups.has(group)) return;
-      seenGroups.add(group);
-
-      try {
-        // Use the group's bounding box for accurate position
-        const groupBBox = group.getBBox();
-        const ctm = group.getCTM();
-        const svgCTM = svg.getCTM();
-
-        let bx: number, by: number, bw: number, bh: number;
-        if (ctm && svgCTM) {
-          const relCTM = svgCTM.inverse().multiply(ctm);
-          bx = relCTM.e + groupBBox.x * relCTM.a;
-          by = relCTM.f + groupBBox.y * relCTM.d;
-          bw = groupBBox.width * Math.abs(relCTM.a);
-          bh = groupBBox.height * Math.abs(relCTM.d);
-        } else {
-          bx = groupBBox.x;
-          by = groupBBox.y;
-          bw = groupBBox.width;
-          bh = groupBBox.height;
-        }
-
-        const brx = parseFloat(box.getAttribute('rx') ?? '16');
-        const bry = parseFloat(box.getAttribute('ry') ?? '16');
-
-        // Shrink by 1px to keep border stroke visible
-        const inset = 1;
-        const clipRect = document.createElementNS(SVG_NS, 'rect');
-        clipRect.setAttribute('x', String(bx + inset));
-        clipRect.setAttribute('y', String(by + inset));
-        clipRect.setAttribute('width', String(bw - 2 * inset));
-        clipRect.setAttribute('height', String(bh - 2 * inset));
-        clipRect.setAttribute('rx', String(brx));
-        clipRect.setAttribute('ry', String(bry));
-        clipRect.setAttribute('fill', 'black');
-        clipPath.appendChild(clipRect);
-      } catch {
-        // getBBox may fail
-      }
-    });
-
-    if (clipPath.children.length <= 1) return; // only background rect, no class boxes found
-
-    clipPath.setAttribute('clip-rule', 'evenodd');
-    defs.appendChild(clipPath);
-
-    // Apply clip to relation lines in class diagrams
-    const relationLines = svg.querySelectorAll<SVGPathElement>('path.relation, line.relation');
-    relationLines.forEach((line) => {
-      line.setAttribute('clip-path', `url(#${clipId})`);
-    });
-  } catch {
-    // getBBox may fail
-  }
-}
-
-/**
- * Ensure correct paint order per diagram type:
+ * Ensure correct SVG paint order per diagram type:
  *
- * Flowchart/State: nodes paint ABOVE edges (path trimming handles the gap),
- *   hiding any residual edge penetration.
- *
- * Class/ER: edges paint ABOVE nodes so arrowheads and relation lines
- *   aren't hidden behind class boxes. Path trimming + ER clip paths
- *   handle the penetration instead.
- *
+ * Flowchart/State: nodes paint ABOVE edges (path trimming handles the gap).
+ * Class: edges paint ABOVE nodes (marker refX fix + overflow:visible handles
+ *   the boundary; no clip-path so markers aren't clipped).
  * Edge labels always paint last (above everything).
  */
-function ensureNodesPaintAboveEdges(svg: SVGSVGElement): void {
+function ensureCorrectPaintOrder(svg: SVGSVGElement): void {
   // --- Flowchart: .nodes group should paint after .edgePaths ---
   const flowchartNodeGroups = svg.querySelectorAll<SVGGElement>('.nodes');
   flowchartNodeGroups.forEach((group) => {
@@ -427,29 +332,31 @@ function ensureNodesPaintAboveEdges(svg: SVGSVGElement): void {
     }
   });
 
-  // --- Class diagram: relation lines must paint ABOVE classGroup boxes ---
-  // Mermaid renders g.classGroup and .relation as siblings; move relations last
-  const relationLines = svg.querySelectorAll<SVGElement>(
-    'g[id^="classid-"], line.relation, path.relation, defs + g > line[class="relation"]'
-  );
-  // Also select the <g> containers that wrap relation paths in class diagrams
-  const relationGroups = svg.querySelectorAll<SVGGElement>(
-    'g.edgePath[id*="classid"], g[id^="edge"]'
-  );
+  // --- Class diagram: edges (relation lines + markers) must paint ABOVE classGroup boxes ---
+  // Move relation paths and their container groups to end of parent
+  const classEdgeGroups = svg.querySelectorAll<SVGGElement>('g.edgePath, g[id^="edge"]');
+  classEdgeGroups.forEach((group) => {
+    const parent = group.parentElement;
+    if (parent && parent.querySelector('.classGroup')) {
+      parent.appendChild(group);
+    }
+  });
 
-  // Move individual relation elements to end of parent
-  relationLines.forEach((el) => {
+  // Also handle bare relation path/line elements (not wrapped in groups)
+  const bareRelations = svg.querySelectorAll<SVGElement>('path.relation, line.relation');
+  bareRelations.forEach((el) => {
     const parent = el.parentElement;
     if (parent && parent.querySelector('.classGroup')) {
       parent.appendChild(el);
     }
   });
 
-  // Move relation groups to end of parent (above classGroup nodes)
-  relationGroups.forEach((group) => {
-    const parent = group.parentElement;
-    if (parent && parent.querySelector('.classGroup')) {
-      parent.appendChild(group);
+  // --- Relation label text above everything ---
+  const classDiagramLabels = svg.querySelectorAll<SVGGElement>('g.classLabel, .edgeLabel');
+  classDiagramLabels.forEach((label) => {
+    const parent = label.parentElement;
+    if (parent) {
+      parent.appendChild(label);
     }
   });
 

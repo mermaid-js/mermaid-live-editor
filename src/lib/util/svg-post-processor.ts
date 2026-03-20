@@ -18,7 +18,8 @@ import {
   injectShadowFilter,
   injectHollowArrowMarker,
   injectGradientDef,
-  injectFontFaces
+  injectFontFaces,
+  fixClassDiagramMarkers
 } from './svg-defs-injector';
 import { refineBorderRadius, enhanceNodeShadows } from './svg-node-enhancer';
 import {
@@ -66,6 +67,7 @@ export function postProcessDiagramSvg(
   enhanceNodeShadows(svg);
   addGradientArrows(svg, defs, colors);
   replaceArrowheadMarkers(svg);
+  fixClassDiagramMarkers(svg);
   addMarchingAntsAnimation(svg);
   elevateEdgeLabels(svg);
   clipEdgesAtNodeBorders(svg, defs);

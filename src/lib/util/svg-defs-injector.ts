@@ -92,3 +92,55 @@ export function injectFontFaces(svg: SVGSVGElement): void {
   `;
   svg.prepend(style);
 }
+
+/**
+ * Fix Class diagram relationship markers (diamonds, arrows, dependencies)
+ * so they snap to the outer border of nodes instead of bleeding inside.
+ *
+ * Mermaid's default marker refX values assume sharp-cornered rects.
+ * With rx:16 rounded corners, the visible border curves inward, so
+ * markers must be pushed outward to compensate.
+ *
+ * Also sets overflow:visible so markers aren't clipped by parent elements.
+ */
+export function fixClassDiagramMarkers(svg: SVGSVGElement): void {
+  const defs = svg.querySelector('defs');
+  if (!defs) return;
+
+  // Mermaid class diagram marker IDs
+  const markerIds = [
+    'compositionStart',
+    'compositionEnd',
+    'aggregationStart',
+    'aggregationEnd',
+    'dependencyStart',
+    'dependencyEnd',
+    'extensionStart',
+    'extensionEnd',
+    'lollipopStart',
+    'lollipopEnd'
+  ];
+
+  // Marker refX adjustment: push outward so diamond/arrow tip stops at node border
+  // Default mermaid refX is typically 1 (Start) or 19 (End) for an 18px-wide diamond
+  // We increase End refX and decrease Start refX to account for rounded corners
+  const OUTWARD_OFFSET = 5; // additional px to push marker away from node center
+
+  markerIds.forEach((id) => {
+    const marker = defs.querySelector<SVGMarkerElement>(`#${id}`);
+    if (!marker) return;
+
+    // Ensure markers paint outside clipped regions
+    marker.setAttribute('overflow', 'visible');
+
+    // Adjust refX to account for rounded corners
+    const currentRefX = parseFloat(marker.getAttribute('refX') ?? '0');
+    if (id.endsWith('End')) {
+      // End markers: increase refX to push tip further from node center
+      marker.setAttribute('refX', String(currentRefX + OUTWARD_OFFSET));
+    } else {
+      // Start markers: decrease refX to push tip further from node center
+      marker.setAttribute('refX', String(Math.max(0, currentRefX - OUTWARD_OFFSET)));
+    }
+  });
+}
