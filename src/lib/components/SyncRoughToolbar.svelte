@@ -27,7 +27,7 @@
   <Separator orientation="vertical" />
 
   <Popover.Root>
-    <Popover.Trigger>
+    <Popover.Trigger class="cursor-pointer">
       <Button variant="ghost" size="icon" title="Theme" class="[&_svg]:size-5">
         <ThemeIcon />
       </Button>

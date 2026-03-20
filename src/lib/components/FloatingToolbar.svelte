@@ -9,6 +9,6 @@
 </script>
 
 <div
-  class="flex h-12 items-center justify-between gap-2 rounded-2xl border border-glass-border bg-glass-bg p-3 shadow-lg backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+  class="flex h-12 items-center justify-between gap-2 rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-frost)] p-3 shadow-[var(--shadow-floating)] backdrop-blur-xl">
   {@render children()}
 </div>

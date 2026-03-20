@@ -94,7 +94,7 @@
     target="_blank"
     onclick={options.onclick}
     class={cn(
-      'flex items-center justify-start gap-2 border-b p-2 px-3 hover:bg-muted',
+      'flex items-center justify-start gap-2 border-b border-[var(--border-strong)] p-2 px-3 transition-colors hover:bg-[var(--surface-soft)]',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
@@ -118,7 +118,7 @@
     type="button"
     onclick={() => cycleTheme()}
     class={cn(
-      'flex w-full cursor-pointer items-center justify-between border-b px-3 py-2 hover:bg-muted',
+      'flex w-full cursor-pointer items-center justify-between border-b border-[var(--border-strong)] px-3 py-2 transition-colors hover:bg-[var(--surface-soft)]',
       options.isSectionEnd && 'border-border-dark',
       options.class
     )}>
@@ -131,12 +131,12 @@
 {/snippet}
 
 <Popover.Root>
-  <Popover.Trigger class="shrink-0">
+  <Popover.Trigger class="shrink-0 cursor-pointer">
     <MenuIcon class="size-6" />
   </Popover.Trigger>
   <Popover.Content
     align="start"
-    class="flex flex-col overflow-hidden border border-glass-border bg-popover/95 p-0 backdrop-blur-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+    class="flex flex-col overflow-hidden border border-[var(--border-strong)] bg-[var(--surface-elevated)] p-0 text-foreground shadow-[var(--shadow-floating)] backdrop-blur-xl"
     sideOffset={16}>
     {#each menuItems as { renderer, ...item } (item.label)}
       {@render renderer(item)}

@@ -103,7 +103,7 @@
       <Resizable.PaneGroup
         direction="horizontal"
         autoSaveId="liveEditor"
-        class="gap-4 p-2 pt-0 sm:gap-0 sm:p-6 sm:pt-0">
+        class="gap-4 p-2 pt-3 sm:gap-0 sm:p-6 sm:pt-4">
         <Resizable.Pane bind:this={editorPane} defaultSize={30} minSize={15}>
           <div class="flex h-full flex-col gap-4 sm:gap-6">
             <Card
@@ -127,7 +127,7 @@
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane
           minSize={15}
-          class="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl border border-canvas-border shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+          class="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--surface-elevated)] shadow-[var(--shadow-elevated)]">
           <View {panZoomState} shouldShowGrid={$stateStore.grid} />
           <div class="absolute top-2 right-2"><PanZoomToolbar {panZoomState} /></div>
           <div class="absolute right-2 bottom-2"><VersionSecurityToolbar /></div>

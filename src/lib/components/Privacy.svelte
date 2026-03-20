@@ -7,12 +7,12 @@
 </script>
 
 {#if env.privacyPolicyUrl}
-  <a href={env.privacyPolicyUrl} target="_blank">
+  <a href={env.privacyPolicyUrl} target="_blank" class="cursor-pointer">
     <ShieldIcon />
   </a>
 {:else}
   <Dialog.Root>
-    <Dialog.Trigger>
+    <Dialog.Trigger class="cursor-pointer">
       <ShieldIcon />
     </Dialog.Trigger>
     <Dialog.Content class="max-h-full overflow-hidden overflow-y-auto p-12">

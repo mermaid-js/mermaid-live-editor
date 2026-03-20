@@ -4,7 +4,7 @@
   import { tv, type VariantProps } from 'tailwind-variants';
 
   export const buttonVariants = tv({
-    base: 'focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0',
+    base: 'focus-visible:ring-ring inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0',
     variants: {
       variant: {
         default:
@@ -14,10 +14,10 @@
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/70 shadow-sm',
         accent:
           'bg-gradient-to-r from-[#0052CC] to-[#007BFF] text-white hover:-translate-y-px hover:shadow-lg hover:shadow-blue-500/25 shadow-sm',
-        ghost: 'hover:bg-muted hover:text-foreground',
+        ghost: 'hover:bg-[var(--surface-soft)] hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         'ghost-outline':
-          'border border-border/60 bg-transparent text-muted-foreground hover:border-accent hover:text-accent hover:bg-accent/10'
+          'border border-[var(--border-strong)] bg-transparent text-muted-foreground hover:border-accent hover:bg-[var(--surface-soft)] hover:text-foreground'
       },
       size: {
         default: 'h-9 px-4 py-2',

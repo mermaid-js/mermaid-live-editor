@@ -13,7 +13,7 @@
 </script>
 
 <Popover.Root>
-  <Popover.Trigger class="flex items-center gap-0">
+  <Popover.Trigger class="flex cursor-pointer items-center gap-0">
     <Button variant="ghost" size="sm">
       <props.icon class={props.class} />
     </Button>
