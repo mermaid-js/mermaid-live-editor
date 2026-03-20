@@ -181,6 +181,7 @@ export const defaultTheme: DiagramTheme = {
       '--glass-border': 'rgba(255, 255, 255, 0.08)',
       '--gradient-end': 'hsl(214 65% 12%)',
       '--gradient-start': 'hsl(214 80% 8%)',
+      '--info': 'hsl(187 72% 48%)',
       '--input': 'hsl(214 55% 16%)',
       '--muted': 'hsl(214 55% 14%)',
       '--muted-foreground': 'hsl(213 15% 60%)',
@@ -188,10 +189,13 @@ export const defaultTheme: DiagramTheme = {
       '--popover-foreground': 'hsl(213 20% 88%)',
       '--primary': 'hsl(217 91% 50%)',
       '--primary-foreground': 'hsl(0 0% 100%)',
+      '--primary-light': 'hsl(217 91% 60%)',
+      '--radius': '0.75rem',
       '--ring': 'hsl(217 91% 60%)',
       '--secondary': 'hsl(214 55% 16%)',
       '--secondary-foreground': 'hsl(213 20% 88%)',
-      '--shadow-color': 'hsl(214 80% 3% / 0.6)'
+      '--shadow-color': 'hsl(214 80% 3% / 0.6)',
+      '--success': 'hsl(160 60% 50%)'
     },
     diagramCSS: darkDiagramCSS,
     diagramVariables: {
