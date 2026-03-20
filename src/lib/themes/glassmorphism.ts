@@ -4,7 +4,7 @@
  * Dark variant: original deep purple glassmorphism.
  */
 
-import { sharedDiagramCSS } from './shared-diagram-css';
+import { darkModeDiagramFixCSS, sharedDiagramCSS } from './shared-diagram-css';
 import type { DiagramTheme } from './types';
 
 const glassLightDiagramCSS = `${sharedDiagramCSS}
@@ -69,7 +69,12 @@ g.classGroup rect {
 .note {
   filter: drop-shadow(0 1px 6px rgba(139, 92, 246, 0.10));
 }
-`;
+${darkModeDiagramFixCSS({
+  bgColor: '#150C35',
+  textColor: '#F5F3FF',
+  borderColor: '#2D1B69',
+  mutedColor: '#3B2580'
+})}`;
 
 export const glassmorphismTheme: DiagramTheme = {
   id: 'glassmorphism',
@@ -114,6 +119,29 @@ export const glassmorphismTheme: DiagramTheme = {
       actorTextColor: '#1E1B4B',
       attributeBackgroundColorEven: '#F5F3FF',
       attributeBackgroundColorOdd: '#FFFFFF',
+      cScale0: '#DDD6FE',
+      cScale1: '#FCE7F3',
+      cScale2: '#DCFCE7',
+      cScale3: '#FEF3C7',
+      cScale4: '#FEE2E2',
+      cScale5: '#E0E7FF',
+      cScale6: '#FFEDD5',
+      cScale7: '#CFFAFE',
+      cScaleLabel0: '#3B0764',
+      cScaleLabel1: '#831843',
+      cScaleLabel2: '#14532D',
+      cScaleLabel3: '#78350F',
+      cScaleLabel4: '#7F1D1D',
+      cScaleLabel5: '#1E1B4B',
+      cScaleLabel6: '#7C2D12',
+      cScaleLabel7: '#134E4A',
+      cScalePeer1: '#A78BFA',
+      cScalePeer2: '#F9A8D4',
+      cScalePeer3: '#86EFAC',
+      cScalePeer4: '#FDE68A',
+      cScalePeer5: '#FCA5A5',
+      cScalePeer6: '#A5B4FC',
+      cScalePeer7: '#FDBA74',
       clusterBkg: '#F5F3FF',
       clusterBorder: '#A78BFA',
       crit0: '#DC2626',
@@ -207,6 +235,29 @@ export const glassmorphismTheme: DiagramTheme = {
       actorTextColor: '#F5F3FF',
       attributeBackgroundColorEven: '#1A0F40',
       attributeBackgroundColorOdd: '#150C35',
+      cScale0: '#2D1B69',
+      cScale1: '#4A1942',
+      cScale2: '#0D3A2A',
+      cScale3: '#3D2800',
+      cScale4: '#4A1515',
+      cScale5: '#1E1B4B',
+      cScale6: '#451A03',
+      cScale7: '#134E4A',
+      cScaleLabel0: '#DDD6FE',
+      cScaleLabel1: '#F9A8D4',
+      cScaleLabel2: '#BBF7D0',
+      cScaleLabel3: '#FDE68A',
+      cScaleLabel4: '#FECACA',
+      cScaleLabel5: '#C7D2FE',
+      cScaleLabel6: '#FED7AA',
+      cScaleLabel7: '#99F6E4',
+      cScalePeer1: '#7C3AED',
+      cScalePeer2: '#DB2777',
+      cScalePeer3: '#16A34A',
+      cScalePeer4: '#D97706',
+      cScalePeer5: '#DC2626',
+      cScalePeer6: '#6366F1',
+      cScalePeer7: '#EA580C',
       clusterBkg: '#1A0F40',
       clusterBorder: '#7C3AED',
       crit0: '#EF4444',
@@ -255,6 +306,36 @@ export const glassmorphismTheme: DiagramTheme = {
       tertiaryColor: '#0D3A2A',
       tertiaryTextColor: '#F5F3FF',
       titleColor: '#C4B5FD'
+    },
+    layoutConfig: {
+      packet: {
+        blockFillColor: '#1E1145',
+        blockStrokeColor: '#A78BFA',
+        endByteColor: '#A1A1AA',
+        labelColor: '#F5F3FF',
+        startByteColor: '#A1A1AA',
+        titleColor: '#C4B5FD'
+      },
+      radar: {
+        axisColor: '#A78BFA',
+        graticuleColor: 'rgba(167,139,250,0.25)'
+      },
+      xyChart: {
+        backgroundColor: '#150C35',
+        titleColor: '#C4B5FD',
+        xAxis: {
+          labelColor: '#A1A1AA',
+          titleColor: '#DDD6FE',
+          tickColor: '#2D1B69',
+          axisLineColor: '#2D1B69'
+        },
+        yAxis: {
+          labelColor: '#A1A1AA',
+          titleColor: '#DDD6FE',
+          tickColor: '#2D1B69',
+          axisLineColor: '#2D1B69'
+        }
+      }
     },
     svgPostProcess: { gradientStart: '#8B5CF6', gradientEnd: '#EC4899' }
   }

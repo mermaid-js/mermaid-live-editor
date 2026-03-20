@@ -4,7 +4,7 @@
  * Light: technical drawing on light paper, cyan accents, dark text.
  */
 
-import { sharedDiagramCSS } from './shared-diagram-css';
+import { darkModeDiagramFixCSS, sharedDiagramCSS } from './shared-diagram-css';
 import type { DiagramTheme } from './types';
 
 const blueprintSharedCSS = `
@@ -114,7 +114,12 @@ g.classGroup rect {
 .note {
   filter: drop-shadow(0 2px 8px rgba(0, 180, 219, 0.10));
 }
-`;
+${darkModeDiagramFixCSS({
+  bgColor: '#0B1120',
+  textColor: '#CBD5E1',
+  borderColor: '#0C2D4A',
+  mutedColor: '#1E293B'
+})}`;
 
 export const blueprintTheme: DiagramTheme = {
   dark: {
@@ -160,6 +165,29 @@ export const blueprintTheme: DiagramTheme = {
       actorTextColor: '#CBD5E1',
       attributeBackgroundColorEven: '#0F172A',
       attributeBackgroundColorOdd: '#0B1120',
+      cScale0: '#0C2D4A',
+      cScale1: '#0C3547',
+      cScale2: '#0D2818',
+      cScale3: '#2D1F00',
+      cScale4: '#3B1010',
+      cScale5: '#1E1145',
+      cScale6: '#351A03',
+      cScale7: '#0D3535',
+      cScaleLabel0: '#7DD3FC',
+      cScaleLabel1: '#67E8F9',
+      cScaleLabel2: '#86EFAC',
+      cScaleLabel3: '#FDE68A',
+      cScaleLabel4: '#FCA5A5',
+      cScaleLabel5: '#C4B5FD',
+      cScaleLabel6: '#FDBA74',
+      cScaleLabel7: '#5EEAD4',
+      cScalePeer1: '#0891B2',
+      cScalePeer2: '#0EA5E9',
+      cScalePeer3: '#22C55E',
+      cScalePeer4: '#F59E0B',
+      cScalePeer5: '#EF4444',
+      cScalePeer6: '#8B5CF6',
+      cScalePeer7: '#14B8A6',
       clusterBkg: '#0C1A30',
       clusterBorder: '#0891B2',
       crit0: '#EF4444',
@@ -208,6 +236,36 @@ export const blueprintTheme: DiagramTheme = {
       tertiaryColor: '#0D2818',
       tertiaryTextColor: '#CBD5E1',
       titleColor: '#22D3EE'
+    },
+    layoutConfig: {
+      packet: {
+        blockFillColor: '#0C1A30',
+        blockStrokeColor: '#22D3EE',
+        endByteColor: '#64748B',
+        labelColor: '#CBD5E1',
+        startByteColor: '#64748B',
+        titleColor: '#22D3EE'
+      },
+      radar: {
+        axisColor: '#22D3EE',
+        graticuleColor: 'rgba(34,211,238,0.20)'
+      },
+      xyChart: {
+        backgroundColor: '#0B1120',
+        titleColor: '#22D3EE',
+        xAxis: {
+          labelColor: '#64748B',
+          titleColor: '#7DD3FC',
+          tickColor: '#1E293B',
+          axisLineColor: '#1E293B'
+        },
+        yAxis: {
+          labelColor: '#64748B',
+          titleColor: '#7DD3FC',
+          tickColor: '#1E293B',
+          axisLineColor: '#1E293B'
+        }
+      }
     },
     svgPostProcess: {
       gradientEnd: '#0369A1',
@@ -262,6 +320,29 @@ export const blueprintTheme: DiagramTheme = {
       actorTextColor: '#0F172A',
       attributeBackgroundColorEven: '#ECFEFF',
       attributeBackgroundColorOdd: '#FFFFFF',
+      cScale0: '#CFFAFE',
+      cScale1: '#E0F2FE',
+      cScale2: '#DCFCE7',
+      cScale3: '#FEF3C7',
+      cScale4: '#FEE2E2',
+      cScale5: '#EDE9FE',
+      cScale6: '#FFEDD5',
+      cScale7: '#CCFBF1',
+      cScaleLabel0: '#164E63',
+      cScaleLabel1: '#0C4A6E',
+      cScaleLabel2: '#14532D',
+      cScaleLabel3: '#78350F',
+      cScaleLabel4: '#7F1D1D',
+      cScaleLabel5: '#3B0764',
+      cScaleLabel6: '#7C2D12',
+      cScaleLabel7: '#134E4A',
+      cScalePeer1: '#06B6D4',
+      cScalePeer2: '#0284C7',
+      cScalePeer3: '#16A34A',
+      cScalePeer4: '#D97706',
+      cScalePeer5: '#DC2626',
+      cScalePeer6: '#7C3AED',
+      cScalePeer7: '#0D9488',
       clusterBkg: '#ECFEFF',
       clusterBorder: '#06B6D4',
       crit0: '#DC2626',

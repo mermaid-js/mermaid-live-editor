@@ -40,6 +40,8 @@ export interface ThemeVariant {
   diagramCSS: string;
   svgPostProcess?: ThemeDefinition['svgPostProcess'];
   canvasBgClass?: string;
+  /** Per-variant layout overrides (merged on top of DiagramTheme.layoutConfig) */
+  layoutConfig?: Record<string, Record<string, unknown>>;
 }
 
 /** A diagram theme with light + dark variants */

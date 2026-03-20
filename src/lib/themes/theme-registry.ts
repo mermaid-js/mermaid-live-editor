@@ -28,6 +28,13 @@ export function getNextDiagramTheme(currentId: string): DiagramTheme {
 /** Resolve a DiagramTheme + ColorMode into a flat ThemeDefinition for consumers */
 export function resolveTheme(theme: DiagramTheme, mode: ColorMode): ThemeDefinition {
   const variant = theme[mode];
+  // Merge base layout config with variant-level overrides (variant wins)
+  const baseLayout = theme.layoutConfig ?? {};
+  const variantLayout = variant.layoutConfig ?? {};
+  const mergedLayout: Record<string, Record<string, unknown>> = { ...baseLayout };
+  for (const [key, overrides] of Object.entries(variantLayout)) {
+    mergedLayout[key] = { ...(mergedLayout[key] ?? {}), ...overrides };
+  }
   return {
     canvasBgClass: variant.canvasBgClass,
     colorScheme: mode,
@@ -35,7 +42,7 @@ export function resolveTheme(theme: DiagramTheme, mode: ColorMode): ThemeDefinit
     diagramCSS: variant.diagramCSS,
     diagramVariables: variant.diagramVariables,
     id: `${theme.id}-${mode}`,
-    layoutConfig: theme.layoutConfig,
+    layoutConfig: Object.keys(mergedLayout).length > 0 ? mergedLayout : undefined,
     name: `${theme.name} ${mode === 'light' ? 'Light' : 'Dark'}`,
     svgPostProcess: variant.svgPostProcess
   };

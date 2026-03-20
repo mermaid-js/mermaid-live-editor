@@ -3,7 +3,7 @@
  * Merged from default-light.ts and default-dark.ts.
  */
 
-import { sharedDiagramCSS } from './shared-diagram-css';
+import { darkModeDiagramFixCSS, sharedDiagramCSS } from './shared-diagram-css';
 import type { DiagramTheme } from './types';
 
 const lightDiagramCSS = `${sharedDiagramCSS}
@@ -68,7 +68,12 @@ g.classGroup rect {
 .note {
   filter: drop-shadow(0 1px 4px rgba(59, 130, 246, 0.10));
 }
-`;
+${darkModeDiagramFixCSS({
+  bgColor: '#0A1929',
+  textColor: '#F1F5F9',
+  borderColor: '#1E3A5F',
+  mutedColor: '#334155'
+})}`;
 
 export const defaultTheme: DiagramTheme = {
   id: 'default',
@@ -113,6 +118,29 @@ export const defaultTheme: DiagramTheme = {
       actorTextColor: '#0F172A',
       attributeBackgroundColorEven: '#EFF6FF',
       attributeBackgroundColorOdd: '#FFFFFF',
+      cScale0: '#DBEAFE',
+      cScale1: '#E0F2FE',
+      cScale2: '#DCFCE7',
+      cScale3: '#FEF3C7',
+      cScale4: '#FEE2E2',
+      cScale5: '#EDE9FE',
+      cScale6: '#FFEDD5',
+      cScale7: '#CFFAFE',
+      cScaleLabel0: '#1E3A5F',
+      cScaleLabel1: '#164E63',
+      cScaleLabel2: '#14532D',
+      cScaleLabel3: '#78350F',
+      cScaleLabel4: '#7F1D1D',
+      cScaleLabel5: '#3B0764',
+      cScaleLabel6: '#7C2D12',
+      cScaleLabel7: '#134E4A',
+      cScalePeer1: '#93C5FD',
+      cScalePeer2: '#7DD3FC',
+      cScalePeer3: '#86EFAC',
+      cScalePeer4: '#FDE68A',
+      cScalePeer5: '#FCA5A5',
+      cScalePeer6: '#C4B5FD',
+      cScalePeer7: '#FDBA74',
       clusterBkg: '#EFF6FF',
       clusterBorder: '#93C5FD',
       crit0: '#DC2626',
@@ -206,6 +234,29 @@ export const defaultTheme: DiagramTheme = {
       actorTextColor: '#F1F5F9',
       attributeBackgroundColorEven: '#0D1F3C',
       attributeBackgroundColorOdd: '#0B1628',
+      cScale0: '#1E3A5F',
+      cScale1: '#164E63',
+      cScale2: '#14532D',
+      cScale3: '#78350F',
+      cScale4: '#7F1D1D',
+      cScale5: '#3B0764',
+      cScale6: '#7C2D12',
+      cScale7: '#134E4A',
+      cScaleLabel0: '#BFDBFE',
+      cScaleLabel1: '#A5F3FC',
+      cScaleLabel2: '#BBF7D0',
+      cScaleLabel3: '#FDE68A',
+      cScaleLabel4: '#FECACA',
+      cScaleLabel5: '#DDD6FE',
+      cScaleLabel6: '#FED7AA',
+      cScaleLabel7: '#99F6E4',
+      cScalePeer1: '#2563EB',
+      cScalePeer2: '#0891B2',
+      cScalePeer3: '#16A34A',
+      cScalePeer4: '#D97706',
+      cScalePeer5: '#DC2626',
+      cScalePeer6: '#7C3AED',
+      cScalePeer7: '#EA580C',
       clusterBkg: '#0D1F3C',
       clusterBorder: '#3B82F6',
       crit0: '#EF4444',
@@ -254,6 +305,36 @@ export const defaultTheme: DiagramTheme = {
       tertiaryColor: '#0D3A2A',
       tertiaryTextColor: '#F1F5F9',
       titleColor: '#93C5FD'
+    },
+    layoutConfig: {
+      packet: {
+        blockFillColor: '#0F2B52',
+        blockStrokeColor: '#60A5FA',
+        endByteColor: '#94A3B8',
+        labelColor: '#F1F5F9',
+        startByteColor: '#94A3B8',
+        titleColor: '#93C5FD'
+      },
+      radar: {
+        axisColor: '#60A5FA',
+        graticuleColor: 'rgba(96,165,250,0.25)'
+      },
+      xyChart: {
+        backgroundColor: '#0A1929',
+        titleColor: '#93C5FD',
+        xAxis: {
+          labelColor: '#94A3B8',
+          titleColor: '#BFDBFE',
+          tickColor: '#334155',
+          axisLineColor: '#334155'
+        },
+        yAxis: {
+          labelColor: '#94A3B8',
+          titleColor: '#BFDBFE',
+          tickColor: '#334155',
+          axisLineColor: '#334155'
+        }
+      }
     },
     svgPostProcess: { gradientStart: '#3B82F6', gradientEnd: '#60A5FA' }
   }

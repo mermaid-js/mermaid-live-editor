@@ -7,7 +7,7 @@
  * CSS drop-shadows simulate the bloom/glow post-processing effect.
  */
 
-import { sharedDiagramCSS } from './shared-diagram-css';
+import { darkModeDiagramFixCSS, sharedDiagramCSS } from './shared-diagram-css';
 import type { DiagramTheme } from './types';
 
 /* Neon-specific CSS shared between light and dark variants */
@@ -123,7 +123,12 @@ g.classGroup rect {
 .titleText, .classTitle, g.classGroup .title-text {
   fill: #F472B6 !important;
 }
-`;
+${darkModeDiagramFixCSS({
+  bgColor: '#120818',
+  textColor: '#E8D5F5',
+  borderColor: '#2D0A2E',
+  mutedColor: '#3D1540'
+})}`;
 
 export const neonTheme: DiagramTheme = {
   id: 'neon',
@@ -169,6 +174,29 @@ export const neonTheme: DiagramTheme = {
       actorTextColor: '#1E1030',
       attributeBackgroundColorEven: '#FDF2F8',
       attributeBackgroundColorOdd: '#FFFFFF',
+      cScale0: '#FDF2F8',
+      cScale1: '#EEF2FF',
+      cScale2: '#ECFDF5',
+      cScale3: '#FEF3C7',
+      cScale4: '#FEE2E2',
+      cScale5: '#F5F3FF',
+      cScale6: '#FFEDD5',
+      cScale7: '#CFFAFE',
+      cScaleLabel0: '#831843',
+      cScaleLabel1: '#1E1B4B',
+      cScaleLabel2: '#064E3B',
+      cScaleLabel3: '#78350F',
+      cScaleLabel4: '#7F1D1D',
+      cScaleLabel5: '#3B0764',
+      cScaleLabel6: '#7C2D12',
+      cScaleLabel7: '#134E4A',
+      cScalePeer1: '#F472B6',
+      cScalePeer2: '#818CF8',
+      cScalePeer3: '#34D399',
+      cScalePeer4: '#FDE68A',
+      cScalePeer5: '#FCA5A5',
+      cScalePeer6: '#C4B5FD',
+      cScalePeer7: '#67E8F9',
       clusterBkg: '#FDF2F8',
       clusterBorder: '#F472B6',
       crit0: '#DC2626',
@@ -269,6 +297,29 @@ export const neonTheme: DiagramTheme = {
       actorTextColor: '#E8D5F5',
       attributeBackgroundColorEven: '#1A0520',
       attributeBackgroundColorOdd: '#120818',
+      cScale0: '#2D0A2E',
+      cScale1: '#1A1040',
+      cScale2: '#0A1E15',
+      cScale3: '#2D1F00',
+      cScale4: '#3B1010',
+      cScale5: '#1E0530',
+      cScale6: '#351A03',
+      cScale7: '#0D2535',
+      cScaleLabel0: '#F9A8D4',
+      cScaleLabel1: '#A5B4FC',
+      cScaleLabel2: '#6EE7B7',
+      cScaleLabel3: '#FDE68A',
+      cScaleLabel4: '#FCA5A5',
+      cScaleLabel5: '#D8B4FE',
+      cScaleLabel6: '#FDBA74',
+      cScaleLabel7: '#67E8F9',
+      cScalePeer1: '#EC4899',
+      cScalePeer2: '#6366F1',
+      cScalePeer3: '#10B981',
+      cScalePeer4: '#F59E0B',
+      cScalePeer5: '#EF4444',
+      cScalePeer6: '#A855F7',
+      cScalePeer7: '#06B6D4',
       clusterBkg: '#1A0520',
       clusterBorder: '#EC4899',
       crit0: '#EF4444',
@@ -317,6 +368,36 @@ export const neonTheme: DiagramTheme = {
       tertiaryColor: '#0A1E15',
       tertiaryTextColor: '#E8D5F5',
       titleColor: '#F472B6'
+    },
+    layoutConfig: {
+      packet: {
+        blockFillColor: '#140A1E',
+        blockStrokeColor: '#F472B6',
+        endByteColor: '#A78BFA',
+        labelColor: '#E8D5F5',
+        startByteColor: '#A78BFA',
+        titleColor: '#F472B6'
+      },
+      radar: {
+        axisColor: '#F472B6',
+        graticuleColor: 'rgba(244,114,182,0.20)'
+      },
+      xyChart: {
+        backgroundColor: '#120818',
+        titleColor: '#F472B6',
+        xAxis: {
+          labelColor: '#A78BFA',
+          titleColor: '#F9A8D4',
+          tickColor: '#2D0A2E',
+          axisLineColor: '#2D0A2E'
+        },
+        yAxis: {
+          labelColor: '#A78BFA',
+          titleColor: '#F9A8D4',
+          tickColor: '#2D0A2E',
+          axisLineColor: '#2D0A2E'
+        }
+      }
     },
     svgPostProcess: {
       gradientEnd: '#818CF8',

@@ -213,3 +213,40 @@ path.er.relationshipLine {
   ry: 6;
 }
 `;
+
+/**
+ * Dark mode CSS fixes for diagram types that render their own backgrounds.
+ * ZenUML uses foreignObject with HTML — these CSS rules override its internal styles.
+ * Parameterized by theme colors to keep each theme consistent.
+ */
+export function darkModeDiagramFixCSS(opts: {
+  bgColor: string;
+  textColor: string;
+  borderColor: string;
+  mutedColor: string;
+}): string {
+  return `
+/* === ZenUML dark mode override === */
+foreignObject > div,
+foreignObject .zenuml {
+  background-color: ${opts.bgColor} !important;
+  color: ${opts.textColor} !important;
+}
+foreignObject .zenuml .participant,
+foreignObject .zenuml .participant .head {
+  background-color: ${opts.borderColor} !important;
+  color: ${opts.textColor} !important;
+  border-color: ${opts.mutedColor} !important;
+}
+foreignObject .zenuml .message,
+foreignObject .zenuml .message .label {
+  color: ${opts.textColor} !important;
+}
+foreignObject .zenuml .lifeline {
+  border-left-color: ${opts.mutedColor} !important;
+}
+foreignObject .zenuml .occurrence {
+  background-color: ${opts.mutedColor} !important;
+}
+`;
+}
