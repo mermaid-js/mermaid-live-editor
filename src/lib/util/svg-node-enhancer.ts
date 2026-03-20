@@ -13,7 +13,7 @@ import { NODE_BORDER_RADIUS, NOTE_BORDER_RADIUS } from './svg-post-processor-typ
 export function refineBorderRadius(svg: SVGSVGElement): void {
   // Primary elements — 16px radius
   const primaryRects = svg.querySelectorAll(
-    '.node rect, .cluster rect, .stateGroup rect, .actor, g.classGroup rect, .composit, .entityBox'
+    '.node rect, .cluster rect, .stateGroup rect, .actor, .composit, .entityBox'
   );
   primaryRects.forEach((rect) => {
     const rx = rect.getAttribute('rx');
@@ -46,7 +46,6 @@ export function enhanceNodeShadows(svg: SVGSVGElement): void {
     '.node circle',
     '.node ellipse',
     '.actor',
-    'g.classGroup rect',
     '.stateGroup rect',
     '.entityBox'
   ].join(', ');
@@ -55,6 +54,17 @@ export function enhanceNodeShadows(svg: SVGSVGElement): void {
   elements.forEach((el) => {
     if (!el.getAttribute('filter')) {
       el.setAttribute('filter', 'url(#sotatek-shadow)');
+    }
+  });
+
+  // Mermaid v11 class diagram nodes use path-based .label-container (no rects).
+  // Apply shadow to the first <path> (background fill) in each container.
+  svg.querySelectorAll('.node .label-container').forEach((container) => {
+    const nodeG = container.closest('.node');
+    if (nodeG?.querySelector('rect')) return; // skip if already has rect
+    const bgPath = container.querySelector('path');
+    if (bgPath && !bgPath.getAttribute('filter')) {
+      bgPath.setAttribute('filter', 'url(#sotatek-shadow)');
     }
   });
 }

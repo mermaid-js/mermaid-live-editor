@@ -14,8 +14,9 @@ import { SVG_NS, NODE_BORDER_RADIUS, type NodeShapeBounds } from './svg-post-pro
  * Strategy:
  * 1. Collect bounding boxes of all node shapes
  * 2. Trim each edge path so it terminates at the node border
- * 3. Inject clip paths for ER entity boxes
- * 4. Ensure nodes paint ABOVE edges so residual overlap is hidden
+ * 3. Pull back class diagram marker endpoints to prevent overlap
+ * 4. Inject clip paths for ER entity boxes
+ * 5. Ensure nodes paint ABOVE edges so residual overlap is hidden
  */
 export function clipEdgesAtNodeBorders(svg: SVGSVGElement, defs: SVGDefsElement): void {
   const nodeShapes = collectNodeShapes(svg);
@@ -30,6 +31,9 @@ export function clipEdgesAtNodeBorders(svg: SVGSVGElement, defs: SVGDefsElement)
     trimPathAtNodeBorders(path, nodeShapes);
   });
 
+  // Class diagram: pull marker endpoints away from nodes to prevent overlap
+  pullBackClassMarkerEndpoints(svg, nodeShapes);
+
   // ER-specific clip paths for relationship lines
   clipERRelationshipLines(svg, defs);
 
@@ -40,6 +44,8 @@ export function clipEdgesAtNodeBorders(svg: SVGSVGElement, defs: SVGDefsElement)
 /** Collect bounding boxes + border-radius of all node shapes in the SVG */
 function collectNodeShapes(svg: SVGSVGElement): NodeShapeBounds[] {
   const shapes: NodeShapeBounds[] = [];
+
+  // Standard rect/circle/polygon-based nodes (flowchart, state, ER, sequence)
   const selectors = [
     '.node rect',
     '.node circle',
@@ -51,48 +57,66 @@ function collectNodeShapes(svg: SVGSVGElement): NodeShapeBounds[] {
   ].join(', ');
 
   const elements = svg.querySelectorAll<SVGElement>(selectors);
-  elements.forEach((el) => {
-    try {
-      const bbox = el.getBBox();
-      if (bbox.width === 0 || bbox.height === 0) return;
+  elements.forEach((el) => addShapeFromElement(el, svg, shapes));
 
-      const rx = parseFloat(el.getAttribute('rx') ?? '0') || NODE_BORDER_RADIUS;
-      const ry = parseFloat(el.getAttribute('ry') ?? '0') || NODE_BORDER_RADIUS;
+  // Mermaid v11 class diagram nodes use <path> inside .label-container (no rects).
+  // Use the first <path> in each .label-container as the node boundary shape.
+  const classNodes = svg.querySelectorAll<SVGGElement>('.node .label-container');
+  classNodes.forEach((container) => {
+    // Skip if this node already contributed a shape via rect selectors above
+    const nodeG = container.closest('.node');
+    if (nodeG?.querySelector('rect')) return;
 
-      // Transform bbox to SVG coordinate space
-      const ctm = el.getCTM();
-      const svgCTM = svg.getCTM();
-      if (ctm && svgCTM) {
-        const relCTM = svgCTM.inverse().multiply(ctm);
-        const x = relCTM.e + bbox.x * relCTM.a;
-        const y = relCTM.f + bbox.y * relCTM.d;
-        shapes.push({
-          cx: x + (bbox.width * Math.abs(relCTM.a)) / 2,
-          cy: y + (bbox.height * Math.abs(relCTM.d)) / 2,
-          height: bbox.height * Math.abs(relCTM.d),
-          rx: rx * Math.abs(relCTM.a),
-          ry: ry * Math.abs(relCTM.d),
-          width: bbox.width * Math.abs(relCTM.a),
-          x,
-          y
-        });
-      } else {
-        shapes.push({
-          cx: bbox.x + bbox.width / 2,
-          cy: bbox.y + bbox.height / 2,
-          height: bbox.height,
-          rx,
-          ry,
-          width: bbox.width,
-          x: bbox.x,
-          y: bbox.y
-        });
-      }
-    } catch {
-      // getBBox/getCTM may fail for hidden/detached elements
+    const boundaryPath = container.querySelector<SVGPathElement>('path');
+    if (boundaryPath) {
+      addShapeFromElement(boundaryPath, svg, shapes);
     }
   });
+
   return shapes;
+}
+
+/** Extract bounding box from an SVG element and add to shapes array */
+function addShapeFromElement(el: SVGElement, svg: SVGSVGElement, shapes: NodeShapeBounds[]): void {
+  try {
+    const bbox = el.getBBox();
+    if (bbox.width === 0 || bbox.height === 0) return;
+
+    const rx = parseFloat(el.getAttribute('rx') ?? '0') || NODE_BORDER_RADIUS;
+    const ry = parseFloat(el.getAttribute('ry') ?? '0') || NODE_BORDER_RADIUS;
+
+    // Transform bbox to SVG coordinate space
+    const ctm = el.getCTM();
+    const svgCTM = svg.getCTM();
+    if (ctm && svgCTM) {
+      const relCTM = svgCTM.inverse().multiply(ctm);
+      const x = relCTM.e + bbox.x * relCTM.a;
+      const y = relCTM.f + bbox.y * relCTM.d;
+      shapes.push({
+        cx: x + (bbox.width * Math.abs(relCTM.a)) / 2,
+        cy: y + (bbox.height * Math.abs(relCTM.d)) / 2,
+        height: bbox.height * Math.abs(relCTM.d),
+        rx: rx * Math.abs(relCTM.a),
+        ry: ry * Math.abs(relCTM.d),
+        width: bbox.width * Math.abs(relCTM.a),
+        x,
+        y
+      });
+    } else {
+      shapes.push({
+        cx: bbox.x + bbox.width / 2,
+        cy: bbox.y + bbox.height / 2,
+        height: bbox.height,
+        rx,
+        ry,
+        width: bbox.width,
+        x: bbox.x,
+        y: bbox.y
+      });
+    }
+  } catch {
+    // getBBox/getCTM may fail for hidden/detached elements
+  }
 }
 
 /**
@@ -143,6 +167,70 @@ function trimPathAtNodeBorders(path: SVGPathElement, nodeShapes: NodeShapeBounds
   }
 }
 
+/**
+ * Pull back class diagram relation endpoints that have markers (diamonds, triangles)
+ * so the marker shape sits outside the nearest node instead of overlapping it.
+ *
+ * Mermaid places marker-start endpoints ~13px from the source node border, but
+ * markers are ~18px long and extend backward, causing ~5px overlap.
+ * We trim extra length from the marker end of each path.
+ */
+function pullBackClassMarkerEndpoints(svg: SVGSVGElement, nodeShapes: NodeShapeBounds[]): void {
+  const relations = svg.querySelectorAll<SVGPathElement>('.relation');
+  relations.forEach((path) => {
+    try {
+      const markerStart = path.getAttribute('marker-start');
+      const markerEnd = path.getAttribute('marker-end');
+      const hasStart = markerStart?.includes('class-') ?? false;
+      const hasEnd = markerEnd?.includes('class-') ?? false;
+      if (!hasStart && !hasEnd) return;
+
+      const pathLen = path.getTotalLength();
+      if (pathLen < 20) return;
+
+      const svgEl = path.ownerSVGElement;
+      if (!svgEl) return;
+      const pathCTM = path.getCTM();
+      const svgCTM = svgEl.getCTM();
+      if (!pathCTM || !svgCTM) return;
+      const relCTM = svgCTM.inverse().multiply(pathCTM);
+
+      // Marker size: diamonds/triangles are 18px in path coords.
+      // We need to ensure the marker tip doesn't breach the source node.
+      const MARKER_PULLBACK = 8; // extra px to pull marker away from node
+
+      let trimStart = 0;
+      let trimEnd = pathLen;
+
+      if (hasStart) {
+        const pt = path.getPointAtLength(0);
+        const px = relCTM.e + pt.x * relCTM.a + pt.y * relCTM.c;
+        const py = relCTM.f + pt.x * relCTM.b + pt.y * relCTM.d;
+        const nearNode = findNearestNode(px, py, nodeShapes, 25);
+        if (nearNode) {
+          trimStart = MARKER_PULLBACK;
+        }
+      }
+
+      if (hasEnd) {
+        const pt = path.getPointAtLength(pathLen);
+        const px = relCTM.e + pt.x * relCTM.a + pt.y * relCTM.c;
+        const py = relCTM.f + pt.x * relCTM.b + pt.y * relCTM.d;
+        const nearNode = findNearestNode(px, py, nodeShapes, 25);
+        if (nearNode) {
+          trimEnd = pathLen - MARKER_PULLBACK;
+        }
+      }
+
+      if (trimStart > 0.5 || pathLen - trimEnd > 0.5) {
+        rebuildTrimmedPath(path, trimStart, trimEnd);
+      }
+    } catch {
+      // Leave path unchanged on error
+    }
+  });
+}
+
 /** Check if a point is inside any node shape's bounding rect */
 function findContainingNode(
   px: number,
@@ -156,6 +244,28 @@ function findContainingNode(
     }
   }
   return null;
+}
+
+/** Find the nearest node within maxDist of a point */
+function findNearestNode(
+  px: number,
+  py: number,
+  nodes: NodeShapeBounds[],
+  maxDist: number
+): NodeShapeBounds | null {
+  let nearest: NodeShapeBounds | null = null;
+  let minDist = maxDist;
+  for (const node of nodes) {
+    const { x, y, width, height } = node;
+    const dx = Math.max(x - px, 0, px - (x + width));
+    const dy = Math.max(y - py, 0, py - (y + height));
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < minDist) {
+      minDist = dist;
+      nearest = node;
+    }
+  }
+  return nearest;
 }
 
 /**
