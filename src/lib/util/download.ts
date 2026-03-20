@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { beautyServiceEndpoints } from '$lib/util/beauty-service';
 import { waitForRender } from '$lib/util/autoSync';
 import { env } from '$lib/util/env';
 import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
@@ -114,7 +115,7 @@ const downloadGifDiagram = async (options: DownloadOptions): Promise<void> => {
     throw new GifExportError('service_not_configured', 'GIF export service is not configured');
   }
 
-  const response = await fetch('/api/gif/render', {
+  const response = await fetch(beautyServiceEndpoints.gifRender(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
