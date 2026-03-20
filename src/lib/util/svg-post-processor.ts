@@ -62,6 +62,7 @@ export function postProcessDiagramSvg(
   addGradientArrows(svg, defs, colors);
   replaceArrowheadMarkers(svg);
   addMarchingAntsAnimation(svg);
+  elevateEdgeLabels(svg);
   injectFontFaces(svg);
 }
 
@@ -291,6 +292,39 @@ function addMarchingAntsAnimation(svg: SVGSVGElement): void {
     animate.setAttribute('dur', '1.5s');
     animate.setAttribute('repeatCount', 'indefinite');
     link.appendChild(animate);
+  });
+}
+
+/**
+ * Elevate edge label groups above connector lines so text is readable.
+ * Makes label background rects transparent (mermaid's edgeLabelBackground handles fill).
+ * Re-appends labels as last children so they paint on top of connector paths.
+ */
+function elevateEdgeLabels(svg: SVGSVGElement): void {
+  // Make edge label background rects transparent — no opaque blocks
+  const labelRects = svg.querySelectorAll<SVGRectElement>('.edgeLabel rect, .labelBkg');
+  labelRects.forEach((rect) => {
+    rect.setAttribute('fill', 'transparent');
+    rect.setAttribute('opacity', '0');
+    rect.style.opacity = '0';
+  });
+
+  // Move edgeLabel groups to end of their parent so they paint on top of paths
+  const edgeLabels = svg.querySelectorAll<SVGGElement>('.edgeLabel');
+  edgeLabels.forEach((label) => {
+    const parent = label.parentElement;
+    if (parent) {
+      parent.appendChild(label);
+    }
+  });
+
+  // Sequence diagram: ensure message text sits above message lines
+  const messageTexts = svg.querySelectorAll<SVGTextElement>('.messageText');
+  messageTexts.forEach((text) => {
+    const parent = text.parentElement;
+    if (parent) {
+      parent.appendChild(text);
+    }
   });
 }
 

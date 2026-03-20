@@ -34,7 +34,7 @@ text.er.entityLabel,
   line-height: 1.4;
 }
 
-/* Typography - secondary/metadata labels (regular, subdued) */
+/* Typography - secondary/metadata labels (regular, full opacity for readability) */
 .edgeLabel,
 .noteText,
 .messageText,
@@ -42,7 +42,11 @@ text.er.entityLabel,
 .labelText {
   font-family: "Inter Variable", system-ui, sans-serif !important;
   font-size: 0.85em;
-  opacity: 0.7;
+}
+
+/* Edge labels — transparent background, text elevated above lines via SVG post-processor */
+.edgeLabel {
+  padding: 2px 6px !important;
 }
 
 /* Typography - technical/monospace text */
@@ -189,7 +193,6 @@ path.er.relationshipLine {
 .er.relationshipLabel {
   font-family: "Inter Variable", system-ui, sans-serif !important;
   font-size: 0.85em;
-  opacity: 0.7;
 }
 
 /* ============================================================
