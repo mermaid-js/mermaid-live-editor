@@ -63,6 +63,7 @@ export function postProcessDiagramSvg(
   replaceArrowheadMarkers(svg);
   addMarchingAntsAnimation(svg);
   elevateEdgeLabels(svg);
+  elevateEdgePaths(svg);
   injectFontFaces(svg);
 }
 
@@ -106,7 +107,7 @@ function injectShadowFilter(
   defs.appendChild(filter);
 }
 
-/** Hollow modern arrowhead — open chevron, no fill */
+/** Hollow modern arrowhead — open chevron, no fill. overflow:visible prevents clipping by node rects */
 function injectHollowArrowMarker(
   defs: SVGDefsElement,
   isDark: boolean,
@@ -120,9 +121,10 @@ function injectHollowArrowMarker(
   marker.setAttribute('viewBox', '0 0 12 12');
   marker.setAttribute('refX', '10');
   marker.setAttribute('refY', '6');
-  marker.setAttribute('markerWidth', '10');
-  marker.setAttribute('markerHeight', '10');
+  marker.setAttribute('markerWidth', '12');
+  marker.setAttribute('markerHeight', '12');
   marker.setAttribute('orient', 'auto-start-reverse');
+  marker.setAttribute('overflow', 'visible');
   marker.innerHTML = `<path d="M 2 2 L 10 6 L 2 10" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
   defs.appendChild(marker);
 }
@@ -324,6 +326,39 @@ function elevateEdgeLabels(svg: SVGSVGElement): void {
     const parent = text.parentElement;
     if (parent) {
       parent.appendChild(text);
+    }
+  });
+}
+
+/**
+ * Ensure edge paths (connectors + arrowheads) paint ON TOP of node shapes.
+ *
+ * Mermaid renders nodes and edges as siblings inside a common parent <g>.
+ * In SVG, later siblings paint over earlier ones (painter's algorithm).
+ * When nodes paint after edges, arrowheads get partially hidden behind
+ * the node rect — especially with large border-radius corners.
+ *
+ * Fix: move edge path groups to the end of their parent container so
+ * they paint last (on top of everything else).
+ */
+function elevateEdgePaths(svg: SVGSVGElement): void {
+  // Flowchart: .edgePaths group contains all connector <path> elements
+  const edgePathGroups = svg.querySelectorAll<SVGGElement>('.edgePaths');
+  edgePathGroups.forEach((group) => {
+    const parent = group.parentElement;
+    if (parent) {
+      parent.appendChild(group);
+    }
+  });
+
+  // Class/State/ER: individual edge groups marked with [id*="edge"] or .relation
+  // These are typically already ordered correctly, but ensure they paint on top
+  const edgeGroups = svg.querySelectorAll<SVGGElement>('g.edgePath, g[id^="edge"]');
+  edgeGroups.forEach((group) => {
+    const parent = group.parentElement;
+    // Only re-order if the parent also contains node groups (avoid moving into wrong container)
+    if (parent && parent.querySelector('.node, .classGroup, .stateGroup')) {
+      parent.appendChild(group);
     }
   });
 }
