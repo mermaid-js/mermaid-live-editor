@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { waitForRender } from '$lib/util/autoSync';
+import { env } from '$lib/util/env';
 import { inputStateStore, stateStore, updateCodeStore } from '$lib/util/state';
 import { get } from 'svelte/store';
 import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
@@ -14,6 +15,16 @@ export type DownloadFormat = 'svg' | 'png' | 'jpeg' | 'webp' | 'gif';
 export interface DownloadOptions {
   imageSize: number;
   imageSizeMode: ImageSizeMode;
+}
+
+export class GifExportError extends Error {
+  code: string;
+
+  constructor(code: string, message: string) {
+    super(message);
+    this.name = 'GifExportError';
+    this.code = code;
+  }
 }
 
 const mimeTypes: Record<Exclude<DownloadFormat, 'svg'>, string> = {
@@ -42,6 +53,12 @@ const simulateDownload = (download: string, href: string): void => {
   a.remove();
 };
 
+const simulateBlobDownload = (download: string, blob: Blob): void => {
+  const url = URL.createObjectURL(blob);
+  simulateDownload(download, url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
 const getSvgElement = (): HTMLElement => {
   const svgElement = document.querySelector('#container svg')?.cloneNode(true) as
     | HTMLElement
@@ -51,6 +68,82 @@ const getSvgElement = (): HTMLElement => {
   }
   svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
   return svgElement;
+};
+
+const getRenderPayload = (options: DownloadOptions) => {
+  const svg = document.querySelector<SVGSVGElement>('#container svg');
+  const box = svg?.getBoundingClientRect();
+  const viewBox = svg?.viewBox?.baseVal;
+  const width =
+    viewBox && viewBox.width > 0 ? Math.round(viewBox.width) : Math.round(box?.width ?? 0);
+  const height =
+    viewBox && viewBox.height > 0 ? Math.round(viewBox.height) : Math.round(box?.height ?? 0);
+
+  let resolvedWidth = 0;
+  let resolvedHeight = 0;
+
+  if (options.imageSizeMode === 'width') {
+    resolvedWidth = options.imageSize;
+  } else if (options.imageSizeMode === 'height') {
+    resolvedHeight = options.imageSize;
+  } else {
+    resolvedWidth = width;
+    resolvedHeight = height;
+  }
+
+  let theme = '';
+  try {
+    const parsed = JSON.parse(get(stateStore).mermaid) as { theme?: string };
+    theme = parsed.theme ?? '';
+  } catch {
+    // Ignore invalid config here; the editor already surfaces config errors.
+  }
+
+  return {
+    background: window.getComputedStyle(document.body).getPropertyValue('--background').trim(),
+    code: get(inputStateStore).code,
+    height: resolvedHeight,
+    scale: options.imageSizeMode === 'auto' ? 2 : 0,
+    theme,
+    width: resolvedWidth
+  };
+};
+
+const downloadGifDiagram = async (options: DownloadOptions): Promise<void> => {
+  if (!env.beautyServiceUrl) {
+    throw new GifExportError('service_not_configured', 'GIF export service is not configured');
+  }
+
+  const response = await fetch('/api/gif/render', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(getRenderPayload(options))
+  });
+
+  if (!response.ok) {
+    let message = 'GIF export failed';
+    let code = 'gif_export_failed';
+    try {
+      const payload = (await response.json()) as { error?: string; message?: string };
+      code = payload.error ?? code;
+      message = payload.message ?? message;
+    } catch {
+      const text = await response.text();
+      if (text) {
+        message = text;
+      }
+    }
+    throw new GifExportError(code, message);
+  }
+
+  const blob = await response.blob();
+  if (!blob.size) {
+    throw new GifExportError('empty_gif', 'GIF export returned an empty file');
+  }
+
+  simulateBlobDownload(getFileName('gif'), blob);
 };
 
 /**
@@ -193,6 +286,10 @@ export const isDownloadFormatSupported = (format: DownloadFormat): boolean => {
     return true;
   }
 
+  if (format === 'gif') {
+    return !!env.beautyServiceUrl;
+  }
+
   const canvas = document.createElement('canvas');
   return canvas.toDataURL(mimeTypes[format]).startsWith(`data:${mimeTypes[format]}`);
 };
@@ -224,6 +321,11 @@ export const downloadDiagram = async (
   format: DownloadFormat,
   options: DownloadOptions
 ): Promise<void> => {
+  if (format === 'gif') {
+    await downloadGifDiagram(options);
+    return;
+  }
+
   if (format === 'svg') {
     simulateDownload(getFileName(format), `data:image/svg+xml;base64,${getBase64SVG()}`);
     return;

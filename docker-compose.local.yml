@@ -2,8 +2,16 @@ services:
   mermaid:
     build:
       target: mermaid-dev
+    entrypoint:
+      - pnpm
+      - exec
+      - vite
+      - dev
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
     volumes:
       - ./src:/app/src
     ports:
-      - 3000:3000
       - 24678:24678

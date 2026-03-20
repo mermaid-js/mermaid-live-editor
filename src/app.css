@@ -1,6 +1,4 @@
 @import '@fontsource-variable/recursive/crsv.css';
-@import '@fontsource-variable/inter';
-@import '@fontsource-variable/jetbrains-mono/wght.css';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -104,7 +102,7 @@
     @apply border-border;
   }
   body {
-    @apply h-screen w-screen overflow-hidden bg-background text-foreground;
+    @apply bg-background text-foreground h-screen w-screen overflow-hidden;
   }
   .dark body {
     /* Solid color fallback for browsers without gradient support */
