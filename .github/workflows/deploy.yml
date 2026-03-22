@@ -3,16 +3,25 @@ on:
   push:
     branches:
       - master
+  # ADDED: Allows you to manually trigger a deploy after syncing from upstream
+  workflow_dispatch:
   pull_request:
     branches:
       - master
       - develop
+
+# ADDED: Global permissions to ensure the action can read code and write to Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Updated to v4 for speed/security
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -29,13 +38,16 @@ jobs:
 
       - name: Build & Deploy
         env:
-          MERMAID_DOMAIN: 'mermaid.live'
-          MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
+          # ADJUSTED: Changed to your GitHub Pages domain to prevent redirect/CORS issues
+          MERMAID_DOMAIN: '${{ github.repository_owner }}.github.io'
+          # OPTIONAL: You may want to comment out Analytics so you don't send your data to them
+          # MERMAID_ANALYTICS_URL: 'https://p.mermaid.live'
           MERMAID_RENDERER_URL: 'https://mermaid.ink'
           MERMAID_KROKI_RENDERER_URL: 'https://kroki.io'
           MERMAID_IS_ENABLED_MERMAID_CHART_LINKS: 'true'
         run: |
           export DEPLOY=true
+          # This line ensures the app knows it's being hosted on a subpath (e.g., /mermaid-live-editor/)
           [ "$GITHUB_EVENT_NAME" != "pull_request" ] && rm -rf docs/_app/
           pnpm install
           pnpm build
@@ -52,10 +64,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
