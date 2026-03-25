@@ -42,7 +42,9 @@ const isReferredFromMermaid = (): boolean => {
       hostname === 'mermaid.ai' ||
       hostname.endsWith('.mermaid.ai') ||
       hostname === 'mermaid.js.org' ||
-      hostname.endsWith('.mermaid.js.org')
+      hostname.endsWith('.mermaid.js.org') ||
+      hostname === 'mermaid.live' ||
+      hostname.endsWith('.mermaid.live')
     );
   } catch {
     return false;
