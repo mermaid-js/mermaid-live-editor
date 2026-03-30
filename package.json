@@ -48,6 +48,7 @@
     "chai": "^4.5.0",
     "clsx": "^2.1.1",
     "cssnano": "^6.1.2",
+    "dotenv": "^17.3.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-es": "^4.1.0",
