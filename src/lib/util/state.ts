@@ -160,28 +160,34 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   };
 });
 
+/**
+ * Asks the user for confirmation if the config contains settings that might
+ * pose security risks, such as a relaxed `securityLevel`.
+ *
+ * @param config - The Mermaid configuration to sanitize.
+ * @returns The sanitized Mermaid configuration as a JSON string.
+ */
+export const sanitizeConfig = (config: string | MermaidConfig) => {
+  const mermaidConfig: MermaidConfig =
+    typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
+  if (
+    mermaidConfig.securityLevel &&
+    mermaidConfig.securityLevel !== 'strict' &&
+    confirm(
+      `Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+    )
+  ) {
+    delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
+  }
+  return formatJSON(mermaidConfig);
+};
+
 export const loadState = (data: string): void => {
   let state: State;
   console.log(`Loading '${data}'`);
   try {
     state = deserializeState(data);
-    if (!state.mermaid) {
-      state.mermaid = defaultState.mermaid;
-    }
-    const mermaidConfig: MermaidConfig =
-      typeof state.mermaid === 'string'
-        ? (JSON.parse(state.mermaid) as MermaidConfig)
-        : state.mermaid;
-    if (
-      mermaidConfig.securityLevel &&
-      mermaidConfig.securityLevel !== 'strict' &&
-      confirm(
-        `Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
-      )
-    ) {
-      delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
-    }
-    state.mermaid = formatJSON(mermaidConfig);
+    state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid);
   } catch (error) {
     state = get(inputStateStore);
     if (data) {
