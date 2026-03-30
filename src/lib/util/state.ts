@@ -180,6 +180,11 @@ function getUnsafePaths(object: object, unsafeKeys: string[], path: string[] = [
   Object.keys(object).forEach((key) => {
     const value = object[key] as unknown;
     const currentPath = [...path, key];
+    // Prototype pollution check.
+    if (key.startsWith('__')) {
+      unsafePaths.push(currentPath);
+      return;
+    }
     if (typeof value === 'object' && value !== null) {
       unsafePaths.push(...getUnsafePaths(value as object, unsafeKeys, currentPath));
     }
