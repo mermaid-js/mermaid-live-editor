@@ -83,7 +83,8 @@ test.describe('Site Loads', () => {
         config: `data:application/json,${encodeURIComponent(
           JSON.stringify({
             someOtherSetting: 'Test value',
-            securityLevel: 'loose'
+            securityLevel: 'loose',
+            secure: []
           })
         )}`
       }).toString()}`
@@ -99,6 +100,7 @@ test.describe('Site Loads', () => {
     });
     // should scrub unsafe securityLevel but keep other settings
     expect(parsedConfig.securityLevel).toBeUndefined();
+    expect(parsedConfig.secure).toBeUndefined();
   });
 
   test('should show troubleshooting steps if loading fails', async ({ editPage, page }) => {

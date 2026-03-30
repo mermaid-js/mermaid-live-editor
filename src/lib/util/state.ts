@@ -1,5 +1,5 @@
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
-import { debounce } from 'lodash-es';
+import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
@@ -8,7 +8,7 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { parse } from './mermaid';
+import { defaultMermaidConfig, parse } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
@@ -161,6 +161,33 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
 });
 
 /**
+ * Gets a list of paths that contain unsafe keys which might pose security risks.
+ *
+ * @param object - The object to check for unsafe keys.
+ * @param unsafeKeys - List of unsafe keys.
+ * @param path - The current path being checked (used for recursion).
+ * @returns List of unsafe paths.
+ */
+function getUnsafePaths(object: object, unsafeKeys: string[], path: string[] = []) {
+  const unsafePaths = new Array<string[]>();
+  for (const key of unsafeKeys) {
+    // Copied from mermaid's sanitize function in case there's non-enumerable keys
+    if (Object.hasOwn(object, key)) {
+      unsafePaths.push([...path, key]);
+      continue;
+    }
+  }
+  Object.keys(object).forEach((key) => {
+    const value = object[key] as unknown;
+    const currentPath = [...path, key];
+    if (typeof value === 'object' && value !== null) {
+      unsafePaths.push(...getUnsafePaths(value as object, unsafeKeys, currentPath));
+    }
+  });
+  return unsafePaths;
+}
+
+/**
  * Asks the user for confirmation if the config contains settings that might
  * pose security risks, such as a relaxed `securityLevel`.
  *
@@ -170,14 +197,33 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
 export const sanitizeConfig = (config: string | MermaidConfig) => {
   const mermaidConfig: MermaidConfig =
     typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
+
+  const secureKeys = defaultMermaidConfig.secure ?? [];
+  const unsafePaths = getUnsafePaths(mermaidConfig, secureKeys).filter((path) => {
+    return lodashGet(mermaidConfig, path) !== lodashGet(defaultMermaidConfig, path);
+  });
+
   if (
-    mermaidConfig.securityLevel &&
-    mermaidConfig.securityLevel !== 'strict' &&
+    unsafePaths.length > 0 &&
     confirm(
-      `Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+      `Removing ${unsafePaths
+        .map((unsafePath) => {
+          return `${JSON.stringify(unsafePath.join('.'))}: ${JSON.stringify(lodashGet(mermaidConfig, unsafePath))}`;
+        })
+        .join(
+          ',\n'
+        )} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
     )
   ) {
-    delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
+    for (const unsafePath of unsafePaths) {
+      const pathToObject = [...unsafePath];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know this exists since it was found in `getUnsafePaths`
+      const lastKey = pathToObject.pop()!;
+      const lastObject =
+        pathToObject.length === 0 ? mermaidConfig : lodashGet(mermaidConfig, pathToObject);
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- Copied from mermaid code
+      delete lastObject[lastKey];
+    }
   }
   return formatJSON(mermaidConfig);
 };
