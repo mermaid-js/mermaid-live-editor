@@ -84,7 +84,10 @@ test.describe('Site Loads', () => {
           JSON.stringify({
             someOtherSetting: 'Test value',
             securityLevel: 'loose',
-            secure: []
+            secure: [],
+            themeVariables: {
+              nodeBorder: '</style></svg><script>alert("XSS")</script>'
+            }
           })
         )}`
       }).toString()}`
@@ -96,7 +99,8 @@ test.describe('Site Loads', () => {
     const parsedStore = JSON.parse(codeStore) as State;
     const parsedConfig = JSON.parse(parsedStore.mermaid) as Record<string, unknown>;
     expect(parsedConfig).toEqual({
-      someOtherSetting: 'Test value'
+      someOtherSetting: 'Test value',
+      themeVariables: {}
     });
     // should scrub unsafe securityLevel but keep other settings
     expect(parsedConfig.securityLevel).toBeUndefined();

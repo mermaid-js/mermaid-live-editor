@@ -187,6 +187,12 @@ function getUnsafePaths(object: object, unsafeKeys: string[], path: string[] = [
     }
     if (typeof value === 'object' && value !== null) {
       unsafePaths.push(...getUnsafePaths(value as object, unsafeKeys, currentPath));
+    } else if (
+      typeof value === 'string' &&
+      // XSS prevention checks -- See mermaid `sanitize` function for reference.
+      (value.includes('<') || value.includes('>') || value.includes('url(data:'))
+    ) {
+      unsafePaths.push(currentPath);
     }
   });
   return unsafePaths;
