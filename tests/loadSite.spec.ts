@@ -1,3 +1,5 @@
+import type { State } from '$/types';
+import assert from 'node:assert';
 import { expect, test } from './test';
 
 test.describe('Site Loads', () => {
@@ -65,6 +67,38 @@ test.describe('Site Loads', () => {
       const codeStore = await page.evaluate(() => localStorage.getItem('codeStore'));
       expect(codeStore).toBeTruthy();
     });
+  });
+
+  test('should prompt user to scrub unsafe config', async ({ editPage, page }) => {
+    let dialogAccepted = false;
+    page.on('dialog', async (dialog) => {
+      expect(dialog.type()).toBe('confirm');
+      expect(dialog.message()).toContain('from the config for safety');
+      await dialog.accept();
+      dialogAccepted = true;
+    });
+    await editPage.start(
+      `/edit?${new URLSearchParams({
+        code: `data:application/vnd.mermaid,${encodeURIComponent('flowchart TD\nHello-->World')}`,
+        config: `data:application/json,${encodeURIComponent(
+          JSON.stringify({
+            someOtherSetting: 'Test value',
+            securityLevel: 'loose'
+          })
+        )}`
+      }).toString()}`
+    );
+    await editPage.checkTextInView('Hello');
+    await expect.poll(() => dialogAccepted).toBeTruthy();
+    const codeStore = await page.evaluate(() => localStorage.getItem('codeStore'));
+    assert(codeStore);
+    const parsedStore = JSON.parse(codeStore) as State;
+    const parsedConfig = JSON.parse(parsedStore.mermaid) as Record<string, unknown>;
+    expect(parsedConfig).toEqual({
+      someOtherSetting: 'Test value'
+    });
+    // should scrub unsafe securityLevel but keep other settings
+    expect(parsedConfig.securityLevel).toBeUndefined();
   });
 
   test('should show troubleshooting steps if loading fails', async ({ editPage, page }) => {
