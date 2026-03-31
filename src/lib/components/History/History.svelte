@@ -11,6 +11,7 @@
   import BookmarkIcon from '~icons/material-symbols/bookmark-outline-rounded';
   import TrashAltIcon from '~icons/material-symbols/delete-outline-rounded';
   import DownloadIcon from '~icons/material-symbols/download-rounded';
+  import EditIcon from '~icons/material-symbols/edit-outline-rounded';
   import SaveIcon from '~icons/material-symbols/save-outline-rounded';
   import UndoIcon from '~icons/material-symbols/settings-backup-restore-rounded';
   import UploadIcon from '~icons/material-symbols/upload-rounded';
@@ -25,6 +26,7 @@
     historyModeStore,
     historyStore,
     loaderHistoryStore,
+    renameHistoryEntry,
     restoreHistory
   } from './history';
 
@@ -48,6 +50,8 @@
       icon: HistoryIcon
     }
   ]);
+  let editingId: string | null = $state(null);
+  let editValue: string = $state('');
 
   const downloadHistory = () => {
     const data = get(historyStore);
@@ -173,7 +177,27 @@
                   title="Open revision in new tab"
                   class="text-blue-500 hover:underline">{name}</a>
               {:else}
-                <span class="whitespace-nowrap">{name}</span>
+                {#if editingId === id}
+                  <input
+                    class="border rounded px-1 text-sm w-32"
+                    bind:value={editValue}
+                    onkeydown={(e) => {
+                      if (e.key === 'Enter') {
+                        renameHistoryEntry(id, editValue);
+                        editingId = null;
+                      }
+                      if (e.key === 'Escape') {
+                        editingId = null;
+                      }
+                    }}
+                    onblur={() => {
+                      renameHistoryEntry(id, editValue);
+                      editingId = null;
+                    }}
+                  />
+                {:else}
+                  <span class="whitespace-nowrap">{name}</span>
+                {/if}
               {/if}
               <span class="text-xs whitespace-nowrap text-primary-foreground/30">
                 {new Date(time).toLocaleString()}
@@ -188,6 +212,16 @@
                 <UndoIcon />
               </Button>
               {#if type !== 'loader'}
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onclick={() => {
+                    editingId = id;
+                    editValue = name ?? '';
+                  }}
+                  title="Rename">
+                  <EditIcon />
+                </Button>
                 <Button
                   size="icon"
                   variant="ghost"
