@@ -80,7 +80,7 @@ const processState = async (state: State) => {
     processed.error = error as Error;
     errorDebug();
     console.error(error);
-    if ('hash' in error) {
+    if (error && typeof error === 'object' && 'hash' in error) {
       try {
         let errorString = processed.error.toString();
         const errorLineText = extractErrorLineText(errorString);
@@ -137,14 +137,23 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
       ? `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`
       : '',
     mermaidChart: ({
-      medium
+      medium,
+      campaign
     }: {
-      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'vibe_diagramming';
+      medium:
+        | 'ai_repair'
+        | 'main_menu'
+        | 'save_diagram'
+        | 'share'
+        | 'vibe_diagramming'
+        | 'visual_edit';
+      campaign?: string;
     }) => {
       const utmSource = getUTMSource();
       const params = new URLSearchParams({
         utm_source: utmSource,
-        utm_medium: medium
+        utm_medium: medium,
+        ...(campaign ? { utm_campaign: campaign } : {})
       }).toString();
       return {
         save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${params}`,
