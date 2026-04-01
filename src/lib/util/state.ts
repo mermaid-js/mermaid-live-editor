@@ -153,7 +153,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
       const params = new URLSearchParams({
         utm_source: utmSource,
         utm_medium: medium,
-        ...(campaign ? { utm_campaign: campaign } : undefined)
+        ...(campaign ? { utm_campaign: campaign } : {})
       }).toString();
       return {
         save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${params}`,
