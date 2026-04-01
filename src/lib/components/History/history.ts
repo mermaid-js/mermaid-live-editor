@@ -90,6 +90,9 @@ export const clearHistoryData = (idToClear?: string): void => {
 };
 
 export const renameHistoryEntry = (idToRename: string, newName: string): void => {
+  if (!newName.trim()) {
+    return;
+  }
   (get(historyModeStore) === 'auto' ? autoHistoryStore : manualHistoryStore).update((entries) => {
     return entries.map((entry) => (entry.id === idToRename ? { ...entry, name: newName } : entry));
   });

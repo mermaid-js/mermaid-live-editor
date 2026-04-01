@@ -174,29 +174,42 @@
                 <a
                   href={url}
                   target="_blank"
+                  rel="external"
                   title="Open revision in new tab"
                   class="text-blue-500 hover:underline">{name}</a>
-              {:else}
-                {#if editingId === id}
-                  <input
-                    class="border rounded px-1 text-sm w-32"
-                    bind:value={editValue}
-                    onkeydown={(e) => {
-                      if (e.key === 'Enter') {
-                        renameHistoryEntry(id, editValue);
-                        editingId = null;
-                      }
-                      if (e.key === 'Escape') {
-                        editingId = null;
-                      }
-                    }}
-                    onblur={() => {
-                      renameHistoryEntry(id, editValue);
+              {:else if editingId === id}
+                <input
+                  class="w-32 rounded border px-1 text-sm"
+                  bind:value={editValue}
+                  required
+                  onkeydown={(e) => {
+                    if (e.key === 'Enter' && editValue.trim()) {
+                      renameHistoryEntry(id, editValue.trim());
                       editingId = null;
+                    }
+                    if (e.key === 'Escape') {
+                      editingId = null;
+                    }
+                  }}
+                  onblur={() => {
+                    if (editValue.trim()) {
+                      renameHistoryEntry(id, editValue.trim());
+                    }
+                    editingId = null;
+                  }} />
+              {:else}
+                <span class="inline-block max-w-[150px] truncate align-middle" title={name}
+                  >{name}</span>
+                {#if type !== 'loader'}
+                  <button
+                    class="ml-1 inline-flex items-center align-middle opacity-50 hover:opacity-100"
+                    onclick={() => {
+                      editingId = id;
+                      editValue = name ?? '';
                     }}
-                  />
-                {:else}
-                  <span class="whitespace-nowrap">{name}</span>
+                    title="Rename">
+                    <EditIcon class="h-3.5 w-3.5" />
+                  </button>
                 {/if}
               {/if}
               <span class="text-xs whitespace-nowrap text-primary-foreground/30">
@@ -212,16 +225,6 @@
                 <UndoIcon />
               </Button>
               {#if type !== 'loader'}
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onclick={() => {
-                    editingId = id;
-                    editValue = name ?? '';
-                  }}
-                  title="Rename">
-                  <EditIcon />
-                </Button>
                 <Button
                   size="icon"
                   variant="ghost"

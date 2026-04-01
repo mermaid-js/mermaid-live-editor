@@ -7,7 +7,8 @@ import {
   clearHistoryData,
   historyModeStore,
   historyStore,
-  injectHistoryIDs
+  injectHistoryIDs,
+  renameHistoryEntry
 } from './history';
 
 describe('history', () => {
@@ -90,6 +91,75 @@ describe('history', () => {
     // Test calling when history is empty
     clearHistoryData();
     expect(get(historyStore).length).toBe(0);
+  });
+});
+
+describe('rename history entry', () => {
+  it('should rename a manual history entry', () => {
+    historyModeStore.set('manual');
+    clearHistoryData();
+
+    addHistoryEntry({
+      state: defaultState,
+      time: 99_999,
+      type: 'manual'
+    });
+
+    const entries = get(historyStore);
+    expect(entries.length).toBe(1);
+    const originalName = entries[0].name;
+    expect(originalName).toBeDefined();
+
+    renameHistoryEntry(entries[0].id, 'my-custom-name');
+    expect(get(historyStore)[0].name).toBe('my-custom-name');
+
+    clearHistoryData();
+  });
+
+  it('should rename an auto history entry', () => {
+    historyModeStore.set('auto');
+    clearHistoryData();
+
+    addHistoryEntry({
+      state: defaultState,
+      time: 88_888,
+      type: 'auto'
+    });
+
+    const entries = get(historyStore);
+    expect(entries.length).toBe(1);
+
+    renameHistoryEntry(entries[0].id, 'auto-renamed');
+    expect(get(historyStore)[0].name).toBe('auto-renamed');
+
+    clearHistoryData();
+    historyModeStore.set('manual');
+    clearHistoryData();
+  });
+
+  it('should only rename the targeted entry', () => {
+    historyModeStore.set('manual');
+    clearHistoryData();
+
+    addHistoryEntry({ state: defaultState, time: 1, type: 'manual' });
+    addHistoryEntry({
+      state: { ...defaultState, code: 'graph LR\\n    A --> B' },
+      time: 2,
+      type: 'manual'
+    });
+
+    const entries = get(historyStore);
+    expect(entries.length).toBe(2);
+
+    const secondId = entries[1].id;
+    const firstName = entries[0].name;
+
+    renameHistoryEntry(secondId, 'only-this-one');
+    const updated = get(historyStore);
+    expect(updated[0].name).toBe(firstName);
+    expect(updated[1].name).toBe('only-this-one');
+
+    clearHistoryData();
   });
 });
 
