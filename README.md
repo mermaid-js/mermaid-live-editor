@@ -28,6 +28,8 @@ If you want to speed up the progress for mermaid-live-editor, join the Discord c
 docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid-live-editor
 ```
 
+The published docker image is built using our default environment variables. You cannot override them when running the image. If you need to customize them, you will need to build the image yourself.
+
 ### To configure renderer URL
 
 When building set the MERMAID_RENDERER_URL build argument to the rendering

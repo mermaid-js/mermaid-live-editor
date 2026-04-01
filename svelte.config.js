@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
+import 'dotenv/config';
 import { sveltePreprocess } from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -9,6 +10,9 @@ const config = {
   kit: {
     alias: {
       '$/*': './src/lib/*'
+    },
+    paths: {
+      base: process.env.MERMAID_BASE_PATH ?? ''
     },
     adapter: adapter({
       pages: 'docs',

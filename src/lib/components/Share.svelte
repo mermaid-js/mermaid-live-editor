@@ -4,6 +4,7 @@
   import { Separator } from '$/components/ui/separator';
   import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
+  import { asset } from '$app/paths';
   import ShareIcon from '~icons/material-symbols/share';
   import CopyInput from './CopyInput.svelte';
   import MermaidChartIcon from './MermaidChartIcon.svelte';
@@ -22,7 +23,7 @@
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <h2 class="flex items-center gap-2">
-          <img class="size-5" src="/favicon.svg" alt="Mermaid Live Editor" />
+          <img class="size-5" src={asset('/favicon.svg')} alt="Mermaid Live Editor" />
           Mermaid Live Editor
         </h2>
         <CopyInput value={window.location.href} />
