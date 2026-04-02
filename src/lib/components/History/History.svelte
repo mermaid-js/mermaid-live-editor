@@ -169,49 +169,50 @@
       {#each $historyStore as { id, state, time, name, url, type } (id)}
         <li class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
-            <div class="flex flex-col">
-              {#if url}
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="external"
-                  title="Open revision in new tab"
-                  class="text-blue-500 hover:underline">{name}</a>
-              {:else if editingId === id}
-                <input
-                  class="w-32 rounded border px-1 text-sm"
-                  bind:value={editValue}
-                  required
-                  onkeydown={(e) => {
-                    if (e.key === 'Enter' && editValue.trim()) {
-                      renameHistoryEntry(id, editValue.trim());
-                      editingId = null;
-                    }
-                    if (e.key === 'Escape') {
-                      editingId = null;
-                    }
-                  }}
-                  onblur={() => {
-                    if (editValue.trim()) {
-                      renameHistoryEntry(id, editValue.trim());
-                    }
-                    editingId = null;
-                  }} />
-              {:else}
-                <span class="inline-block max-w-[150px] truncate align-middle" title={name}
-                  >{name}</span>
-                {#if type !== 'loader'}
-                  <button
-                    class="ml-1 inline-flex items-center align-middle opacity-50 hover:opacity-100"
-                    onclick={() => {
-                      editingId = id;
-                      editValue = name ?? '';
+            <div class="flex min-w-0 flex-1 flex-col">
+              <div class="flex min-w-0 items-center gap-1">
+                {#if url}
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="external"
+                    title="Open revision in new tab"
+                    class="min-w-0 truncate text-blue-500 hover:underline">{name}</a>
+                {:else if editingId === id}
+                  <input
+                    class="min-w-0 flex-1 rounded border px-1 text-sm"
+                    bind:value={editValue}
+                    required
+                    onkeydown={(e) => {
+                      if (e.key === 'Enter' && editValue.trim()) {
+                        renameHistoryEntry(id, editValue.trim());
+                        editingId = null;
+                      }
+                      if (e.key === 'Escape') {
+                        editingId = null;
+                      }
                     }}
-                    title="Rename">
-                    <EditIcon class="h-3.5 w-3.5" />
-                  </button>
+                    onblur={() => {
+                      if (editValue.trim()) {
+                        renameHistoryEntry(id, editValue.trim());
+                      }
+                      editingId = null;
+                    }} />
+                {:else}
+                  <span class="min-w-0 truncate" title={name}>{name}</span>
+                  {#if type !== 'loader'}
+                    <button
+                      class="shrink-0 opacity-50 hover:opacity-100"
+                      onclick={() => {
+                        editingId = id;
+                        editValue = name ?? '';
+                      }}
+                      title="Rename">
+                      <EditIcon class="h-3.5 w-3.5" />
+                    </button>
+                  {/if}
                 {/if}
-              {/if}
+              </div>
               <span class="text-xs whitespace-nowrap text-primary-foreground/30">
                 {new Date(time).toLocaleString()}
               </span>
