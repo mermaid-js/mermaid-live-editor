@@ -142,11 +142,13 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     }: {
       medium:
         | 'ai_repair'
+        | 'ai_edit'
         | 'main_menu'
         | 'save_diagram'
         | 'share'
         | 'vibe_diagramming'
-        | 'visual_edit';
+        | 'visual_edit'
+        | 'voice_edit';
       campaign?: string;
     }) => {
       const utmSource = getUTMSource();
