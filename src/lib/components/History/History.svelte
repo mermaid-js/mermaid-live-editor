@@ -164,13 +164,13 @@
       {/if}
     </div>
   {/snippet}
-  <ul class="flex h-full min-w-fit flex-col gap-2 overflow-auto p-2" id="historyList">
+  <ul class="flex h-full flex-col gap-2 overflow-auto p-2" id="historyList">
     {#if $historyStore.length > 0}
       {#each $historyStore as { id, state, time, name, url, type } (id)}
         <li class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex min-w-0 flex-1 flex-col">
-              <div class="flex min-w-0 items-center gap-1">
+              <div class="flex min-w-0 items-center gap-1 overflow-hidden">
                 {#if url}
                   <a
                     href={url}
