@@ -37,22 +37,22 @@ importers:
         version: 6.1.4(@codemirror/language@6.11.0)(@codemirror/state@6.5.2)(@codemirror/view@6.36.7)(@lezer/highlight@1.2.1)
       '@mermaid-js/examples':
         specifier: ^1.0.0
-        version: 1.0.0(mermaid@11.13.0)
+        version: 1.0.0(mermaid@11.14.0)
       '@mermaid-js/layout-elk':
         specifier: ^0.1.9
-        version: 0.1.9(mermaid@11.13.0)
+        version: 0.1.9(mermaid@11.14.0)
       '@mermaid-js/layout-tidy-tree':
         specifier: ^0.2.1
-        version: 0.2.1(mermaid@11.13.0)
+        version: 0.2.1(mermaid@11.14.0)
       '@mermaid-js/mermaid-zenuml':
         specifier: ^0.2.2
-        version: 0.2.2(mermaid@11.13.0)
+        version: 0.2.2(mermaid@11.14.0)
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1
       dayjs:
         specifier: ^1.11.13
-        version: 1.11.18
+        version: 1.11.20
       hammerjs:
         specifier: ^2.0.8
         version: 2.0.8
@@ -61,10 +61,10 @@ importers:
         version: 3.7.7
       lodash-es:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       mermaid:
-        specifier: ^11.13.0
-        version: 11.13.0
+        specifier: ^11.14.0
+        version: 11.14.0
       mode-watcher:
         specifier: ^0.5.1
         version: 0.5.1(svelte@5.38.6)
@@ -805,8 +805,8 @@ packages:
     peerDependencies:
       mermaid: ^10 || ^11
 
-  '@mermaid-js/parser@1.0.1':
-    resolution: {integrity: sha512-opmV19kN1JsK0T6HhhokHpcVkqKpF+x2pPDKKM2ThHtZAB5F4PROopk0amuVYK5qMrIA4erzpNm8gmPNJgMDxQ==}
+  '@mermaid-js/parser@1.1.0':
+    resolution: {integrity: sha512-gxK9ZX2+Fex5zu8LhRQoMeMPEHbc73UKZ0FQ54YrQtUxE1VVhMwzeNtKRPAu5aXks4FasbMe4xB4bWrmq6Jlxw==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1915,9 +1915,6 @@ packages:
     resolution: {integrity: sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg==}
     engines: {node: '>=18'}
 
-  dayjs@1.11.18:
-    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
-
   dayjs@1.11.20:
     resolution: {integrity: sha512-YbwwqR/uYpeoP4pu043q+LTDLFBLApUP6VxRihdfNTqu4ubqMlGDLd6ErXhEgsyvY0K6nCs7nggYumAN+9uEuQ==}
 
@@ -2717,9 +2714,6 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
-  lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-
   lodash-es@4.17.23:
     resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
 
@@ -2793,8 +2787,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  mermaid@11.13.0:
-    resolution: {integrity: sha512-fEnci+Immw6lKMFI8sqzjlATTyjLkRa6axrEgLV2yHTfv8r+h1wjFbV6xeRtd4rUV1cS4EpR9rwp3Rci7TRWDw==}
+  mermaid@11.14.0:
+    resolution: {integrity: sha512-GSGloRsBs+JINmmhl0JDwjpuezCsHB4WGI4NASHxL3fHo3o/BRXTxhDLKnln8/Q0lRFRyDdEjmk1/d5Sn1Xz8g==}
 
   micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -4682,30 +4676,30 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.2': {}
 
-  '@mermaid-js/examples@1.0.0(mermaid@11.13.0)':
+  '@mermaid-js/examples@1.0.0(mermaid@11.14.0)':
     dependencies:
-      mermaid: 11.13.0
+      mermaid: 11.14.0
 
-  '@mermaid-js/layout-elk@0.1.9(mermaid@11.13.0)':
+  '@mermaid-js/layout-elk@0.1.9(mermaid@11.14.0)':
     dependencies:
       d3: 7.9.0
       elkjs: 0.9.3
-      mermaid: 11.13.0
+      mermaid: 11.14.0
 
-  '@mermaid-js/layout-tidy-tree@0.2.1(mermaid@11.13.0)':
+  '@mermaid-js/layout-tidy-tree@0.2.1(mermaid@11.14.0)':
     dependencies:
       d3: 7.9.0
-      mermaid: 11.13.0
+      mermaid: 11.14.0
 
-  '@mermaid-js/mermaid-zenuml@0.2.2(mermaid@11.13.0)':
+  '@mermaid-js/mermaid-zenuml@0.2.2(mermaid@11.14.0)':
     dependencies:
       '@zenuml/core': 3.36.0
-      mermaid: 11.13.0
+      mermaid: 11.14.0
     transitivePeerDependencies:
       - '@types/react'
       - ts-node
 
-  '@mermaid-js/parser@1.0.1':
+  '@mermaid-js/parser@1.1.0':
     dependencies:
       langium: 4.2.1
 
@@ -5962,8 +5956,6 @@ snapshots:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
 
-  dayjs@1.11.18: {}
-
   dayjs@1.11.20: {}
 
   debug@4.4.0:
@@ -6748,8 +6740,6 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
-  lodash-es@4.17.21: {}
-
   lodash-es@4.17.23: {}
 
   lodash.memoize@4.1.2: {}
@@ -6812,11 +6802,11 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  mermaid@11.13.0:
+  mermaid@11.14.0:
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 3.0.2
-      '@mermaid-js/parser': 1.0.1
+      '@mermaid-js/parser': 1.1.0
       '@types/d3': 7.4.3
       '@upsetjs/venn.js': 2.0.0
       cytoscape: 3.33.1
@@ -7886,7 +7876,7 @@ snapshots:
       chalk: 5.4.1
       css.escape: 1.5.1
       dom-accessibility-api: 0.6.3
-      lodash-es: 4.17.21
+      lodash-es: 4.17.23
       redent: 4.0.0
       vitest: 3.2.4(@types/node@22.15.10)(@vitest/ui@3.2.4)(jiti@2.6.1)(jsdom@25.0.1)(lightningcss@1.30.2)(yaml@2.7.0)
 
