@@ -292,7 +292,7 @@ export const updateCode = (
 };
 
 export const updateConfig = (config: string): void => {
-  updateCodeStore({ mermaid: config });
+  updateCodeStore({ mermaid: config, updateDiagram: true });
 };
 
 export const toggleDarkTheme = (dark: boolean): void => {
