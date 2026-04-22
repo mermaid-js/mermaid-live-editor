@@ -92,7 +92,7 @@
   </div>
 
   <p class="mt-2 text-center text-xs text-muted-foreground">
-    AI and visual editor are part of Mermaid.ai — free forever with Plus features free for 7 days.
+    AI and visual editor are part of Mermaid.ai — free forever, with Plus features free for 7 days.
   </p>
 
   <PrivacyPolicyLink />

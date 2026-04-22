@@ -42,7 +42,7 @@
     <MermaidChartIcon class="size-10" />
     <Dialog.Title class="pt-2 text-2xl font-bold">Try the full Mermaid experience</Dialog.Title>
     <Dialog.Description class="text-xs font-light text-muted-foreground">
-      Free forever with Plus features free for 7 days.
+      Free forever, with Plus features free for 7 days.
     </Dialog.Description>
   </Dialog.Header>
 
