@@ -4,6 +4,7 @@ import { editorChooserVariants, type EditorChooserVariant } from '$/util/experim
 
 const mermaidAiDomain = 'mermaid.ai';
 const mermaidLiveDomain = 'mermaid.live';
+const netlifyPreviewDomain = 'netlify.app';
 
 /**
  * Check if we're on mermaid.ai
@@ -19,6 +20,13 @@ export const isOnMermaidAI = (): boolean => {
 export const isOnMermaidLive = (): boolean => {
   const domain = window.location.hostname;
   return domain === mermaidLiveDomain || domain.endsWith(`.${mermaidLiveDomain}`);
+};
+
+/**
+ * Check if we're on a Netlify preview/staging deploy (*.netlify.app).
+ */
+const isOnNetlifyPreview = (): boolean => {
+  return window.location.hostname.endsWith(`.${netlifyPreviewDomain}`);
 };
 
 /**
@@ -64,7 +72,7 @@ export const shouldShowEditorChooser = (): boolean => {
   if (window.innerWidth < 640) return false;
   const forced = new URLSearchParams(window.location.search).get('editorChooser') === '1';
   if (forced) return true;
-  if (!isOnMermaidAI() && !isOnMermaidLive()) return false;
+  if (!isOnMermaidAI() && !isOnMermaidLive() && !isOnNetlifyPreview()) return false;
   if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
   if (hasPakoData()) return false;
   if (isReferredFromMermaid()) return false;
