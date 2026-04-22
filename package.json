@@ -27,6 +27,8 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@iconify-json/hugeicons": "^1.2.26",
+    "@iconify-json/logos": "^1.2.11",
     "@iconify-json/material-symbols": "^1.2.20",
     "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "^1.52.0",
