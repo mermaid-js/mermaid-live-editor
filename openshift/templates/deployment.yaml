@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mermaid.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mermaid.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mermaid.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mermaid.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mermaid.serviceAccountName" . }}
+
+      # ----------------------------------------------------------------
+      # Pod-level security context
+      # Compatible with OpenShift's 'restricted' SCC.
+      # OpenShift will inject the runAsUser/fsGroup from the SCC range —
+      # do NOT hard-code UIDs here so the SCC can manage them.
+      # ----------------------------------------------------------------
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+      containers:
+        - name: mermaid
+          image: "{{ .Values.image.repository }}:{{ include "mermaid.imageTag" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          # --------------------------------------------------------------
+          # Container-level security context
+          # --------------------------------------------------------------
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+
+          # --------------------------------------------------------------
+          # Environment variables
+          # --------------------------------------------------------------
+          env:
+            - name: NODE_ENV
+              value: "production"
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+
+          # --------------------------------------------------------------
+          # Probes
+          # --------------------------------------------------------------
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+
+          # --------------------------------------------------------------
+          # Resources
+          # --------------------------------------------------------------
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          # --------------------------------------------------------------
+          # Volume mounts
+          # readOnlyRootFilesystem: true requires writable tmp dirs.
+          # --------------------------------------------------------------
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            # Nginx requires writable cache and pid dirs.
+            # readOnlyRootFilesystem: true blocks these without emptyDir mounts.
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /var/run
+            # NOTE: do NOT mount over /etc/nginx/conf.d — the image bakes in
+            # default.conf there. An emptyDir would wipe it and Nginx would exit
+            # cleanly with no site config (SIGQUIT/exit 0 restart loop).
+            # The entrypoint warning "can not modify default.conf" is harmless.
+            {{- if .Values.appConfig }}
+            - name: app-config
+              mountPath: /app/config
+              readOnly: true
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+
+      # ----------------------------------------------------------------
+      # Volumes
+      # ----------------------------------------------------------------
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
+        {{- if .Values.appConfig }}
+        - name: app-config
+          configMap:
+            name: {{ include "mermaid.fullname" . }}-config
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
