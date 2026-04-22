@@ -47,7 +47,8 @@ export const createEditorChooserActions = (
         utmCampaign: resolveUtmCampaign(variant, buttonClick),
         utmMedium
       }),
-      '_blank'
+      '_blank',
+      'noopener'
     );
   };
 
@@ -64,7 +65,8 @@ export const createEditorChooserActions = (
         utmCampaign: resolveUtmCampaign(variant, buttonClick),
         utmMedium
       }),
-      '_blank'
+      '_blank',
+      'noopener'
     );
   };
 
