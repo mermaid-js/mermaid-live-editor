@@ -62,10 +62,12 @@
     <McWrapper labelPrefix="Opens ">
       <Button variant="accent" onclick={() => actions.startTrial()}>Start free trial</Button>
     </McWrapper>
-    <Button variant="outline" onclick={() => actions.dismiss('stayOnLive')}>Stay on live</Button>
+    <Button variant="outline" onclick={() => actions.dismiss('stayOnLive')}>
+      Stay on mermaid.live
+    </Button>
   </div>
 
-  <div class="mt-3 flex flex-col items-center gap-4">
+  <div class="mt-3 flex flex-col items-start gap-4">
     <p class="text-xs">Trusted by 5M people and over 200k companies</p>
     <div class="flex w-full items-center justify-between gap-2">
       {#each trustedLogos as logo (logo.name)}
