@@ -7,6 +7,14 @@
   import ShapesIcon from '~icons/material-symbols/account-tree-outline-rounded';
 
   const extras = {
+    'Use Case': `usecaseDiagram
+      actor "User" as user
+      package "System" {
+          usecase "Login" as uc1
+          usecase "Logout" as uc2
+      }
+      user --> uc1; uc2
+      `,
     ZenUML: `zenuml
     title Order Service
     @Actor Client #FFEBE6
