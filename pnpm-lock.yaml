@@ -36,8 +36,8 @@ importers:
         specifier: ^6.1.4
         version: 6.1.4(@codemirror/language@6.11.0)(@codemirror/state@6.5.2)(@codemirror/view@6.36.7)(@lezer/highlight@1.2.1)
       '@mermaid-js/examples':
-        specifier: ^1.0.0
-        version: 1.0.0(mermaid@11.14.0)
+        specifier: ^1.2.0
+        version: 1.2.0
       '@mermaid-js/layout-elk':
         specifier: ^0.1.9
         version: 0.1.9(mermaid@11.14.0)
@@ -797,10 +797,8 @@ packages:
   '@marijn/find-cluster-break@1.0.2':
     resolution: {integrity: sha512-l0h88YhZFyKdXIFNfSWpyjStDjGHwZ/U7iobcK1cQQD8sejsONdQtTVU+1wVN1PBw40PiiHB1vA5S7VTfQiP9g==}
 
-  '@mermaid-js/examples@1.0.0':
-    resolution: {integrity: sha512-OfTlpPJweRhGS/3+Wvk3WFY5kkqu/KP4PR2ZSZKxk4kuoqGsxWmsu3eDTHh6zfMIVMExILrFdacVkrtYO8QE3g==}
-    peerDependencies:
-      mermaid: ~11.9.0
+  '@mermaid-js/examples@1.2.0':
+    resolution: {integrity: sha512-XnKznIa/LCfu9tq2GGZkHEnMjOJCKJ+O0IUFYnkaRGBqc2gpAXJkLs4tciuB1DH6kdEqJGSgY3r68Isz8Sgk1Q==}
 
   '@mermaid-js/layout-elk@0.1.9':
     resolution: {integrity: sha512-HuvaqFZBr6yT9PpWYockvKAZPJVd89yn/UjOYPxhzbZxlybL2v+2BjVCg7MVH6vRs1irUohb/s42HEdec1CCZw==}
@@ -4696,9 +4694,7 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.2': {}
 
-  '@mermaid-js/examples@1.0.0(mermaid@11.14.0)':
-    dependencies:
-      mermaid: 11.14.0
+  '@mermaid-js/examples@1.2.0': {}
 
   '@mermaid-js/layout-elk@0.1.9(mermaid@11.14.0)':
     dependencies:
