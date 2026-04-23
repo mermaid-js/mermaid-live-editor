@@ -36,8 +36,8 @@ importers:
         specifier: ^6.1.4
         version: 6.1.4(@codemirror/language@6.11.0)(@codemirror/state@6.5.2)(@codemirror/view@6.36.7)(@lezer/highlight@1.2.1)
       '@mermaid-js/examples':
-        specifier: ^1.0.0
-        version: 1.0.0(mermaid@11.14.0)
+        specifier: ^1.2.0
+        version: 1.2.0
       '@mermaid-js/layout-elk':
         specifier: ^0.1.9
         version: 0.1.9(mermaid@11.14.0)
@@ -102,6 +102,12 @@ importers:
       '@fortawesome/fontawesome-free':
         specifier: ^6.7.2
         version: 6.7.2
+      '@iconify-json/hugeicons':
+        specifier: ^1.2.26
+        version: 1.2.26
+      '@iconify-json/logos':
+        specifier: ^1.2.11
+        version: 1.2.11
       '@iconify-json/material-symbols':
         specifier: ^1.2.20
         version: 1.2.20
@@ -702,6 +708,12 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
+  '@iconify-json/hugeicons@1.2.26':
+    resolution: {integrity: sha512-ZJB0EjFrYJy+EBUnx2/mGD4MCGScQr4dauV455lC9CuCt50guk6TosnOi9t2r4EIyhHmytO5IOeVFG4C8V9/hw==}
+
+  '@iconify-json/logos@1.2.11':
+    resolution: {integrity: sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==}
+
   '@iconify-json/material-symbols@1.2.20':
     resolution: {integrity: sha512-+KqOT+3fD+LC2FbWiV8gd4+JLMiVUtmqrjzpKN1ji7rfMQTwvYJ94RT0WQlmL+vfDNJ5MTRe3rBzzJyvIH/aSg==}
 
@@ -785,10 +797,8 @@ packages:
   '@marijn/find-cluster-break@1.0.2':
     resolution: {integrity: sha512-l0h88YhZFyKdXIFNfSWpyjStDjGHwZ/U7iobcK1cQQD8sejsONdQtTVU+1wVN1PBw40PiiHB1vA5S7VTfQiP9g==}
 
-  '@mermaid-js/examples@1.0.0':
-    resolution: {integrity: sha512-OfTlpPJweRhGS/3+Wvk3WFY5kkqu/KP4PR2ZSZKxk4kuoqGsxWmsu3eDTHh6zfMIVMExILrFdacVkrtYO8QE3g==}
-    peerDependencies:
-      mermaid: ~11.9.0
+  '@mermaid-js/examples@1.2.0':
+    resolution: {integrity: sha512-XnKznIa/LCfu9tq2GGZkHEnMjOJCKJ+O0IUFYnkaRGBqc2gpAXJkLs4tciuB1DH6kdEqJGSgY3r68Isz8Sgk1Q==}
 
   '@mermaid-js/layout-elk@0.1.9':
     resolution: {integrity: sha512-HuvaqFZBr6yT9PpWYockvKAZPJVd89yn/UjOYPxhzbZxlybL2v+2BjVCg7MVH6vRs1irUohb/s42HEdec1CCZw==}
@@ -4549,6 +4559,14 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
+  '@iconify-json/hugeicons@1.2.26':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/logos@1.2.11':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify-json/material-symbols@1.2.20':
     dependencies:
       '@iconify/types': 2.0.0
@@ -4676,9 +4694,7 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.2': {}
 
-  '@mermaid-js/examples@1.0.0(mermaid@11.14.0)':
-    dependencies:
-      mermaid: 11.14.0
+  '@mermaid-js/examples@1.2.0': {}
 
   '@mermaid-js/layout-elk@0.1.9(mermaid@11.14.0)':
     dependencies:

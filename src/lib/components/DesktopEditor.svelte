@@ -224,7 +224,11 @@
       onClose={closePopup}
       onTryFree={() => {
         logMermaidChartClick('vibeDiagramming');
-        window.open($urlsStore.mermaidChart({ medium: 'vibe_diagramming' }).save, '_blank');
+        window.open(
+          $urlsStore.mermaidChart({ medium: 'vibe_diagramming' }).save,
+          '_blank',
+          'noopener'
+        );
         closePopup();
       }} />
   </div>
