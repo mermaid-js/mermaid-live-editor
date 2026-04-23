@@ -3,6 +3,7 @@
   import Card from '$/components/Card/Card.svelte';
   import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
   import Editor from '$/components/Editor.svelte';
+  import EnhancedEditsButton from '$/components/EnhancedEditsButton.svelte';
   import History from '$/components/History/History.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
@@ -19,15 +20,12 @@
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
   import type { EditorMode, Tab } from '$/types';
-  import { standardizeDiagramType } from '$/util/mermaid';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
   import { logEvent, logMermaidChartClick } from '$/util/stats';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
-  import { quintInOut } from 'svelte/easing';
-  import { slide } from 'svelte/transition';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
@@ -63,20 +61,6 @@
     window.addEventListener('appinstalled', () => {
       logEvent('pwaInstalled', { isMobile });
     });
-  });
-
-  const visualEditDiagramTypes = new Set([
-    'flowchart',
-    'stateDiagram',
-    'classDiagram',
-    'sequenceDiagram',
-    'er',
-    'requirement',
-    'mindmap'
-  ]);
-  const showVisualEdit = $derived.by(() => {
-    const dt = $stateStore.diagramType;
-    return dt ? visualEditDiagramTypes.has(standardizeDiagramType(dt)) : false;
   });
 
   let isHistoryOpen = $state(false);
@@ -153,24 +137,7 @@
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
           <View {panZoomState} shouldShowGrid={$stateStore.grid} />
-          {#if showVisualEdit}
-            <div
-              class="absolute top-0 left-5 hidden md:block"
-              transition:slide={{ axis: 'x', easing: quintInOut }}>
-              <McWrapper>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  href={$urlsStore.mermaidChart({ medium: 'visual_edit', campaign: 'visual_1' })
-                    .save}
-                  target="_blank"
-                  onclick={() => logMermaidChartClick('visualEdit')}>
-                  <MermaidChartIcon />
-                  Edit Visually
-                </Button>
-              </McWrapper>
-            </div>
-          {/if}
+          <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>

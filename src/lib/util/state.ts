@@ -141,12 +141,14 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
       campaign
     }: {
       medium:
+        | 'ai_edit'
         | 'ai_repair'
         | 'main_menu'
         | 'save_diagram'
         | 'share'
         | 'vibe_diagramming'
-        | 'visual_edit';
+        | 'visual_edit'
+        | 'voice_edit';
       campaign?: string;
     }) => {
       const utmSource = getUTMSource();
