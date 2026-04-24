@@ -1,0 +1,138 @@
+# -----------------------------------------------------------------------
+# Mermaid Live Editor — Helm values for OpenShift
+# -----------------------------------------------------------------------
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/mermaid-js/mermaid-live-editor
+  pullPolicy: Always
+  # Overrides the image tag. Defaults to Chart.appVersion when empty.
+  tag: ""
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+# -----------------------------------------------------------------------
+# ServiceAccount
+# OpenShift uses SCCs instead of PodSecurityPolicies. Binding the SA
+# to the 'restricted' SCC (the default) is the right posture for most
+# workloads. Adjust if your cluster has a custom SCC.
+# -----------------------------------------------------------------------
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# -----------------------------------------------------------------------
+# Pod security — OpenShift 'restricted' SCC compatible:
+#   • runAsNonRoot: true
+#   • no privilege escalation
+#   • drop ALL capabilities
+#   • read-only root filesystem (writable emptyDir mounts where needed)
+# -----------------------------------------------------------------------
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
+# -----------------------------------------------------------------------
+# Container port
+# The mermaid-live-editor listens on 8080 (non-root-friendly).
+# -----------------------------------------------------------------------
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+# -----------------------------------------------------------------------
+# OpenShift Route (preferred over Ingress on OCP)
+# Set route.enabled: true and ingress.enabled: false for OpenShift.
+# -----------------------------------------------------------------------
+route:
+  enabled: true
+  host: ""           # e.g. mermaid.apps.cluster.example.com  (auto-assigned if empty)
+  path: /
+  tls:
+    enabled: true
+    termination: edge          # edge | reencrypt | passthrough
+    insecureEdgeTerminationPolicy: Redirect   # Redirect | Allow | None
+  annotations: {}
+
+# -----------------------------------------------------------------------
+# Resources — tune for your cluster sizing
+# -----------------------------------------------------------------------
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# -----------------------------------------------------------------------
+# Probes
+# -----------------------------------------------------------------------
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
+
+# -----------------------------------------------------------------------
+# Node scheduling
+# -----------------------------------------------------------------------
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# -----------------------------------------------------------------------
+# Additional environment variables passed to the container
+# -----------------------------------------------------------------------
+env: []
+# - name: MERMAID_RENDERER_URL
+#   value: https://kroki.io
+
+# -----------------------------------------------------------------------
+# Extra volumes / mounts (e.g. for custom CA certs)
+# -----------------------------------------------------------------------
+extraVolumes: []
+extraVolumeMounts: []
+
+# -----------------------------------------------------------------------
+# NetworkPolicy — restricts ingress to the OpenShift router pods only
+# -----------------------------------------------------------------------
+networkPolicy:
+  enabled: true
+
+# -----------------------------------------------------------------------
+# ConfigMap — optional custom mermaid app config (JSON)
+# Leave appConfig empty to skip the ConfigMap entirely.
+# -----------------------------------------------------------------------
+appConfig: {}
+# Example:
+# appConfig:
+#   securityLevel: "strict"
+#   theme: "default"
