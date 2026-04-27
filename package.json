@@ -113,7 +113,7 @@
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.2",
     "svg2roughjs": "^3.2.1",
-    "uuid": "9.0.1"
+    "uuid": "14.0.0"
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md,json}": [
