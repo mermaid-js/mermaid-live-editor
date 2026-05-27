@@ -1,0 +1,54 @@
+name: Close broken link issues
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  close-broken-link-issues:
+    if: github.event.issue.state == 'open'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close issues with only "Broken link" in the title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.issue.title.trim();
+            const isBrokenLinkOnlyTitle = /^broken link\.?$/i.test(title);
+
+            if (!isBrokenLinkOnlyTitle) {
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const issueNumber = context.payload.issue.number;
+            const newIssueUrl = `https://github.com/${owner}/${repo}/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link`;
+
+            const commentBody = [
+              `@${context.payload.issue.user.login} This issue was automatically closed because the title only contains "Broken link" without additional details.`,
+              '',
+              'When reporting a broken link, please include:',
+              '- The full URL that failed to load',
+              '- What you expected to happen',
+              '- Any error messages you saw',
+              '',
+              `You can [open a new issue](${newIssueUrl}) with this information.`
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              body: commentBody
+            });
+
+            await github.rest.issues.update({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              state: 'closed',
+              state_reason: 'not_planned'
+            });
