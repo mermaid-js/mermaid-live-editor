@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { State, ValidatedState } from '$/types';
   import { recordRenderTime, shouldRefreshView } from '$/util/autoSync';
-  import { render as renderDiagram } from '$/util/mermaid';
+  import { render as renderDiagram, standardizeDiagramType } from '$/util/mermaid';
   import { PanZoomState } from '$/util/panZoom';
   import { inputStateStore, stateStore, updateCodeStore } from '$/util/state';
   import { saveStatistics } from '$/util/stats';
@@ -14,8 +14,13 @@
 
   let {
     panZoomState = new PanZoomState(),
-    shouldShowGrid = true
-  }: { panZoomState?: PanZoomState; shouldShowGrid?: boolean } = $props();
+    shouldShowGrid = true,
+    onSvgRendered = undefined
+  }: {
+    panZoomState?: PanZoomState;
+    shouldShowGrid?: boolean;
+    onSvgRendered?: (data: { svg: SVGSVGElement; diagramType: string }) => void;
+  } = $props();
   let code = '';
   let config = '';
   let container: HTMLDivElement | undefined = $state();
@@ -117,6 +122,9 @@
           }
           if (state.panZoom) {
             handlePanZoom(state, graphDiv);
+          }
+          if (onSvgRendered && diagramType) {
+            onSvgRendered({ svg: graphDiv, diagramType: standardizeDiagramType(diagramType) });
           }
         }
         if (view?.parentElement && scroll) {
