@@ -11,10 +11,6 @@ export interface EditorChooserActions {
   openMermaidAiLive: (buttonClick: string) => void;
 }
 
-export interface EditorChooserProps {
-  actions: EditorChooserActions;
-}
-
 export const createEditorChooserActions = (close: () => void): EditorChooserActions => {
   const log = (buttonClick: string) => {
     logEvent('chooseEditor', { buttonClick });
