@@ -82,6 +82,10 @@
       code: '/syntax/treemap.html',
       config: '/syntax/treemap.html#configuration-options'
     },
+    usecase: {
+      code: '/syntax/usecase.html',
+      config: '/syntax/usecase.html#configuration'
+    },
     xychart: {
       code: '/syntax/xyChart.html',
       config: '/syntax/xyChart.html#chart-configurations'
