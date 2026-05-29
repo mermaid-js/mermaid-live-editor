@@ -1,6 +1,5 @@
 import { C } from '$/constants';
 import { env } from '$/util/env';
-import { editorChooserVariants, type EditorChooserVariant } from '$/util/experiments';
 
 const mermaidAiDomain = 'mermaid.ai';
 const mermaidLiveDomain = 'mermaid.live';
@@ -84,21 +83,4 @@ export const shouldShowEditorChooser = (): boolean => {
  */
 export const dismissEditorChooser = (): void => {
   window.localStorage.setItem(C.editorChooserDismissedKey, 'true');
-};
-
-const isValidVariant = (value: string | null): value is EditorChooserVariant => {
-  return value !== null && (editorChooserVariants as readonly string[]).includes(value);
-};
-
-/**
- * Get the A/B/C test variant assigned to this user for the editor chooser modal.
- * Assigns a variant on first call (uniform random across variants), persists it
- * in localStorage, and returns the same value on subsequent calls.
- */
-export const getEditorChooserVariant = (): EditorChooserVariant => {
-  const stored = window.localStorage.getItem(C.editorChooserVariantKey);
-  if (isValidVariant(stored)) return stored;
-  const variant = editorChooserVariants[Math.floor(Math.random() * editorChooserVariants.length)];
-  window.localStorage.setItem(C.editorChooserVariantKey, variant);
-  return variant;
 };

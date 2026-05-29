@@ -9,9 +9,9 @@
   import AmazonIcon from '~icons/logos/aws';
   import GoogleIcon from '~icons/logos/google';
   import MicrosoftIcon from '~icons/logos/microsoft';
-  import type { EditorChooserVariantProps } from './editorChooserActions';
+  import type { EditorChooserProps } from './editorChooserActions';
 
-  let { actions }: EditorChooserVariantProps = $props();
+  let { actions }: EditorChooserProps = $props();
 
   const features = [
     { title: 'AI diagram generation', description: 'Describe what you need, AI builds it' },
