@@ -17,9 +17,11 @@
   import * as Resizable from '$/components/ui/resizable';
   import { Switch } from '$/components/ui/switch';
   import { Toggle } from '$/components/ui/toggle';
+  import DragToolbar from '$/components/DragToolbar.svelte';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
   import type { EditorMode, Tab } from '$/types';
+  import { FlowchartDrag } from '$/util/dragInteraction';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
@@ -64,6 +66,81 @@
   });
 
   let isHistoryOpen = $state(false);
+
+  // ── Drag system state ──────────────────────────────────────────────────
+  let dragController: FlowchartDrag | undefined;
+  let interactiveMode = $state(false);
+  let canUndo = $state(false);
+  let canRedo = $state(false);
+  let isFlowchart = $state(false);
+  // Incremented each time the controller is created or refreshed;
+  // the $effect reads this so it re-runs even after a re-render.
+  let dragToken = $state(0);
+
+  const handleSvgRendered = (data: { svg: SVGSVGElement; diagramType: string }) => {
+    const wasFlowchart = isFlowchart;
+    isFlowchart = data.diagramType === 'flowchart';
+
+    if (isFlowchart) {
+      try {
+        if (dragController && wasFlowchart) {
+          dragController.refresh(data.svg);
+        } else {
+          dragController?.destroy();
+          dragController = new FlowchartDrag(data.svg, {
+            callbacks: {
+              onStateChange: () => {
+                canUndo = dragController?.canUndo ?? false;
+                canRedo = dragController?.canRedo ?? false;
+              }
+            }
+          });
+        }
+        dragToken++;
+        canUndo = dragController.canUndo;
+        canRedo = dragController.canRedo;
+      } catch (err) {
+        console.error('[edit] FlowchartDrag init failed:', err);
+        dragController?.destroy();
+        dragController = undefined;
+        isFlowchart = false;
+        interactiveMode = false;
+      }
+    } else {
+      dragController?.destroy();
+      dragController = undefined;
+      interactiveMode = false;
+      canUndo = false;
+      canRedo = false;
+    }
+  };
+
+  // React to toggle changes OR controller creation/refresh
+  $effect(() => {
+    void dragToken; // track controller lifecycle
+    void interactiveMode; // track toggle state
+    if (dragController) {
+      if (interactiveMode) {
+        dragController.enable();
+      } else {
+        dragController.disable();
+      }
+    }
+  });
+
+  const handleUndo = () => dragController?.undo();
+  const handleRedo = () => dragController?.redo();
+  const handleExportLayout = () => {
+    const json = dragController?.exportLayout();
+    if (!json) return;
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mermaid-layout.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   let editorPane: Resizable.Pane | undefined;
   $effect(() => {
@@ -136,9 +213,23 @@
         </Resizable.Pane>
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <View {panZoomState} shouldShowGrid={$stateStore.grid} />
+          <View
+            {panZoomState}
+            shouldShowGrid={$stateStore.grid}
+            onSvgRendered={handleSvgRendered} />
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
-          <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
+          <div class="absolute top-0 right-0 flex flex-col items-end gap-2">
+            <PanZoomToolbar {panZoomState} />
+            {#if isFlowchart}
+              <DragToolbar
+                bind:interactiveMode
+                {canUndo}
+                {canRedo}
+                onUndo={handleUndo}
+                onRedo={handleRedo}
+                onExport={handleExportLayout} />
+            {/if}
+          </div>
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
         </Resizable.Pane>
