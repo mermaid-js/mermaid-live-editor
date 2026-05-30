@@ -60,12 +60,14 @@ interface DragSnapshot {
 
 /** Pre-computed rect of a node in edgePaths space, captured at pointer-down. */
 interface CachedRect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
   cx: number;
   cy: number;
+  height: number;
+  /** 'diamond' if the node contains a <polygon> element, otherwise 'rect'. */
+  shapeType: import('./edge-path.js').ShapeType;
+  width: number;
+  x: number;
+  y: number;
 }
 
 /** Active drag state — only non-null while a pointer is down on a node. */
@@ -540,10 +542,12 @@ export class FlowchartDrag {
       if (!nodeNs) continue;
       const rect = getRectInSpace(nodeNs.element, this.edgeGroup, edgeInverseCTM);
       if (rect) {
+        const shapeType = nodeNs.element.querySelector('polygon') !== null ? 'diamond' : 'rect';
         initialRects[id] = {
           cx: rect.x + rect.width / 2,
           cy: rect.y + rect.height / 2,
           height: rect.height,
+          shapeType,
           width: rect.width,
           x: rect.x,
           y: rect.y
@@ -598,13 +602,20 @@ export class FlowchartDrag {
       x: draggedInitial.x + dx,
       y: draggedInitial.y + dy
     };
+    const currentShape = draggedInitial.shapeType;
 
     const draggedId = this.dragState.nodeId;
     for (const es of this.dragState.connectedEdges) {
-      const srcRect = es.src === draggedId ? currentRect : this.dragState.initialRects[es.src];
-      const tgtRect = es.tgt === draggedId ? currentRect : this.dragState.initialRects[es.tgt];
-      if (!srcRect || !tgtRect) continue;
-      updateEdgePath(srcRect, tgtRect, es.pathEl, es.labelEl);
+      const srcCached = this.dragState.initialRects[es.src];
+      const tgtCached = this.dragState.initialRects[es.tgt];
+      if (!srcCached || !tgtCached) continue;
+
+      const srcRect: Rect = es.src === draggedId ? currentRect : srcCached;
+      const tgtRect: Rect = es.tgt === draggedId ? currentRect : tgtCached;
+      const srcShape = es.src === draggedId ? currentShape : srcCached.shapeType;
+      const tgtShape = es.tgt === draggedId ? currentShape : tgtCached.shapeType;
+
+      updateEdgePath(srcRect, tgtRect, es.pathEl, es.labelEl, srcShape, tgtShape);
     }
 
     this.opts.callbacks.onDragMove?.(draggedId, { x: nx, y: ny });

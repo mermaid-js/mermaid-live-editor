@@ -20,12 +20,13 @@ export interface Rect {
 }
 
 export type BoundarySide = 'left' | 'right' | 'top' | 'bottom';
+export type ShapeType = 'rect' | 'diamond';
 
-// ── Algorithm 1: Rectangle Boundary Intersection ──────────────────────────
+// ── Algorithm 1: Shape-Aware Boundary Intersection ──────────────────────
 
 /**
- * Find the intersection of a ray (from rect centre → target point) with the
- * rectangle boundary.
+ * Find the intersection of a ray (from shape centre → target point) with the
+ * rectangle boundary (AABB).
  */
 export function getRectEdgePoint(rect: Rect, toCx: number, toCy: number): Point {
   const cx = rect.x + rect.width / 2;
@@ -47,6 +48,50 @@ export function getRectEdgePoint(rect: Rect, toCx: number, toCy: number): Point 
   if (dy < 0) t = Math.min(t, -hh / dy);
 
   return { x: cx + t * dx, y: cy + t * dy };
+}
+
+/**
+ * Find the intersection of a ray (from diamond centre → target point) with
+ * the diamond boundary.
+ *
+ * A diamond is a convex polygon inscribed in the AABB, with vertices at the
+ * midpoints of each edge: top=(cx, cy-hh), right=(cx+hw, cy),
+ * bottom=(cx, cy+hh), left=(cx-hw, cy).
+ *
+ * The diamond surface is the L1-norm: |x-cx|/hw + |y-cy|/hh = 1.
+ * For a ray from the centre: t = 1 / (|dx|/hw + |dy|/hh).
+ */
+function getDiamondEdgePoint(rect: Rect, toCx: number, toCy: number): Point {
+  const cx = rect.x + rect.width / 2;
+  const cy = rect.y + rect.height / 2;
+  const dx = toCx - cx;
+  const dy = toCy - cy;
+
+  if (dx === 0 && dy === 0) {
+    return { x: cx, y: cy };
+  }
+
+  const hw = rect.width / 2;
+  const hh = rect.height / 2;
+  const t = 1 / (Math.abs(dx) / hw + Math.abs(dy) / hh);
+
+  return { x: cx + t * dx, y: cy + t * dy };
+}
+
+/**
+ * Shape-aware dispatcher: route to the correct intersection algorithm based
+ * on the node's shape type.
+ */
+export function getShapeEdgePoint(
+  rect: Rect,
+  toCx: number,
+  toCy: number,
+  shapeType: ShapeType = 'rect'
+): Point {
+  if (shapeType === 'diamond') {
+    return getDiamondEdgePoint(rect, toCx, toCy);
+  }
+  return getRectEdgePoint(rect, toCx, toCy);
 }
 
 // ── Boundary Side Classification ──────────────────────────────────────────
@@ -89,16 +134,18 @@ export function updateEdgePath(
   srcRect: Rect,
   tgtRect: Rect,
   pathEl: SVGPathElement,
-  labelEl?: SVGGElement | null
+  labelEl?: SVGGElement | null,
+  srcShape: ShapeType = 'rect',
+  tgtShape: ShapeType = 'rect'
 ): void {
   const srcCx = srcRect.x + srcRect.width / 2;
   const srcCy = srcRect.y + srcRect.height / 2;
   const tgtCx = tgtRect.x + tgtRect.width / 2;
   const tgtCy = tgtRect.y + tgtRect.height / 2;
 
-  // Boundary intersection points
-  const start = getRectEdgePoint(srcRect, tgtCx, tgtCy);
-  const end = getRectEdgePoint(tgtRect, srcCx, srcCy);
+  // Boundary intersection points — shape-aware
+  const start = getShapeEdgePoint(srcRect, tgtCx, tgtCy, srcShape);
+  const end = getShapeEdgePoint(tgtRect, srcCx, srcCy, tgtShape);
   const srcSide = getBoundarySide(srcRect, start.x, start.y);
   const tgtSide = getBoundarySide(tgtRect, end.x, end.y);
 
