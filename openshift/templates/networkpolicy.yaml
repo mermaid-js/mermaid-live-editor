@@ -1,0 +1,33 @@
+{{- if .Values.networkPolicy.enabled -}}
+# Allow inbound traffic only from the OpenShift router pods (in the
+# openshift-ingress namespace) and from within the same namespace.
+# Adjust the namespaceSelector label if your router lives elsewhere.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "mermaid.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mermaid.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "mermaid.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+  ingress:
+    # Allow traffic from OpenShift router pods
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-ingress
+      ports:
+        - protocol: TCP
+          port: {{ .Values.service.targetPort }}
+    # Allow traffic from within the same namespace (e.g. other micro-services)
+    - from:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: {{ .Values.service.targetPort }}
+{{- end }}
