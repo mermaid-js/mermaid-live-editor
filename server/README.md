@@ -51,6 +51,14 @@ pnpm dev                      # http://localhost:8787
 4. Copy the **Application (client) ID** → `ENTRA_CLIENT_ID` and the
    **Directory (tenant) ID** → `ENTRA_TENANT_ID`.
 
+### Production (single port)
+
+Set `SERVE_FRONTEND=true` and this process also serves the built static editor
+(`docs/`, override with `FRONTEND_DIR`) on the same port as `/api`. That means one
+process behind a single reverse proxy / Nginx Proxy Manager host with TLS — no
+separate static web server needed. The repo-root `setup.sh` automates the whole
+Debian install this way.
+
 ### Local dev with the editor
 
 Run this service on `:8787` and the editor (`pnpm dev`, `:3000`). The editor's

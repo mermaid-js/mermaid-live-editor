@@ -7,6 +7,14 @@ const schema = z.object({
   APP_BASE_URL: z.string().url(),
   POST_LOGIN_PATH: z.string().startsWith('/').default('/edit'),
 
+  // When true, the API process also serves the built static editor (single port
+  // behind a reverse proxy). FRONTEND_DIR defaults to ../docs relative to server/.
+  SERVE_FRONTEND: z
+    .string()
+    .optional()
+    .transform((value) => value === 'true'),
+  FRONTEND_DIR: z.string().optional(),
+
   DATABASE_URL: z.string().min(1),
 
   JWT_SECRET: z.string().min(16),
