@@ -14,6 +14,8 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
+  // The backend service has its own toolchain (Node, its own tsconfig + tests).
+  { ignores: ['server/**'] },
   js.configs.recommended,
   ...ts.configs.strict,
   ...ts.configs.stylistic,

@@ -1,0 +1,59 @@
+// Prisma schema for the Mermaid Live Editor backend.
+// Per-user folders + diagrams, plus an append-only audit log.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  entraOid    String    @unique // Entra ID "oid" claim — stable per-user identifier
+  email       String    @unique
+  displayName String?
+  createdAt   DateTime  @default(now())
+  folders     Folder[]
+  diagrams    Diagram[]
+}
+
+model Folder {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId  String? // nullable → nested folder tree
+  parent    Folder?   @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children  Folder[]  @relation("FolderTree")
+  name      String
+  createdAt DateTime  @default(now())
+  diagrams  Diagram[]
+
+  @@index([userId, parentId])
+}
+
+model Diagram {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folderId  String?
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  name      String
+  payload   String // pako-serialized editor State (produced by serializeState in the editor)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, folderId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
