@@ -1,6 +1,4 @@
 export const TID = {
-  aiHelpText: 'ai-help-text',
-  aiRepairButton: 'ai-repair-button',
   copyMarkdown: 'copy-markdown',
   diagramDocumentationButton: 'diagram-documentation-button',
   downloadPNG: 'download-PNG',
@@ -11,6 +9,5 @@ export const TID = {
 
 export const C = {
   aiLiveEditor: 'ai_live_editor',
-  editorChooserDismissedKey: 'mermaid-editor-chooser-dismissed',
   utmSource: 'mermaid_live_editor'
 } as const;

@@ -46,9 +46,8 @@
         </p>
         <ExternalLinkWrapper domain="example.com" isVisible>
           <p class="text-left">
-            External services (PNG/SVG/Kroki exports, "Save to Mermaid Chart", "Repair with AI",
-            etc) will share your diagram with those 3rd parties, and are highlighted in the UI on
-            hover.
+            External services (PNG/SVG/Kroki exports, etc) will share your diagram with those 3rd
+            parties, and are highlighted in the UI on hover.
           </p>
         </ExternalLinkWrapper>
       {:else}
