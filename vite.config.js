@@ -31,15 +31,27 @@ export default defineConfig({
     devtoolsJson()
   ],
   envPrefix: 'MERMAID_',
-  server: { port: 3000, host: true },
+  server: {
+    port: 3000,
+    host: true,
+    // Forward API calls to the backend service (server/) so the browser only
+    // ever talks to one origin, mirroring the production reverse-proxy setup.
+    proxy: {
+      '/api': {
+        target: process.env.MERMAID_API_PROXY ?? 'http://localhost:8787',
+        changeOrigin: true
+      }
+    }
+  },
   preview: { port: 3000, host: true },
   test: {
     environment: 'jsdom',
     // in-source testing
     includeSource: ['src/**/*.{js,ts,svelte}'],
-    // Ignore E2E tests
+    // Ignore E2E tests and the backend service (it has its own vitest config)
     exclude: [
       'tests/**/*',
+      'server/**',
       '**/node_modules/**',
       '**/dist/**',
       '**/.{idea,git,cache,output,temp}/**',

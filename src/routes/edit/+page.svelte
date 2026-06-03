@@ -1,5 +1,6 @@
 <script lang="ts">
   import Actions from '$/components/Actions.svelte';
+  import AuthControl from '$/components/AuthControl.svelte';
   import Card from '$/components/Card/Card.svelte';
   import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
   import Editor from '$/components/Editor.svelte';
@@ -7,6 +8,9 @@
   import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Preset from '$/components/Preset.svelte';
+  import SaveDialog from '$/components/SaveDialog.svelte';
+  import SaveDiagramButton from '$/components/SaveDiagramButton.svelte';
+  import SavedDiagrams from '$/components/SavedDiagrams/SavedDiagrams.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import * as Resizable from '$/components/ui/resizable';
@@ -15,12 +19,14 @@
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
   import type { EditorMode, Tab } from '$/types';
+  import { loadSession } from '$/util/auth';
   import { PanZoomState } from '$/util/panZoom';
   import { stateStore, updateCodeStore } from '$/util/state';
   import { logEvent } from '$/util/stats';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
+  import FolderIcon from '~icons/material-symbols/folder-outline-rounded';
   import HistoryIcon from '~icons/material-symbols/history';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
@@ -49,6 +55,7 @@
   let isViewMode = $state(true);
 
   onMount(async () => {
+    void loadSession();
     await initHandler();
     window.addEventListener('appinstalled', () => {
       logEvent('pwaInstalled', { isMobile });
@@ -56,6 +63,7 @@
   });
 
   let isHistoryOpen = $state(false);
+  let isSavedOpen = $state(false);
 
   let editorPane: Resizable.Pane | undefined;
   $effect(() => {
@@ -79,10 +87,15 @@
   {/snippet}
 
   <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
+    <Toggle bind:pressed={isSavedOpen} size="sm" title="My diagrams">
+      <FolderIcon />
+    </Toggle>
     <Toggle bind:pressed={isHistoryOpen} size="sm">
       <HistoryIcon />
     </Toggle>
     <Share />
+    <SaveDiagramButton />
+    <AuthControl />
   </Navbar>
 
   <div class="flex flex-1 flex-col overflow-hidden" bind:clientWidth={width}>
@@ -122,6 +135,12 @@
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
         </Resizable.Pane>
+        {#if isSavedOpen}
+          <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
+          <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full grow flex-col sm:flex">
+            <SavedDiagrams />
+          </Resizable.Pane>
+        {/if}
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
           <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full grow flex-col sm:flex">
@@ -132,3 +151,5 @@
     </div>
   </div>
 </div>
+
+<SaveDialog />
