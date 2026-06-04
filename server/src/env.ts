@@ -20,10 +20,18 @@ const schema = z.object({
   JWT_SECRET: z.string().min(16),
   SESSION_TTL_SECONDS: z.coerce.number().int().positive().default(3600),
 
-  ENTRA_TENANT_ID: z.string().min(1),
-  ENTRA_CLIENT_ID: z.string().min(1),
-  ENTRA_CLIENT_SECRET: z.string().min(1),
-  ENTRA_REDIRECT_URI: z.string().url()
+  // Entra ID config is optional at the env level: it serves as the *bootstrap*
+  // source so the first admin can sign in, but once an admin saves config via the
+  // Integrations UI the DB row overrides these. See integrations/entraConfig.ts.
+  ENTRA_TENANT_ID: z.string().min(1).optional(),
+  ENTRA_CLIENT_ID: z.string().min(1).optional(),
+  ENTRA_CLIENT_SECRET: z.string().min(1).optional(),
+  ENTRA_REDIRECT_URI: z.string().url().optional(),
+
+  // Comma-separated allowlist of admin emails. Admins may edit integration
+  // settings. Env-only (never editable from the UI) so a bad saved config can
+  // never strip admin rights.
+  ADMIN_EMAILS: z.string().optional()
 });
 
 const parsed = schema.safeParse(process.env);
@@ -37,3 +45,14 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 export const isProd = env.NODE_ENV === 'production';
+
+// Normalized (lowercased, trimmed) set of admin emails parsed from ADMIN_EMAILS.
+const adminEmails = new Set(
+  (env.ADMIN_EMAILS ?? '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean)
+);
+
+export const isAdminEmail = (email: string | null | undefined): boolean =>
+  email != null && adminEmails.has(email.trim().toLowerCase());

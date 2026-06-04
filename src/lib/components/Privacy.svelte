@@ -27,11 +27,7 @@
         <p class="text-xl font-semibold">Your diagrams never leave your browser.</p>
         <p>They're only stored in the URL and your browser's local storage.</p>
         <p>
-          This is a fully open source, client-side app deployed on <a
-            href="https://github.com/mermaid-js/mermaid-live-editor/deployments"
-            class="underline"
-            target="_blank">GitHub Pages</a>
-          that works offline as a
+          This is a fully open source, client-side app that works offline as a
           <a href="https://web.dev/explore/progressive-web-apps" target="_blank"
             >Progressive Web App</a
           >.

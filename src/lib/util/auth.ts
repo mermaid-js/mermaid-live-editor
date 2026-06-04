@@ -5,6 +5,7 @@ export interface SessionUser {
   id: string;
   email: string;
   displayName?: string | null;
+  isAdmin?: boolean;
 }
 
 // `undefined` = not yet loaded, `null` = signed out, object = signed in.

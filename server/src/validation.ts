@@ -41,6 +41,22 @@ export const diagramListQuerySchema = z.object({
   folderId: id.optional()
 });
 
+// Entra ID SSO integration config. `clientSecret` is optional: when omitted (or
+// blank) on update, the existing stored secret is kept. An empty string is
+// treated as "keep existing".
+export const entraConfigUpdateSchema = z.object({
+  tenantId: z.string().min(1).trim(),
+  clientId: z.string().min(1).trim(),
+  clientSecret: z
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => (value ? value : undefined)),
+  redirectUri: z.string().url()
+});
+
+export type EntraConfigUpdateInput = z.infer<typeof entraConfigUpdateSchema>;
+
 export type FolderCreateInput = z.infer<typeof folderCreateSchema>;
 export type FolderUpdateInput = z.infer<typeof folderUpdateSchema>;
 export type DiagramCreateInput = z.infer<typeof diagramCreateSchema>;

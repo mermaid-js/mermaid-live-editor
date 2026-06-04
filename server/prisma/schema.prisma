@@ -57,3 +57,12 @@ model AuditLog {
 
   @@index([userId, createdAt])
 }
+
+// Generic key/value store for app-level settings (e.g. integration configs).
+// `value` shape is validated in application code (zod), not by the DB. The
+// "entra" key holds { tenantId, clientId, clientSecretEnc, redirectUri }.
+model AppSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

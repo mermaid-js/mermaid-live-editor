@@ -1,7 +1,8 @@
 import crypto from 'node:crypto';
-import { env } from '../env';
+import type { EntraEffectiveConfig } from '../integrations/entraConfig';
 
-const authority = `https://login.microsoftonline.com/${env.ENTRA_TENANT_ID}/oauth2/v2.0`;
+const authorityFor = (tenantId: string): string =>
+  `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0`;
 const SCOPES = 'openid profile email';
 
 const base64url = (input: Buffer): string => input.toString('base64url');
@@ -21,22 +22,24 @@ export const createState = (): string => base64url(crypto.randomBytes(16));
 
 export const buildAuthorizeUrl = ({
   state,
-  codeChallenge
+  codeChallenge,
+  config
 }: {
   state: string;
   codeChallenge: string;
+  config: EntraEffectiveConfig;
 }): string => {
   const params = new URLSearchParams({
-    client_id: env.ENTRA_CLIENT_ID,
+    client_id: config.clientId,
     response_type: 'code',
-    redirect_uri: env.ENTRA_REDIRECT_URI,
+    redirect_uri: config.redirectUri,
     response_mode: 'query',
     scope: SCOPES,
     state,
     code_challenge: codeChallenge,
     code_challenge_method: 'S256'
   });
-  return `${authority}/authorize?${params.toString()}`;
+  return `${authorityFor(config.tenantId)}/authorize?${params.toString()}`;
 };
 
 export interface EntraClaims {
@@ -78,22 +81,24 @@ const decodeIdToken = (idToken: string): IdTokenClaims => {
  */
 export const exchangeCodeForClaims = async ({
   code,
-  codeVerifier
+  codeVerifier,
+  config
 }: {
   code: string;
   codeVerifier: string;
+  config: EntraEffectiveConfig;
 }): Promise<EntraClaims> => {
   const body = new URLSearchParams({
-    client_id: env.ENTRA_CLIENT_ID,
-    client_secret: env.ENTRA_CLIENT_SECRET,
+    client_id: config.clientId,
+    client_secret: config.clientSecret,
     grant_type: 'authorization_code',
     code,
-    redirect_uri: env.ENTRA_REDIRECT_URI,
+    redirect_uri: config.redirectUri,
     code_verifier: codeVerifier,
     scope: SCOPES
   });
 
-  const response = await fetch(`${authority}/token`, {
+  const response = await fetch(`${authorityFor(config.tenantId)}/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body

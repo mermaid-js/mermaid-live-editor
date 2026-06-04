@@ -1,7 +1,8 @@
 import { Router, type Request, type Response } from 'express';
 import { writeAudit } from '../audit';
 import { prisma } from '../db';
-import { env } from '../env';
+import { env, isAdminEmail } from '../env';
+import { getEntraConfig } from '../integrations/entraConfig';
 import { logger } from '../logger';
 import { buildAuthorizeUrl, createPkce, createState, exchangeCodeForClaims } from './entra';
 import {
@@ -21,12 +22,18 @@ export const authRouter: Router = Router();
 const postLoginUrl = (): string => `${env.APP_BASE_URL}${env.POST_LOGIN_PATH}`;
 
 // Kick off the Entra ID PKCE flow.
-authRouter.get('/login', (_req: Request, res: Response) => {
+authRouter.get('/login', async (_req: Request, res: Response) => {
+  const config = await getEntraConfig();
+  if (!config) {
+    res.status(503).send('SSO is not configured.');
+    return;
+  }
+
   const { codeVerifier, codeChallenge } = createPkce();
   const state = createState();
 
   res.cookie(OAUTH_TX_COOKIE, signOAuthTx({ state, codeVerifier }), oauthTxCookieOptions());
-  res.redirect(buildAuthorizeUrl({ state, codeChallenge }));
+  res.redirect(buildAuthorizeUrl({ state, codeChallenge, config }));
 });
 
 // Entra redirects back here with ?code & ?state.
@@ -61,7 +68,13 @@ authRouter.get('/callback', async (req: Request, res: Response) => {
   }
 
   try {
-    const claims = await exchangeCodeForClaims({ code, codeVerifier: tx.codeVerifier });
+    const config = await getEntraConfig();
+    if (!config) {
+      res.status(503).send('SSO is not configured.');
+      return;
+    }
+
+    const claims = await exchangeCodeForClaims({ code, codeVerifier: tx.codeVerifier, config });
 
     const user = await prisma.user.upsert({
       where: { entraOid: claims.oid },
@@ -103,5 +116,5 @@ authRouter.get('/me', requireAuth, async (req: Request, res: Response) => {
     res.status(401).json({ error: 'User not found' });
     return;
   }
-  res.json(user);
+  res.json({ ...user, isAdmin: isAdminEmail(user.email) });
 });

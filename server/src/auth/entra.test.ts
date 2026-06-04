@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
+import type { EntraEffectiveConfig } from '../integrations/entraConfig';
 import { buildAuthorizeUrl, createPkce, createState } from './entra';
+
+const testConfig: EntraEffectiveConfig = {
+  tenantId: 'test-tenant',
+  clientId: 'test-client',
+  clientSecret: 'test-client-secret',
+  redirectUri: 'http://localhost:8787/api/auth/callback',
+  source: 'env'
+};
 
 describe('PKCE helpers', () => {
   it('creates a verifier and matching challenge', () => {
@@ -17,11 +26,16 @@ describe('PKCE helpers', () => {
 
 describe('buildAuthorizeUrl', () => {
   it('includes the PKCE challenge, S256 method and redirect uri', () => {
-    const url = new URL(buildAuthorizeUrl({ state: 'st', codeChallenge: 'ch' }));
+    const url = new URL(
+      buildAuthorizeUrl({ state: 'st', codeChallenge: 'ch', config: testConfig })
+    );
     expect(url.searchParams.get('code_challenge')).toBe('ch');
     expect(url.searchParams.get('code_challenge_method')).toBe('S256');
     expect(url.searchParams.get('state')).toBe('st');
     expect(url.searchParams.get('response_type')).toBe('code');
     expect(url.searchParams.get('redirect_uri')).toBe('http://localhost:8787/api/auth/callback');
+    expect(url.origin + url.pathname).toBe(
+      'https://login.microsoftonline.com/test-tenant/oauth2/v2.0/authorize'
+    );
   });
 });

@@ -9,6 +9,7 @@ import { diagramsRouter } from './diagrams/routes';
 import { env } from './env';
 import { foldersRouter } from './folders/routes';
 import { HttpError } from './http';
+import { integrationsRouter } from './integrations/routes';
 import { logger } from './logger';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -33,6 +34,7 @@ export const createApp = () => {
   app.use('/api/auth', authRouter);
   app.use('/api/folders', foldersRouter);
   app.use('/api/diagrams', diagramsRouter);
+  app.use('/api/integrations', integrationsRouter);
 
   // Unmatched API routes → JSON 404 (don't fall through to the static editor).
   app.use('/api', (_req: Request, res: Response) => {

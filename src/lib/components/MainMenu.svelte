@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
+  import { sessionStore } from '$/util/auth';
   import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
@@ -13,6 +15,7 @@
   import ContrastIcon from '~icons/material-symbols/contrast';
   import MenuIcon from '~icons/material-symbols/menu-rounded';
   import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
+  import IntegrationsIcon from '~icons/material-symbols/settings-outline-rounded';
 
   interface MenuItem {
     label: string;
@@ -21,6 +24,8 @@
     class?: string;
     onclick?: () => void;
     isSectionEnd?: boolean;
+    /** External links open in a new tab; internal links use client-side nav. */
+    external?: boolean;
     renderer: (item: Omit<MenuItem, 'renderer'>) => ReturnType<Snippet>;
   }
 
@@ -52,6 +57,18 @@
       label: 'Community',
       renderer: menuItem
     },
+    ...($sessionStore?.isAdmin
+      ? [
+          {
+            external: false,
+            href: '/integrations',
+            icon: IntegrationsIcon,
+            isSectionEnd: true,
+            label: 'Integrations',
+            renderer: internalMenuItem
+          }
+        ]
+      : []),
     {
       href: '#',
       icon: ContrastIcon,
@@ -65,6 +82,20 @@
   <a
     href={options.href}
     target="_blank"
+    onclick={options.onclick}
+    class={cn(
+      'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-muted',
+      options.isSectionEnd && 'border-border-dark',
+      options.class
+    )}>
+    <options.icon class="size-5" />
+    {options.label}
+  </a>
+{/snippet}
+
+{#snippet internalMenuItem(options: MenuItem)}
+  <a
+    href={`${base}${options.href}`}
     onclick={options.onclick}
     class={cn(
       'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-muted',
