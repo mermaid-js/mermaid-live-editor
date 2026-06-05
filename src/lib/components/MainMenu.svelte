@@ -3,18 +3,14 @@
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
   import { sessionStore } from '$/util/auth';
-  import { env } from '$/util/env';
   import { urlsStore } from '$/util/state';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
   import type { Component, Snippet } from 'svelte';
-  import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import AddIcon from '~icons/material-symbols/add-2-rounded';
-  import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
   import DuplicateIcon from '~icons/material-symbols/content-copy-outline-rounded';
   import ContrastIcon from '~icons/material-symbols/contrast';
   import MenuIcon from '~icons/material-symbols/menu-rounded';
-  import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
   import IntegrationsIcon from '~icons/material-symbols/settings-outline-rounded';
 
   interface MenuItem {
@@ -36,25 +32,6 @@
       icon: DuplicateIcon,
       isSectionEnd: true,
       label: 'Duplicate',
-      renderer: menuItem
-    },
-    {
-      label: 'Mermaid.js',
-      icon: MermaidTailIcon,
-      href: env.docsUrl,
-      renderer: menuItem
-    },
-    {
-      label: 'Documentation',
-      icon: BookIcon,
-      href: `${env.docsUrl}/intro/`,
-      renderer: menuItem
-    },
-    {
-      href: 'https://discord.gg/sKeNQX4Wtj',
-      icon: CommunityIcon,
-      isSectionEnd: true,
-      label: 'Community',
       renderer: menuItem
     },
     ...($sessionStore?.isAdmin
