@@ -49,6 +49,14 @@ DB_PASS="${DB_PASS:-$(openssl rand -base64 24 | tr -dc 'A-Za-z0-9' | head -c 24)
 JWT_SECRET="${JWT_SECRET:-$(openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | head -c 48)}"
 SESSION_TTL_SECONDS="${SESSION_TTL_SECONDS:-3600}"
 
+# Admin allowlist + MCP API access. ADMIN_EMAILS is a comma-separated allowlist
+# for the Integrations page. MCP_API_TOKEN is the static Bearer token used by the
+# MCP server (mcp/); MCP_API_EMAIL is the account it acts as (defaults to the
+# first admin email).
+ADMIN_EMAILS="${ADMIN_EMAILS:-}"
+MCP_API_TOKEN="${MCP_API_TOKEN:-mle_pat_$(openssl rand -base64 32 | tr -dc 'A-Za-z0-9' | head -c 43)}"
+MCP_API_EMAIL="${MCP_API_EMAIL:-${ADMIN_EMAILS%%,*}}"
+
 APP_PORT="${APP_PORT:-8787}"
 APP_DOMAIN="${APP_DOMAIN:-}"     # e.g. "mermaid.yourdomain.com" — public URL via NPM
 NPM_IP="${NPM_IP:-}"             # Nginx Proxy Manager LXC IP — firewall: allow APP_PORT from here only
@@ -204,6 +212,10 @@ ENTRA_TENANT_ID=${ENTRA_TENANT_ID}
 ENTRA_CLIENT_ID=${ENTRA_CLIENT_ID}
 ENTRA_CLIENT_SECRET=${ENTRA_CLIENT_SECRET}
 ENTRA_REDIRECT_URI=${ENTRA_REDIRECT_URI}
+
+ADMIN_EMAILS=${ADMIN_EMAILS}
+MCP_API_TOKEN=${MCP_API_TOKEN}
+MCP_API_EMAIL=${MCP_API_EMAIL}
 EOF
 chmod 600 "${ENV_FILE}"
 

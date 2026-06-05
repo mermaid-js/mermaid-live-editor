@@ -31,7 +31,16 @@ const schema = z.object({
   // Comma-separated allowlist of admin emails. Admins may edit integration
   // settings. Env-only (never editable from the UI) so a bad saved config can
   // never strip admin rights.
-  ADMIN_EMAILS: z.string().optional()
+  ADMIN_EMAILS: z.string().optional(),
+
+  // Static token for non-interactive API access (the MCP server). When set, a
+  // request bearing `Authorization: Bearer <MCP_API_TOKEN>` authenticates as the
+  // MCP_API_EMAIL user. Leave unset/empty to disable the Bearer path entirely.
+  MCP_API_TOKEN: z.string().min(24).optional(),
+  // Email of the existing user that MCP-token requests act as. Defaults to the
+  // first ADMIN_EMAILS entry. The user must have signed in once (so the row
+  // exists) before the token can resolve.
+  MCP_API_EMAIL: z.string().email().optional()
 });
 
 const parsed = schema.safeParse(process.env);
@@ -47,12 +56,16 @@ export const env = parsed.data;
 export const isProd = env.NODE_ENV === 'production';
 
 // Normalized (lowercased, trimmed) set of admin emails parsed from ADMIN_EMAILS.
-const adminEmails = new Set(
-  (env.ADMIN_EMAILS ?? '')
-    .split(',')
-    .map((email) => email.trim().toLowerCase())
-    .filter(Boolean)
-);
+const adminEmailList = (env.ADMIN_EMAILS ?? '')
+  .split(',')
+  .map((email) => email.trim().toLowerCase())
+  .filter(Boolean);
+const adminEmails = new Set(adminEmailList);
 
 export const isAdminEmail = (email: string | null | undefined): boolean =>
   email != null && adminEmails.has(email.trim().toLowerCase());
+
+// The user MCP-token requests authenticate as: MCP_API_EMAIL, falling back to
+// the first admin email. Normalized; undefined if neither is configured.
+export const mcpApiEmail: string | undefined =
+  env.MCP_API_EMAIL?.trim().toLowerCase() ?? adminEmailList[0];
