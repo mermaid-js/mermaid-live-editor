@@ -56,19 +56,24 @@ if (mode.value === 'loader') {
   mode.value = 'manual';
 }
 
+// The persisted slot backing a mode; loader is in-memory and has no slot.
+const slotFor = (m: HistoryType): Persisted<HistoryEntry[]> | null => {
+  switch (m) {
+    case 'auto': {
+      return auto;
+    }
+    case 'manual': {
+      return manual;
+    }
+    default: {
+      return null;
+    }
+  }
+};
+
 export const historyState = {
   get entries(): HistoryEntry[] {
-    switch (mode.value) {
-      case 'auto': {
-        return auto.value;
-      }
-      case 'loader': {
-        return loader;
-      }
-      default: {
-        return manual.value;
-      }
-    }
+    return slotFor(mode.value)?.value ?? loader;
   },
   get loaderEntries(): HistoryEntry[] {
     return loader;
@@ -125,22 +130,8 @@ export const setLoaderEntries = (entries: Optional<HistoryEntry, 'id'>[]): void 
   );
 };
 
-const activeSlot = (): Persisted<HistoryEntry[]> | null => {
-  switch (mode.value) {
-    case 'auto': {
-      return auto;
-    }
-    case 'manual': {
-      return manual;
-    }
-    default: {
-      return null;
-    }
-  }
-};
-
 export const removeEntry = (id: string): void => {
-  const slot = activeSlot();
+  const slot = slotFor(mode.value);
   if (!slot) {
     return;
   }
@@ -149,7 +140,7 @@ export const removeEntry = (id: string): void => {
 };
 
 export const clearActive = (): void => {
-  const slot = activeSlot();
+  const slot = slotFor(mode.value);
   if (!slot) {
     return;
   }
