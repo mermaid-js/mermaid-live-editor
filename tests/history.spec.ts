@@ -1,84 +1,127 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { typeInEditor } from './utils';
 
-test.describe.skip('Save History', () => {
+const config = '{\n  "theme": "default"\n}';
+
+const entry = (id: string, name: string, type: 'manual' | 'auto', label: string) => ({
+  id,
+  name,
+  type,
+  time: Number(id.slice(2)),
+  state: {
+    code: `flowchart TD\n  A[${label}]`,
+    mermaid: config,
+    autoSync: true,
+    updateDiagram: false
+  }
+});
+
+const manualHistory = [
+  entry('m-2', 'hollow-art', 'manual', 'Halloween'),
+  entry('m-1', 'helpful-ocean', 'manual', 'Pumpkin')
+];
+const autoHistory = [
+  entry('a-2', 'barking-dog', 'auto', 'NewYear'),
+  entry('a-1', 'needy-mosquito', 'auto', 'Fireworks')
+];
+
+const openHistory = (page: Page) => page.getByRole('button', { name: 'History' }).click();
+
+test.describe('History', () => {
   test.beforeEach(async ({ page }) => {
+    // Freeze time so auto-save snapshots are deterministic.
     await page.addInitScript(() => {
-      Object.defineProperty(Date, 'now', {
-        value: () => new Date(2022, 0, 1).getTime()
-      });
+      Object.defineProperty(Date, 'now', { value: () => new Date(2022, 0, 1).getTime() });
     });
     await page.goto('/edit');
-    await page.getByText('History').click();
   });
 
-  test('should load history from localstorage', async ({ page }) => {
-    await page.evaluate(() => {
-      localStorage.setItem(
-        'manualHistoryStore',
-        '[{"state":{"code":"graph TD\\n    A[Halloween] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"manual","id":"d7ea820e-21dd-418a-b984-fd58acde09df","name":"hollow-art"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"b749ffc6-522b-4a44-86cf-7c1ffc3146b3","name":"helpful-ocean"}]'
-      );
-      localStorage.setItem(
-        'autoHistoryStore',
-        '[{"state":{"code":"graph TD\\n    A[New Year] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":false},"time":0,"type":"auto","id":"69ea820e-522b-4a44-86cf-fd58acde09df","name":"barking-dog"},{"state":{"code":"graph TD\\n    A[Christmas] -->|Get money| B(Go shopping)","mermaid":"{\\n  \\"theme\\": \\"dark\\"\\n}","autoSync":true,"updateDiagram":true},"time":0,"type":"manual","id":"x749ffc6-21dd-418a-b984-7c1ffc3146b3","name":"needy-mosquito"}]'
-      );
-    });
+  test('loads Saved and Timeline history from localStorage and restores entries', async ({
+    page
+  }) => {
+    await page.evaluate(
+      ([manual, auto]) => {
+        localStorage.setItem('manualHistoryStore', manual);
+        localStorage.setItem('autoHistoryStore', auto);
+      },
+      [JSON.stringify(manualHistory), JSON.stringify(autoHistory)]
+    );
     await page.reload();
-    await page.getByText('History').click();
+    await openHistory(page);
+
+    // Saved tab is active by default.
     await expect(page.locator('#historyList li')).toHaveCount(2);
-    await expect(page.locator('#historyList').getByText('No items in History')).not.toBeVisible();
-    await expect(page.locator('#historyList')).toContainText('helpful-ocean');
     await expect(page.locator('#historyList')).toContainText('hollow-art');
-    await page.getByText('Restore').first().click();
-    await expect(page.locator('#view').getByText('Halloween')).toBeVisible();
-    await page.getByText('Timeline').click();
+    await expect(page.locator('#historyList')).toContainText('helpful-ocean');
 
+    await page.getByRole('button', { name: 'Restore this version' }).first().click();
+    await expect(page.locator('#view')).toContainText('Halloween');
+
+    // Switching to the Timeline tab shows the auto entries only.
+    await page.getByRole('tab', { name: 'Timeline' }).click();
     await expect(page.locator('#historyList li')).toHaveCount(2);
-    await expect(page.locator('#historyList').getByText('No items in History')).not.toBeVisible();
-    await expect(page.locator('#historyList')).toContainText('needy-mosquito');
     await expect(page.locator('#historyList')).toContainText('barking-dog');
-    await page.getByText('Restore').first().click();
-    await expect(page.locator('#view').getByText('New Year')).toBeVisible();
+    await expect(page.locator('#historyList')).toContainText('needy-mosquito');
+    await expect(page.locator('#historyList')).not.toContainText('hollow-art');
+
+    await page.getByRole('button', { name: 'Restore this version' }).first().click();
+    await expect(page.locator('#view')).toContainText('NewYear');
   });
 
-  test.skip('should save when clicked', async ({ page }) => {
-    await expect(page.locator('#historyList li')).toHaveCount(0);
-    await expect(page.locator('#historyList')).toContainText('No items in History');
-    await page.locator('#saveHistory').click();
-    await expect(page.locator('#historyList').getByText('No items in History')).not.toBeVisible();
-    await expect(page.locator('#historyList li')).toHaveCount(1);
-    const dialogPromise = page.waitForEvent('dialog');
-    await page.locator('#saveHistory').click();
-    const dialog = await dialogPromise;
-    expect(dialog.message()).toBe('State already saved.');
-    await dialog.accept();
+  test('keeps the active tab highlighted when switching modes', async ({ page }) => {
+    await openHistory(page);
+    const saved = page.getByRole('tab', { name: 'Saved' });
+    const timeline = page.getByRole('tab', { name: 'Timeline' });
 
-    await typeInEditor(page, '  C --> HistoryTest');
+    await expect(saved).toHaveClass(/border-b-2/);
+    await expect(timeline).not.toHaveClass(/border-b-2/);
+
+    await timeline.click();
+    await expect(timeline).toHaveClass(/border-b-2/);
+    await expect(saved).not.toHaveClass(/border-b-2/);
+  });
+
+  test('saves the current state and reports duplicates', async ({ page }) => {
+    await openHistory(page);
+    await expect(page.locator('#historyList li')).toHaveCount(0);
+
+    await page.locator('#saveHistory').click();
+    await expect(page.locator('#historyList li')).toHaveCount(1);
+
+    // Saving again without changes does not add a duplicate and notifies the user.
+    await page.locator('#saveHistory').click();
+    await expect(page.getByText('State already saved.')).toBeVisible();
+    await expect(page.locator('#historyList li')).toHaveCount(1);
+
+    // A real edit produces a new entry.
+    await typeInEditor(page, '  Z[Extra]', { newline: true });
     await page.locator('#saveHistory').click();
     await expect(page.locator('#historyList li')).toHaveCount(2);
   });
 
-  test.skip('should be able to restore and delete', async ({ page }) => {
+  test('auto-saves to the Timeline only, never the Saved list', async ({ page }) => {
+    await openHistory(page);
     await page.locator('#saveHistory').click();
-    await typeInEditor(page, '  C --> HistoryTest');
-    await expect(page.locator('#historyList').getByText('No items in History')).not.toBeVisible();
     await expect(page.locator('#historyList li')).toHaveCount(1);
-    await expect(page.locator('#view').getByText('HistoryTest')).toBeVisible();
-    await page.getByText('Restore').click();
-    await expect(page.locator('#view').getByText('HistoryTest')).not.toBeVisible();
-    await page.getByText('Delete').click();
-    await expect(page.locator('#historyList li')).toHaveCount(0);
-    await expect(page.locator('#historyList')).toContainText('No items in History');
+
+    await page.getByRole('tab', { name: 'Timeline' }).click();
+    // A manual save must not appear under Timeline.
+    await expect(page.locator('#historyList')).toContainText('No timeline snapshots yet.');
+  });
+
+  test('deletes a single entry and clears all after confirmation', async ({ page }) => {
+    await openHistory(page);
     await page.locator('#saveHistory').click();
-    await typeInEditor(page, '  C --> HistoryTest');
+    await typeInEditor(page, '  Z[Another]', { newline: true });
     await page.locator('#saveHistory').click();
-    await page.locator('#editor').type('ing');
+    await expect(page.locator('#historyList li')).toHaveCount(2);
+
+    await page.getByRole('button', { name: 'Delete this version' }).first().click();
+    await expect(page.locator('#historyList li')).toHaveCount(1);
+
+    page.on('dialog', (dialog) => dialog.accept());
     await page.locator('#clearHistory').click();
-
-    const dialog = await page.waitForEvent('dialog');
-    expect(dialog.message()).toBe('Clear all saved items?');
-    await dialog.accept();
-
-    await expect(page.locator('#historyList')).toContainText('No items in History');
+    await expect(page.locator('#historyList li')).toHaveCount(0);
+    await expect(page.locator('#historyList')).toContainText('No saved states yet.');
   });
 });

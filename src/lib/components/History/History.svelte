@@ -6,7 +6,6 @@
   import { logEvent } from '$lib/util/stats';
   import dayjs from 'dayjs';
   import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
-  import { get } from 'svelte/store';
   import BookmarkIcon from '~icons/material-symbols/bookmark-outline-rounded';
   import TrashAltIcon from '~icons/material-symbols/delete-outline-rounded';
   import DownloadIcon from '~icons/material-symbols/download-rounded';
@@ -20,13 +19,11 @@
   import {
     addManualEntry,
     clearActive,
-    historyModeStore,
-    historyStore,
-    loaderHistoryStore,
+    historyState,
     removeEntry,
     restoreEntries,
     setMode
-  } from './history';
+  } from './historyState.svelte';
 
   dayjs.extend(dayjsRelativeTime);
 
@@ -36,19 +33,21 @@
   ];
   const loaderTab: Tab = { id: 'loader', title: 'Revisions', icon: GitAltIcon };
 
-  const tabs = $derived($loaderHistoryStore.length > 0 ? [loaderTab, ...baseTabs] : baseTabs);
+  const tabs = $derived(
+    historyState.loaderEntries.length > 0 ? [loaderTab, ...baseTabs] : baseTabs
+  );
 
   // Surface revisions once when they first appear; the user can switch away after.
   let revisionsShown = false;
   $effect(() => {
-    if ($loaderHistoryStore.length > 0 && !revisionsShown) {
+    if (historyState.loaderEntries.length > 0 && !revisionsShown) {
       revisionsShown = true;
       setMode('loader');
     }
   });
 
   const emptyMessage = $derived(
-    $historyModeStore === 'auto'
+    historyState.mode === 'auto'
       ? 'No timeline snapshots yet.\nThe Timeline is saved automatically every minute.'
       : 'No saved states yet.\nClick the Save button to bookmark the current diagram and restore it later.'
   );
@@ -58,7 +57,7 @@
   };
 
   const downloadHistory = () => {
-    const data = get(historyStore);
+    const data = historyState.entries;
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -102,7 +101,7 @@
   };
 </script>
 
-<Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs} activeTabID={$historyModeStore}>
+<Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs} activeTabID={historyState.mode}>
   {#snippet actions()}
     <div class="flex items-center gap-2">
       <Button
@@ -111,7 +110,7 @@
         id="uploadHistory"
         onclick={uploadHistory}
         title="Upload history"><UploadIcon /></Button>
-      {#if $historyStore.length > 0}
+      {#if historyState.entries.length > 0}
         <Button
           id="downloadHistory"
           size="icon"
@@ -126,7 +125,7 @@
         variant="ghost"
         onclick={saveHistory}
         title="Save current state"><SaveIcon /></Button>
-      {#if $historyModeStore !== 'loader'}
+      {#if historyState.mode !== 'loader'}
         <Button
           id="clearHistory"
           size="icon"
@@ -138,8 +137,8 @@
     </div>
   {/snippet}
   <ul class="flex h-full min-w-fit flex-col gap-2 overflow-auto p-2" id="historyList">
-    {#if $historyStore.length > 0}
-      {#each $historyStore as { id, state, time, name, url, type } (id)}
+    {#if historyState.entries.length > 0}
+      {#each historyState.entries as { id, state, time, name, url, type } (id)}
         <li class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
@@ -161,7 +160,11 @@
               <span class="text-sm whitespace-nowrap text-primary-foreground/50">
                 {dayjs(time).fromNow()}
               </span>
-              <Button size="icon" variant="ghost" onclick={() => restoreHistoryItem(state)}>
+              <Button
+                size="icon"
+                variant="ghost"
+                title="Restore this version"
+                onclick={() => restoreHistoryItem(state)}>
                 <UndoIcon />
               </Button>
               {#if type !== 'loader'}
@@ -169,6 +172,7 @@
                   size="icon"
                   variant="ghost"
                   class="hover:text-destructive"
+                  title="Delete this version"
                   onclick={() => removeEntry(id)}>
                   <TrashAltIcon />
                 </Button>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { addLoaderEntry } from '$lib/components/History/history';
+import { setLoaderEntries } from '$lib/components/History/historyState.svelte';
 import type { State } from '$lib/types';
 import { defaultState } from '$lib/util/state';
 import { fetchJSON, fetchText } from '$lib/util/util';
@@ -117,14 +117,16 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
     throw new Error('Invalid gist provided');
   }
   const state = getStateFromGist(entry, gistURL);
-  for (const gist of gistHistory) {
-    addLoaderEntry({
-      name: `${gist.author} v${gist.version}`,
-      state: getStateFromGist(gist),
-      time: gist.time,
-      type: 'loader',
-      url: gist.url
-    });
-  }
+  setLoaderEntries(
+    gistHistory
+      .map((gist) => ({
+        name: `${gist.author} v${gist.version}`,
+        state: getStateFromGist(gist),
+        time: gist.time,
+        type: 'loader' as const,
+        url: gist.url
+      }))
+      .reverse()
+  );
   return state;
 };

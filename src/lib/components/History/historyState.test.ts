@@ -1,29 +1,27 @@
 import type { HistoryEntry } from '$lib/types';
 import { defaultState, inputStateStore } from '$lib/util/state';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { get } from 'svelte/store';
 import {
   addAutoEntry,
-  addLoaderEntry,
   addManualEntry,
   clearActive,
-  historyStore,
+  historyState,
   injectHistoryIDs,
-  loaderHistoryStore,
   removeEntry,
   restoreEntries,
+  setLoaderEntries,
   setMode,
   startAutoSave,
   stateKey,
   stopAutoSave
-} from './history';
+} from './historyState.svelte';
 
 const codeState = (code: string) => ({ ...defaultState, code });
 
 /** Read the entries currently shown for a given mode. */
 const entriesFor = (mode: 'auto' | 'manual' | 'loader'): HistoryEntry[] => {
   setMode(mode);
-  return get(historyStore);
+  return historyState.entries;
 };
 
 beforeEach(() => {
@@ -32,7 +30,7 @@ beforeEach(() => {
   clearActive();
   setMode('auto');
   clearActive();
-  loaderHistoryStore.set([]);
+  setLoaderEntries([]);
   setMode('manual');
 });
 
@@ -138,21 +136,21 @@ describe('addAutoEntry', () => {
   });
 });
 
-describe('historyStore', () => {
+describe('historyState.entries', () => {
   it('reflects the active mode', () => {
     addManualEntry(codeState('manual-code'));
     addAutoEntry(codeState('auto-code'));
 
     setMode('manual');
-    expect(get(historyStore)).toHaveLength(1);
-    expect(get(historyStore)[0].state.code).toBe('manual-code');
+    expect(historyState.entries).toHaveLength(1);
+    expect(historyState.entries[0].state.code).toBe('manual-code');
 
     setMode('auto');
-    expect(get(historyStore)).toHaveLength(1);
-    expect(get(historyStore)[0].state.code).toBe('auto-code');
+    expect(historyState.entries).toHaveLength(1);
+    expect(historyState.entries[0].state.code).toBe('auto-code');
 
     setMode('loader');
-    expect(get(historyStore)).toHaveLength(0);
+    expect(historyState.entries).toHaveLength(0);
   });
 });
 
@@ -161,10 +159,10 @@ describe('removeEntry / clearActive', () => {
     addManualEntry(codeState('graph TD\n A-->B'));
     addManualEntry(codeState('graph TD\n A-->C'));
     setMode('manual');
-    const target = get(historyStore)[1].id;
+    const target = historyState.entries[1].id;
     removeEntry(target);
-    expect(get(historyStore)).toHaveLength(1);
-    expect(get(historyStore).some((e) => e.id === target)).toBe(false);
+    expect(historyState.entries).toHaveLength(1);
+    expect(historyState.entries.some((e) => e.id === target)).toBe(false);
   });
 
   it('clears all entries in the active store only', () => {
@@ -177,22 +175,30 @@ describe('removeEntry / clearActive', () => {
   });
 
   it('does nothing in loader mode', () => {
-    addLoaderEntry({ name: 'rev', state: defaultState, time: 1, type: 'loader', url: 'http://x' });
+    setLoaderEntries([
+      { name: 'rev', state: defaultState, time: 1, type: 'loader', url: 'http://x' }
+    ]);
     setMode('loader');
     clearActive();
-    expect(get(historyStore)).toHaveLength(1);
+    expect(historyState.entries).toHaveLength(1);
   });
 });
 
-describe('addLoaderEntry', () => {
-  it('prepends entries to the in-memory loader store', () => {
-    addLoaderEntry({ name: 'v1', state: defaultState, time: 1, type: 'loader', url: 'http://x/1' });
-    addLoaderEntry({ name: 'v2', state: defaultState, time: 2, type: 'loader', url: 'http://x/2' });
+describe('setLoaderEntries', () => {
+  it('replaces the in-memory revisions and assigns ids', () => {
+    setLoaderEntries([
+      { name: 'v1', state: defaultState, time: 1, type: 'loader', url: 'http://x/1' },
+      { name: 'v2', state: defaultState, time: 2, type: 'loader', url: 'http://x/2' }
+    ]);
     setMode('loader');
-    const entries = get(historyStore);
-    expect(entries).toHaveLength(2);
-    expect(entries[0].name).toBe('v2');
-    expect(entries.every((e) => e.id)).toBe(true);
+    expect(historyState.entries).toHaveLength(2);
+    expect(historyState.entries.every((e) => e.id)).toBe(true);
+
+    setLoaderEntries([
+      { name: 'only', state: defaultState, time: 3, type: 'loader', url: 'http://x/3' }
+    ]);
+    expect(historyState.entries).toHaveLength(1);
+    expect(historyState.entries[0].name).toBe('only');
   });
 });
 
@@ -254,6 +260,8 @@ describe('injectHistoryIDs migration', () => {
     const auto = JSON.parse(
       window.localStorage.getItem('autoHistoryStore') ?? '[]'
     ) as HistoryEntry[];
+    expect(manual).toHaveLength(1);
+    expect(auto).toHaveLength(1);
     expect(manual.every(({ id }) => id !== undefined)).toBe(true);
     expect(auto.every(({ id }) => id !== undefined)).toBe(true);
   });
