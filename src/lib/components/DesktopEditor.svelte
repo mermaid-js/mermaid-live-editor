@@ -27,6 +27,7 @@
     lineNumbersMinChars: 4
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
+  let isUpdatingFromState = false;
   let showPopup = $state(false);
   let popupPosition = $state({ top: 0, lineNumber: 0 });
   let decorationsCollection: monaco.editor.IEditorDecorationsCollection | undefined;
@@ -142,7 +143,7 @@
 
     editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      if (!newText || currentText === newText || isFlush) {
+      if (!newText || currentText === newText || isFlush || isUpdatingFromState) {
         return;
       }
       currentText = newText;
@@ -169,9 +170,21 @@
       // Update editor text if it's different
       const newText = editorMode === 'code' ? code : mermaid;
       if (newText !== currentText) {
-        editor.setScrollTop(0);
-        editor.setValue(newText);
-        currentText = newText;
+        isUpdatingFromState = true;
+        try {
+          editor.setScrollTop(0);
+          editor.pushUndoStop();
+          editor.executeEdits('updateCode', [
+            {
+              range: model.getFullModelRange(),
+              text: newText
+            }
+          ]);
+          editor.pushUndoStop();
+          currentText = newText;
+        } finally {
+          isUpdatingFromState = false;
+        }
         renderAIPromptGutterGlyphIcon();
       }
 
