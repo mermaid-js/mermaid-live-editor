@@ -139,6 +139,16 @@ export const removeEntry = (id: string): void => {
   logEvent('history', { action: 'clear', type: 'single' });
 };
 
+export const renameEntry = (id: string, name: string): void => {
+  const trimmed = name.trim();
+  const slot = slotFor(mode.value);
+  if (!trimmed || !slot) {
+    return;
+  }
+  slot.value = slot.value.map((entry) => (entry.id === id ? { ...entry, name: trimmed } : entry));
+  logEvent('history', { action: 'rename' });
+};
+
 export const clearActive = (): void => {
   const slot = slotFor(mode.value);
   if (!slot) {

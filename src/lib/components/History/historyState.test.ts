@@ -8,6 +8,7 @@ import {
   historyState,
   injectHistoryIDs,
   removeEntry,
+  renameEntry,
   restoreEntries,
   setLoaderEntries,
   setMode,
@@ -181,6 +182,51 @@ describe('removeEntry / clearActive', () => {
     setMode('loader');
     clearActive();
     expect(historyState.entries).toHaveLength(1);
+  });
+});
+
+describe('renameEntry', () => {
+  it('renames an entry in the active (manual) store', () => {
+    addManualEntry(codeState('graph TD\n A-->B'));
+    setMode('manual');
+    renameEntry(historyState.entries[0].id, 'my-custom-name');
+    expect(historyState.entries[0].name).toBe('my-custom-name');
+  });
+
+  it('renames an entry in the auto store', () => {
+    addAutoEntry(codeState('graph TD\n A-->B'));
+    setMode('auto');
+    renameEntry(historyState.entries[0].id, 'auto-renamed');
+    expect(historyState.entries[0].name).toBe('auto-renamed');
+  });
+
+  it('only renames the targeted entry and trims the name', () => {
+    addManualEntry(codeState('graph TD\n A-->B'));
+    addManualEntry(codeState('graph TD\n A-->C'));
+    setMode('manual');
+    const firstName = historyState.entries[0].name;
+    const targetId = historyState.entries[1].id;
+    renameEntry(targetId, '  trimmed-name  ');
+    expect(historyState.entries[0].name).toBe(firstName);
+    expect(historyState.entries[1].name).toBe('trimmed-name');
+  });
+
+  it('ignores blank names', () => {
+    addManualEntry(codeState('graph TD\n A-->B'));
+    setMode('manual');
+    const before = historyState.entries[0].name;
+    renameEntry(historyState.entries[0].id, '   ');
+    expect(historyState.entries[0].name).toBe(before);
+  });
+
+  it('does nothing in loader mode', () => {
+    setLoaderEntries([
+      { name: 'rev', state: defaultState, time: 1, type: 'loader', url: 'http://x' }
+    ]);
+    setMode('loader');
+    const id = historyState.entries[0].id;
+    renameEntry(id, 'changed');
+    expect(historyState.entries[0].name).toBe('rev');
   });
 });
 
