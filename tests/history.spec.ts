@@ -67,6 +67,25 @@ test.describe('History', () => {
     await expect(page.locator('#view')).toContainText('NewYear');
   });
 
+  test('each entry has a copyable link that opens it in a new tab', async ({ page }) => {
+    await page.evaluate(
+      (manual) => localStorage.setItem('manualHistoryStore', manual),
+      JSON.stringify(manualHistory)
+    );
+    await page.reload();
+    await openHistory(page);
+
+    // It is a real link (so it can be copied / opened in a new tab), not a button.
+    const link = page.getByRole('link', { name: 'Open in new tab' }).first();
+    await expect(link).toHaveAttribute('target', '_blank');
+    const href = await link.getAttribute('href');
+    expect(href).toContain('/edit#pako:');
+
+    // Following it loads that entry's diagram.
+    await page.goto(href ?? '');
+    await expect(page.locator('#view')).toContainText('Halloween');
+  });
+
   test('keeps the active tab highlighted when switching modes', async ({ page }) => {
     await openHistory(page);
     const saved = page.getByRole('tab', { name: 'Saved' });

@@ -2,6 +2,7 @@
   import Card from '$lib/components/Card/Card.svelte';
   import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
   import { notify, prompt } from '$lib/util/notify';
+  import { serializeState } from '$lib/util/serde';
   import { inputStateStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import dayjs from 'dayjs';
@@ -14,6 +15,7 @@
   import UploadIcon from '~icons/material-symbols/upload-rounded';
   import HistoryIcon from '~icons/mdi/clock-outline';
   import GitAltIcon from '~icons/mdi/git';
+  import OpenInNewIcon from '~icons/material-symbols/open-in-new-rounded';
   import { Button } from '../ui/button';
   import { Separator } from '../ui/separator';
   import {
@@ -99,6 +101,10 @@
   const restoreHistoryItem = (state: State): void => {
     inputStateStore.set({ ...state, updateDiagram: true });
   };
+
+  // Absolute editor URL for an entry, so the link can be opened in a new tab or copied.
+  const entryUrl = (state: State): string =>
+    `${window.location.origin}${window.location.pathname}#${serializeState(state)}`;
 </script>
 
 <Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs} activeTabID={historyState.mode}>
@@ -160,6 +166,15 @@
               <span class="text-sm whitespace-nowrap text-primary-foreground/50">
                 {dayjs(time).fromNow()}
               </span>
+              <Button
+                href={entryUrl(state)}
+                target="_blank"
+                rel="noopener"
+                size="icon"
+                variant="ghost"
+                title="Open in new tab">
+                <OpenInNewIcon />
+              </Button>
               <Button
                 size="icon"
                 variant="ghost"
