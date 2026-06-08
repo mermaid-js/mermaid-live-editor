@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { addHistoryEntry } from '$lib/components/History/history';
+import { addLoaderEntry } from '$lib/components/History/history';
 import type { State } from '$lib/types';
 import { defaultState } from '$lib/util/state';
 import { fetchJSON, fetchText } from '$lib/util/util';
@@ -118,7 +118,7 @@ export const loadGistData = async (gistURL: string): Promise<State> => {
   }
   const state = getStateFromGist(entry, gistURL);
   for (const gist of gistHistory) {
-    addHistoryEntry({
+    addLoaderEntry({
       name: `${gist.author} v${gist.version}`,
       state: getStateFromGist(gist),
       time: gist.time,

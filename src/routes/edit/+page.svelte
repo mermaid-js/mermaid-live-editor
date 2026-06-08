@@ -5,6 +5,7 @@
   import Editor from '$/components/Editor.svelte';
   import EnhancedEditsButton from '$/components/EnhancedEditsButton.svelte';
   import History from '$/components/History/History.svelte';
+  import { startAutoSave } from '$/components/History/history';
   import McWrapper from '$/components/McWrapper.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import EditorChooserModal from '$/components/migration/EditorChooserModal.svelte';
@@ -62,6 +63,9 @@
       logEvent('pwaInstalled', { isMobile });
     });
   });
+
+  // Record the Timeline for the whole session, not just while the panel is open.
+  onMount(() => startAutoSave());
 
   let isHistoryOpen = $state(false);
 

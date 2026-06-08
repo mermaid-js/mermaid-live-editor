@@ -2,11 +2,10 @@
   import Card from '$lib/components/Card/Card.svelte';
   import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
   import { notify, prompt } from '$lib/util/notify';
-  import { getStateString, inputStateStore } from '$lib/util/state';
+  import { inputStateStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import dayjs from 'dayjs';
   import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
-  import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import BookmarkIcon from '~icons/material-symbols/bookmark-outline-rounded';
   import TrashAltIcon from '~icons/material-symbols/delete-outline-rounded';
@@ -19,35 +18,44 @@
   import { Button } from '../ui/button';
   import { Separator } from '../ui/separator';
   import {
-    addHistoryEntry,
-    clearHistoryData,
-    getPreviousState,
+    addManualEntry,
+    clearActive,
     historyModeStore,
     historyStore,
     loaderHistoryStore,
-    restoreHistory
+    removeEntry,
+    restoreEntries,
+    setMode
   } from './history';
 
   dayjs.extend(dayjsRelativeTime);
 
-  const HISTORY_SAVE_INTERVAL = 60_000;
+  const baseTabs: Tab[] = [
+    { id: 'manual', title: 'Saved', icon: BookmarkIcon },
+    { id: 'auto', title: 'Timeline', icon: HistoryIcon }
+  ];
+  const loaderTab: Tab = { id: 'loader', title: 'Revisions', icon: GitAltIcon };
+
+  const tabs = $derived($loaderHistoryStore.length > 0 ? [loaderTab, ...baseTabs] : baseTabs);
+
+  // Surface revisions once when they first appear; the user can switch away after.
+  let revisionsShown = false;
+  $effect(() => {
+    if ($loaderHistoryStore.length > 0 && !revisionsShown) {
+      revisionsShown = true;
+      setMode('loader');
+    }
+  });
+
+  const emptyMessage = $derived(
+    $historyModeStore === 'auto'
+      ? 'No timeline snapshots yet.\nThe Timeline is saved automatically every minute.'
+      : 'No saved states yet.\nClick the Save button to bookmark the current diagram and restore it later.'
+  );
 
   const tabSelectHandler = (tab: Tab) => {
-    historyModeStore.set(tab.id as HistoryType);
+    setMode(tab.id as HistoryType);
   };
-
-  let tabs: Tab[] = $state([
-    {
-      id: 'manual',
-      title: 'Saved',
-      icon: BookmarkIcon
-    },
-    {
-      id: 'auto',
-      title: 'Timeline',
-      icon: HistoryIcon
-    }
-  ]);
 
   const downloadHistory = () => {
     const data = get(historyStore);
@@ -58,9 +66,7 @@
     a.download = `mermaid-history-${dayjs().format('YYYY-MM-DD-HHmmss')}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    logEvent('history', {
-      action: 'download'
-    });
+    logEvent('history', { action: 'download' });
   };
 
   const uploadHistory = () => {
@@ -73,59 +79,30 @@
         return;
       }
       const data: HistoryEntry[] = JSON.parse(await file.text());
-      restoreHistory(data);
+      const { restored, invalid, duplicates } = restoreEntries(data);
+      notify(`${restored} restored, ${duplicates} duplicate, ${invalid} invalid.`);
     });
     input.click();
   };
 
-  const saveHistory = (auto = false) => {
-    const currentState: string = getStateString();
-    const previousState: string = getPreviousState(auto);
-    if (previousState !== currentState) {
-      addHistoryEntry({
-        state: $inputStateStore,
-        time: Date.now(),
-        type: auto ? 'auto' : 'manual'
-      });
-    } else if (!auto) {
+  const saveHistory = () => {
+    if (!addManualEntry($inputStateStore)) {
       notify('State already saved.');
     }
   };
 
-  const clearHistory = (id?: string): void => {
-    if (!id && !prompt('Clear all saved items?')) {
-      return;
+  const clearAll = () => {
+    if (prompt('Clear all saved items?')) {
+      clearActive();
     }
-    clearHistoryData(id);
   };
 
   const restoreHistoryItem = (state: State): void => {
     inputStateStore.set({ ...state, updateDiagram: true });
   };
-
-  onMount(() => {
-    historyModeStore.set('manual');
-    setInterval(() => {
-      saveHistory(true);
-    }, HISTORY_SAVE_INTERVAL);
-  });
-
-  loaderHistoryStore.subscribe((entries) => {
-    if (entries.length > 0 && tabs.length === 2) {
-      tabs = [
-        {
-          id: 'loader',
-          title: 'Revisions',
-          icon: GitAltIcon
-        },
-        ...tabs
-      ];
-      historyModeStore.set('loader');
-    }
-  });
 </script>
 
-<Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs}>
+<Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs} activeTabID={$historyModeStore}>
   {#snippet actions()}
     <div class="flex items-center gap-2">
       <Button
@@ -147,7 +124,7 @@
         id="saveHistory"
         size="icon"
         variant="ghost"
-        onclick={() => saveHistory()}
+        onclick={saveHistory}
         title="Save current state"><SaveIcon /></Button>
       {#if $historyModeStore !== 'loader'}
         <Button
@@ -155,7 +132,7 @@
           size="icon"
           variant="ghost"
           class="hover:text-destructive"
-          onclick={() => clearHistory()}
+          onclick={clearAll}
           title="Delete all saved states"><TrashAltIcon /></Button>
       {/if}
     </div>
@@ -192,7 +169,7 @@
                   size="icon"
                   variant="ghost"
                   class="hover:text-destructive"
-                  onclick={() => clearHistory(id)}>
+                  onclick={() => removeEntry(id)}>
                   <TrashAltIcon />
                 </Button>
               {/if}
@@ -202,11 +179,7 @@
         </li>
       {/each}
     {:else}
-      <div class="m-2 text-center">
-        No items in History<br />
-        Click the Save button to save current state and restore it later.<br />
-        Timeline will automatically be saved every minute.
-      </div>
+      <div class="m-2 text-center whitespace-pre-line">{emptyMessage}</div>
     {/if}
   </ul>
 </Card>
