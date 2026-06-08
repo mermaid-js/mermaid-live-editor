@@ -241,6 +241,15 @@ describe('restoreEntries', () => {
     ]);
     expect(entriesFor('manual').map((e) => e.time)).toEqual([30, 20, 10]);
   });
+
+  it('restores entries whose time is 0 (epoch) instead of treating them as invalid', () => {
+    const result = restoreEntries([
+      { id: 'm0', name: 'epoch', state: defaultState, time: 0, type: 'manual' }
+    ]);
+    expect(result.restored).toBe(1);
+    expect(result.invalid).toBe(0);
+    expect(entriesFor('manual')).toHaveLength(1);
+  });
 });
 
 describe('injectHistoryIDs migration', () => {

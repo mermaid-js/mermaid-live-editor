@@ -105,6 +105,11 @@
   // Absolute editor URL for an entry, so the link can be opened in a new tab or copied.
   const entryUrl = (state: State): string =>
     `${window.location.origin}${window.location.pathname}#${serializeState(state)}`;
+
+  // Serialize each entry's URL once per change rather than per row on every render.
+  const entriesWithUrl = $derived(
+    historyState.entries.map((entry) => ({ ...entry, openUrl: entryUrl(entry.state) }))
+  );
 </script>
 
 <Card onselect={tabSelectHandler} isOpen isClosable={false} {tabs} activeTabID={historyState.mode}>
@@ -143,8 +148,8 @@
     </div>
   {/snippet}
   <ul class="flex h-full min-w-fit flex-col gap-2 overflow-auto p-2" id="historyList">
-    {#if historyState.entries.length > 0}
-      {#each historyState.entries as { id, state, time, name, url, type } (id)}
+    {#if entriesWithUrl.length > 0}
+      {#each entriesWithUrl as { id, state, time, name, url, type, openUrl } (id)}
         <li class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
@@ -167,7 +172,7 @@
                 {dayjs(time).fromNow()}
               </span>
               <Button
-                href={entryUrl(state)}
+                href={openUrl}
                 target="_blank"
                 rel="noopener"
                 size="icon"

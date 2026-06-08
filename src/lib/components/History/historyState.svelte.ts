@@ -158,7 +158,7 @@ export const clearActive = (): void => {
 };
 
 const validateEntry = (entry: HistoryEntry): boolean =>
-  Boolean(entry && entry.type && entry.state && entry.time);
+  Boolean(entry && entry.type && entry.state) && typeof entry.time === 'number';
 
 export interface RestoreResult {
   restored: number;
