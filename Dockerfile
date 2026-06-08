@@ -1,4 +1,4 @@
-FROM docker.io/library/node:22.15.0-alpine3.21 AS mermaid-live-editor-dependencies
+FROM docker.io/library/node:24.16.0-alpine3.22 AS mermaid-live-editor-dependencies
 
 RUN apk --no-cache add build-base git python3 && \
     rm -rf /var/cache/apk/*
@@ -21,6 +21,7 @@ ARG MERMAID_DOMAIN
 ARG MERMAID_IS_ENABLED_MERMAID_CHART_LINKS
 ARG MERMAID_PRIVACY_POLICY_URL
 ARG MERMAID_HIDE_PRIVACY_POLICY
+ARG MERMAID_BASE_PATH
 
 COPY . ./
 

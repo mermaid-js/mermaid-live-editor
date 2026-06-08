@@ -1,3 +1,5 @@
+import { resolve } from '$app/paths';
+
 /**
  * Build the redirect URL for legacy root-path links.
  * Extracts the route and fragment from the old hash-based URL format,
@@ -11,5 +13,5 @@ export const buildRedirectUrl = (location: Location): string => {
     path = parts[1];
     fragment = `#${parts[2]}`;
   }
-  return `/${path}${location.search}${fragment}`;
+  return `${resolve(`/${path}`, {})}${location.search}${fragment}`;
 };

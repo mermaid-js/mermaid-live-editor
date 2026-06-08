@@ -24,6 +24,11 @@ export const parse = async (code: string) => {
   return await mermaid.parse(code);
 };
 
+/**
+ * @see https://mermaid.js.org/config/schema-docs/config.html
+ */
+export const defaultMermaidConfig = mermaid.mermaidAPI.defaultConfig ?? {};
+
 export const standardizeDiagramType = (diagramType: string) => {
   switch (diagramType) {
     case 'class':

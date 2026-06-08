@@ -1,5 +1,5 @@
 import type { Loader, State } from '$lib/types';
-import { defaultState, updateCodeStore } from '$lib/util/state';
+import { defaultState, sanitizeConfig, updateCodeStore } from '$lib/util/state';
 import { fetchText } from '$lib/util/util';
 import { loadGistData } from './gist';
 
@@ -50,6 +50,7 @@ export const loadDataFromUrl = async (): Promise<void> => {
     }
   }
   if (loaded) {
+    state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid);
     updateCodeStore({
       ...state,
       updateDiagram: true

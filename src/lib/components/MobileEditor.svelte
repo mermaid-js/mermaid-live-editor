@@ -16,11 +16,17 @@
   let editorView: EditorView | undefined;
   let editorContainer: HTMLDivElement;
   let currentText = $state('');
+  const themeCompartment = new Compartment();
 
   const { onUpdate }: EditorProps = $props();
 
+  $effect(() => {
+    editorView?.dispatch({
+      effects: themeCompartment.reconfigure(mode.current === 'dark' ? vsCodeDark : vsCodeLight)
+    });
+  });
+
   onMount(() => {
-    const themeCompartment = new Compartment();
     const languageCompartment = new Compartment();
 
     editorView = new EditorView({
@@ -56,12 +62,6 @@
       parent: editorContainer
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
-      editorView?.dispatch({
-        effects: themeCompartment.reconfigure(mode === 'dark' ? vsCodeDark : vsCodeLight)
-      });
-    });
-
     const unsubscribeState = stateStore.subscribe(({ editorMode, code, mermaid }) => {
       const text = editorMode === 'code' ? code : mermaid;
       if (currentText === text || !editorView) {
@@ -89,7 +89,6 @@
     });
 
     return () => {
-      unsubscribeMode();
       unsubscribeState();
       editorView?.destroy();
     };

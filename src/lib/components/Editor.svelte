@@ -24,7 +24,7 @@
 
   const showErrorDebounced = debounce(() => {
     showError = true;
-  }, 5000);
+  }, 3000);
 
   $effect(() => {
     if ($stateStore.error) {

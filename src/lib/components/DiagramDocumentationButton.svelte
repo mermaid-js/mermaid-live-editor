@@ -97,7 +97,9 @@
       return { key: '', url: docURLBase };
     }
     const key = standardizeDiagramType(diagramType);
-    const docConfig = docMap[key] ?? { code: '' };
+    const docConfig: { code: string; config?: string } = docMap[key as keyof typeof docMap] ?? {
+      code: ''
+    };
     const url = docURLBase + (docConfig[editorMode] ?? docConfig.code ?? '');
     return { key, url };
   });

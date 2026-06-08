@@ -35,7 +35,7 @@
 
   const samples = { ...getSampleDiagrams(), ...extras } as const;
   const loadSampleDiagram = (diagramType: string): void => {
-    updateCode(samples[diagramType], {
+    updateCode(samples[diagramType as keyof typeof samples], {
       resetPanZoom: true,
       updateDiagram: true
     });

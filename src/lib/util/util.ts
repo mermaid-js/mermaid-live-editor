@@ -42,21 +42,28 @@ export const MCBaseURL = env.isEnabledMermaidChartLinks
   ? 'https://mermaid.ai' // 'http://localhost:5174'
   : 'https://example.com';
 
-export const getCheckoutUrl = ({
+const buildUtmParams = ({
   utmCampaign,
   utmMedium
 }: {
   utmCampaign: string;
   utmMedium: string;
-}): string => {
-  const params = new URLSearchParams({
-    coupon: 'arDfyFT8',
-    tier: 'plus',
+}): URLSearchParams =>
+  new URLSearchParams({
     utm_campaign: utmCampaign,
     utm_medium: utmMedium,
     utm_source: getUTMSource()
   });
+
+export const getCheckoutUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  const params = buildUtmParams(utm);
+  params.set('coupon', 'arDfyFT8');
+  params.set('tier', 'plus');
   return `${MCBaseURL}/app/user/billing/checkout?${params.toString()}`;
+};
+
+export const getMermaidAiLiveUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  return `${MCBaseURL}/live?${buildUtmParams(utm).toString()}`;
 };
 
 let count = 0;

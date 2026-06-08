@@ -1,5 +1,5 @@
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
-import { debounce } from 'lodash-es';
+import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
@@ -8,7 +8,7 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { parse } from './mermaid';
+import { defaultMermaidConfig, parse } from './mermaid';
 import { localStorage, persist } from './persist';
 import { deserializeState, pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
@@ -80,7 +80,7 @@ const processState = async (state: State) => {
     processed.error = error as Error;
     errorDebug();
     console.error(error);
-    if ('hash' in error) {
+    if (error && typeof error === 'object' && 'hash' in error) {
       try {
         let errorString = processed.error.toString();
         const errorLineText = extractErrorLineText(errorString);
@@ -137,14 +137,25 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
       ? `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`
       : '',
     mermaidChart: ({
-      medium
+      medium,
+      campaign
     }: {
-      medium: 'ai_repair' | 'main_menu' | 'save_diagram' | 'share' | 'vibe_diagramming';
+      medium:
+        | 'ai_edit'
+        | 'ai_repair'
+        | 'main_menu'
+        | 'save_diagram'
+        | 'share'
+        | 'vibe_diagramming'
+        | 'visual_edit'
+        | 'voice_edit';
+      campaign?: string;
     }) => {
       const utmSource = getUTMSource();
       const params = new URLSearchParams({
         utm_source: utmSource,
-        utm_medium: medium
+        utm_medium: medium,
+        ...(campaign ? { utm_campaign: campaign } : {})
       }).toString();
       return {
         save: `${MCBaseURL}/app/plugin/save?state=${serialized}&${params}`,
@@ -160,28 +171,91 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   };
 });
 
+/**
+ * Gets a list of paths that contain unsafe keys which might pose security risks.
+ *
+ * @param object - The object to check for unsafe keys.
+ * @param unsafeKeys - List of unsafe keys.
+ * @param path - The current path being checked (used for recursion).
+ * @returns List of unsafe paths.
+ */
+function getUnsafePaths(object: object, unsafeKeys: string[], path: string[] = []) {
+  const unsafePaths = new Array<string[]>();
+  for (const key of unsafeKeys) {
+    // Copied from mermaid's sanitize function in case there's non-enumerable keys
+    if (Object.hasOwn(object, key)) {
+      unsafePaths.push([...path, key]);
+      continue;
+    }
+  }
+  Object.keys(object).forEach((key) => {
+    const value = (object as Record<string, unknown>)[key];
+    const currentPath = [...path, key];
+    // Prototype pollution check.
+    if (key.startsWith('__')) {
+      unsafePaths.push(currentPath);
+      return;
+    }
+    if (typeof value === 'object' && value !== null) {
+      unsafePaths.push(...getUnsafePaths(value as object, unsafeKeys, currentPath));
+    } else if (
+      typeof value === 'string' &&
+      // XSS prevention checks -- See mermaid `sanitize` function for reference.
+      (value.includes('<') || value.includes('>') || value.includes('url(data:'))
+    ) {
+      unsafePaths.push(currentPath);
+    }
+  });
+  return unsafePaths;
+}
+
+/**
+ * Asks the user for confirmation if the config contains settings that might
+ * pose security risks, such as a relaxed `securityLevel`.
+ *
+ * @param config - The Mermaid configuration to sanitize.
+ * @returns The sanitized Mermaid configuration as a JSON string.
+ */
+export const sanitizeConfig = (config: string | MermaidConfig) => {
+  const mermaidConfig: MermaidConfig =
+    typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
+
+  const secureKeys = defaultMermaidConfig.secure ?? [];
+  const unsafePaths = getUnsafePaths(mermaidConfig, secureKeys).filter((path) => {
+    return lodashGet(mermaidConfig, path) !== lodashGet(defaultMermaidConfig, path);
+  });
+
+  if (
+    unsafePaths.length > 0 &&
+    confirm(
+      `Removing ${unsafePaths
+        .map((unsafePath) => {
+          return `${JSON.stringify(unsafePath.join('.'))}: ${JSON.stringify(lodashGet(mermaidConfig, unsafePath))}`;
+        })
+        .join(
+          ',\n'
+        )} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+    )
+  ) {
+    for (const unsafePath of unsafePaths) {
+      const pathToObject = [...unsafePath];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know this exists since it was found in `getUnsafePaths`
+      const lastKey = pathToObject.pop()!;
+      const lastObject =
+        pathToObject.length === 0 ? mermaidConfig : lodashGet(mermaidConfig, pathToObject);
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- Copied from mermaid code
+      delete lastObject[lastKey];
+    }
+  }
+  return formatJSON(mermaidConfig);
+};
+
 export const loadState = (data: string): void => {
   let state: State;
   console.log(`Loading '${data}'`);
   try {
     state = deserializeState(data);
-    if (!state.mermaid) {
-      state.mermaid = defaultState.mermaid;
-    }
-    const mermaidConfig: MermaidConfig =
-      typeof state.mermaid === 'string'
-        ? (JSON.parse(state.mermaid) as MermaidConfig)
-        : state.mermaid;
-    if (
-      mermaidConfig.securityLevel &&
-      mermaidConfig.securityLevel !== 'strict' &&
-      confirm(
-        `Removing "securityLevel":"${mermaidConfig.securityLevel}" from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
-      )
-    ) {
-      delete mermaidConfig.securityLevel; // Prevent setting overriding securityLevel when loading state to mitigate possible XSS attack
-    }
-    state.mermaid = formatJSON(mermaidConfig);
+    state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid);
   } catch (error) {
     state = get(inputStateStore);
     if (data) {
@@ -241,10 +315,6 @@ export const initURLSubscription = (): void => {
   stateStore.subscribe(({ serialized }) => {
     updateHash(serialized);
   });
-};
-
-export const getStateString = (): string => {
-  return JSON.stringify(get(inputStateStore));
 };
 
 export const verifyState = (): void => {
