@@ -1,5 +1,4 @@
 import { expect, test, type Page } from '@playwright/test';
-import { typeInEditor } from './utils';
 
 const config = '{\n  "theme": "default"\n}';
 
@@ -93,8 +92,9 @@ test.describe('History', () => {
     await expect(page.getByText('State already saved.')).toBeVisible();
     await expect(page.locator('#historyList li')).toHaveCount(1);
 
-    // A real edit produces a new entry.
-    await typeInEditor(page, '  Z[Extra]', { newline: true });
+    // Loading a different sample changes the state, so it saves as a new entry.
+    await page.getByRole('button', { name: 'Sequence', exact: true }).click();
+    await expect(page.locator('#view')).not.toContainText('Christmas');
     await page.locator('#saveHistory').click();
     await expect(page.locator('#historyList li')).toHaveCount(2);
   });
@@ -112,7 +112,8 @@ test.describe('History', () => {
   test('deletes a single entry and clears all after confirmation', async ({ page }) => {
     await openHistory(page);
     await page.locator('#saveHistory').click();
-    await typeInEditor(page, '  Z[Another]', { newline: true });
+    await page.getByRole('button', { name: 'Sequence', exact: true }).click();
+    await expect(page.locator('#view')).not.toContainText('Christmas');
     await page.locator('#saveHistory').click();
     await expect(page.locator('#historyList li')).toHaveCount(2);
 

@@ -199,7 +199,10 @@ ${svgString}`);
     };
   };
 
-  const onCopyClipboard = async (event: Event) => {
+  const onCopyClipboard = async (event?: Event) => {
+    if (!event) {
+      return;
+    }
     await exportImage(event, clipboardCopy);
     logEvent('copyClipboard');
   };
