@@ -126,7 +126,7 @@
       Dark Mode
     </span>
     <Switch
-      checked={$mode === 'dark'}
+      checked={mode.current === 'dark'}
       onCheckedChange={(dark) => setMode(dark ? 'dark' : 'light')} />
   </div>
 {/snippet}

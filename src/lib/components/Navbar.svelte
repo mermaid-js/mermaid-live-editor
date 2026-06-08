@@ -8,6 +8,7 @@
 </script>
 
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import MainMenu from '$/components/MainMenu.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
@@ -83,7 +84,7 @@
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <a href="/" class="whitespace-nowrap text-accent">
+    <a href={resolve('/')} class="whitespace-nowrap text-accent">
       {#if !mobileToggle}
         Mermaid
       {/if}

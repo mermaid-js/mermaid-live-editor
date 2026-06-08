@@ -153,7 +153,7 @@
 <div
   id="view"
   bind:this={view}
-  class={['h-full w-full', shouldShowGrid && `grid-bg-${$mode}`, error && 'opacity-50']}>
+  class={['h-full w-full', shouldShowGrid && `grid-bg-${mode.current}`, error && 'opacity-50']}>
   <div id="container" bind:this={container} class="h-full overflow-auto"></div>
 </div>
 

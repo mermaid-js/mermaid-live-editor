@@ -34,6 +34,16 @@
   let lastMouseLine = 0;
   const aiPromptManager = new AIPromptViewZoneManager();
 
+  const applyEditorTheme = (currentMode: typeof mode.current) => {
+    if (!editor) return;
+    monaco.editor.setTheme(`mermaid${currentMode === 'dark' ? '-dark' : ''}`);
+    divElement?.classList.toggle('mermaid-dark', currentMode === 'dark');
+  };
+
+  $effect(() => {
+    applyEditorTheme(mode.current);
+  });
+
   const jsonModel = monaco.editor.createModel(
     '',
     'json',
@@ -183,12 +193,8 @@
       renderAIPromptGutterGlyphIcon();
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
-      if (editor) {
-        monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
-        divElement?.classList.toggle('mermaid-dark', mode === 'dark');
-      }
-    });
+    applyEditorTheme(mode.current);
+
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,
@@ -204,7 +210,6 @@
 
     return () => {
       unsubscribeState();
-      unsubscribeMode();
       resizeObserver.disconnect();
       jsonModel.dispose();
       mermaidModel.dispose();
