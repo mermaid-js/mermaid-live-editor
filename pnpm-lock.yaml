@@ -87,8 +87,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1
       uuid:
-        specifier: 9.0.1
-        version: 9.0.1
+        specifier: 11.1.1
+        version: 11.1.1
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -242,10 +242,10 @@ importers:
         version: 1.0.5(svelte@5.38.6)
       tailwind-merge:
         specifier: ^3.3.1
-        version: 3.3.1
+        version: 3.6.0
       tailwind-variants:
         specifier: ^3.1.0
-        version: 3.1.0(tailwind-merge@3.3.1)(tailwindcss@4.1.18)
+        version: 3.1.0(tailwind-merge@3.6.0)(tailwindcss@4.1.18)
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -2842,6 +2842,7 @@ packages:
 
   lucide-svelte@0.507.0:
     resolution: {integrity: sha512-qJRbz1dWyTzV05VaXIKhPeQ6mGBTIbKI05YNymym6QZSsn/mt7P154qr4SfKl+SEJlOmYPbHVjK1D1qZwa3r3w==}
+    deprecated: Package deprecated. Please use @lucide/svelte instead.
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
@@ -3842,9 +3843,6 @@ packages:
   tabbable@6.4.0:
     resolution: {integrity: sha512-05PUHKSNE8ou2dwIxTngl4EzcnsCDZGJ/iCLtDflR/SHB/ny14rXc+qU5P4mG9JkusiV7EivzY9Mhm55AzAvCg==}
 
-  tailwind-merge@3.3.1:
-    resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
-
   tailwind-merge@3.6.0:
     resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
 
@@ -4032,16 +4030,8 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  uuid@11.1.0:
-    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
-    hasBin: true
-
-  uuid@14.0.0:
-    resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
-    hasBin: true
-
-  uuid@9.0.1:
-    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+  uuid@11.1.1:
+    resolution: {integrity: sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==}
     hasBin: true
 
   v8-to-istanbul@9.3.0:
@@ -6966,7 +6956,7 @@ snapshots:
       roughjs: 4.6.6
       stylis: 4.4.0
       ts-dedent: 2.2.0
-      uuid: 14.0.0
+      uuid: 11.1.1
 
   micromatch@4.0.8:
     dependencies:
@@ -7795,15 +7785,13 @@ snapshots:
 
   tabbable@6.4.0: {}
 
-  tailwind-merge@3.3.1: {}
-
   tailwind-merge@3.6.0: {}
 
-  tailwind-variants@3.1.0(tailwind-merge@3.3.1)(tailwindcss@4.1.18):
+  tailwind-variants@3.1.0(tailwind-merge@3.6.0)(tailwindcss@4.1.18):
     dependencies:
       tailwindcss: 4.1.18
     optionalDependencies:
-      tailwind-merge: 3.3.1
+      tailwind-merge: 3.6.0
 
   tailwindcss@3.4.19(yaml@2.7.0):
     dependencies:
@@ -7982,11 +7970,7 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  uuid@11.1.0: {}
-
-  uuid@14.0.0: {}
-
-  uuid@9.0.1: {}
+  uuid@11.1.1: {}
 
   v8-to-istanbul@9.3.0:
     dependencies:
@@ -8017,7 +8001,7 @@ snapshots:
 
   vite-plugin-devtools-json@1.0.0(vite@7.1.4(@types/node@24.12.4)(jiti@1.21.7)(lightningcss@1.30.2)(yaml@2.7.0)):
     dependencies:
-      uuid: 11.1.0
+      uuid: 11.1.1
       vite: 7.1.4(@types/node@24.12.4)(jiti@1.21.7)(lightningcss@1.30.2)(yaml@2.7.0)
 
   vite@7.1.4(@types/node@24.12.4)(jiti@1.21.7)(lightningcss@1.30.2)(yaml@2.7.0):
