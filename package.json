@@ -83,7 +83,7 @@
     "unplugin-icons": "^22.2.0",
     "vite": "^7.1.4",
     "vite-plugin-devtools-json": "^1.0.0",
-    "vitest": "^3.2.4",
+    "vitest": "^4.0.0",
     "vitest-dom": "^0.1.1"
   },
   "dependencies": {
