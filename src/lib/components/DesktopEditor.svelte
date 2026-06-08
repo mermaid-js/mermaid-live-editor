@@ -27,12 +27,23 @@
     lineNumbersMinChars: 4
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
+  let isUpdatingFromState = false;
   let showPopup = $state(false);
   let popupPosition = $state({ top: 0, lineNumber: 0 });
   let decorationsCollection: monaco.editor.IEditorDecorationsCollection | undefined;
   let input = $state('');
   let lastMouseLine = 0;
   const aiPromptManager = new AIPromptViewZoneManager();
+
+  const applyEditorTheme = (currentMode: typeof mode.current) => {
+    if (!editor) return;
+    monaco.editor.setTheme(`mermaid${currentMode === 'dark' ? '-dark' : ''}`);
+    divElement?.classList.toggle('mermaid-dark', currentMode === 'dark');
+  };
+
+  $effect(() => {
+    applyEditorTheme(mode.current);
+  });
 
   const jsonModel = monaco.editor.createModel(
     '',
@@ -132,7 +143,7 @@
 
     editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      if (!newText || currentText === newText || isFlush) {
+      if (!newText || currentText === newText || isFlush || isUpdatingFromState) {
         return;
       }
       currentText = newText;
@@ -159,9 +170,21 @@
       // Update editor text if it's different
       const newText = editorMode === 'code' ? code : mermaid;
       if (newText !== currentText) {
-        editor.setScrollTop(0);
-        editor.setValue(newText);
-        currentText = newText;
+        isUpdatingFromState = true;
+        try {
+          editor.setScrollTop(0);
+          editor.pushUndoStop();
+          editor.executeEdits('updateCode', [
+            {
+              range: model.getFullModelRange(),
+              text: newText
+            }
+          ]);
+          editor.pushUndoStop();
+          currentText = newText;
+        } finally {
+          isUpdatingFromState = false;
+        }
         renderAIPromptGutterGlyphIcon();
       }
 
@@ -183,12 +206,8 @@
       renderAIPromptGutterGlyphIcon();
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
-      if (editor) {
-        monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
-        divElement?.classList.toggle('mermaid-dark', mode === 'dark');
-      }
-    });
+    applyEditorTheme(mode.current);
+
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,
@@ -204,7 +223,6 @@
 
     return () => {
       unsubscribeState();
-      unsubscribeMode();
       resizeObserver.disconnect();
       jsonModel.dispose();
       mermaidModel.dispose();
