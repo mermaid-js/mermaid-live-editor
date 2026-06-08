@@ -31,7 +31,7 @@
     "@iconify-json/logos": "^1.2.11",
     "@iconify-json/material-symbols": "^1.2.20",
     "@iconify-json/mdi": "^1.2.3",
-    "@playwright/test": "^1.52.0",
+    "@playwright/test": "^1.60.0",
     "@sveltejs/adapter-static": "^3.0.9",
     "@sveltejs/kit": "^2.37.0",
     "@sveltejs/vite-plugin-svelte": "^6.1.3",
