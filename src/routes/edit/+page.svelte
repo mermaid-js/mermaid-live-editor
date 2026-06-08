@@ -5,6 +5,7 @@
   import Editor from '$/components/Editor.svelte';
   import EnhancedEditsButton from '$/components/EnhancedEditsButton.svelte';
   import History from '$/components/History/History.svelte';
+  import { startAutoSave } from '$/components/History/historyState.svelte';
   import McWrapper from '$/components/McWrapper.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import EditorChooserModal from '$/components/migration/EditorChooserModal.svelte';
@@ -63,6 +64,9 @@
     });
   });
 
+  // Record the Timeline for the whole session, not just while the panel is open.
+  onMount(() => startAutoSave());
+
   let isHistoryOpen = $state(false);
 
   let editorPane: Resizable.Pane | undefined;
@@ -87,7 +91,7 @@
   {/snippet}
 
   <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
-    <Toggle bind:pressed={isHistoryOpen} size="sm">
+    <Toggle bind:pressed={isHistoryOpen} size="sm" title="History" aria-label="History">
       <HistoryIcon />
     </Toggle>
     <Share />

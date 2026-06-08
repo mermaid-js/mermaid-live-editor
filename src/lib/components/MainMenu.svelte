@@ -28,7 +28,7 @@
     sharesData?: boolean;
     checkDiagramType?: boolean;
     isSectionEnd?: boolean;
-    renderer: (item: Omit<MenuItem, 'renderer'>) => ReturnType<Snippet>;
+    renderer: Snippet<[Omit<MenuItem, 'renderer'>]>;
   }
 
   const menuItems: MenuItem[] = $derived([
@@ -89,7 +89,7 @@
   ]);
 </script>
 
-{#snippet menuItem(options: MenuItem)}
+{#snippet menuItem(options: Omit<MenuItem, 'renderer'>)}
   <a
     href={options.href}
     target="_blank"
@@ -104,7 +104,7 @@
   </a>
 {/snippet}
 
-{#snippet mcMenuItem(item: MenuItem)}
+{#snippet mcMenuItem(item: Omit<MenuItem, 'renderer'>)}
   <McWrapper
     side="right"
     labelPrefix={item.sharesData === false ? 'Opens a new tab in' : undefined}
@@ -114,7 +114,7 @@
   </McWrapper>
 {/snippet}
 
-{#snippet darkModeMenuItem(options: MenuItem)}
+{#snippet darkModeMenuItem(options: Omit<MenuItem, 'renderer'>)}
   <div
     class={cn(
       'flex cursor-pointer items-center justify-between border-b-2 px-3 py-2 hover:bg-muted',
