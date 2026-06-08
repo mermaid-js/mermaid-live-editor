@@ -34,7 +34,7 @@
   });
 
   $effect(() => {
-    toggleDarkTheme($mode === 'dark');
+    toggleDarkTheme(mode.current === 'dark');
   });
 </script>
 
