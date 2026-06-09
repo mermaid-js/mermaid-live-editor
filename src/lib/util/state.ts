@@ -189,7 +189,7 @@ function getUnsafePaths(object: object, unsafeKeys: string[], path: string[] = [
     }
   }
   Object.keys(object).forEach((key) => {
-    const value = object[key] as unknown;
+    const value = (object as Record<string, unknown>)[key];
     const currentPath = [...path, key];
     // Prototype pollution check.
     if (key.startsWith('__')) {
@@ -315,10 +315,6 @@ export const initURLSubscription = (): void => {
   stateStore.subscribe(({ serialized }) => {
     updateHash(serialized);
   });
-};
-
-export const getStateString = (): string => {
-  return JSON.stringify(get(inputStateStore));
 };
 
 export const verifyState = (): void => {
