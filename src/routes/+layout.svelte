@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Toaster } from '$/components/ui/sonner/index.js';
-  import { loadingStateStore } from '$/util/loading';
+  import { loadingState } from '$/util/loading.svelte';
   import { toggleDarkTheme } from '$/util/state.svelte';
   import { initHandler } from '$/util/util';
   import { base } from '$app/paths';
@@ -45,12 +45,12 @@
   {@render children()}
 </main>
 
-{#if $loadingStateStore.loading}
+{#if loadingState.loading}
   <div
     class="absolute top-0 left-0 z-50 flex h-screen w-screen justify-center bg-gray-600 align-middle opacity-50">
     <div class="my-auto text-4xl font-bold text-indigo-100">
       <div class="loader mx-auto"></div>
-      <div>{$loadingStateStore.message}</div>
+      <div>{loadingState.message}</div>
     </div>
   </div>
 {/if}

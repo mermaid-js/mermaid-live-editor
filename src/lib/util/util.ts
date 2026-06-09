@@ -1,7 +1,7 @@
 import { C } from '$/constants';
 import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
-import { initLoading } from './loading';
+import { initLoading } from './loading.svelte';
 import { isOnMermaidAI } from './migration/domainMigration';
 import { applyMigrations } from './migrations';
 import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state.svelte';
