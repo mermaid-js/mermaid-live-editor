@@ -3,7 +3,7 @@
   import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
   import { notify, prompt } from '$lib/util/notify';
   import { serializeState } from '$lib/util/serde';
-  import { inputStateStore } from '$lib/util/state';
+  import { inputState, replaceInputState } from '$lib/util/state.svelte';
   import { logEvent } from '$lib/util/stats';
   import dayjs from 'dayjs';
   import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
@@ -87,7 +87,7 @@
   };
 
   const saveHistory = () => {
-    if (!addManualEntry($inputStateStore)) {
+    if (!addManualEntry($state.snapshot(inputState))) {
       notify('State already saved.');
     }
   };
@@ -99,7 +99,7 @@
   };
 
   const restoreHistoryItem = (state: State): void => {
-    inputStateStore.set({ ...state, updateDiagram: true });
+    replaceInputState({ ...state, updateDiagram: true });
   };
 
   // Absolute editor URL for an entry, so the link can be opened in a new tab or copied.

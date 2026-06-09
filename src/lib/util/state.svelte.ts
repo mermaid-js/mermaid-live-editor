@@ -2,7 +2,6 @@ import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
-import { derived, get, writable, type Readable } from 'svelte/store';
 import { env } from './env';
 import {
   extractErrorLineText,
@@ -10,7 +9,7 @@ import {
   replaceLineNumberInErrorMessage
 } from './errorHandling';
 import { defaultMermaidConfig, parse } from './mermaid';
-import { localStorage, persist } from './persist';
+import { readJSON, writeJSON } from './persist.svelte';
 import { deserializeState, pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
 
@@ -42,19 +41,21 @@ const urlParseFailedState = `flowchart TD
     G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
-// inputStateStore handles all updates and is shared externally when exporting via URL, History, etc.
-export const inputStateStore = persist(writable(defaultState), localStorage(), 'codeStore');
+// inputState handles all updates and is shared externally when exporting via URL, History, etc.
+// It is reactive for reads; every write must go through the update functions
+// below so each change is persisted and re-validated.
+// The fallback is cloned so mutations never write through to defaultState.
+export const inputState = $state<State>(readJSON('codeStore', { ...defaultState }));
 
-export const currentState: ValidatedState = (() => {
-  const state = get(inputStateStore);
-  return {
-    ...state,
-    editorMode: state.editorMode ?? 'code',
-    error: undefined,
-    errorMarkers: [],
-    serialized: serializeState(state)
-  };
-})();
+const validatedStateOf = (state: State): ValidatedState => ({
+  ...state,
+  editorMode: state.editorMode ?? 'code',
+  error: undefined,
+  errorMarkers: [],
+  serialized: serializeState(state)
+});
+
+let validatedCurrent = $state<ValidatedState>(validatedStateOf($state.snapshot(inputState)));
 
 let lastDiagramType = '';
 
@@ -120,16 +121,31 @@ const processState = async (state: State) => {
   return processed;
 };
 
-// All internal reads should be done via stateStore, but it should not be persisted/shared externally.
-export const stateStore: Readable<ValidatedState> = derived(
-  [inputStateStore],
-  ([state], set) => {
-    void processState(state).then(set);
-  },
-  currentState
-);
+// Replaces the old URL-hash store subscription; assigned by initURLSubscription.
+let updateHash: ((serialized: string) => void) | undefined;
 
-export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
+// Persist the current input state and asynchronously re-validate it,
+// publishing the result to `validatedState` (and the URL hash, once
+// initURLSubscription has run).
+const persistAndProcess = (): void => {
+  const snapshot = $state.snapshot(inputState);
+  writeJSON('codeStore', snapshot);
+  void processState(snapshot).then((processed) => {
+    validatedCurrent = processed;
+    updateHash?.(processed.serialized);
+  });
+};
+
+// All internal reads should be done via validatedState, but it should not be
+// persisted/shared externally.
+export const validatedState = {
+  get current(): ValidatedState {
+    return validatedCurrent;
+  }
+};
+
+const urlsCurrent = $derived.by(() => {
+  const { code, serialized } = validatedCurrent;
   const { krokiRendererUrl, rendererUrl } = env;
   const png = rendererUrl ? `${rendererUrl}/img/${serialized}?type=png` : '';
   return {
@@ -169,6 +185,12 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
     view: `${resolve('/view', {})}#${serialized}`
   };
 });
+
+export const urls = {
+  get current() {
+    return urlsCurrent;
+  }
+};
 
 /**
  * Gets a list of paths that contain unsafe keys which might pose security risks.
@@ -256,7 +278,7 @@ export const loadState = (data: string): void => {
     state = deserializeState(data);
     state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid);
   } catch (error) {
-    state = get(inputStateStore);
+    state = $state.snapshot(inputState);
     if (data) {
       console.error('Init error', error);
       state.code = urlParseFailedState;
@@ -268,10 +290,9 @@ export const loadState = (data: string): void => {
 
 let renderCount = 0;
 export const updateCodeStore = (newState: Partial<State>): void => {
-  inputStateStore.update((state) => {
-    renderCount++;
-    return { ...state, ...newState, renderCount };
-  });
+  renderCount++;
+  Object.assign(inputState, newState, { renderCount });
+  persistAndProcess();
 };
 
 export const updateCode = (
@@ -283,13 +304,13 @@ export const updateCode = (
 ): void => {
   errorDebug();
 
-  inputStateStore.update((state) => {
-    if (resetPanZoom) {
-      state.pan = undefined;
-      state.zoom = undefined;
-    }
-    return { ...state, code, updateDiagram };
-  });
+  if (resetPanZoom) {
+    inputState.pan = undefined;
+    inputState.zoom = undefined;
+  }
+  inputState.code = code;
+  inputState.updateDiagram = updateDiagram;
+  persistAndProcess();
 };
 
 export const updateConfig = (config: string): void => {
@@ -297,29 +318,34 @@ export const updateConfig = (config: string): void => {
 };
 
 export const toggleDarkTheme = (dark: boolean): void => {
-  inputStateStore.update((state) => {
-    const config = JSON.parse(state.mermaid) as MermaidConfig;
-    if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-      config.theme = dark ? 'dark' : 'default';
+  const config = JSON.parse(inputState.mermaid) as MermaidConfig;
+  if (!config.theme || ['dark', 'default'].includes(config.theme)) {
+    config.theme = dark ? 'dark' : 'default';
+  }
+  inputState.mermaid = formatJSON(config);
+  persistAndProcess();
+};
+
+// Replaces the whole input state (e.g. when restoring a history entry),
+// dropping keys the next state does not define.
+export const replaceInputState = (next: State): void => {
+  for (const key of Object.keys(inputState)) {
+    if (!(key in next)) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- full-replace semantics
+      delete (inputState as unknown as Record<string, unknown>)[key];
     }
-    return { ...state, mermaid: formatJSON(config) };
-  });
+  }
+  Object.assign(inputState, next);
+  persistAndProcess();
 };
 
 export const initURLSubscription = (): void => {
-  const updateHash = debounce((hash) => {
-    history.replaceState(undefined, '', `#${hash}`);
+  updateHash = debounce((serialized: string) => {
+    history.replaceState(undefined, '', `#${serialized}`);
   }, 250);
-
-  stateStore.subscribe(({ serialized }) => {
-    updateHash(serialized);
-  });
+  updateHash(validatedCurrent.serialized);
 };
 
 export const verifyState = (): void => {
-  const state = get(inputStateStore);
-  if (!state.panZoom) {
-    state.panZoom = true;
-  }
-  updateCodeStore(state);
+  updateCodeStore(inputState.panZoom ? {} : { panZoom: true });
 };

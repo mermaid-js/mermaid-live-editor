@@ -3,7 +3,7 @@
   import { recordRenderTime, shouldRefreshView } from '$/util/autoSync';
   import { render as renderDiagram } from '$/util/mermaid';
   import { PanZoomState } from '$/util/panZoom';
-  import { inputStateStore, stateStore, updateCodeStore } from '$/util/state';
+  import { updateCodeStore, validatedState } from '$/util/state.svelte';
   import { saveStatistics } from '$/util/stats';
   import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
   import uniqueID from 'lodash-es/uniqueId';
@@ -133,18 +133,20 @@
     const renderTime = Date.now() - startTime;
     saveStatistics({ code, diagramType, isRough: state.rough, renderTime });
     recordRenderTime(renderTime, () => {
-      $inputStateStore.updateDiagram = true;
+      updateCodeStore({ updateDiagram: true });
     });
   };
 
   onMount(() => {
     setupPanZoomObserver();
-    // Queue state changes to avoid race condition
-    let pendingStateChange = Promise.resolve();
-    stateStore.subscribe((state) => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
-    });
+  });
+
+  // Queue state changes to avoid race condition
+  let pendingStateChange = Promise.resolve();
+  $effect(() => {
+    const state = validatedState.current;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
   });
 </script>
 

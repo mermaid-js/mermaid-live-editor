@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { EditorProps } from '$/types';
-  import { stateStore } from '$/util/state';
+  import { validatedState } from '$/util/state.svelte';
   import { json, jsonLanguage } from '@codemirror/lang-json';
   import { markdown } from '@codemirror/lang-markdown';
   import { yamlFrontmatter } from '@codemirror/lang-yaml';
@@ -17,6 +17,7 @@
   let editorContainer: HTMLDivElement;
   let currentText = $state('');
   const themeCompartment = new Compartment();
+  const languageCompartment = new Compartment();
 
   const { onUpdate }: EditorProps = $props();
 
@@ -27,8 +28,6 @@
   });
 
   onMount(() => {
-    const languageCompartment = new Compartment();
-
     editorView = new EditorView({
       state: EditorState.create({
         doc: currentText,
@@ -62,36 +61,36 @@
       parent: editorContainer
     });
 
-    const unsubscribeState = stateStore.subscribe(({ editorMode, code, mermaid }) => {
-      const text = editorMode === 'code' ? code : mermaid;
-      if (currentText === text || !editorView) {
-        return;
-      }
-      currentText = text;
-      editorView.dispatch({
-        changes: {
-          from: 0,
-          to: editorView.state.doc.length,
-          insert: text
-        }
-      });
-      const stateLanguage = editorView.state.facet(language);
-      const isStateJson = stateLanguage === jsonLanguage;
-      const isCodeJson = editorMode === 'config';
-      if (stateLanguage && isStateJson === isCodeJson) {
-        return;
-      }
-      editorView.dispatch({
-        effects: languageCompartment.reconfigure(
-          isCodeJson ? json() : yamlFrontmatter({ content: markdown() })
-        )
-      });
-    });
-
     return () => {
-      unsubscribeState();
       editorView?.destroy();
     };
+  });
+
+  $effect(() => {
+    const { editorMode, code, mermaid } = validatedState.current;
+    const text = editorMode === 'code' ? code : mermaid;
+    if (currentText === text || !editorView) {
+      return;
+    }
+    currentText = text;
+    editorView.dispatch({
+      changes: {
+        from: 0,
+        to: editorView.state.doc.length,
+        insert: text
+      }
+    });
+    const stateLanguage = editorView.state.facet(language);
+    const isStateJson = stateLanguage === jsonLanguage;
+    const isCodeJson = editorMode === 'config';
+    if (stateLanguage && isStateJson === isCodeJson) {
+      return;
+    }
+    editorView.dispatch({
+      effects: languageCompartment.reconfigure(
+        isCodeJson ? json() : yamlFrontmatter({ content: markdown() })
+      )
+    });
   });
 </script>
 

@@ -1,8 +1,7 @@
 import type { HistoryEntry, HistoryType, Optional, State } from '$lib/types';
-import { inputStateStore } from '$lib/util/state';
+import { inputState } from '$lib/util/state.svelte';
 import { logEvent } from '$lib/util/stats';
 import { generateSlug } from 'random-word-slugs';
-import { get } from 'svelte/store';
 import { v4 as uuidV4 } from 'uuid';
 
 const MAX_AUTO_HISTORY_LENGTH = 30;
@@ -199,7 +198,10 @@ let autoSaveTimer: ReturnType<typeof setInterval> | undefined;
 // Idempotent; returns the stop function for use as a lifecycle cleanup.
 export const startAutoSave = (): (() => void) => {
   if (autoSaveTimer === undefined) {
-    autoSaveTimer = setInterval(() => addAutoEntry(get(inputStateStore)), AUTO_SAVE_INTERVAL);
+    autoSaveTimer = setInterval(
+      () => addAutoEntry($state.snapshot(inputState)),
+      AUTO_SAVE_INTERVAL
+    );
   }
   return stopAutoSave;
 };
