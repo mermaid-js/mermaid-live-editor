@@ -2,6 +2,7 @@ import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
+import { untrack } from 'svelte';
 import { env } from './env';
 import {
   extractErrorLineText,
@@ -126,9 +127,10 @@ let updateHash: ((serialized: string) => void) | undefined;
 
 // Persist the current input state and asynchronously re-validate it,
 // publishing the result to `validatedState` (and the URL hash, once
-// initURLSubscription has run).
+// initURLSubscription has run). Reads are untracked so effects that call an
+// update function don't start depending on the whole input state.
 const persistAndProcess = (): void => {
-  const snapshot = $state.snapshot(inputState);
+  const snapshot = untrack(() => $state.snapshot(inputState));
   writeJSON('codeStore', snapshot);
   void processState(snapshot).then((processed) => {
     validatedCurrent = processed;
@@ -278,7 +280,7 @@ export const loadState = (data: string): void => {
     state = deserializeState(data);
     state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid);
   } catch (error) {
-    state = $state.snapshot(inputState);
+    state = untrack(() => $state.snapshot(inputState));
     if (data) {
       console.error('Init error', error);
       state.code = urlParseFailedState;
@@ -318,7 +320,7 @@ export const updateConfig = (config: string): void => {
 };
 
 export const toggleDarkTheme = (dark: boolean): void => {
-  const config = JSON.parse(inputState.mermaid) as MermaidConfig;
+  const config = JSON.parse(untrack(() => inputState.mermaid)) as MermaidConfig;
   if (!config.theme || ['dark', 'default'].includes(config.theme)) {
     config.theme = dark ? 'dark' : 'default';
   }
@@ -329,7 +331,7 @@ export const toggleDarkTheme = (dark: boolean): void => {
 // Replaces the whole input state (e.g. when restoring a history entry),
 // dropping keys the next state does not define.
 export const replaceInputState = (next: State): void => {
-  for (const key of Object.keys(inputState)) {
+  for (const key of untrack(() => Object.keys(inputState))) {
     if (!(key in next)) {
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- full-replace semantics
       delete (inputState as unknown as Record<string, unknown>)[key];
@@ -347,5 +349,5 @@ export const initURLSubscription = (): void => {
 };
 
 export const verifyState = (): void => {
-  updateCodeStore(inputState.panZoom ? {} : { panZoom: true });
+  updateCodeStore(untrack(() => inputState.panZoom) ? {} : { panZoom: true });
 };
