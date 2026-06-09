@@ -1,4 +1,5 @@
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
+import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { derived, get, writable, type Readable } from 'svelte/store';
@@ -133,9 +134,7 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
   const png = rendererUrl ? `${rendererUrl}/img/${serialized}?type=png` : '';
   return {
     kroki: krokiRendererUrl ? `${krokiRendererUrl}/mermaid/svg/${pakoSerde.serialize(code)}` : '',
-    mdCode: png
-      ? `[![](${png})](${window.location.protocol}//${window.location.host}${window.location.pathname}#${serialized})`
-      : '',
+    mdCode: png ? `[![](${png})](${window.location.href})` : '',
     mermaidChart: ({
       medium,
       campaign
@@ -164,10 +163,10 @@ export const urlsStore = derived([stateStore], ([{ code, serialized }]) => {
         home: `${MCBaseURL}/?${params}`
       };
     },
-    new: `${window.location.protocol}//${window.location.host}${window.location.pathname}#${serializeState(defaultState)}`,
+    new: `${resolve('/edit', {})}#${serializeState(defaultState)}`,
     png,
     svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
-    view: `/view#${serialized}`
+    view: `${resolve('/view', {})}#${serialized}`
   };
 });
 
