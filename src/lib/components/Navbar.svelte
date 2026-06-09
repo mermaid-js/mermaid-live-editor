@@ -12,7 +12,7 @@
   import MainMenu from '$/components/MainMenu.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
-  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
+  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo.svelte';
   import { untrack, type ComponentProps, type Snippet } from 'svelte';
   import MermaidIcon from '~icons/custom/mermaid';
   import CloseIcon from '~icons/material-symbols/close-rounded';
