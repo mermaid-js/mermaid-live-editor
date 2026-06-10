@@ -15,7 +15,10 @@
 
   let editorView: EditorView | undefined;
   let editorContainer: HTMLDivElement;
-  let currentText = $state('');
+  // Deliberately not $state: the sync effect below both reads and writes it,
+  // so a reactive currentText would make every keystroke re-run the effect
+  // against the not-yet-revalidated state and revert the user's input.
+  let currentText = '';
   const themeCompartment = new Compartment();
   const languageCompartment = new Compartment();
 

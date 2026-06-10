@@ -22,6 +22,12 @@ describe('readJSON', () => {
     window.localStorage.setItem('legacy', 'undefined');
     expect(readJSON('legacy', 'fallback')).toBe('fallback');
   });
+
+  it('returns the fallback when the stored value parses to null', () => {
+    // The pre-runes persistence layer treated a stored null as absent.
+    window.localStorage.setItem('legacy-null', 'null');
+    expect(readJSON('legacy-null', 'fallback')).toBe('fallback');
+  });
 });
 
 describe('writeJSON', () => {
@@ -50,5 +56,11 @@ describe('persisted', () => {
     counter.value = 42;
     expect(counter.value).toBe(42);
     expect(window.localStorage.getItem('counter')).toBe('42');
+  });
+
+  it('uses the initial value when storage holds a literal null', () => {
+    window.localStorage.setItem('settings', 'null');
+    const settings = persisted('settings', { theme: 'default' });
+    expect(settings.value).toEqual({ theme: 'default' });
   });
 });

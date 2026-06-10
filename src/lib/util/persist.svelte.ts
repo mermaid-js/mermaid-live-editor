@@ -15,7 +15,12 @@ export const readJSON = <T>(key: string, fallback: T): T => {
   }
   try {
     const raw = window.localStorage.getItem(key);
-    return raw === null ? fallback : (JSON.parse(raw) as T);
+    if (raw === null) {
+      return fallback;
+    }
+    // A stored literal "null" means the value is absent: the pre-runes
+    // persistence layer never wrote null and treated it as missing.
+    return (JSON.parse(raw) as T) ?? fallback;
   } catch {
     return fallback;
   }
@@ -32,8 +37,10 @@ export interface Persisted<T> {
 }
 
 // A localStorage-backed reactive value. Reads on init, writes on every set.
+// Raw state: replace `value` wholesale to change it. With a deep proxy,
+// in-place mutation would update the UI without ever being persisted.
 export const persisted = <T>(key: string, initial: T): Persisted<T> => {
-  let value = $state<T>(readJSON(key, initial));
+  let value = $state.raw<T>(readJSON(key, initial));
   return {
     get value() {
       return value;
