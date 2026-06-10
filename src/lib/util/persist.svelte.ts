@@ -37,8 +37,10 @@ export interface Persisted<T> {
 }
 
 // A localStorage-backed reactive value. Reads on init, writes on every set.
+// Raw state: replace `value` wholesale to change it. With a deep proxy,
+// in-place mutation would update the UI without ever being persisted.
 export const persisted = <T>(key: string, initial: T): Persisted<T> => {
-  let value = $state<T>(readJSON(key, initial));
+  let value = $state.raw<T>(readJSON(key, initial));
   return {
     get value() {
       return value;
