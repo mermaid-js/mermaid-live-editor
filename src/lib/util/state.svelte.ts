@@ -42,32 +42,35 @@ const urlParseFailedState = `flowchart TD
     G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
-// inputState handles all updates and is shared externally when exporting via URL, History, etc.
-// It is reactive for reads; every write must go through the update functions
-// below so each change is persisted and re-validated.
-// The fallback is cloned so mutations never write through to defaultState.
-export const inputState = $state<State>(readJSON('codeStore', { ...defaultState }));
+const CODE_STORE_KEY = 'codeStore';
 
-const validatedStateOf = (state: State): ValidatedState => ({
+// The single mutable input state; only update() below may write to it.
+// The fallback is cloned so mutations never write through to defaultState.
+const input = $state<State>(readJSON(CODE_STORE_KEY, { ...defaultState }));
+
+// inputState is shared externally when exporting via URL, History, etc.
+// It is reactive for reads; the read-only type keeps writes inside this
+// module, where update() persists and re-validates every change.
+export const inputState: Readonly<State> = input;
+
+const validatedStateOf = (state: State, serialized: string): ValidatedState => ({
   ...state,
   editorMode: state.editorMode ?? 'code',
   error: undefined,
   errorMarkers: [],
-  serialized: serializeState(state)
+  serialized
 });
 
-let validatedCurrent = $state<ValidatedState>(validatedStateOf($state.snapshot(inputState)));
+const initialState = $state.snapshot(input) as State;
+// Only ever replaced wholesale, so raw (shallow) reactivity is enough.
+let validatedCurrent = $state.raw<ValidatedState>(
+  validatedStateOf(initialState, serializeState(initialState))
+);
 
 let lastDiagramType = '';
 
 const processState = async (state: State) => {
-  const processed: ValidatedState = {
-    ...state,
-    editorMode: state.editorMode ?? 'code',
-    error: undefined,
-    errorMarkers: [],
-    serialized: ''
-  };
+  const processed = validatedStateOf(state, '');
   // No changes should be done to fields part of `state`.
   try {
     processed.serialized = serializeState(state);
@@ -127,14 +130,25 @@ let updateHash: ((serialized: string) => void) | undefined;
 
 // Persist the current input state and asynchronously re-validate it,
 // publishing the result to `validatedState` (and the URL hash, once
-// initURLSubscription has run). Reads are untracked so effects that call an
-// update function don't start depending on the whole input state.
+// initURLSubscription has run). Only called from update(), which suppresses
+// dependency tracking.
 const persistAndProcess = (): void => {
-  const snapshot = untrack(() => $state.snapshot(inputState));
-  writeJSON('codeStore', snapshot);
+  const snapshot = $state.snapshot(input) as State;
+  writeJSON(CODE_STORE_KEY, snapshot);
   void processState(snapshot).then((processed) => {
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
+  });
+};
+
+// The single mutation gateway: every update function funnels its writes
+// through here. The mutator runs untracked so effects that call an update
+// function never subscribe to the input state it reads, and the trailing
+// persist + re-validate cannot be forgotten by a new update function.
+const update = (mutate: (state: State) => void): void => {
+  untrack(() => {
+    mutate(input);
+    persistAndProcess();
   });
 };
 
@@ -274,27 +288,32 @@ export const sanitizeConfig = (config: string | MermaidConfig) => {
 };
 
 export const loadState = (data: string): void => {
-  let state: State;
   console.log(`Loading '${data}'`);
-  try {
-    state = deserializeState(data);
-    state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid);
-  } catch (error) {
-    state = untrack(() => $state.snapshot(inputState));
-    if (data) {
-      console.error('Init error', error);
-      state.code = urlParseFailedState;
-      state.mermaid = defaultState.mermaid;
+  update((state) => {
+    let next: State;
+    try {
+      next = deserializeState(data);
+      next.mermaid = sanitizeConfig(next.mermaid || defaultState.mermaid);
+    } catch (error) {
+      next = $state.snapshot(state) as State;
+      if (data) {
+        console.error('Init error', error);
+        next.code = urlParseFailedState;
+        next.mermaid = defaultState.mermaid;
+      }
     }
-  }
-  updateCodeStore(state);
+    applyPartial(state, next);
+  });
 };
 
 let renderCount = 0;
-export const updateCodeStore = (newState: Partial<State>): void => {
+const applyPartial = (state: State, newState: Partial<State>): void => {
   renderCount++;
-  Object.assign(inputState, newState, { renderCount });
-  persistAndProcess();
+  Object.assign(state, newState, { renderCount });
+};
+
+export const updateCodeStore = (newState: Partial<State>): void => {
+  update((state) => applyPartial(state, newState));
 };
 
 export const updateCode = (
@@ -306,13 +325,14 @@ export const updateCode = (
 ): void => {
   errorDebug();
 
-  if (resetPanZoom) {
-    inputState.pan = undefined;
-    inputState.zoom = undefined;
-  }
-  inputState.code = code;
-  inputState.updateDiagram = updateDiagram;
-  persistAndProcess();
+  update((state) => {
+    if (resetPanZoom) {
+      state.pan = undefined;
+      state.zoom = undefined;
+    }
+    state.code = code;
+    state.updateDiagram = updateDiagram;
+  });
 };
 
 export const updateConfig = (config: string): void => {
@@ -320,25 +340,27 @@ export const updateConfig = (config: string): void => {
 };
 
 export const toggleDarkTheme = (dark: boolean): void => {
-  const config = JSON.parse(untrack(() => inputState.mermaid)) as MermaidConfig;
-  if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-    config.theme = dark ? 'dark' : 'default';
-  }
-  inputState.mermaid = formatJSON(config);
-  persistAndProcess();
+  update((state) => {
+    const config = JSON.parse(state.mermaid) as MermaidConfig;
+    if (!config.theme || ['dark', 'default'].includes(config.theme)) {
+      config.theme = dark ? 'dark' : 'default';
+    }
+    state.mermaid = formatJSON(config);
+  });
 };
 
 // Replaces the whole input state (e.g. when restoring a history entry),
 // dropping keys the next state does not define.
 export const replaceInputState = (next: State): void => {
-  for (const key of untrack(() => Object.keys(inputState))) {
-    if (!(key in next)) {
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- full-replace semantics
-      delete (inputState as unknown as Record<string, unknown>)[key];
+  update((state) => {
+    for (const key of Object.keys(state)) {
+      if (!(key in next)) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- full-replace semantics
+        delete (state as unknown as Record<string, unknown>)[key];
+      }
     }
-  }
-  Object.assign(inputState, next);
-  persistAndProcess();
+    Object.assign(state, next);
+  });
 };
 
 export const initURLSubscription = (): void => {
@@ -349,5 +371,5 @@ export const initURLSubscription = (): void => {
 };
 
 export const verifyState = (): void => {
-  updateCodeStore(untrack(() => inputState.panZoom) ? {} : { panZoom: true });
+  update((state) => applyPartial(state, state.panZoom ? {} : { panZoom: true }));
 };
