@@ -16,7 +16,6 @@
   import PluginIcon from '~icons/material-symbols/electrical-services-rounded';
   import MenuIcon from '~icons/material-symbols/menu-rounded';
   import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
-  import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
   import MermaidChartIcon from './MermaidChartIcon.svelte';
 
   interface MenuItem {
@@ -34,14 +33,6 @@
   const menuItems: MenuItem[] = $derived([
     { label: 'New', icon: AddIcon, href: $urlsStore.new, renderer: menuItem },
     { label: 'Duplicate', icon: DuplicateIcon, href: window.location.href, renderer: menuItem },
-    {
-      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground,
-      icon: PlaygroundIcon,
-      isSectionEnd: true,
-      label: 'Edit in Playground',
-      onclick: () => logMermaidChartClick('editInPlayground'),
-      renderer: mcMenuItem
-    },
     {
       label: 'Mermaid.js',
       icon: MermaidTailIcon,
@@ -81,7 +72,7 @@
       class: 'text-accent border-b-0',
       href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
       icon: MermaidChartIcon,
-      label: 'Mermaid',
+      label: 'Try Mermaid AI',
       onclick: () => logMermaidChartClick('mermaidHome'),
       renderer: mcMenuItem,
       sharesData: false
