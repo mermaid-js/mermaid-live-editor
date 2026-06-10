@@ -15,7 +15,12 @@ export const readJSON = <T>(key: string, fallback: T): T => {
   }
   try {
     const raw = window.localStorage.getItem(key);
-    return raw === null ? fallback : (JSON.parse(raw) as T);
+    if (raw === null) {
+      return fallback;
+    }
+    // A stored literal "null" means the value is absent: the pre-runes
+    // persistence layer never wrote null and treated it as missing.
+    return (JSON.parse(raw) as T) ?? fallback;
   } catch {
     return fallback;
   }
