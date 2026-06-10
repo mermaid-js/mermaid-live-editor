@@ -3,7 +3,7 @@
   import * as Dialog from '$/components/ui/dialog';
   import { Separator } from '$/components/ui/separator';
   import { env } from '$/util/env';
-  import { urlsStore } from '$/util/state';
+  import { urls } from '$/util/state.svelte';
   import { asset } from '$app/paths';
   import ShareIcon from '~icons/material-symbols/share';
   import CopyInput from './CopyInput.svelte';
@@ -38,7 +38,7 @@
             <MermaidChartIcon class="size-5" />
             Mermaid Chart Playground
           </h2>
-          <CopyInput value={$urlsStore.mermaidChart({ medium: 'share' }).playground} />
+          <CopyInput value={urls.current.mermaidChart({ medium: 'share' }).playground} />
           <Dialog.Description>
             Opens the Mermaid Chart Playground with Mermaid AI, Visual Editor, and more.
           </Dialog.Description>

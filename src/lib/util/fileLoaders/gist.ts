@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { setLoaderEntries } from '$lib/components/History/historyState.svelte';
 import type { State } from '$lib/types';
-import { defaultState } from '$lib/util/state';
+import { defaultState } from '$lib/util/state.svelte';
 import { fetchJSON, fetchText } from '$lib/util/util';
 
 const codeFileName = 'code.mmd';

@@ -49,20 +49,20 @@ export const standardizeDiagramType = (diagramType: string) => {
 
 type DiagramDefinition = (typeof diagramData)[number];
 
+export type SampleExample = DiagramDefinition['examples'][number];
+
 const isValidDiagram = (diagram: DiagramDefinition): diagram is Required<DiagramDefinition> => {
   return Boolean(diagram.name && diagram.examples && diagram.examples.length > 0);
 };
 
-export const getSampleDiagrams = () => {
-  const diagrams = diagramData
-    .filter((d) => isValidDiagram(d))
-    .map(({ examples, ...rest }) => ({
-      ...rest,
-      example: examples?.filter(({ isDefault }) => isDefault)[0]
-    }));
-  const examples: Record<string, string> = {};
-  for (const diagram of diagrams) {
-    examples[diagram.name.replace(/ (Diagram|Chart|Graph)/, '')] = diagram.example.code;
+export const getSampleDiagrams = (): Record<string, SampleExample[]> => {
+  const samples: Record<string, SampleExample[]> = {};
+  for (const diagram of diagramData.filter((d) => isValidDiagram(d))) {
+    // The default example comes first, so it is loaded when clicking the
+    // diagram name and shown at the top of the example dropdown.
+    samples[diagram.name.replace(/ (Diagram|Chart|Graph)/, '')] = [...diagram.examples].sort(
+      (a, b) => Number(b.isDefault ?? false) - Number(a.isDefault ?? false)
+    );
   }
-  return examples;
+  return samples;
 };

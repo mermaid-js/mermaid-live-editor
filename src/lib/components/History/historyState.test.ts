@@ -1,5 +1,5 @@
 import type { HistoryEntry } from '$lib/types';
-import { defaultState, inputStateStore } from '$lib/util/state';
+import { defaultState, replaceInputState } from '$lib/util/state.svelte';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   addAutoEntry,
@@ -284,7 +284,7 @@ describe('auto-save lifecycle', () => {
 
   it('records an auto entry on each interval from the current editor state', () => {
     vi.useFakeTimers();
-    inputStateStore.set(codeState('graph TD\n auto-saved'));
+    replaceInputState(codeState('graph TD\n auto-saved'));
     startAutoSave();
     vi.advanceTimersByTime(60_000);
     const entries = entriesFor('auto');
@@ -294,7 +294,7 @@ describe('auto-save lifecycle', () => {
 
   it('is idempotent: calling startAutoSave twice does not double-record', () => {
     vi.useFakeTimers();
-    inputStateStore.set(codeState('graph TD\n once'));
+    replaceInputState(codeState('graph TD\n once'));
     startAutoSave();
     startAutoSave();
     vi.advanceTimersByTime(60_000);
@@ -303,11 +303,11 @@ describe('auto-save lifecycle', () => {
 
   it('stops recording after stopAutoSave', () => {
     vi.useFakeTimers();
-    inputStateStore.set(codeState('graph TD\n stoppable'));
+    replaceInputState(codeState('graph TD\n stoppable'));
     startAutoSave();
     vi.advanceTimersByTime(60_000);
     stopAutoSave();
-    inputStateStore.set(codeState('graph TD\n after-stop'));
+    replaceInputState(codeState('graph TD\n after-stop'));
     vi.advanceTimersByTime(60_000);
     expect(entriesFor('auto')).toHaveLength(1);
   });

@@ -3,7 +3,7 @@
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
   import { env } from '$/util/env';
-  import { urlsStore } from '$/util/state';
+  import { urls } from '$/util/state.svelte';
   import { logMermaidChartClick } from '$/util/stats';
   import { cn } from '$/utils';
   import { mode, setMode } from 'mode-watcher';
@@ -32,10 +32,10 @@
   }
 
   const menuItems: MenuItem[] = $derived([
-    { label: 'New', icon: AddIcon, href: $urlsStore.new, renderer: menuItem },
+    { label: 'New', icon: AddIcon, href: urls.current.new, renderer: menuItem },
     { label: 'Duplicate', icon: DuplicateIcon, href: window.location.href, renderer: menuItem },
     {
-      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).playground,
+      href: urls.current.mermaidChart({ medium: 'main_menu' }).playground,
       icon: PlaygroundIcon,
       isSectionEnd: true,
       label: 'Edit in Playground',
@@ -62,7 +62,7 @@
     },
     {
       checkDiagramType: false,
-      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).plugins,
+      href: urls.current.mermaidChart({ medium: 'main_menu' }).plugins,
       icon: PluginIcon,
       label: 'Plugins',
       onclick: () => logMermaidChartClick('plugins'),
@@ -79,7 +79,7 @@
     {
       checkDiagramType: false,
       class: 'text-accent border-b-0',
-      href: $urlsStore.mermaidChart({ medium: 'main_menu' }).home,
+      href: urls.current.mermaidChart({ medium: 'main_menu' }).home,
       icon: MermaidChartIcon,
       label: 'Mermaid',
       onclick: () => logMermaidChartClick('mermaidHome'),

@@ -2,8 +2,7 @@ import { env } from '$lib/util/env';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import type { Component, Snippet } from 'svelte';
-import { get, writable, type Writable } from 'svelte/store';
-import { localStorage, persist } from '../persist';
+import { persisted } from '../persist.svelte';
 import April2025 from './April2025.svelte';
 import JS2026 from './JS2026.svelte';
 
@@ -35,25 +34,21 @@ export const dismissPromotion = (id?: string): void => {
   if (!id || !promotions[id]) {
     return;
   }
-  hiddenPromotionsStore.update((dismissedIDs) => {
-    dismissedIDs[id] = dayjs().add(promotions[id].hideDurationMs).valueOf();
-    return dismissedIDs;
-  });
+  hiddenPromotions.value = {
+    ...hiddenPromotions.value,
+    [id]: dayjs().add(promotions[id].hideDurationMs).valueOf()
+  };
 };
 
-const hiddenPromotionsStore: Writable<Record<string, number>> = persist(
-  writable({}),
-  localStorage(),
-  'hiddenPromotions'
-);
+const hiddenPromotions = persisted<Record<string, number>>('hiddenPromotions', {});
 
 export const getActivePromotion = (): (Promotion & { id: string }) | undefined => {
   if (!env.isEnabledMermaidChartLinks) {
     return;
   }
 
-  const hidePromotionsUntil = get(hiddenPromotionsStore);
-  const now = new Date();
+  const hidePromotionsUntil = hiddenPromotions.value;
+  const now = dayjs();
   const promotionWithID = Object.entries(promotions)
     .filter(
       ([id, p]) =>
