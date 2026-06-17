@@ -8,11 +8,12 @@
 </script>
 
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import MainMenu from '$/components/MainMenu.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
-  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo';
-  import type { ComponentProps, Snippet } from 'svelte';
+  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo.svelte';
+  import { untrack, type ComponentProps, type Snippet } from 'svelte';
   import MermaidIcon from '~icons/custom/mermaid';
   import CloseIcon from '~icons/material-symbols/close-rounded';
   import GithubIcon from '~icons/mdi/github';
@@ -40,7 +41,7 @@
     }
   ];
 
-  let activePromotion = $state(hidePromotion ? undefined : getActivePromotion());
+  let activePromotion = $state(untrack(() => (hidePromotion ? undefined : getActivePromotion())));
 
   const trackBannerClick = () => {
     if (!activePromotion) {
@@ -83,7 +84,7 @@
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <a href="/" class="whitespace-nowrap text-accent">
+    <a href={resolve('/', {})} class="whitespace-nowrap text-accent">
       {#if !mobileToggle}
         Mermaid
       {/if}

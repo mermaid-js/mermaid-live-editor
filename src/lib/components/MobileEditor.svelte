@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { EditorProps } from '$/types';
-  import { stateStore } from '$/util/state';
+  import { validatedState } from '$/util/state.svelte';
   import { json, jsonLanguage } from '@codemirror/lang-json';
   import { markdown } from '@codemirror/lang-markdown';
   import { yamlFrontmatter } from '@codemirror/lang-yaml';
@@ -15,14 +15,22 @@
 
   let editorView: EditorView | undefined;
   let editorContainer: HTMLDivElement;
-  let currentText = $state('');
+  // Deliberately not $state: the sync effect below both reads and writes it,
+  // so a reactive currentText would make every keystroke re-run the effect
+  // against the not-yet-revalidated state and revert the user's input.
+  let currentText = '';
+  const themeCompartment = new Compartment();
+  const languageCompartment = new Compartment();
 
   const { onUpdate }: EditorProps = $props();
 
-  onMount(() => {
-    const themeCompartment = new Compartment();
-    const languageCompartment = new Compartment();
+  $effect(() => {
+    editorView?.dispatch({
+      effects: themeCompartment.reconfigure(mode.current === 'dark' ? vsCodeDark : vsCodeLight)
+    });
+  });
 
+  onMount(() => {
     editorView = new EditorView({
       state: EditorState.create({
         doc: currentText,
@@ -56,43 +64,36 @@
       parent: editorContainer
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
-      editorView?.dispatch({
-        effects: themeCompartment.reconfigure(mode === 'dark' ? vsCodeDark : vsCodeLight)
-      });
-    });
-
-    const unsubscribeState = stateStore.subscribe(({ editorMode, code, mermaid }) => {
-      const text = editorMode === 'code' ? code : mermaid;
-      if (currentText === text || !editorView) {
-        return;
-      }
-      currentText = text;
-      editorView.dispatch({
-        changes: {
-          from: 0,
-          to: editorView.state.doc.length,
-          insert: text
-        }
-      });
-      const stateLanguage = editorView.state.facet(language);
-      const isStateJson = stateLanguage === jsonLanguage;
-      const isCodeJson = editorMode === 'config';
-      if (stateLanguage && isStateJson === isCodeJson) {
-        return;
-      }
-      editorView.dispatch({
-        effects: languageCompartment.reconfigure(
-          isCodeJson ? json() : yamlFrontmatter({ content: markdown() })
-        )
-      });
-    });
-
     return () => {
-      unsubscribeMode();
-      unsubscribeState();
       editorView?.destroy();
     };
+  });
+
+  $effect(() => {
+    const { editorMode, code, mermaid } = validatedState.current;
+    const text = editorMode === 'code' ? code : mermaid;
+    if (currentText === text || !editorView) {
+      return;
+    }
+    currentText = text;
+    editorView.dispatch({
+      changes: {
+        from: 0,
+        to: editorView.state.doc.length,
+        insert: text
+      }
+    });
+    const stateLanguage = editorView.state.facet(language);
+    const isStateJson = stateLanguage === jsonLanguage;
+    const isCodeJson = editorMode === 'config';
+    if (stateLanguage && isStateJson === isCodeJson) {
+      return;
+    }
+    editorView.dispatch({
+      effects: languageCompartment.reconfigure(
+        isCodeJson ? json() : yamlFrontmatter({ content: markdown() })
+      )
+    });
   });
 </script>
 

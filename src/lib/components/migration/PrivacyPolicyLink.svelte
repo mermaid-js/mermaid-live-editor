@@ -1,3 +1,5 @@
+<script lang="ts"></script>
+
 <div class="text-center">
   <a
     href="https://mermaid.ai/privacy-policy"

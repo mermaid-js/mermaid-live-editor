@@ -1,5 +1,5 @@
 import type { Loader, State } from '$lib/types';
-import { defaultState, sanitizeConfig, updateCodeStore } from '$lib/util/state';
+import { defaultState, sanitizeConfig, updateCodeStore } from '$lib/util/state.svelte';
 import { fetchText } from '$lib/util/util';
 import { loadGistData } from './gist';
 

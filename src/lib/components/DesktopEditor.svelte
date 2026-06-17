@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { EditorProps } from '$/types';
   import { env } from '$/util/env';
-  import { stateStore, urlsStore } from '$/util/state';
+  import { urls, validatedState } from '$/util/state.svelte';
   import { logMermaidChartClick } from '$/util/stats';
   import { AIPromptViewZoneManager } from '$lib/util/AIPromptViewZoneManager';
   import { initEditor } from '$lib/util/monacoExtra';
@@ -27,12 +27,23 @@
     lineNumbersMinChars: 4
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
+  let isUpdatingFromState = false;
   let showPopup = $state(false);
   let popupPosition = $state({ top: 0, lineNumber: 0 });
   let decorationsCollection: monaco.editor.IEditorDecorationsCollection | undefined;
   let input = $state('');
   let lastMouseLine = 0;
   const aiPromptManager = new AIPromptViewZoneManager();
+
+  const applyEditorTheme = (currentMode: typeof mode.current) => {
+    if (!editor) return;
+    monaco.editor.setTheme(`mermaid${currentMode === 'dark' ? '-dark' : ''}`);
+    divElement?.classList.toggle('mermaid-dark', currentMode === 'dark');
+  };
+
+  $effect(() => {
+    applyEditorTheme(mode.current);
+  });
 
   const jsonModel = monaco.editor.createModel(
     '',
@@ -104,7 +115,7 @@
       throw new Error('divEl is undefined');
     }
 
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    monaco.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       enableSchemaRequest: true,
       schemas: [
@@ -132,41 +143,11 @@
 
     editor.onDidChangeModelContent(({ isFlush }) => {
       const newText = editor?.getValue();
-      if (!newText || currentText === newText || isFlush) {
+      if (!newText || currentText === newText || isFlush || isUpdatingFromState) {
         return;
       }
       currentText = newText;
       onUpdate(currentText);
-    });
-
-    const unsubscribeState = stateStore.subscribe(({ errorMarkers, editorMode, code, mermaid }) => {
-      if (!editor) {
-        return;
-      }
-
-      const model = editorMode === 'code' ? mermaidModel : jsonModel;
-
-      if (editor.getModel()?.id !== model.id) {
-        editor.setModel(model);
-        renderAIPromptGutterGlyphIcon();
-      }
-
-      // Clear decorations if not in 'code' mode, or if the model changes
-      if (editorMode !== 'code' || editor.getModel()?.id !== mermaidModel.id) {
-        decorationsCollection?.clear();
-      }
-
-      // Update editor text if it's different
-      const newText = editorMode === 'code' ? code : mermaid;
-      if (newText !== currentText) {
-        editor.setScrollTop(0);
-        editor.setValue(newText);
-        currentText = newText;
-        renderAIPromptGutterGlyphIcon();
-      }
-
-      // Display/clear errors
-      monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
     });
 
     editor.onMouseMove((e) => {
@@ -183,12 +164,8 @@
       renderAIPromptGutterGlyphIcon();
     });
 
-    const unsubscribeMode = mode.subscribe((mode) => {
-      if (editor) {
-        monaco.editor.setTheme(`mermaid${mode === 'dark' ? '-dark' : ''}`);
-        divElement?.classList.toggle('mermaid-dark', mode === 'dark');
-      }
-    });
+    applyEditorTheme(mode.current);
+
     const resizeObserver = new ResizeObserver((entries) => {
       editor?.layout({
         height: entries[0].contentRect.height,
@@ -203,14 +180,55 @@
     renderAIPromptGutterGlyphIcon();
 
     return () => {
-      unsubscribeState();
-      unsubscribeMode();
       resizeObserver.disconnect();
       jsonModel.dispose();
       mermaidModel.dispose();
       aiPromptManager.destroy();
       editor?.dispose();
     };
+  });
+
+  $effect(() => {
+    const { errorMarkers, editorMode, code, mermaid } = validatedState.current;
+    if (!editor) {
+      return;
+    }
+
+    const model = editorMode === 'code' ? mermaidModel : jsonModel;
+
+    if (editor.getModel()?.id !== model.id) {
+      editor.setModel(model);
+      renderAIPromptGutterGlyphIcon();
+    }
+
+    // Clear decorations if not in 'code' mode, or if the model changes
+    if (editorMode !== 'code' || editor.getModel()?.id !== mermaidModel.id) {
+      decorationsCollection?.clear();
+    }
+
+    // Update editor text if it's different
+    const newText = editorMode === 'code' ? code : mermaid;
+    if (newText !== currentText) {
+      isUpdatingFromState = true;
+      try {
+        editor.setScrollTop(0);
+        editor.pushUndoStop();
+        editor.executeEdits('updateCode', [
+          {
+            range: model.getFullModelRange(),
+            text: newText
+          }
+        ]);
+        editor.pushUndoStop();
+        currentText = newText;
+      } finally {
+        isUpdatingFromState = false;
+      }
+      renderAIPromptGutterGlyphIcon();
+    }
+
+    // Display/clear errors
+    monaco.editor.setModelMarkers(model, 'mermaid', errorMarkers);
   });
 </script>
 
@@ -225,7 +243,7 @@
       onTryFree={() => {
         logMermaidChartClick('vibeDiagramming');
         window.open(
-          $urlsStore.mermaidChart({ medium: 'vibe_diagramming' }).save,
+          urls.current.mermaidChart({ medium: 'vibe_diagramming' }).save,
           '_blank',
           'noopener'
         );
