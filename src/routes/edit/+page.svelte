@@ -67,6 +67,9 @@
 
   let isHistoryOpen = $state(false);
 
+  // Expose validated state reactively for the View grid binding
+  let validatedState = $derived({ current: $stateStore });
+
   // ── Drag system state ──────────────────────────────────────────────────
   let dragController: FlowchartDrag | undefined;
   let interactiveMode = $state(false);
@@ -215,7 +218,7 @@
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
           <View
             {panZoomState}
-            shouldShowGrid={$stateStore.grid}
+            shouldShowGrid={validatedState.current.grid}
             onSvgRendered={handleSvgRendered} />
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0 flex flex-col items-end gap-2">
