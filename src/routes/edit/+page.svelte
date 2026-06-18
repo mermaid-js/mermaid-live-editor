@@ -20,6 +20,8 @@
   import { Toggle } from '$/components/ui/toggle';
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
+  import PreviewModeToggle from '$/components/visualEditor/PreviewModeToggle.svelte';
+  import VisualEditor from '$/components/visualEditor/VisualEditor.svelte';
   import type { EditorMode, Tab } from '$/types';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
@@ -54,6 +56,7 @@
   let width = $state(0);
   let isMobile = $derived(width < 640);
   let isViewMode = $state(true);
+  let previewMode = $state<'preview' | 'visual'>('preview');
   let showEditorChooser = $state(false);
 
   onMount(async () => {
@@ -140,11 +143,20 @@
         </Resizable.Pane>
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
-          <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
-          <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
-          <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
-          <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
+          {#if previewMode === 'visual'}
+            <VisualEditor shouldShowGrid={validatedState.current.grid} />
+          {:else}
+            <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
+            <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
+            <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
+            <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
+          {/if}
+          <div class="absolute top-0 left-5 flex items-center gap-2">
+            <PreviewModeToggle bind:value={previewMode} />
+            {#if previewMode === 'preview'}
+              <div class="hidden md:block"><EnhancedEditsButton /></div>
+            {/if}
+          </div>
         </Resizable.Pane>
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
