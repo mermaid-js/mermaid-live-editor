@@ -17,6 +17,8 @@ const alwaysFullReload = {
   }
 };
 
+const port = Number(process.env.PORT ?? 3000);
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -31,12 +33,17 @@ export default defineConfig({
     devtoolsJson()
   ],
   envPrefix: 'MERMAID_',
-  server: { port: 3000, host: true },
-  preview: { port: 3000, host: true },
+  server: { port, host: true },
+  preview: { port, host: true },
   // Vitest otherwise resolves Svelte's server build, where $effect is a no-op.
   resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,
   test: {
     environment: 'jsdom',
+    environmentOptions: {
+      jsdom: {
+        url: 'http://localhost/'
+      }
+    },
     // in-source testing
     includeSource: ['src/**/*.{js,ts,svelte}'],
     // Ignore E2E tests
