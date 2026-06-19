@@ -522,6 +522,7 @@ export class FlowchartDrag {
 
     g.setPointerCapture(e.pointerId);
     e.stopPropagation(); // prevent pan/zoom from hijacking
+    e.preventDefault();  // suppress synthetic mouse events that may feed Hammer
 
     const vbPt = this.getViewBoxPoint(e.clientX, e.clientY);
     const connected = this.getConnectedEdges(nodeId);
@@ -574,6 +575,9 @@ export class FlowchartDrag {
   private onPointerMove(e: PointerEvent): void {
     if (!this.dragState) return;
 
+    e.stopPropagation(); // prevent pan/zoom Hammer from hijacking drag
+    e.preventDefault(); // suppress pan/scroll default
+
     const vbPt = this.getViewBoxPoint(e.clientX, e.clientY);
     const dx = vbPt.x - this.dragState.startPointerX;
     const dy = vbPt.y - this.dragState.startPointerY;
@@ -622,6 +626,9 @@ export class FlowchartDrag {
   }
   private onPointerUp(e: PointerEvent): void {
     if (!this.dragState) return;
+
+    e.stopPropagation(); // prevent pan/zoom Hammer from hijacking drag
+    e.preventDefault(); // suppress click/pan default
 
     const ns = this.nodeStates.get(this.dragState.nodeId);
     if (ns) {
