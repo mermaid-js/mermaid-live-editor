@@ -83,7 +83,10 @@
 
   const handleSvgRendered = (data: { svg: SVGSVGElement; diagramType: string }) => {
     const wasFlowchart = isFlowchart;
-    isFlowchart = data.diagramType === 'flowchart';
+
+    // Hand-drawn (rough) mode replaces the Mermaid SVG with a sketch that
+    // doesn't contain g.node elements — drag is not supported in this mode.
+    isFlowchart = data.diagramType === 'flowchart' && !validatedState.current.rough;
 
     if (isFlowchart) {
       try {
