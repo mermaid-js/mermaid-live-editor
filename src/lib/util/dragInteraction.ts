@@ -284,6 +284,13 @@ export class FlowchartDrag {
 
   /** Re-parse the SVG and rebuild internal state (e.g. after diagram update). */
   refresh(svg?: SVGSVGElement): void {
+    // Snapshot current node positions before clearing state, so we can
+    // restore them after the fresh parse (style toggle, code edit, etc.).
+    const savedPositions = new Map<string, { x: number; y: number }>();
+    for (const [id, ns] of this.nodeStates) {
+      savedPositions.set(id, { x: ns.x, y: ns.y });
+    }
+
     if (svg) {
       this.svg = svg;
       this.edgeGroup = (svg.querySelector('g.edgePaths') as SVGGraphicsElement) ?? svg;
@@ -296,6 +303,35 @@ export class FlowchartDrag {
     const parser = new MermaidGraphParser(this.svg);
     this.graph = parser.parse();
     this.buildInternalState();
+
+    // Restore persisted node positions
+    for (const [id, pos] of savedPositions) {
+      const ns = this.nodeStates.get(id);
+      if (ns) {
+        setTransform(ns.element, pos.x, pos.y);
+        ns.x = pos.x;
+        ns.y = pos.y;
+      }
+    }
+
+    // Re-route all edges to match the restored node positions
+    const edgeGroupInverseCTM = this.edgeGroup.getScreenCTM()?.inverse() ?? null;
+    for (const [, es] of this.edgeStates) {
+      const srcNs = this.nodeStates.get(es.src);
+      const tgtNs = this.nodeStates.get(es.tgt);
+      if (!srcNs || !tgtNs) continue;
+
+      const srcRect = getRectInSpace(srcNs.element, this.edgeGroup, edgeGroupInverseCTM);
+      const tgtRect = getRectInSpace(tgtNs.element, this.edgeGroup, edgeGroupInverseCTM);
+      if (!srcRect || !tgtRect) continue;
+
+      const srcShape: import('./edge-path.js').ShapeType =
+        srcNs.element.querySelector('polygon') !== null ? 'diamond' : 'rect';
+      const tgtShape: import('./edge-path.js').ShapeType =
+        tgtNs.element.querySelector('polygon') !== null ? 'diamond' : 'rect';
+
+      updateEdgePath(srcRect, tgtRect, es.pathEl, es.labelEl, srcShape, tgtShape);
+    }
 
     this.undoStack.length = 0;
     this.redoStack.length = 0;
