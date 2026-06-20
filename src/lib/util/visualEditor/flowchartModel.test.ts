@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import mermaid from 'mermaid';
 import {
   getStyleProp,
+  insertNodeIntoEdge,
   parseFlowchart,
   serializeFlowchart,
   setStyleProp,
@@ -193,6 +194,77 @@ flowchart LR
       throw new Error('should parse graph keyword');
     }
     expect(model.direction).toBe('LR');
+  });
+});
+
+describe('insertNodeIntoEdge', () => {
+  beforeAll(async () => {
+    mermaid.initialize({});
+    await mermaid.parse('flowchart TD\n A --> B');
+  });
+
+  const edgePairs = (model: FlowchartModel) => model.edges.map((e) => `${e.start}->${e.end}`);
+
+  const buildModel = async (code: string): Promise<FlowchartModel> => {
+    const model = await parseFlowchart(code);
+    if (!model) {
+      throw new Error(`should parse: ${code}`);
+    }
+    return model;
+  };
+
+  const edgeIndexOf = (model: FlowchartModel, start: string, end: string): number =>
+    model.edges.findIndex((e) => e.start === start && e.end === end);
+
+  it('splices an unconnected node into a connection', async () => {
+    const model = await buildModel('flowchart LR\n A --> B\n N[Spare]');
+    expect(insertNodeIntoEdge(model, 'N', edgeIndexOf(model, 'A', 'B'))).toBe(true);
+    expect(edgePairs(model).sort()).toEqual(['A->N', 'N->B']);
+  });
+
+  it('reorders a tail node to the front of the chain', async () => {
+    // A -> B -> C -> D, drop D onto A->B  =>  A -> D -> B -> C
+    const model = await buildModel('flowchart LR\n A --> B\n B --> C\n C --> D');
+    expect(insertNodeIntoEdge(model, 'D', edgeIndexOf(model, 'A', 'B'))).toBe(true);
+    expect(edgePairs(model).sort()).toEqual(['A->D', 'B->C', 'D->B']);
+  });
+
+  it('heals the gap left by a middle node', async () => {
+    // A -> B -> C -> D, drop B onto C->D  =>  A -> C -> B -> D
+    const model = await buildModel('flowchart LR\n A --> B\n B --> C\n C --> D');
+    expect(insertNodeIntoEdge(model, 'B', edgeIndexOf(model, 'C', 'D'))).toBe(true);
+    expect(edgePairs(model).sort()).toEqual(['A->C', 'B->D', 'C->B']);
+  });
+
+  it('keeps the connection style and label on the first half', async () => {
+    const model = await buildModel('flowchart LR\n A -. yes .-> B\n N[Spare]');
+    insertNodeIntoEdge(model, 'N', edgeIndexOf(model, 'A', 'B'));
+    const first = model.edges.find((e) => e.start === 'A' && e.end === 'N');
+    const second = model.edges.find((e) => e.start === 'N' && e.end === 'B');
+    expect(first?.stroke).toBe('dotted');
+    expect(first?.label).toBe('yes');
+    expect(second?.stroke).toBe('dotted');
+    expect(second?.label).toBe('');
+  });
+
+  it('refuses to splice a node into its own edge', async () => {
+    const model = await buildModel('flowchart LR\n A --> B');
+    expect(insertNodeIntoEdge(model, 'A', edgeIndexOf(model, 'A', 'B'))).toBe(false);
+    expect(edgePairs(model)).toEqual(['A->B']);
+  });
+
+  it('co-locates the node with its new neighbours subgraph', async () => {
+    const model = await buildModel('flowchart LR\n subgraph g [Group]\n A --> B\n end\n N[Spare]');
+    insertNodeIntoEdge(model, 'N', edgeIndexOf(model, 'A', 'B'));
+    expect(model.nodes.find((n) => n.id === 'N')?.subgraph).toBe('g');
+  });
+
+  it('produces code that re-parses cleanly', async () => {
+    const model = await buildModel('flowchart LR\n A --> B\n B --> C\n D[Spare]');
+    insertNodeIntoEdge(model, 'D', edgeIndexOf(model, 'A', 'B'));
+    const reparsed = await parseFlowchart(serializeFlowchart(model));
+    expect(reparsed).toBeTruthy();
+    expect(reparsed && edgePairs(reparsed).sort()).toEqual(['A->D', 'B->C', 'D->B']);
   });
 });
 

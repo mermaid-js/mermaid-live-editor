@@ -8,6 +8,7 @@ Edit, preview and share mermaid charts/diagrams.
 ## Features
 
 - Edit and preview flowcharts, sequence diagrams, gantt diagrams in real time.
+- Visually edit flowcharts — move boxes between groups, reorder them in the flow, and restyle them, no code required (see [Visual editing](#visual-editing)).
 - Save the result as a svg
 - Get a link to a viewer of the diagram so that you can share it with others.
 - Get a link to edit the diagram so that someone else can tweak it and send a new link back
@@ -15,6 +16,17 @@ Edit, preview and share mermaid charts/diagrams.
 ## Live demo
 
 You can try out a [live version](https://mermaid.live/).
+
+## Visual editing
+
+Flowcharts can be edited directly on the rendered diagram — no Mermaid syntax required. In the editor, switch the preview pane from **Preview** to **Visual** using the toggle in its top-left corner. Then you can:
+
+- **Select a node** by clicking it to edit its label, shape, colors (fill / border / text) and border width in the side panel.
+- **Reorder a node in the flow** by dragging it onto a connector: the box is spliced in and the arrows reconnect automatically (`A --> B` becomes `A --> dragged --> B`), and the gap it leaves behind is healed (its old neighbours are joined).
+- **Move a node between subgraphs** by dragging it onto a group, or using the _Subgraph_ dropdown in the side panel.
+- **Add** nodes and groups, change the diagram **direction**, and **delete** nodes from the top toolbar.
+
+Every visual change rewrites the Mermaid code in the editor (and edits to the code update the diagram), so you can switch between typing and visual editing freely. Frontmatter, `click` handlers, `linkStyle` and comments are preserved. Visual editing currently supports `flowchart` / `graph` diagrams; other diagram types fall back to read-only preview.
 
 # Contributors are welcome!
 

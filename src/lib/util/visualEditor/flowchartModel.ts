@@ -368,6 +368,77 @@ export const setStyleProp = (
 };
 
 // ---------------------------------------------------------------------------
+// Structural editing operations
+// ---------------------------------------------------------------------------
+
+const edgeLike = (start: string, end: string, like: FlowEdge): FlowEdge => ({
+  end,
+  label: '',
+  labelType: 'text',
+  length: like.length,
+  start,
+  stroke: like.stroke,
+  type: like.type
+});
+
+/**
+ * Splice a node into an existing connection, rewiring the connectors so the
+ * node sits between the edge's endpoints (`X --> node --> Y`). The gap the node
+ * leaves behind is healed by joining each of its predecessors to each of its
+ * successors, so dragging a box onto a connector reorders it within the flow.
+ *
+ * Mutates `model` in place. Returns `false` (no change) when the move is not
+ * valid, e.g. dropping a node onto one of its own edges.
+ */
+export const insertNodeIntoEdge = (
+  model: FlowchartModel,
+  nodeId: string,
+  edgeIndex: number
+): boolean => {
+  const target = model.edges[edgeIndex];
+  if (!target || target.start === nodeId || target.end === nodeId) {
+    return false;
+  }
+  const node = model.nodes.find((n) => n.id === nodeId);
+  if (!node) {
+    return false;
+  }
+
+  const incoming = model.edges.filter((e) => e.end === nodeId && e.start !== nodeId);
+  const outgoing = model.edges.filter((e) => e.start === nodeId && e.end !== nodeId);
+
+  // Drop every edge currently touching the node; it is being rewired.
+  const remaining = model.edges.filter((e) => e.start !== nodeId && e.end !== nodeId);
+
+  // Heal the gap: connect each predecessor to each successor.
+  const healed: FlowEdge[] = [];
+  const connects = (start: string, end: string): boolean =>
+    remaining.some((e) => e.start === start && e.end === end) ||
+    healed.some((e) => e.start === start && e.end === end);
+  for (const pred of incoming) {
+    for (const succ of outgoing) {
+      if (pred.start !== succ.end && !connects(pred.start, succ.end)) {
+        healed.push(edgeLike(pred.start, succ.end, pred));
+      }
+    }
+  }
+
+  // Splice the node into the dropped connection: keep the original connector's
+  // style/label on the first half, use a matching plain arrow for the second.
+  const index = remaining.indexOf(target);
+  remaining.splice(index, 1, { ...target, end: nodeId }, edgeLike(nodeId, target.end, target));
+  model.edges = [...remaining, ...healed];
+
+  // Co-locate the node with its new neighbours when they share a group.
+  const startNode = model.nodes.find((n) => n.id === target.start);
+  const endNode = model.nodes.find((n) => n.id === target.end);
+  if (startNode && endNode && startNode.subgraph === endNode.subgraph) {
+    node.subgraph = startNode.subgraph;
+  }
+  return true;
+};
+
+// ---------------------------------------------------------------------------
 // Serialization
 // ---------------------------------------------------------------------------
 

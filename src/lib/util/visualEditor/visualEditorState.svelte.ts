@@ -6,6 +6,7 @@
  */
 import { updateCode } from '$/util/state.svelte';
 import {
+  insertNodeIntoEdge,
   parseFlowchart,
   serializeFlowchart,
   setStyleProp,
@@ -107,6 +108,16 @@ class VisualEditorController {
       if (node) {
         node.subgraph = subgraphId;
       }
+    });
+  }
+
+  /**
+   * Reorder a node into the flow by splicing it into an existing connection,
+   * rewiring the connectors so it sits between the edge's endpoints.
+   */
+  insertIntoEdge(id: string, edgeIndex: number): void {
+    this.#commit((model) => {
+      insertNodeIntoEdge(model, id, edgeIndex);
     });
   }
 
