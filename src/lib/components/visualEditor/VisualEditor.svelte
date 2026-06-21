@@ -43,6 +43,12 @@
   let ghost = $state<{ x: number; y: number; label: string; action?: string } | undefined>(
     undefined
   );
+  // Inline label editor, opened by double-clicking a node. Positioned in viewport
+  // coordinates (like the drag ghost) so it sits over the node's rendered box.
+  let editing = $state<
+    | { id: string; left: number; top: number; width: number; height: number; value: string }
+    | undefined
+  >(undefined);
   let dropTarget: SVGGElement | undefined;
   let edgeTarget: { index: number; el: SVGPathElement } | undefined;
 
@@ -239,6 +245,52 @@
     window.addEventListener('pointerup', onPointerUp);
   };
 
+  // Double-clicking a node opens an inline editor for its label.
+  const onNodeDoubleClick = (event: MouseEvent) => {
+    const el = event.currentTarget as SVGGElement;
+    const id = nodeIdFromEl(el);
+    if (!id) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    // The double-click follows pointer events that may have armed a drag gesture.
+    gesture = undefined;
+    const rect = el.getBoundingClientRect();
+    const node = visualEditor.nodes.find((n) => n.id === id);
+    visualEditor.select(id);
+    editing = {
+      height: rect.height,
+      id,
+      left: rect.left,
+      top: rect.top,
+      value: node?.label ?? '',
+      width: rect.width
+    };
+  };
+
+  const commitEdit = () => {
+    if (!editing) {
+      return;
+    }
+    const { id, value } = editing;
+    editing = undefined;
+    const node = visualEditor.nodes.find((n) => n.id === id);
+    if (node && node.label !== value) {
+      visualEditor.setLabel(id, value);
+    }
+  };
+
+  const cancelEdit = () => {
+    editing = undefined;
+  };
+
+  // Focus and select the field as soon as it mounts so typing replaces the label.
+  const focusEditor = (field: HTMLTextAreaElement) => {
+    field.focus();
+    field.select();
+  };
+
   const onBackgroundPointerDown = (event: PointerEvent) => {
     if ((event.target as Element).closest('g.node')) {
       return;
@@ -260,6 +312,7 @@
       el.dataset.veId = id;
       el.classList.add('ve-node');
       el.addEventListener('pointerdown', onNodePointerDown);
+      el.addEventListener('dblclick', onNodeDoubleClick);
     }
     clusterEntries = [];
     for (const el of graphDiv.querySelectorAll<SVGGElement>('g.cluster')) {
@@ -456,7 +509,7 @@
       {#if !visualEditor.selectedId}
         <div
           class="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-muted/90 px-3 py-1 text-center text-xs text-muted-foreground shadow">
-          Click a node to edit · Drag onto a connector to insert it · Drag onto a group to move it
+          Click a node to edit · Double-click to rename · Drag onto a connector to insert it
         </div>
       {/if}
     {/if}
@@ -470,6 +523,30 @@
           <div class="text-[10px] font-normal text-accent">{ghost.action}</div>
         {/if}
       </div>
+    {/if}
+
+    {#if editing}
+      <textarea
+        use:focusEditor
+        bind:value={editing.value}
+        aria-label="Edit node label"
+        onpointerdown={(event) => event.stopPropagation()}
+        onkeydown={(event) => {
+          if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            commitEdit();
+          } else if (event.key === 'Escape') {
+            event.preventDefault();
+            cancelEdit();
+          }
+        }}
+        onblur={commitEdit}
+        class="fixed z-50 -translate-x-1/2 -translate-y-1/2 resize-none overflow-hidden rounded-md border-2 border-accent bg-background px-2 py-1 text-center text-sm font-medium text-foreground shadow-lg focus:outline-none"
+        style="left: {editing.left + editing.width / 2}px; top: {editing.top +
+          editing.height / 2}px; width: {Math.max(editing.width, 96)}px; height: {Math.max(
+          editing.height,
+          34
+        )}px"></textarea>
     {/if}
   </div>
 </div>
