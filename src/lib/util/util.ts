@@ -1,5 +1,4 @@
 import { C } from '$/constants';
-import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading.svelte';
 import { isOnMermaidAI } from './migration/domainMigration';
@@ -38,9 +37,10 @@ export const initHandler = async (): Promise<void> => {
 
 export const isMac = navigator.platform.toUpperCase().includes('MAC');
 export const cmdKey = isMac ? 'Cmd' : 'Ctrl';
-export const MCBaseURL = env.isEnabledMermaidChartLinks
-  ? 'https://mermaid.ai' // 'http://localhost:5174'
-  : 'https://example.com';
+// Public Mermaid Chart Playground host. Kept as a plain constant (independent of
+// `env.isEnabledMermaidChartLinks`) so the Share dialog's playground link keeps
+// working in this fork, where the other Mermaid AI links are turned off.
+export const MCBaseURL = 'https://mermaid.ai';
 
 const buildUtmParams = ({
   utmCampaign,

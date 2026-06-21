@@ -58,7 +58,8 @@
 
   const renderAIPromptGutterGlyphIcon = () => {
     decorationsCollection?.clear();
-    if (!editor || showPopup) {
+    // The inline "try AI" prompt is a Mermaid AI entry point; hide it in this fork.
+    if (!env.isEnabledMermaidChartLinks || !editor || showPopup) {
       return;
     }
     const model = editor.getModel();
@@ -86,7 +87,7 @@
   };
 
   const toggleAIPopup = (lineNumber: number) => {
-    if (!divElement || !aiPromptPopupElement) return;
+    if (!env.isEnabledMermaidChartLinks || !divElement || !aiPromptPopupElement) return;
     popupPosition = {
       top: 0,
       lineNumber
