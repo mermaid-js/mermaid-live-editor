@@ -1,0 +1,16 @@
+apiVersion: v2
+name: mermaid
+description: >
+  A Helm chart for deploying the Mermaid Live Editor on OpenShift.
+  Produces diagrams and charts from plain-text Mermaid syntax.
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - mermaid
+  - diagrams
+  - charts
+  - visualization
+home: https://mermaid.js.org
+sources:
+  - https://github.com/mermaid-js/mermaid-live-editor
