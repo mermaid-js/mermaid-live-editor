@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This is a SvelteKit and TypeScript application for the Mermaid Live Editor. Route entry points live in `src/routes/`, shared UI and editor components in `src/lib/components/`, and utility/state code in `src/lib/util/` and `src/lib/`. Static assets, icons, manifests, and service worker files are in `static/`. End-to-end tests are in `tests/`; colocated unit tests use `*.test.ts` near the code, such as `src/lib/util/stats.test.ts`.
+This is a SvelteKit and TypeScript application for the Mermaid Live Editor. Route entry points live in `src/routes/`, shared UI and editor components in `src/lib/components/` (including `src/lib/components/Chat/` for the local AI chat panel), and utility/state code in `src/lib/util/` and `src/lib/`. Notable utilities include `localAI.ts` (OpenAI-compatible streaming LLM client) and `presentation.ts` (layout/look/accessibility helpers). Static assets, icons, manifests, and service worker files are in `static/`. End-to-end tests are in `tests/`; colocated unit tests use `*.test.ts` near the code, such as `src/lib/util/stats.test.ts` and `src/lib/util/presentation.test.ts`.
 
 ## Build, Test, and Development Commands
 
