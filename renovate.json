@@ -12,8 +12,11 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^mermaid"],
-      "groupName": "Mermaid packages"
+      "matchPackageNames": ["mermaid"],
+      "matchPackagePatterns": ["^@mermaid-js/"],
+      "groupName": "Mermaid packages",
+      "schedule": ["at any time"],
+      "automerge": true
     },
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
