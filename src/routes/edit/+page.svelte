@@ -23,7 +23,7 @@
   import type { EditorMode, Tab } from '$/types';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
-  import { stateStore, updateCodeStore, urlsStore } from '$/util/state';
+  import { validatedState, updateCodeStore, urls } from '$/util/state.svelte';
   import { logEvent, logMermaidChartClick } from '$/util/stats';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
@@ -99,7 +99,7 @@
       <Button
         variant="accent"
         size="sm"
-        href={$urlsStore.mermaidChart({ medium: 'save_diagram' }).save}
+        href={urls.current.mermaidChart({ medium: 'save_diagram' }).save}
         target="_blank"
         onclick={() => logMermaidChartClick('saveDiagram')}>
         <MermaidChartIcon />
@@ -124,7 +124,7 @@
               onselect={tabSelectHandler}
               isOpen
               tabs={editorTabs}
-              activeTabID={$stateStore.editorMode}
+              activeTabID={validatedState.current.editorMode}
               isClosable={false}>
               {#snippet actions()}
                 <DiagramDocButton />
@@ -140,7 +140,7 @@
         </Resizable.Pane>
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <View {panZoomState} shouldShowGrid={$stateStore.grid} />
+          <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>

@@ -1,50 +1,12 @@
 import type { HistoryEntry, HistoryType, Optional, State } from '$lib/types';
-import { inputStateStore } from '$lib/util/state';
+import { persisted, readJSON, type Persisted } from '$lib/util/persist.svelte';
+import { inputState } from '$lib/util/state.svelte';
 import { logEvent } from '$lib/util/stats';
 import { generateSlug } from 'random-word-slugs';
-import { get } from 'svelte/store';
 import { v4 as uuidV4 } from 'uuid';
 
 const MAX_AUTO_HISTORY_LENGTH = 30;
 const AUTO_SAVE_INTERVAL = 60_000;
-
-const hasStorage = (): boolean => typeof window !== 'undefined' && !!window.localStorage;
-
-const readJSON = <T>(key: string, fallback: T): T => {
-  if (!hasStorage()) {
-    return fallback;
-  }
-  try {
-    const raw = window.localStorage.getItem(key);
-    return raw === null ? fallback : (JSON.parse(raw) as T);
-  } catch {
-    return fallback;
-  }
-};
-
-const writeJSON = (key: string, value: unknown): void => {
-  if (hasStorage()) {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }
-};
-
-interface Persisted<T> {
-  value: T;
-}
-
-// A localStorage-backed reactive value. Reads on init, writes on every set.
-const persisted = <T>(key: string, initial: T): Persisted<T> => {
-  let value = $state<T>(readJSON(key, initial));
-  return {
-    get value() {
-      return value;
-    },
-    set value(next: T) {
-      value = next;
-      writeJSON(key, next);
-    }
-  };
-};
 
 const auto = persisted<HistoryEntry[]>('autoHistoryStore', []);
 const manual = persisted<HistoryEntry[]>('manualHistoryStore', []);
@@ -209,7 +171,10 @@ let autoSaveTimer: ReturnType<typeof setInterval> | undefined;
 // Idempotent; returns the stop function for use as a lifecycle cleanup.
 export const startAutoSave = (): (() => void) => {
   if (autoSaveTimer === undefined) {
-    autoSaveTimer = setInterval(() => addAutoEntry(get(inputStateStore)), AUTO_SAVE_INTERVAL);
+    autoSaveTimer = setInterval(
+      () => addAutoEntry($state.snapshot(inputState)),
+      AUTO_SAVE_INTERVAL
+    );
   }
   return stopAutoSave;
 };

@@ -3,7 +3,7 @@
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import { Button } from '$/components/ui/button';
   import { standardizeDiagramType } from '$/util/mermaid';
-  import { stateStore, urlsStore } from '$/util/state';
+  import { validatedState, urls } from '$/util/state.svelte';
   import { logMermaidChartClick } from '$/util/stats';
   import { quintInOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
@@ -19,7 +19,7 @@
   ]);
 
   const diagramType = $derived.by(() => {
-    const dt = $stateStore.diagramType;
+    const dt = validatedState.current.diagramType;
     return dt ? standardizeDiagramType(dt) : undefined;
   });
 
@@ -39,7 +39,7 @@
   let currentActionIndex = $state(0);
 
   const availableActions = $derived.by<EnhancedEditAction[]>(() => {
-    if (!$stateStore.diagramType) {
+    if (!validatedState.current.diagramType) {
       return [];
     }
 
@@ -98,7 +98,7 @@
     <Button
       variant="secondary"
       size="sm"
-      href={$urlsStore.mermaidChart({
+      href={urls.current.mermaidChart({
         medium: currentAction.medium,
         campaign: currentAction.campaign
       }).save}

@@ -1,10 +1,10 @@
 import { C } from '$/constants';
 import { env } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
-import { initLoading } from './loading';
+import { initLoading } from './loading.svelte';
 import { isOnMermaidAI } from './migration/domainMigration';
-import { applyMigrations } from './migrations';
-import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state';
+import { applyMigrations } from './migrations.svelte';
+import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state.svelte';
 import { getAnalyticsSafeUrl, initAnalytics, plausible } from './stats';
 
 export const getDomain = (url?: string): string => {

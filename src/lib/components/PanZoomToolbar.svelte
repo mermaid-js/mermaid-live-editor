@@ -3,7 +3,7 @@
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import type { PanZoomState } from '$/util/panZoom';
-  import { urlsStore } from '$/util/state';
+  import { urls } from '$/util/state.svelte';
   import ExpandIcon from '~icons/material-symbols/open-in-full-rounded';
   import ArrowsToCircleIcon from '~icons/material-symbols/screenshot-frame-2';
   import MagnifyingGlassPlusIcon from '~icons/material-symbols/zoom-in';
@@ -28,7 +28,7 @@
     <MagnifyingGlassPlusIcon />
   </Button>
   <Separator orientation="vertical" class="hidden sm:block" />
-  <Button variant="ghost" size="icon" title="Full Screen" href={$urlsStore.view} target="_blank">
+  <Button variant="ghost" size="icon" title="Full Screen" href={urls.current.view} target="_blank">
     <ExpandIcon />
   </Button>
 </FloatingToolbar>
