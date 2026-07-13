@@ -1,17 +1,17 @@
 <script lang="ts">
   import DesktopEditor from '$/components/DesktopEditor.svelte';
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
   import MobileEditor from '$/components/MobileEditor.svelte';
   import { Button } from '$/components/ui/button';
   import { TID } from '$/constants';
-  import { env } from '$/util/env';
-  import { updateCode, updateConfig, urls, validatedState } from '$lib/util/state.svelte';
-  import { logMermaidChartClick } from '$lib/util/stats';
+  import { updateCode, updateConfig, validatedState } from '$lib/util/state.svelte';
   import { debounce } from 'lodash-es';
+  import AutoFixIcon from '~icons/material-symbols/auto-fix-normal-rounded';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 
-  const { isMobile } = $props<{ isMobile: boolean }>();
+  const { isMobile, onRepairSyntaxError } = $props<{
+    isMobile: boolean;
+    onRepairSyntaxError?: () => void;
+  }>();
   const onUpdate = (text: string) => {
     if (validatedState.current.editorMode === 'code') {
       updateCode(text);
@@ -53,26 +53,22 @@
           <ExclamationCircleIcon class="size-6 text-destructive" aria-hidden="true" />
           <div class="flex flex-col">
             <p>Syntax error</p>
-            {#if env.isEnabledMermaidChartLinks && validatedState.current.editorMode === 'code'}
+            {#if validatedState.current.editorMode === 'code'}
               <p class="text-xs text-white/60" data-testid={TID.aiHelpText}>
-                Create a free account to repair with AI
+                Ask your local AI to suggest a fix
               </p>
             {/if}
           </div>
         </div>
-        {#if validatedState.current.editorMode === 'code'}
-          <McWrapper>
-            <Button
-              variant="accent"
-              size="sm"
-              data-testid={TID.aiRepairButton}
-              href={urls.current.mermaidChart({ medium: 'ai_repair' }).save}
-              target="_blank"
-              onclick={() => logMermaidChartClick('aiRepair')}>
-              <MermaidChartIcon />
-              AI Repair
-            </Button>
-          </McWrapper>
+        {#if validatedState.current.editorMode === 'code' && onRepairSyntaxError}
+          <Button
+            variant="accent"
+            size="sm"
+            data-testid={TID.aiRepairButton}
+            onclick={onRepairSyntaxError}>
+            <AutoFixIcon />
+            Suggest fix
+          </Button>
         {/if}
       </div>
       <output class="max-h-32 overflow-auto bg-muted p-2" name="mermaid-error" for="editor">

@@ -1,6 +1,7 @@
 <script lang="ts">
   import Actions from '$/components/Actions.svelte';
   import Card from '$/components/Card/Card.svelte';
+  import ChatPanel from '$/components/Chat/ChatPanel.svelte';
   import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
   import Editor from '$/components/Editor.svelte';
   import EnhancedEditsButton from '$/components/EnhancedEditsButton.svelte';
@@ -12,6 +13,7 @@
   import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Preset from '$/components/Preset.svelte';
+  import PresentationSettings from '$/components/PresentationSettings.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
@@ -29,6 +31,7 @@
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
+  import MessageIcon from '~icons/material-symbols/chat-outline-rounded';
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
@@ -68,6 +71,8 @@
   onMount(() => startAutoSave());
 
   let isHistoryOpen = $state(false);
+  let chatMode = $state<'floating' | 'hidden' | 'pane'>('hidden');
+  let repairRequest = $state<{ id: number; code: string; error: string }>();
 
   let editorPane: Resizable.Pane | undefined;
   $effect(() => {
@@ -75,9 +80,25 @@
       editorPane?.resize(50);
     }
   });
+
+  const toggleChat = () => {
+    chatMode = chatMode === 'hidden' ? 'floating' : 'hidden';
+  };
+
+  const startSyntaxRepair = () => {
+    const error = validatedState.current.error;
+    if (!(error instanceof Error)) return;
+
+    repairRequest = {
+      code: validatedState.current.code,
+      error: error.toString(),
+      id: Date.now()
+    };
+    chatMode = chatMode === 'pane' ? 'pane' : 'floating';
+  };
 </script>
 
-<div class="flex h-full flex-col overflow-hidden">
+<div class="relative flex h-full flex-col overflow-hidden">
   {#snippet mobileToggle()}
     <div class="flex items-center gap-2">
       Edit <Switch
@@ -91,6 +112,14 @@
   {/snippet}
 
   <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
+    <Toggle
+      pressed={chatMode !== 'hidden'}
+      onPressedChange={toggleChat}
+      size="sm"
+      title="Local AI chat"
+      aria-label="Local AI chat">
+      <MessageIcon />
+    </Toggle>
     <Toggle bind:pressed={isHistoryOpen} size="sm" title="History" aria-label="History">
       <HistoryIcon />
     </Toggle>
@@ -129,11 +158,12 @@
               {#snippet actions()}
                 <DiagramDocButton />
               {/snippet}
-              <Editor {isMobile} />
+              <Editor {isMobile} onRepairSyntaxError={startSyntaxRepair} />
             </Card>
 
             <div class="group flex flex-wrap justify-between gap-4 sm:gap-6">
               <Preset />
+              <PresentationSettings />
               <Actions />
             </div>
           </div>
@@ -145,7 +175,35 @@
           <div class="absolute top-0 right-0"><PanZoomToolbar {panZoomState} /></div>
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
+          {#if chatMode === 'floating'}
+            <div
+              class="absolute right-4 bottom-4 z-50 h-[min(520px,calc(100%-2rem))] w-[min(420px,calc(100%-2rem))]">
+              <ChatPanel
+                mode="floating"
+                {repairRequest}
+                onDock={() => {
+                  chatMode = 'pane';
+                }}
+                onClose={() => {
+                  chatMode = 'hidden';
+                }} />
+            </div>
+          {/if}
         </Resizable.Pane>
+        {#if chatMode === 'pane'}
+          <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
+          <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full grow flex-col sm:flex">
+            <ChatPanel
+              mode="pane"
+              {repairRequest}
+              onUndock={() => {
+                chatMode = 'floating';
+              }}
+              onClose={() => {
+                chatMode = 'hidden';
+              }} />
+          </Resizable.Pane>
+        {/if}
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
           <Resizable.Pane minSize={15} defaultSize={30} class="hidden h-full grow flex-col sm:flex">
