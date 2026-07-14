@@ -144,4 +144,18 @@ test.describe('History', () => {
     await expect(page.locator('#historyList li')).toHaveCount(0);
     await expect(page.locator('#historyList')).toContainText('No saved states yet.');
   });
+
+  test('renames a saved entry inline', async ({ page }) => {
+    await openHistory(page);
+    await page.locator('#saveHistory').click();
+    await expect(page.locator('#historyList li')).toHaveCount(1);
+
+    await page.getByRole('button', { name: 'Rename' }).first().click();
+    const input = page.getByRole('textbox', { name: 'Rename entry' });
+    await input.fill('my-custom-name');
+    await input.press('Enter');
+
+    await expect(page.locator('#historyList')).toContainText('my-custom-name');
+    await expect(page.locator('#historyList li')).toHaveCount(1);
+  });
 });
