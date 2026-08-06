@@ -1,3 +1,4 @@
+import { defaultState } from '$/constants';
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
@@ -9,27 +10,13 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { defaultMermaidConfig, parse } from './mermaid';
+import { parse } from './mermaid';
 import { readJSON, writeJSON } from './persist.svelte';
+import { findUnsafeConfigPaths, stripConfigPaths } from './sanitize';
 import { deserializeState, pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
 
-export const defaultState: State = {
-  code: `flowchart TD
-    A[Christmas] -->|Get money| B(Go shopping)
-    B --> C{Let me think}
-    C -->|One| D[Laptop]
-    C -->|Two| E[iPhone]
-    C -->|Three| F[fa:fa-car Car]
-  `,
-  grid: true,
-  mermaid: formatJSON({
-    theme: 'default'
-  }),
-  panZoom: true,
-  rough: false,
-  updateDiagram: true
-};
+export { defaultState };
 
 const urlParseFailedState = `flowchart TD
     A[Loading URL failed. We can try to figure out why.] -->|Decode JSON| B(Please check the console to see the JSON and error details.)
@@ -209,44 +196,6 @@ export const urls = {
 };
 
 /**
- * Gets a list of paths that contain unsafe keys which might pose security risks.
- *
- * @param object - The object to check for unsafe keys.
- * @param unsafeKeys - List of unsafe keys.
- * @param path - The current path being checked (used for recursion).
- * @returns List of unsafe paths.
- */
-function getUnsafePaths(object: object, unsafeKeys: string[], path: string[] = []) {
-  const unsafePaths = new Array<string[]>();
-  for (const key of unsafeKeys) {
-    // Copied from mermaid's sanitize function in case there's non-enumerable keys
-    if (Object.hasOwn(object, key)) {
-      unsafePaths.push([...path, key]);
-      continue;
-    }
-  }
-  Object.keys(object).forEach((key) => {
-    const value = (object as Record<string, unknown>)[key];
-    const currentPath = [...path, key];
-    // Prototype pollution check.
-    if (key.startsWith('__')) {
-      unsafePaths.push(currentPath);
-      return;
-    }
-    if (typeof value === 'object' && value !== null) {
-      unsafePaths.push(...getUnsafePaths(value as object, unsafeKeys, currentPath));
-    } else if (
-      typeof value === 'string' &&
-      // XSS prevention checks -- See mermaid `sanitize` function for reference.
-      (value.includes('<') || value.includes('>') || value.includes('url(data:'))
-    ) {
-      unsafePaths.push(currentPath);
-    }
-  });
-  return unsafePaths;
-}
-
-/**
  * Asks the user for confirmation if the config contains settings that might
  * pose security risks, such as a relaxed `securityLevel`.
  *
@@ -257,10 +206,7 @@ export const sanitizeConfig = (config: string | MermaidConfig) => {
   const mermaidConfig: MermaidConfig =
     typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
 
-  const secureKeys = defaultMermaidConfig.secure ?? [];
-  const unsafePaths = getUnsafePaths(mermaidConfig, secureKeys).filter((path) => {
-    return lodashGet(mermaidConfig, path) !== lodashGet(defaultMermaidConfig, path);
-  });
+  const unsafePaths = findUnsafeConfigPaths(mermaidConfig);
 
   if (
     unsafePaths.length > 0 &&
@@ -274,15 +220,7 @@ export const sanitizeConfig = (config: string | MermaidConfig) => {
         )} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
     )
   ) {
-    for (const unsafePath of unsafePaths) {
-      const pathToObject = [...unsafePath];
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know this exists since it was found in `getUnsafePaths`
-      const lastKey = pathToObject.pop()!;
-      const lastObject =
-        pathToObject.length === 0 ? mermaidConfig : lodashGet(mermaidConfig, pathToObject);
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- Copied from mermaid code
-      delete lastObject[lastKey];
-    }
+    stripConfigPaths(mermaidConfig, unsafePaths);
   }
   return formatJSON(mermaidConfig);
 };

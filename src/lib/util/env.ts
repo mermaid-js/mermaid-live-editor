@@ -8,3 +8,7 @@ export const env = {
   privacyPolicyUrl: import.meta.env.MERMAID_PRIVACY_POLICY_URL ?? '',
   rendererUrl: import.meta.env.MERMAID_RENDERER_URL ?? ''
 } as const;
+
+export const MCBaseURL = env.isEnabledMermaidChartLinks
+  ? 'https://mermaid.ai' // 'http://localhost:5174'
+  : 'https://example.com';
