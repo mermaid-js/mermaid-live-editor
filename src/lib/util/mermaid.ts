@@ -8,6 +8,41 @@ import mermaid from 'mermaid';
 mermaid.registerLayoutLoaders([...elkLayouts, ...tidyTreeLayouts]);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
+/**
+ * Icon packs for the diagrams that draw icons.
+ *
+ * mermaid ships no icons beyond architecture's five built-ins: everything
+ * else — `logos:aws`, `mdi:database`, an `icon:` on a flowchart node — is
+ * resolved against packs the *host* registers, and the Live Editor registers
+ * none. Every such icon therefore renders as mermaid's "?" placeholder here,
+ * including the ones in the icon documentation's own examples.
+ *
+ * Fetched from the CDN rather than bundled, exactly as
+ * https://mermaid.js.org/config/icons.html describes. A loader runs only when
+ * a diagram actually names its pack, so the download happens on the first
+ * diagram that uses one and never otherwise. If the fetch fails — offline, or
+ * a self-hosted instance with no outbound access — mermaid falls back to the
+ * same placeholder shown today, so nothing regresses.
+ */
+const ICON_PACKS = [
+  'logos',
+  'simple-icons',
+  'mdi',
+  'fa6-solid',
+  'fa6-brands',
+  'carbon',
+  'tabler',
+  'devicon'
+];
+
+mermaid.registerIconPacks(
+  ICON_PACKS.map((name) => ({
+    name,
+    loader: () =>
+      fetch(`https://unpkg.com/@iconify-json/${name}@1/icons.json`).then((res) => res.json())
+  }))
+);
+
 export const render = async (
   config: MermaidConfig,
   code: string,
