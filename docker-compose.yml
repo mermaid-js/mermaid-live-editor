@@ -1,11 +1,25 @@
-version: '3.7'
 services:
   mermaid:
     build:
       context: .
       target: mermaid-dev
+      args:
+        MERMAID_ANALYTICS_URL: ${MERMAID_ANALYTICS_URL:-}
+        MERMAID_BASE_PATH: ${MERMAID_BASE_PATH:-}
+        MERMAID_DOCS_URL: ${MERMAID_DOCS_URL:-}
+        MERMAID_DOMAIN: ${MERMAID_DOMAIN:-}
+        MERMAID_HIDE_PRIVACY_POLICY: ${MERMAID_HIDE_PRIVACY_POLICY:-}
+        MERMAID_IS_ENABLED_MERMAID_CHART_LINKS: ${MERMAID_IS_ENABLED_MERMAID_CHART_LINKS:-}
+        MERMAID_KROKI_RENDERER_URL: ${MERMAID_KROKI_RENDERER_URL:-}
+        MERMAID_LLM_API_ENDPOINT: ${MERMAID_LLM_API_ENDPOINT:-}
+        MERMAID_LLM_MODEL: ${MERMAID_LLM_MODEL:-}
+        MERMAID_PRIVACY_POLICY_URL: ${MERMAID_PRIVACY_POLICY_URL:-}
+        MERMAID_RENDERER_URL: ${MERMAID_RENDERER_URL:-}
+    env_file:
+      - .env
     volumes:
       - ./src:/app/src
     ports:
-      - 3000:3000
+      - 3341:3000
       - 24678:24678
+      - 2314:8080

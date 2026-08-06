@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
 /**
@@ -17,40 +17,55 @@ const alwaysFullReload = {
   }
 };
 
-export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    sveltekit(),
-    Icons({
-      compiler: 'svelte',
-      customCollections: {
-        custom: FileSystemIconLoader('./static/icons')
-      }
-    }),
-    alwaysFullReload,
-    devtoolsJson()
-  ],
-  envPrefix: 'MERMAID_',
-  server: { port: 3000, host: true },
-  preview: { port: 3000, host: true },
-  // Vitest otherwise resolves Svelte's server build, where $effect is a no-op.
-  resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,
-  test: {
-    environment: 'jsdom',
-    // in-source testing
-    includeSource: ['src/**/*.{js,ts,svelte}'],
-    // Ignore E2E tests
-    exclude: [
-      'tests/**/*',
-      '**/node_modules/**',
-      '**/dist/**',
-      '**/.{idea,git,cache,output,temp}/**',
-      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*'
-    ],
-    setupFiles: ['./src/tests/setup.ts'],
-    coverage: {
-      exclude: ['src/mocks', '.svelte-kit', 'src/**/*.test.ts'],
-      reporter: ['text', 'json', 'html', 'lcov']
-    }
+const port = Number(process.env.PORT ?? 3000);
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), 'MERMAID_');
+  const allowedHosts = ['localhost', 'docker.local'];
+  if (env.MERMAID_DOMAIN) {
+    allowedHosts.push(env.MERMAID_DOMAIN);
   }
+
+  return {
+    plugins: [
+      tailwindcss(),
+      sveltekit(),
+      Icons({
+        compiler: 'svelte',
+        customCollections: {
+          custom: FileSystemIconLoader('./static/icons')
+        }
+      }),
+      alwaysFullReload,
+      devtoolsJson()
+    ],
+    envPrefix: 'MERMAID_',
+    server: { port, host: true, allowedHosts },
+    preview: { port, host: true },
+    // Vitest otherwise resolves Svelte's server build, where $effect is a no-op.
+    resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,
+    test: {
+      environment: 'jsdom',
+      environmentOptions: {
+        jsdom: {
+          url: 'http://localhost/'
+        }
+      },
+      // in-source testing
+      includeSource: ['src/**/*.{js,ts,svelte}'],
+      // Ignore E2E tests
+      exclude: [
+        'tests/**/*',
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/.{idea,git,cache,output,temp}/**',
+        '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*'
+      ],
+      setupFiles: ['./src/tests/setup.ts'],
+      coverage: {
+        exclude: ['src/mocks', '.svelte-kit', 'src/**/*.test.ts'],
+        reporter: ['text', 'json', 'html', 'lcov']
+      }
+    }
+  };
 });
