@@ -4,10 +4,11 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "pnpm build:embed && vite dev",
     "dev:force": "MERMAID_LOCAL=true pnpm dev --force",
     "dev:test": "pnpm dev",
-    "build": "vite build",
+    "build": "pnpm build:embed && vite build",
+    "build:embed": "vite build --config vite.embed.config.js",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
