@@ -33,7 +33,13 @@
   let error = $state<string | undefined>();
   let waitForFontAwesomeToLoad: FontAwesome['waitForFontAwesomeToLoad'] | undefined = $state();
 
-  const renderDiagram = async (currentCode: string, currentConfig: MermaidConfig) => {
+  const renderDiagram = async (
+    currentCode: string,
+    currentConfig: MermaidConfig,
+    currentRough: boolean,
+    currentPan: { x: number; y: number } | undefined,
+    currentZoom: number | undefined
+  ) => {
     if (!container) {
       return;
     }
@@ -45,11 +51,11 @@
         code: currentCode,
         config: currentConfig,
         container,
-        rough,
+        rough: currentRough,
         viewId: uniqueID('embed-graph-')
       });
       if (graphDiv) {
-        panZoomState.updateElement(graphDiv, { pan, zoom });
+        panZoomState.updateElement(graphDiv, { pan: currentPan, zoom: currentZoom });
       }
       error = undefined;
     } catch (error_) {
@@ -63,15 +69,19 @@
   let pendingRender = Promise.resolve();
   let renderSeq = 0;
   $effect(() => {
+    // Read every render input synchronously so prop updates re-trigger the effect.
     const currentCode = code;
     const currentConfig = config;
+    const currentRough = rough;
+    const currentPan = pan;
+    const currentZoom = zoom;
     void container;
     const seq = ++renderSeq;
     pendingRender = pendingRender.then(() => {
       if (seq !== renderSeq) {
         return;
       }
-      return renderDiagram(currentCode, currentConfig);
+      return renderDiagram(currentCode, currentConfig, currentRough, currentPan, currentZoom);
     });
   });
 </script>

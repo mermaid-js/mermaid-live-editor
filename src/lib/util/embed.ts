@@ -78,8 +78,8 @@ const parsePan = (value: string | null): { x: number; y: number } | undefined =>
 /**
  * Resolve the widget settings from an embed URL.
  *
- * Precedence (highest first): query params > hash `#pako:`/`#base64:` state > defaults.
- * In particular `?code=` (set by the web component from inline body) overrides the hash code.
+ * Precedence (highest first): `?code=` > `#code:` (web component body) >
+ * hash `#pako:`/`#base64:` state > defaults.
  *
  * Unlike the editor's state loading this never asks the user anything: unsafe
  * config is silently stripped and `securityLevel` is forced to `strict`.
@@ -87,11 +87,18 @@ const parsePan = (value: string | null): { x: number; y: number } | undefined =>
 export const resolveEmbedSettings = (url: URL): ResolvedEmbed => {
   const q = url.searchParams;
 
-  // Base state from the hash, if any.
+  // Base state / raw code from the hash, if any.
   const hash = url.hash.replace(/^#/, '');
   let baseState: State | undefined;
+  let hashCode: string | undefined;
   let hashFailed = false;
-  if (hash) {
+  if (hash.startsWith('code:')) {
+    try {
+      hashCode = decodeURIComponent(hash.slice('code:'.length));
+    } catch {
+      hashFailed = true;
+    }
+  } else if (hash) {
     try {
       baseState = deserializeState(hash);
     } catch {
@@ -104,7 +111,7 @@ export const resolveEmbedSettings = (url: URL): ResolvedEmbed => {
     return { error: 'Unable to load the diagram from this URL.' };
   }
 
-  const code = queryCode ?? (baseState?.code || defaultState.code);
+  const code = queryCode ?? hashCode ?? (baseState?.code || defaultState.code);
 
   const config: MermaidConfig = {
     ...silentlySanitizeConfig(baseState?.mermaid),

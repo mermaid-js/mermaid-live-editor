@@ -10,19 +10,50 @@
  *
  * The element renders an <iframe> pointing at the host's /embed page. Settings come from the
  * `src` URL and/or attributes (theme, look, mode, grid, pan, zoom, controls). If the element has
- * inline body text, that text is used as the diagram code and OVERRIDES any code in the `src` URL.
+ * inline body text, that text is used as the diagram code and OVERRIDES any code in the `src` URL
+ * (carried in the `#code:` hash — not the query string).
  *
  * Authored in TypeScript; `pnpm build:embed` compiles it into `static/embed.js` (IIFE, no
  * imports) so it can be dropped into any page with a single script tag.
  */
 
-// Derive origin + base path from the script URL so base-path deploys work.
-const script = document.currentScript;
-const scriptUrl = script instanceof HTMLScriptElement && script.src ? new URL(script.src) : null;
+/**
+ * Keep in sync with `EMBED_IFRAME_SANDBOX` in `$/util/embedCode`.
+ * `allow-same-origin` is required for the SvelteKit `/embed` app to boot; see embedCode.ts.
+ */
+const IFRAME_SANDBOX =
+  'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox';
+
+/**
+ * Resolve the loader script URL. `document.currentScript` is null for async/defer scripts,
+ * so fall back to scanning for a script whose path ends in `/embed.js`.
+ */
+const resolveScriptUrl = (): URL | null => {
+  if (document.currentScript instanceof HTMLScriptElement && document.currentScript.src) {
+    return new URL(document.currentScript.src);
+  }
+  for (const element of document.querySelectorAll('script[src]')) {
+    if (!(element instanceof HTMLScriptElement)) {
+      continue;
+    }
+    try {
+      const url = new URL(element.src, window.location.href);
+      if (/\/embed\.js$/i.test(url.pathname)) {
+        return url;
+      }
+    } catch {
+      // ignore invalid script URLs
+    }
+  }
+  return null;
+};
+
+const scriptUrl = resolveScriptUrl();
 const prefix = scriptUrl
-  ? scriptUrl.origin + scriptUrl.pathname.replace(/\/embed\.js$/, '')
-  : window.location.origin;
-const defaultBase = `${prefix}/embed`;
+  ? scriptUrl.origin + scriptUrl.pathname.replace(/\/embed\.js$/i, '')
+  : null;
+const defaultBase = prefix ? `${prefix}/embed` : null;
+const allowedOrigin = scriptUrl?.origin;
 
 const passthroughAttributes = ['theme', 'look', 'mode', 'grid', 'pan', 'zoom', 'controls'];
 
@@ -54,9 +85,34 @@ const dedent = (text: string): string => {
   return lines.map((line) => line.slice(indent)).join('\n');
 };
 
-const buildUrl = (element: HTMLElement): string => {
-  const src = element.getAttribute('src') ?? defaultBase;
-  const url = new URL(src, window.location.href);
+const buildUrl = (element: HTMLElement): string | undefined => {
+  const srcAttribute = element.getAttribute('src');
+  if (!srcAttribute && !defaultBase) {
+    console.error(
+      'mermaid-embed: missing src and could not derive host from embed.js (async scripts need an absolute src)'
+    );
+    return undefined;
+  }
+
+  const src = srcAttribute ?? defaultBase;
+  if (!src) {
+    return undefined;
+  }
+
+  let url: URL;
+  try {
+    url = new URL(src, window.location.href);
+  } catch {
+    console.error('mermaid-embed: invalid src');
+    return undefined;
+  }
+
+  if (allowedOrigin && url.origin !== allowedOrigin) {
+    console.error(
+      `mermaid-embed: src origin must match embed.js host (${allowedOrigin}), got ${url.origin}`
+    );
+    return undefined;
+  }
 
   for (const name of passthroughAttributes) {
     const value = element.getAttribute(name);
@@ -65,10 +121,11 @@ const buildUrl = (element: HTMLElement): string => {
     }
   }
 
-  // Inline body code wins over whatever code the src URL carried.
+  // Inline body code wins over whatever code the src URL carried. Put it in the
+  // hash (`#code:…`) so it stays out of query strings / server logs / Referer.
   const code = dedent(element.textContent ?? '');
   if (code.trim() !== '') {
-    url.searchParams.set('code', code);
+    url.hash = `code:${encodeURIComponent(code)}`;
   }
 
   return url.toString();
@@ -80,21 +137,23 @@ const render = (element: HTMLElement): void => {
   if (rendered.has(element)) {
     return;
   }
+
+  const src = buildUrl(element);
+  if (!src) {
+    return;
+  }
   rendered.add(element);
 
   const iframe = document.createElement('iframe');
-  iframe.src = buildUrl(element);
+  iframe.src = src;
   iframe.title = element.getAttribute('title') ?? 'Mermaid diagram';
   iframe.loading = 'lazy';
   iframe.setAttribute('frameborder', '0');
-  iframe.setAttribute(
-    'sandbox',
-    'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox'
-  );
+  iframe.setAttribute('sandbox', IFRAME_SANDBOX);
   iframe.style.border = '0';
   iframe.style.display = 'block';
   iframe.style.width = px(element.getAttribute('width'), '100%');
-  iframe.style.height = px(element.getAttribute('height'), '420px');
+  iframe.style.height = px(element.getAttribute('height'), '480px');
 
   element.style.display = 'block';
   element.textContent = '';

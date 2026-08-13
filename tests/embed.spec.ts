@@ -72,7 +72,36 @@ base.describe('Embed page', () => {
   base('should serve the web component loader at /embed.js', async ({ page }) => {
     const response = await page.request.get('/embed.js');
     expect(response.status()).toBe(200);
-    expect(await response.text()).toContain('mermaid-embed');
+    const body = await response.text();
+    expect(body).toContain('mermaid-embed');
+    expect(body).toContain(
+      'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox'
+    );
+  });
+
+  base('should render inside the sandboxed iframe the snippets use', async ({ page }) => {
+    failOnDialog(page);
+    const embedSrc = `/embed?code=${encodeURIComponent('graph TD\n  A[Sandboxed]-->B')}`;
+    await page.setContent(
+      `<!doctype html><iframe id="embed" title="embed"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+        src="http://localhost:3000${embedSrc}"
+        style="width:800px;height:500px;border:0"></iframe>`
+    );
+    const frame = page.frameLocator('#embed');
+    await expect(frame.locator('#embed-container svg')).toBeVisible({ timeout: 20_000 });
+    await expect(frame.locator('#embed-view')).toContainText('Sandboxed');
+    // Code-level isolation: the embed document must not write the editor store.
+    const codeStore = await frame.locator('html').evaluate(() => localStorage.getItem('codeStore'));
+    expect(codeStore).toBeNull();
+  });
+
+  base('should load #code: hashes from the web component path', async ({ page }) => {
+    failOnDialog(page);
+    await page.goto(
+      `/embed?theme=forest#code:${encodeURIComponent('graph TD\n  A[HashCode]-->B')}`
+    );
+    await expect(page.locator('#embed-view')).toContainText('HashCode');
   });
 });
 
@@ -84,6 +113,7 @@ editorTest.describe('Share dialog embed section', () => {
     await expect(snippet).toBeVisible();
     await expect(snippet).toHaveValue(/\/embed\?.*#pako:/);
     await expect(snippet).toHaveValue(/<iframe/);
+    await expect(snippet).toHaveValue(/sandbox="allow-scripts allow-same-origin/);
     await page.getByRole('radio', { name: 'Web component' }).click();
     await expect(snippet).toHaveValue(/<mermaid-embed/);
   });

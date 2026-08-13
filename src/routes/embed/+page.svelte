@@ -1,9 +1,8 @@
 <script lang="ts">
   import EmbedView from '$/components/EmbedView.svelte';
-  import FloatingToolbar from '$/components/FloatingToolbar.svelte';
   import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
+  import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
   import { TID } from '$/constants';
   import {
     buildEditUrl,
@@ -20,9 +19,6 @@
   import { onMount } from 'svelte';
   import DarkModeIcon from '~icons/material-symbols/dark-mode-outline';
   import LightModeIcon from '~icons/material-symbols/light-mode-outline';
-  import ArrowsToCircleIcon from '~icons/material-symbols/screenshot-frame-2';
-  import MagnifyingGlassPlusIcon from '~icons/material-symbols/zoom-in';
-  import MagnifyingGlassMinusIcon from '~icons/material-symbols/zoom-out';
 
   let resolved = $state<ResolvedEmbed>();
   const panZoomState = new PanZoomState();
@@ -88,30 +84,7 @@
 
       {#if settings.controls}
         <div class="absolute top-2 right-2" data-testid={TID.embedToolbar}>
-          <FloatingToolbar>
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Reset view"
-              onclick={() => panZoomState.reset()}>
-              <ArrowsToCircleIcon />
-            </Button>
-            <Separator orientation="vertical" />
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Zoom out"
-              onclick={() => panZoomState.zoomOut()}>
-              <MagnifyingGlassMinusIcon />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              title="Zoom in"
-              onclick={() => panZoomState.zoomIn()}>
-              <MagnifyingGlassPlusIcon />
-            </Button>
-          </FloatingToolbar>
+          <PanZoomToolbar {panZoomState} compact />
         </div>
         <Button
           data-testid={TID.embedModeToggle}

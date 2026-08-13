@@ -126,6 +126,24 @@ describe('resolveEmbedSettings', () => {
     expect(settings?.code).toBe('graph TD\n  A-->B');
   });
 
+  it('should load diagram source from a #code: hash (web component body path)', () => {
+    const { error, settings } = resolveEmbedSettings(
+      new URL('https://mermaid.live/embed?theme=forest#code:graph%20TD%0A%20%20A--%3EB')
+    );
+    expect(error).toBeUndefined();
+    expect(settings?.code).toBe('graph TD\n  A-->B');
+    expect(settings?.theme).toBe('forest');
+  });
+
+  it('should let ?code= override a #code: hash', () => {
+    const { settings } = resolveEmbedSettings(
+      new URL(
+        'https://mermaid.live/embed?code=pie%0A%20%20%22a%22%3A%201#code:graph%20TD%0A%20%20A--%3EB'
+      )
+    );
+    expect(settings?.code).toBe('pie\n  "a": 1');
+  });
+
   it('should silently strip unsafe config from the hash', () => {
     const { settings } = resolveEmbedSettings(
       embedUrl({

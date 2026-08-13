@@ -3,13 +3,24 @@
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import type { PanZoomState } from '$/util/panZoom';
-  import { urls } from '$/util/state.svelte';
   import ExpandIcon from '~icons/material-symbols/open-in-full-rounded';
   import ArrowsToCircleIcon from '~icons/material-symbols/screenshot-frame-2';
   import MagnifyingGlassPlusIcon from '~icons/material-symbols/zoom-in';
   import MagnifyingGlassMinusIcon from '~icons/material-symbols/zoom-out';
 
-  let { panZoomState }: { panZoomState: PanZoomState } = $props();
+  let {
+    /** Embed/narrow frames: keep zoom buttons visible below the `sm` breakpoint. */
+    compact = false,
+    fullScreenHref,
+    panZoomState
+  }: {
+    compact?: boolean;
+    /** When set, shows a "Full Screen" button linking here. Omit for store-free embeds. */
+    fullScreenHref?: string;
+    panZoomState: PanZoomState;
+  } = $props();
+
+  const zoomClass = $derived(compact ? undefined : 'hidden sm:block');
 </script>
 
 <FloatingToolbar>
@@ -20,15 +31,23 @@
   <Button
     variant="ghost"
     size="icon"
-    class="hidden sm:block"
+    class={zoomClass}
+    title="Zoom out"
     onclick={() => panZoomState.zoomOut()}>
     <MagnifyingGlassMinusIcon />
   </Button>
-  <Button variant="ghost" size="icon" class="hidden sm:block" onclick={() => panZoomState.zoomIn()}>
+  <Button
+    variant="ghost"
+    size="icon"
+    class={zoomClass}
+    title="Zoom in"
+    onclick={() => panZoomState.zoomIn()}>
     <MagnifyingGlassPlusIcon />
   </Button>
-  <Separator orientation="vertical" class="hidden sm:block" />
-  <Button variant="ghost" size="icon" title="Full Screen" href={urls.current.view} target="_blank">
-    <ExpandIcon />
-  </Button>
+  {#if fullScreenHref}
+    <Separator orientation="vertical" class={zoomClass} />
+    <Button variant="ghost" size="icon" title="Full Screen" href={fullScreenHref} target="_blank">
+      <ExpandIcon />
+    </Button>
+  {/if}
 </FloatingToolbar>

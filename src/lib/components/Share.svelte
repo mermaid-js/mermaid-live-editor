@@ -7,7 +7,7 @@
   import * as ToggleGroup from '$/components/ui/toggle-group';
   import { MERMAID_LOOKS, MERMAID_THEMES, TID } from '$/constants';
   import { isDarkTheme, type EmbedMode } from '$/util/embed';
-  import { buildEmbedSnippets, buildEmbedUrls } from '$/util/embedCode';
+  import { EMBED_IFRAME_SANDBOX, buildEmbedSnippets, buildEmbedUrls } from '$/util/embedCode';
   import { env } from '$/util/env';
   import { silentlySanitizeConfig } from '$/util/sanitize';
   import { urls, validatedState } from '$/util/state.svelte';
@@ -32,7 +32,7 @@
   let grid = $state(true);
   let width = $state('100%');
   let height = $state('480');
-  let format = $state('iframe');
+  let format = $state<'iframe' | 'webComponent'>('iframe');
   let showPreview = $state(false);
 
   // The expensive half (config sanitize + pako serialize) is independent of
@@ -127,7 +127,15 @@
           </label>
         </div>
         <div class="flex flex-wrap items-center gap-4">
-          <ToggleGroup.Root type="single" variant="outline" bind:value={mode}>
+          <ToggleGroup.Root
+            type="single"
+            variant="outline"
+            value={mode}
+            onValueChange={(value) => {
+              if (value === 'light' || value === 'dark') {
+                mode = value;
+              }
+            }}>
             <ToggleGroup.Item value="light">Light</ToggleGroup.Item>
             <ToggleGroup.Item value="dark">Dark</ToggleGroup.Item>
           </ToggleGroup.Root>
@@ -149,11 +157,20 @@
             data-testid={TID.embedPreview}
             src={embedUrls.url}
             title="Embed preview"
-            class="h-52 w-full rounded-lg border"></iframe>
+            class="h-52 w-full rounded-lg border"
+            sandbox={EMBED_IFRAME_SANDBOX}></iframe>
         {/if}
         <div class="flex items-start gap-2">
           <div class="flex min-w-0 flex-1 flex-col gap-2">
-            <ToggleGroup.Root type="single" variant="outline" bind:value={format}>
+            <ToggleGroup.Root
+              type="single"
+              variant="outline"
+              value={format}
+              onValueChange={(value) => {
+                if (value === 'iframe' || value === 'webComponent') {
+                  format = value;
+                }
+              }}>
               <ToggleGroup.Item value="iframe">iframe</ToggleGroup.Item>
               <ToggleGroup.Item value="webComponent">Web component</ToggleGroup.Item>
             </ToggleGroup.Root>

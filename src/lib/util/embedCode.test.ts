@@ -46,11 +46,12 @@ describe('buildEmbedCode', () => {
     expect(url).toContain('mode=dark');
   });
 
-  it('should build an iframe snippet with sensible defaults', () => {
+  it('should build an iframe snippet with sensible defaults and a sandbox', () => {
     const { iframe, url } = buildEmbedCode({ code, host });
     expect(iframe).toBe(
       `<iframe src="${url}" width="100%" height="480" ` +
-        `style="border:0" loading="lazy" title="Mermaid diagram"></iframe>`
+        `style="border:0" loading="lazy" title="Mermaid diagram" ` +
+        `sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>`
     );
   });
 
@@ -58,6 +59,18 @@ describe('buildEmbedCode', () => {
     const { iframe, webComponent } = buildEmbedCode({ code, height: '300', host, width: '600' });
     expect(iframe).toContain('width="600" height="300"');
     expect(webComponent).toContain('width="600" height="300"');
+  });
+
+  it('should fall back to defaults for unsafe width/height', () => {
+    const { iframe } = buildEmbedCode({
+      code,
+      height: '480" onload="alert(1)',
+      host,
+      width: '"><script>'
+    });
+    expect(iframe).toContain('width="100%" height="480"');
+    expect(iframe).not.toContain('onload');
+    expect(iframe).not.toContain('<script>');
   });
 
   it('should build a web component snippet with the code inline', () => {

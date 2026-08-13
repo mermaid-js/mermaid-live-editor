@@ -4,6 +4,22 @@ import { encodeEmbedParams, type EmbedMode } from './embed';
 import { serializeState } from './serde';
 
 /**
+ * Sandbox for embed iframes.
+ *
+ * `allow-same-origin` is required: without it the iframe gets an opaque origin and the
+ * SvelteKit `/embed` app fails to boot. Isolation from editor `localStorage` is enforced
+ * in `/embed` by never importing the state singleton (covered by e2e), not by opaque origin.
+ * The sandbox still blocks top-navigation and other powerful features.
+ *
+ * Keep in sync with `IFRAME_SANDBOX` in `src/embed-loader.ts`.
+ */
+export const EMBED_IFRAME_SANDBOX =
+  'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox';
+
+/** CSS length values safe to interpolate into HTML width/height attributes. */
+const SAFE_DIMENSION = /^(?:\d+(?:\.\d+)?(?:%|px|rem|em|vh|vw)?)$/i;
+
+/**
  * Options accepted by {@link buildEmbedUrls}.
  * Everything except `code` and `host` is optional and falls back to a sensible default.
  */
@@ -55,7 +71,8 @@ export interface EmbedCodeResult {
 }
 
 const dimension = (value: string | undefined, fallback: string): string => {
-  return value && value.trim() !== '' ? value.trim() : fallback;
+  const trimmed = value?.trim() ?? '';
+  return trimmed && SAFE_DIMENSION.test(trimmed) ? trimmed : fallback;
 };
 
 /** The inline body is parsed back via textContent, which decodes entities. */
@@ -110,7 +127,8 @@ export const buildEmbedSnippets = (
 
   const iframe =
     `<iframe src="${urls.url}" width="${width}" height="${height}" ` +
-    `style="border:0" loading="lazy" title="Mermaid diagram"></iframe>`;
+    `style="border:0" loading="lazy" title="Mermaid diagram" ` +
+    `sandbox="${EMBED_IFRAME_SANDBOX}"></iframe>`;
 
   const widthAttribute = width === '100%' ? '' : ` width="${width}"`;
   const webComponent =
