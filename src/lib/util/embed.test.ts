@@ -57,7 +57,6 @@ describe('resolveEmbedSettings', () => {
       embedUrl(
         { code: 'graph TD\n  A-->B', mermaid: JSON.stringify({ theme: 'dark' }) },
         {
-          code: 'pie\n  "a": 1',
           look: 'handDrawn',
           pan: '1,2',
           theme: 'forest',
@@ -65,7 +64,7 @@ describe('resolveEmbedSettings', () => {
         }
       )
     );
-    expect(settings?.code).toBe('pie\n  "a": 1');
+    expect(settings?.code).toBe('graph TD\n  A-->B');
     expect(settings?.theme).toBe('forest');
     expect(settings?.look).toBe('handDrawn');
     expect(settings?.mode).toBe('light');
@@ -118,14 +117,6 @@ describe('resolveEmbedSettings', () => {
     expect(settings).toBeUndefined();
   });
 
-  it('should still render when the hash is malformed but ?code= is present', () => {
-    const { error, settings } = resolveEmbedSettings(
-      new URL('https://mermaid.live/embed?code=graph%20TD%0A%20%20A--%3EB#pako:garbage')
-    );
-    expect(error).toBeUndefined();
-    expect(settings?.code).toBe('graph TD\n  A-->B');
-  });
-
   it('should load diagram source from a #code: hash (web component body path)', () => {
     const { error, settings } = resolveEmbedSettings(
       new URL('https://mermaid.live/embed?theme=forest#code:graph%20TD%0A%20%20A--%3EB')
@@ -135,13 +126,13 @@ describe('resolveEmbedSettings', () => {
     expect(settings?.theme).toBe('forest');
   });
 
-  it('should let ?code= override a #code: hash', () => {
+  it('should ignore a leftover ?code= query param', () => {
     const { settings } = resolveEmbedSettings(
       new URL(
         'https://mermaid.live/embed?code=pie%0A%20%20%22a%22%3A%201#code:graph%20TD%0A%20%20A--%3EB'
       )
     );
-    expect(settings?.code).toBe('pie\n  "a": 1');
+    expect(settings?.code).toBe('graph TD\n  A-->B');
   });
 
   it('should silently strip unsafe config from the hash', () => {

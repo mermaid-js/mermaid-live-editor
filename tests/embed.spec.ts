@@ -22,14 +22,6 @@ base.describe('Embed page', () => {
     await expect(page.getByTestId(TID.embedEditLink)).toHaveAttribute('href', /\/edit#pako:/);
   });
 
-  base('should let ?code= override the hash code', async ({ page }) => {
-    failOnDialog(page);
-    const params = new URLSearchParams({ code: 'graph TD\n  Q[Query wins]' });
-    await page.goto(`/embed?${params.toString()}#${embedHash({ code: 'graph TD\n  H[Hash]' })}`);
-    await expect(page.locator('#embed-view')).toContainText('Query wins');
-    await expect(page.locator('#embed-view')).not.toContainText('Hash');
-  });
-
   base('should hide the toolbar and mode toggle with ?controls=0', async ({ page }) => {
     failOnDialog(page);
     await page.goto('/embed?controls=0');
@@ -81,7 +73,7 @@ base.describe('Embed page', () => {
 
   base('should render inside the sandboxed iframe the snippets use', async ({ page }) => {
     failOnDialog(page);
-    const embedSrc = `/embed?code=${encodeURIComponent('graph TD\n  A[Sandboxed]-->B')}`;
+    const embedSrc = `/embed#code:${encodeURIComponent('graph TD\n  A[Sandboxed]-->B')}`;
     await page.setContent(
       `<!doctype html><iframe id="embed" title="embed"
         sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"

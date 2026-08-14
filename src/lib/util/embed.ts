@@ -78,8 +78,9 @@ const parsePan = (value: string | null): { x: number; y: number } | undefined =>
 /**
  * Resolve the widget settings from an embed URL.
  *
- * Precedence (highest first): `?code=` > `#code:` (web component body) >
+ * Precedence (highest first): `#code:` (web component body) >
  * hash `#pako:`/`#base64:` state > defaults.
+ * Diagram source never travels in the query string.
  *
  * Unlike the editor's state loading this never asks the user anything: unsafe
  * config is silently stripped and `securityLevel` is forced to `strict`.
@@ -106,12 +107,11 @@ export const resolveEmbedSettings = (url: URL): ResolvedEmbed => {
     }
   }
 
-  const queryCode = q.get('code');
-  if (hashFailed && !queryCode) {
+  if (hashFailed) {
     return { error: 'Unable to load the diagram from this URL.' };
   }
 
-  const code = queryCode ?? hashCode ?? (baseState?.code || defaultState.code);
+  const code = hashCode ?? (baseState?.code || defaultState.code);
 
   const config: MermaidConfig = {
     ...silentlySanitizeConfig(baseState?.mermaid),
