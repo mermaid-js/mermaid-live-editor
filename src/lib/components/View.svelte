@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { State, ValidatedState } from '$/types';
   import { recordRenderTime, shouldRefreshView } from '$/util/autoSync';
-  import { render as renderDiagram } from '$/util/mermaid';
   import { PanZoomState } from '$/util/panZoom';
+  import { renderAndPlaceDiagram } from '$/util/renderView';
   import { updateCodeStore, validatedState } from '$/util/state.svelte';
   import { saveStatistics } from '$/util/stats';
   import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
@@ -10,7 +10,6 @@
   import type { MermaidConfig } from 'mermaid';
   import { mode } from 'mode-watcher';
   import { onMount } from 'svelte';
-  import { Svg2Roughjs } from 'svg2roughjs';
 
   let {
     panZoomState = new PanZoomState(),
@@ -76,48 +75,16 @@
         }
 
         const scroll = view?.parentElement?.scrollTop;
-        delete container.dataset.processed;
-        const viewID = uniqueID('graph-');
-        const {
-          svg,
-          bindFunctions,
-          diagramType: detectedDiagramType
-        } = await renderDiagram(JSON.parse(state.mermaid) as MermaidConfig, code, viewID);
+        const { diagramType: detectedDiagramType, graphDiv } = await renderAndPlaceDiagram({
+          code,
+          config: JSON.parse(state.mermaid) as MermaidConfig,
+          container,
+          rough: state.rough,
+          viewId: uniqueID('graph-')
+        });
         diagramType = detectedDiagramType;
-        if (svg.length > 0) {
-          // eslint-disable-next-line svelte/no-dom-manipulating
-          container.innerHTML = svg;
-          let graphDiv = document.querySelector<SVGSVGElement>(`#${viewID}`);
-          if (!graphDiv) {
-            throw new Error('graph-div not found');
-          }
-          if (state.rough) {
-            const svg2roughjs = new Svg2Roughjs('#container');
-            svg2roughjs.svg = graphDiv;
-            await svg2roughjs.sketch();
-            graphDiv.remove();
-            const sketch = document.querySelector<SVGSVGElement>('#container > svg');
-            if (!sketch) {
-              throw new Error('sketch not found');
-            }
-            const height = sketch.getAttribute('height');
-            const width = sketch.getAttribute('width');
-            sketch.setAttribute('id', 'graph-div');
-            sketch.setAttribute('height', '100%');
-            sketch.setAttribute('width', '100%');
-            sketch.setAttribute('viewBox', `0 0 ${width} ${height}`);
-            sketch.style.maxWidth = '100%';
-            graphDiv = sketch;
-          } else {
-            graphDiv.setAttribute('height', '100%');
-            graphDiv.style.maxWidth = '100%';
-            if (bindFunctions) {
-              bindFunctions(graphDiv);
-            }
-          }
-          if (state.panZoom) {
-            handlePanZoom(state, graphDiv);
-          }
+        if (graphDiv && state.panZoom) {
+          handlePanZoom(state, graphDiv);
         }
         if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
