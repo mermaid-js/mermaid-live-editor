@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { LIVE_PREVIEW_QUERY_PARAMETER } from '$/constants';
 import type PlausibleInstance from 'plausible-tracker';
 import { env } from './env';
 
@@ -29,7 +30,10 @@ export const initAnalytics = async (): Promise<void> => {
  * but never the hash (which contains diagram data).
  */
 export const getAnalyticsSafeUrl = (): string => {
-  return window.location.origin + window.location.pathname + window.location.search;
+  const url = new URL(window.location.href);
+  url.hash = '';
+  url.searchParams.delete(LIVE_PREVIEW_QUERY_PARAMETER);
+  return url.origin + url.pathname + url.search;
 };
 
 export const countLines = (code: string): number => {

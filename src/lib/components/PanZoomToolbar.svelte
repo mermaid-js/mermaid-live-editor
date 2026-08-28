@@ -15,7 +15,7 @@
     panZoomState
   }: {
     compact?: boolean;
-    /** When set, shows a "Full Screen" button linking here. Omit for store-free embeds. */
+    /** When set, shows a full-screen preview link. Omit for store-free embeds. */
     fullScreenHref?: string;
     panZoomState: PanZoomState;
   } = $props();
@@ -46,7 +46,12 @@
   </Button>
   {#if fullScreenHref}
     <Separator orientation="vertical" class={zoomClass} />
-    <Button variant="ghost" size="icon" title="Full Screen" href={fullScreenHref} target="_blank">
+    <Button
+      variant="ghost"
+      size="icon"
+      title="Open Live Preview"
+      href={fullScreenHref}
+      target="_blank">
       <ExpandIcon />
     </Button>
   {/if}

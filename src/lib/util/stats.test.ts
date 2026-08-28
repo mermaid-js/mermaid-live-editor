@@ -39,6 +39,12 @@ describe('getAnalyticsUrl', () => {
     expect(url).toBe(`${window.location.origin}/edit?utm_campaign=launch`);
   });
 
+  it('should exclude the private live preview session', () => {
+    window.history.replaceState(null, '', '/view?live=session-1&utm_source=editor#pako:data');
+    const url = getAnalyticsSafeUrl();
+    expect(url).toBe(`${window.location.origin}/view?utm_source=editor`);
+  });
+
   it('should return just origin for root path with no params', () => {
     window.history.replaceState(null, '', '/');
     const url = getAnalyticsSafeUrl();

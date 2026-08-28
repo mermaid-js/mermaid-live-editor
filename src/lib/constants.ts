@@ -26,6 +26,8 @@ export const C = {
   utmSource: 'mermaid_live_editor'
 } as const;
 
+export const LIVE_PREVIEW_QUERY_PARAMETER = 'live';
+
 export const MERMAID_THEMES = [
   'default',
   'neutral',
