@@ -45,13 +45,16 @@
   );
 
   onMount(() => {
-    const publisher = createLivePreviewPublisher(validatedState.current.serialized);
+    const publisher = createLivePreviewPublisher();
     livePreviewPublisher = publisher;
     return () => publisher?.close();
   });
 
   $effect(() => {
-    livePreviewPublisher?.publish(validatedState.current.serialized);
+    livePreviewPublisher?.publish(
+      validatedState.current.serialized,
+      panZoomState.getNormalizedViewport()
+    );
   });
 
   const tabSelectHandler = (tab: Tab) => {
@@ -164,7 +167,7 @@
           <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0">
-            <PanZoomToolbar {panZoomState} fullScreenHref={livePreviewHref} />
+            <PanZoomToolbar {panZoomState} {livePreviewHref} />
           </div>
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>

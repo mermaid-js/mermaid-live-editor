@@ -85,4 +85,16 @@ describe('update functions persist input state', () => {
     expect(inputState.panZoom).toBe(true);
     expect(readStoredState().panZoom).toBe(true);
   });
+
+  it('does not persist state changes from the view route', () => {
+    const stored = JSON.stringify({ ...defaultState, code: 'graph TD\n stored-editor-state' });
+    window.localStorage.setItem('codeStore', stored);
+    window.history.replaceState(null, '', '/view#snapshot');
+    try {
+      updateCode('graph TD\n preview-only-state');
+      expect(window.localStorage.getItem('codeStore')).toBe(stored);
+    } finally {
+      window.history.replaceState(null, '', '/');
+    }
+  });
 });

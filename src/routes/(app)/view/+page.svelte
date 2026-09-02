@@ -1,24 +1,26 @@
 <script lang="ts">
   import View from '$/components/View.svelte';
   import { createLivePreviewSubscriber, getLivePreviewSession } from '$/util/livePreview';
-  import { deserializeState } from '$/util/serde';
-  import { replaceInputState } from '$/util/state.svelte';
+  import { PanZoomState, type NormalizedViewport } from '$/util/panZoom';
+  import { loadState } from '$/util/state.svelte';
   import { initHandler } from '$/util/util';
   import { onMount } from 'svelte';
 
+  const panZoomState = new PanZoomState();
+  let isLivePreview = $state(false);
+  let normalizedViewport = $state.raw<NormalizedViewport>();
+
   onMount(() => {
-    void initHandler();
     const sessionId = getLivePreviewSession(window.location.search);
+    isLivePreview = sessionId !== undefined;
+    void initHandler();
     if (!sessionId) {
       return;
     }
 
-    const subscriber = createLivePreviewSubscriber(sessionId, (serialized) => {
-      try {
-        replaceInputState(deserializeState(serialized));
-      } catch (error) {
-        console.error('Unable to load live preview state', error);
-      }
+    const subscriber = createLivePreviewSubscriber(sessionId, (serialized, viewport) => {
+      normalizedViewport = viewport;
+      loadState(serialized, { sanitize: false });
     });
     return () => subscriber?.close();
   });
@@ -28,4 +30,9 @@
   <meta name="robots" content="noindex" />
 </svelte:head>
 
-<View shouldShowGrid={false} />
+<View
+  {isLivePreview}
+  {normalizedViewport}
+  {panZoomState}
+  shouldShowGrid={false}
+  updatePanZoomState={false} />

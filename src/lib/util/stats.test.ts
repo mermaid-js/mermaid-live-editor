@@ -19,6 +19,12 @@ describe('getAnalyticsUrl', () => {
     expect(url).toBe(`${window.location.origin}/edit?utm_source=github&utm_medium=docs`);
   });
 
+  it('should preserve the original encoding of unrelated query params', () => {
+    window.history.replaceState(null, '', '/edit?utm_campaign=hello%20world&flag');
+    const url = getAnalyticsSafeUrl();
+    expect(url).toBe(`${window.location.origin}/edit?utm_campaign=hello%20world&flag`);
+  });
+
   it('should never include the hash', () => {
     window.history.replaceState(null, '', '/edit#pako:someDiagramData');
     // replaceState doesn't set hash, so set it via location
