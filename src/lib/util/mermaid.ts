@@ -1,11 +1,11 @@
 import { diagramData } from '@mermaid-js/examples';
-import elkLayouts from '@mermaid-js/layout-elk';
 import tidyTreeLayouts from '@mermaid-js/layout-tidy-tree';
 import zenuml from '@mermaid-js/mermaid-zenuml';
 import type { MermaidConfig, RenderResult } from 'mermaid';
 import mermaid from 'mermaid';
 
-mermaid.registerLayoutLoaders([...elkLayouts, ...tidyTreeLayouts]);
+// ELK ships bundled with mermaid 12 and is registered automatically.
+mermaid.registerLayoutLoaders(tidyTreeLayouts);
 const init = mermaid.registerExternalDiagrams([zenuml]);
 
 export const render = async (

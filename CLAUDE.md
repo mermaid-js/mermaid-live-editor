@@ -38,7 +38,7 @@ SvelteKit 2 + Svelte 5 (runes) SPA using `@sveltejs/adapter-static`. **`docs/` i
 
 ### Rendering
 
-`src/lib/util/mermaid.ts` wraps mermaid and registers the ELK and tidy-tree layout engines plus ZenUML at module load. `View.svelte` renders the diagram; `panZoom.ts` wraps svg-pan-zoom; "rough" hand-drawn mode uses svg2roughjs. Sample diagrams come from `@mermaid-js/examples`.
+`src/lib/util/mermaid.ts` wraps mermaid and registers the tidy-tree layout engine plus ZenUML at module load (ELK is bundled with mermaid 12). `View.svelte` renders the diagram; `panZoom.ts` wraps svg-pan-zoom; "rough" hand-drawn mode uses svg2roughjs. Sample diagrams come from `@mermaid-js/examples`.
 
 ### Editors
 
