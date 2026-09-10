@@ -43,16 +43,17 @@ const migrationVersion = (page: Page) =>
   );
 
 test.describe('Default theme config migration', () => {
-  test('clears a legacy config that only pins the default theme', async ({ page }) => {
+  test('replaces a legacy default-theme config with the diagram default', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await seedLegacyInstall(page);
     await openEditor(page);
     await expect(page.locator('#view')).toContainText('Legacy');
     await expect.poll(() => migrationVersion(page)).toBe(1);
-    await expect.poll(() => storedConfig(page)).toBe('{}');
+    // A flowchart: mermaid 12's own default for it is redux-color.
+    await expect.poll(() => storedConfig(page)).toBe('{\n  "theme": "redux-color"\n}');
   });
 
-  test('switches the cleared config to the dark theme when the site is dark', async ({ page }) => {
+  test('uses the redux dark variant when the site is dark', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await seedLegacyInstall(page);
     await openEditor(page);
@@ -60,6 +61,6 @@ test.describe('Default theme config migration', () => {
     await expect.poll(() => migrationVersion(page)).toBe(1);
     await expect
       .poll(async () => JSON.parse((await storedConfig(page)) ?? '{}') as unknown)
-      .toEqual({ theme: 'dark' });
+      .toEqual({ theme: 'redux-dark-color' });
   });
 });

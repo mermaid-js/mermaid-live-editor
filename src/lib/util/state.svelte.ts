@@ -10,7 +10,7 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { parse } from './mermaid';
+import { darkVariantOf, getDefaultTheme, isManagedTheme, parse } from './mermaid';
 import { readJSON, writeJSON } from './persist.svelte';
 import { findUnsafeConfigPaths, stripConfigPaths } from './sanitize';
 import { deserializeState, pakoSerde, serializeState } from './serde';
@@ -125,6 +125,7 @@ const persistAndProcess = (): void => {
   void processState(snapshot).then((processed) => {
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
+    syncManagedTheme(processed.diagramType);
   });
 };
 
@@ -277,23 +278,44 @@ export const updateConfig = (config: string): void => {
   updateCodeStore({ mermaid: config });
 };
 
-// The site's light/dark mode only manages a theme it set itself: none, `dark`,
-// or the `default` older versions seeded. Anything else is the user's choice.
-// Light mode removes the theme instead of pinning `default`, so mermaid's own
-// per-diagram defaults apply.
-export const toggleDarkTheme = (dark: boolean): void => {
-  update((state) => {
-    const config = JSON.parse(state.mermaid) as MermaidConfig;
-    if (config.theme && !['dark', 'default'].includes(config.theme)) {
+let siteDark = false;
+
+// The editor manages the diagram theme unless the user picked one of their
+// own. A missing theme, mermaid's global default, a config section's default
+// or any of their dark variants (see isManagedTheme) is replaced by the
+// current diagram type's default, or its dark counterpart while the site is
+// dark. Runs after every validation, since the diagram type may have changed,
+// and whenever the site mode changes. Converges after one update: the next
+// validation finds the theme already in place. Reads are untracked so an
+// effect calling toggleDarkTheme does not subscribe to the input state.
+const syncManagedTheme = (diagramType: string | undefined): void => {
+  if (!diagramType) {
+    return;
+  }
+  untrack(() => {
+    let config: MermaidConfig;
+    try {
+      config = JSON.parse(input.mermaid) as MermaidConfig;
+    } catch {
       return;
     }
-    if (dark) {
-      config.theme = 'dark';
-    } else {
-      delete config.theme;
+    if (!isManagedTheme(config.theme)) {
+      return;
     }
-    state.mermaid = formatJSON(config);
+    const defaultTheme = getDefaultTheme(diagramType);
+    const theme = siteDark ? darkVariantOf(defaultTheme) : defaultTheme;
+    if (config.theme === theme) {
+      return;
+    }
+    update((state) => {
+      state.mermaid = formatJSON({ ...config, theme });
+    });
   });
+};
+
+export const toggleDarkTheme = (dark: boolean): void => {
+  siteDark = dark;
+  syncManagedTheme(untrack(() => validatedCurrent.diagramType));
 };
 
 const isOnlyDefaultTheme = (config: string): boolean => {
