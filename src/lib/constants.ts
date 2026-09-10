@@ -50,7 +50,8 @@ export const defaultState: State = {
     C -->|Three| F[fa:fa-car Car]
   `,
   grid: true,
-  mermaid: JSON.stringify({ theme: 'default' }, undefined, 2),
+  // Empty on purpose: mermaid picks its own theme, look and layout per diagram type.
+  mermaid: '{}',
   panZoom: true,
   rough: false,
   updateDiagram: true

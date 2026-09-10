@@ -277,14 +277,48 @@ export const updateConfig = (config: string): void => {
   updateCodeStore({ mermaid: config });
 };
 
+// The site's light/dark mode only manages a theme it set itself: none, `dark`,
+// or the `default` older versions seeded. Anything else is the user's choice.
+// Light mode removes the theme instead of pinning `default`, so mermaid's own
+// per-diagram defaults apply.
 export const toggleDarkTheme = (dark: boolean): void => {
   update((state) => {
     const config = JSON.parse(state.mermaid) as MermaidConfig;
-    if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-      config.theme = dark ? 'dark' : 'default';
+    if (config.theme && !['dark', 'default'].includes(config.theme)) {
+      return;
+    }
+    if (dark) {
+      config.theme = 'dark';
+    } else {
+      delete config.theme;
     }
     state.mermaid = formatJSON(config);
   });
+};
+
+const isOnlyDefaultTheme = (config: string): boolean => {
+  try {
+    const parsed: unknown = JSON.parse(config);
+    return (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      Object.keys(parsed).length === 1 &&
+      (parsed as MermaidConfig).theme === 'default'
+    );
+  } catch {
+    return false;
+  }
+};
+
+// One-time migration (registered in migrations.svelte.ts): before mermaid 12
+// every install was seeded with `{ "theme": "default" }`. A config that still
+// only pins that value is cleared so mermaid's own defaults apply. Any other
+// config is the user's and is left alone. Goes through updateConfig because
+// the input state was already read from localStorage when this runs.
+export const clearDefaultThemeConfig = (): void => {
+  if (isOnlyDefaultTheme(inputState.mermaid)) {
+    updateConfig(formatJSON({}));
+  }
 };
 
 // Replaces the whole input state (e.g. when restoring a history entry),

@@ -2,6 +2,7 @@ import type { State } from '$lib/types';
 import { flushSync } from 'svelte';
 import { describe, expect, it } from 'vitest';
 import {
+  clearDefaultThemeConfig,
   defaultState,
   inputState,
   loadState,
@@ -84,5 +85,75 @@ describe('update functions persist input state', () => {
     verifyState();
     expect(inputState.panZoom).toBe(true);
     expect(readStoredState().panZoom).toBe(true);
+  });
+});
+
+describe('default config', () => {
+  it('ships an empty mermaid config so mermaid picks its own theme, look and layout', () => {
+    expect(defaultState.mermaid).toBe('{}');
+  });
+});
+
+describe('toggleDarkTheme', () => {
+  it('sets the dark theme when the config has no theme', () => {
+    updateConfig('{}');
+    toggleDarkTheme(true);
+    expect(JSON.parse(inputState.mermaid)).toEqual({ theme: 'dark' });
+  });
+
+  it('removes the theme again in light mode instead of pinning "default"', () => {
+    updateConfig('{\n  "theme": "dark"\n}');
+    toggleDarkTheme(false);
+    expect(inputState.mermaid).toBe('{}');
+    expect(readStoredState().mermaid).toBe('{}');
+  });
+
+  it('drops a pinned "default" theme in light mode', () => {
+    updateConfig('{\n  "theme": "default"\n}');
+    toggleDarkTheme(false);
+    expect(inputState.mermaid).toBe('{}');
+  });
+
+  it('leaves a user-chosen theme alone in both modes', () => {
+    updateConfig('{\n  "theme": "forest"\n}');
+    toggleDarkTheme(true);
+    expect(JSON.parse(inputState.mermaid)).toEqual({ theme: 'forest' });
+    toggleDarkTheme(false);
+    expect(JSON.parse(inputState.mermaid)).toEqual({ theme: 'forest' });
+  });
+
+  it('keeps the other config keys when changing the theme', () => {
+    updateConfig('{\n  "theme": "default",\n  "look": "neo"\n}');
+    toggleDarkTheme(true);
+    expect(JSON.parse(inputState.mermaid)).toEqual({ look: 'neo', theme: 'dark' });
+    toggleDarkTheme(false);
+    expect(JSON.parse(inputState.mermaid)).toEqual({ look: 'neo' });
+  });
+});
+
+describe('clearDefaultThemeConfig migration', () => {
+  it('clears a config that only pins the "default" theme', () => {
+    updateConfig('{\n  "theme": "default"\n}');
+    clearDefaultThemeConfig();
+    expect(inputState.mermaid).toBe('{}');
+    expect(readStoredState().mermaid).toBe('{}');
+  });
+
+  it('keeps a config that pins another theme', () => {
+    updateConfig('{\n  "theme": "dark"\n}');
+    clearDefaultThemeConfig();
+    expect(JSON.parse(inputState.mermaid)).toEqual({ theme: 'dark' });
+  });
+
+  it('keeps a config that sets more than the default theme', () => {
+    updateConfig('{\n  "theme": "default",\n  "look": "neo"\n}');
+    clearDefaultThemeConfig();
+    expect(JSON.parse(inputState.mermaid)).toEqual({ look: 'neo', theme: 'default' });
+  });
+
+  it('ignores a config that is not valid JSON', () => {
+    updateConfig('{ "theme": ');
+    expect(() => clearDefaultThemeConfig()).not.toThrow();
+    expect(inputState.mermaid).toBe('{ "theme": ');
   });
 });
