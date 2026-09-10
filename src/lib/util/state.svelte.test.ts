@@ -1,7 +1,8 @@
 import type { State } from '$lib/types';
 import { flushSync } from 'svelte';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  clearDefaultThemeConfig,
   defaultState,
   inputState,
   loadState,
@@ -10,6 +11,7 @@ import {
   updateCode,
   updateCodeStore,
   updateConfig,
+  validatedState,
   verifyState
 } from './state.svelte';
 
@@ -84,5 +86,138 @@ describe('update functions persist input state', () => {
     verifyState();
     expect(inputState.panZoom).toBe(true);
     expect(readStoredState().panZoom).toBe(true);
+  });
+});
+
+describe('default config', () => {
+  it('ships an empty mermaid config so mermaid picks its own theme, look and layout', () => {
+    expect(defaultState.mermaid).toBe('{}');
+  });
+});
+
+// Validation (mermaid.parse) is asynchronous; these helpers wait for it.
+const themeOf = () => (JSON.parse(inputState.mermaid) as { theme?: string }).theme;
+const waitForTheme = (theme: string | undefined) =>
+  vi.waitFor(() => expect(themeOf()).toBe(theme), { timeout: 10_000 });
+const settled = () =>
+  vi.waitFor(
+    () => {
+      expect(validatedState.current.code).toBe(inputState.code);
+      expect(validatedState.current.mermaid).toBe(inputState.mermaid);
+    },
+    { timeout: 10_000 }
+  );
+
+const flowchart = 'graph TD\n  A[Managed] --> B[Theme]';
+const pie = 'pie\n  "A": 1\n  "B": 2';
+const slow = { timeout: 15_000 };
+
+describe('managed theme', () => {
+  it('derives the diagram type default once the code validates', slow, async () => {
+    toggleDarkTheme(false);
+    updateConfig('{}');
+    updateCode(flowchart);
+    await waitForTheme('redux-color');
+    expect(readStoredState().mermaid).toBe('{\n  "theme": "redux-color"\n}');
+  });
+
+  it('follows the diagram type when the code changes', slow, async () => {
+    toggleDarkTheme(false);
+    updateConfig('{}');
+    updateCode(flowchart);
+    await waitForTheme('redux-color');
+    updateCode(pie);
+    await waitForTheme('default');
+  });
+
+  it('uses the redux dark variant in dark mode and switches back', slow, async () => {
+    updateConfig('{}');
+    updateCode(flowchart);
+    toggleDarkTheme(true);
+    await waitForTheme('redux-dark-color');
+    toggleDarkTheme(false);
+    await waitForTheme('redux-color');
+  });
+
+  it('falls back to the dark theme for diagrams without a redux default', slow, async () => {
+    updateConfig('{}');
+    updateCode(pie);
+    toggleDarkTheme(true);
+    await waitForTheme('dark');
+    toggleDarkTheme(false);
+    await waitForTheme('default');
+  });
+
+  it('replaces the legacy pinned "default" theme', slow, async () => {
+    toggleDarkTheme(false);
+    updateCode(flowchart);
+    updateConfig('{\n  "theme": "default"\n}');
+    await waitForTheme('redux-color');
+  });
+
+  it('leaves a user-chosen theme alone', slow, async () => {
+    updateCode(flowchart);
+    updateConfig('{\n  "theme": "forest"\n}');
+    toggleDarkTheme(true);
+    await settled();
+    expect(themeOf()).toBe('forest');
+    updateCode(pie);
+    await settled();
+    expect(themeOf()).toBe('forest');
+    toggleDarkTheme(false);
+    await settled();
+    expect(themeOf()).toBe('forest');
+  });
+
+  it('keeps the other config keys', slow, async () => {
+    toggleDarkTheme(false);
+    updateCode(flowchart);
+    updateConfig('{\n  "look": "classic"\n}');
+    await waitForTheme('redux-color');
+    expect(JSON.parse(inputState.mermaid)).toEqual({ look: 'classic', theme: 'redux-color' });
+  });
+
+  it('does nothing while the config is not valid JSON', slow, async () => {
+    updateCode(flowchart);
+    updateConfig('{ "theme": ');
+    expect(() => toggleDarkTheme(true)).not.toThrow();
+    await settled();
+    expect(inputState.mermaid).toBe('{ "theme": ');
+    toggleDarkTheme(false);
+  });
+});
+
+describe('clearDefaultThemeConfig migration', () => {
+  // Code that does not parse has no diagram type, which keeps the managed
+  // theme sync out of the way so the migration is observed on its own.
+  beforeEach(async () => {
+    toggleDarkTheme(false);
+    updateCode('not a diagram');
+    await settled();
+  });
+
+  it('clears a config that only pins the "default" theme', () => {
+    updateConfig('{\n  "theme": "default"\n}');
+    clearDefaultThemeConfig();
+    expect(inputState.mermaid).toBe('{}');
+    expect(readStoredState().mermaid).toBe('{}');
+  });
+
+  it('keeps a config that pins another theme', () => {
+    updateConfig('{\n  "theme": "dark"\n}');
+    clearDefaultThemeConfig();
+    expect(JSON.parse(inputState.mermaid)).toEqual({ theme: 'dark' });
+  });
+
+  it('keeps a config that sets more than the default theme', () => {
+    updateConfig('{\n  "theme": "default",\n  "look": "neo"\n}');
+    clearDefaultThemeConfig();
+    expect(JSON.parse(inputState.mermaid)).toEqual({ look: 'neo', theme: 'default' });
+  });
+
+  it('ignores a config that is not valid JSON', () => {
+    updateConfig('{ "theme": ');
+    expect(() => clearDefaultThemeConfig()).not.toThrow();
+    expect(inputState.mermaid).toBe('{ "theme": ');
   });
 });
