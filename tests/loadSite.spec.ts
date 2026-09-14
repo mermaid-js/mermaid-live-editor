@@ -100,6 +100,8 @@ test.describe('Site Loads', () => {
     const parsedConfig = JSON.parse(parsedStore.mermaid) as Record<string, unknown>;
     expect(parsedConfig).toEqual({
       someOtherSetting: 'Test value',
+      // The editor fills in the diagram type's default theme (a flowchart here).
+      theme: 'redux-color',
       themeVariables: {}
     });
     // should scrub unsafe securityLevel but keep other settings
