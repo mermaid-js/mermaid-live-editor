@@ -29,6 +29,7 @@ SvelteKit 2 + Svelte 5 (runes) SPA using `@sveltejs/adapter-static`. **`docs/` i
 
 - `inputState` — a `$state` rune holding `State` (code, mermaid config JSON, pan/zoom, etc.), initialized from localStorage key `codeStore`. **All writes must go through the exported update functions** (`updateCode`, `updateCodeStore`, `updateConfig`, `replaceInputState`, ...), which call `persistAndProcess()`: persist to localStorage → async re-validate via `mermaid.parse` → publish to `validatedState`. Reads inside update functions are wrapped in `untrack` so calling effects don't depend on the whole input state.
 - `validatedState` — read-only validated snapshot (adds `error`, `errorMarkers`, `serialized`, `diagramType`). Internal reads should use this, but it is never persisted or shared externally.
+- The diagram `theme` in the config is editor-managed: after every validation and on site light/dark changes, `syncManagedTheme` sets it to the diagram type's mermaid default (its config section's `theme`, e.g. `redux-color` for flowcharts) or the redux `-dark` variant / `dark` in dark mode. A theme outside that family (`isManagedTheme` in `mermaid.ts`) is the user's choice and is never touched. The default config is therefore `{}` until the first validation fills the theme in.
 - The serialized state is mirrored into the URL hash (debounced) — the URL **is** the sharing mechanism. `src/lib/util/serde.ts` encodes state as `pako:<base64 deflate>` (legacy plain-base64 supported). `mermaid.ink` PNG/SVG links, Kroki, and Mermaid Chart URLs are derived from it in `urls`.
 - App startup goes through `initHandler()` in `src/lib/util/util.ts`: migrations → load state from URL hash → optional gist/URL loading (`fileLoaders/`) → start URL-hash subscription → analytics.
 
@@ -38,7 +39,7 @@ SvelteKit 2 + Svelte 5 (runes) SPA using `@sveltejs/adapter-static`. **`docs/` i
 
 ### Rendering
 
-`src/lib/util/mermaid.ts` wraps mermaid and registers the ELK and tidy-tree layout engines plus ZenUML at module load. `View.svelte` renders the diagram; `panZoom.ts` wraps svg-pan-zoom; "rough" hand-drawn mode uses svg2roughjs. Sample diagrams come from `@mermaid-js/examples`.
+`src/lib/util/mermaid.ts` wraps mermaid and registers the tidy-tree layout engine plus ZenUML at module load (ELK is bundled with mermaid 12). `View.svelte` renders the diagram; `panZoom.ts` wraps svg-pan-zoom; "rough" hand-drawn mode uses svg2roughjs. Sample diagrams come from `@mermaid-js/examples`.
 
 ### Editors
 

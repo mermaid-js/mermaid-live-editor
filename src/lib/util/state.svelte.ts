@@ -10,7 +10,7 @@ import {
   findMostRelevantLineNumber,
   replaceLineNumberInErrorMessage
 } from './errorHandling';
-import { parse } from './mermaid';
+import { darkVariantOf, getDefaultTheme, isManagedTheme, parse } from './mermaid';
 import { readJSON, writeJSON } from './persist.svelte';
 import { findUnsafeConfigPaths, stripConfigPaths } from './sanitize';
 import { deserializeState, pakoSerde, serializeState } from './serde';
@@ -125,6 +125,7 @@ const persistAndProcess = (): void => {
   void processState(snapshot).then((processed) => {
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
+    syncManagedTheme(processed.diagramType);
   });
 };
 
@@ -277,14 +278,69 @@ export const updateConfig = (config: string): void => {
   updateCodeStore({ mermaid: config });
 };
 
-export const toggleDarkTheme = (dark: boolean): void => {
-  update((state) => {
-    const config = JSON.parse(state.mermaid) as MermaidConfig;
-    if (!config.theme || ['dark', 'default'].includes(config.theme)) {
-      config.theme = dark ? 'dark' : 'default';
+let siteDark = false;
+
+// The editor manages the diagram theme unless the user picked one of their
+// own. A missing theme, mermaid's global default, a config section's default
+// or any of their dark variants (see isManagedTheme) is replaced by the
+// current diagram type's default, or its dark counterpart while the site is
+// dark. Runs after every validation, since the diagram type may have changed,
+// and whenever the site mode changes. Converges after one update: the next
+// validation finds the theme already in place. Reads are untracked so an
+// effect calling toggleDarkTheme does not subscribe to the input state.
+const syncManagedTheme = (diagramType: string | undefined): void => {
+  if (!diagramType) {
+    return;
+  }
+  untrack(() => {
+    let config: MermaidConfig;
+    try {
+      config = JSON.parse(input.mermaid) as MermaidConfig;
+    } catch {
+      return;
     }
-    state.mermaid = formatJSON(config);
+    if (!isManagedTheme(config.theme)) {
+      return;
+    }
+    const defaultTheme = getDefaultTheme(diagramType);
+    const theme = siteDark ? darkVariantOf(defaultTheme) : defaultTheme;
+    if (config.theme === theme) {
+      return;
+    }
+    update((state) => {
+      state.mermaid = formatJSON({ ...config, theme });
+    });
   });
+};
+
+export const toggleDarkTheme = (dark: boolean): void => {
+  siteDark = dark;
+  syncManagedTheme(untrack(() => validatedCurrent.diagramType));
+};
+
+const isOnlyDefaultTheme = (config: string): boolean => {
+  try {
+    const parsed: unknown = JSON.parse(config);
+    return (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      Object.keys(parsed).length === 1 &&
+      (parsed as MermaidConfig).theme === 'default'
+    );
+  } catch {
+    return false;
+  }
+};
+
+// One-time migration (registered in migrations.svelte.ts): before mermaid 12
+// every install was seeded with `{ "theme": "default" }`. A config that still
+// only pins that value is cleared so mermaid's own defaults apply. Any other
+// config is the user's and is left alone. Goes through updateConfig because
+// the input state was already read from localStorage when this runs.
+export const clearDefaultThemeConfig = (): void => {
+  if (isOnlyDefaultTheme(inputState.mermaid)) {
+    updateConfig(formatJSON({}));
+  }
 };
 
 // Replaces the whole input state (e.g. when restoring a history entry),
