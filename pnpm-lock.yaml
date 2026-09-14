@@ -154,7 +154,7 @@ importers:
         specifier: ^10.5.6
         version: 10.5.6(postcss@8.5.28)
       bits-ui:
-        specifier: ^2.18.2
+        specifier: ^2.19.2
         version: 2.19.2(@internationalized/date@3.12.2)(@sveltejs/kit@2.69.1(@sveltejs/vite-plugin-svelte@7.2.0(svelte@5.57.0(@typescript-eslint/types@8.60.1))(vite@8.0.16(@types/node@24.13.4)(jiti@1.21.7)(yaml@2.9.0)))(svelte@5.57.0(@typescript-eslint/types@8.60.1))(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.4)(jiti@1.21.7)(yaml@2.9.0)))(svelte@5.57.0(@typescript-eslint/types@8.60.1))
       c8:
         specifier: 11.0.0
@@ -226,7 +226,7 @@ importers:
         specifier: ^0.8.1
         version: 0.8.1(prettier-plugin-svelte@4.1.1(prettier@3.9.6)(svelte@5.57.0(@typescript-eslint/types@8.60.1)))(prettier@3.9.6)
       svelte:
-        specifier: ^5.56.10
+        specifier: ^5.57.0
         version: 5.57.0(@typescript-eslint/types@8.60.1)
       svelte-check:
         specifier: ^4.6.0
