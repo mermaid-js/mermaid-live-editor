@@ -21,6 +21,11 @@
   import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
   import View from '$/components/View.svelte';
   import type { EditorMode, Tab } from '$/types';
+  import {
+    addLivePreviewSession,
+    createLivePreviewPublisher,
+    type LivePreviewPublisher
+  } from '$/util/livePreview';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
   import { validatedState, updateCodeStore, urls } from '$/util/state.svelte';
@@ -32,6 +37,25 @@
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
+  let livePreviewPublisher = $state.raw<LivePreviewPublisher>();
+  const livePreviewHref = $derived(
+    livePreviewPublisher
+      ? addLivePreviewSession(urls.current.view, livePreviewPublisher.sessionId)
+      : urls.current.view
+  );
+
+  onMount(() => {
+    const publisher = createLivePreviewPublisher();
+    livePreviewPublisher = publisher;
+    return () => publisher?.close();
+  });
+
+  $effect(() => {
+    livePreviewPublisher?.publish(
+      validatedState.current.serialized,
+      panZoomState.getNormalizedViewport()
+    );
+  });
 
   const tabSelectHandler = (tab: Tab) => {
     const editorMode: EditorMode = tab.id === 'code' ? 'code' : 'config';
@@ -143,7 +167,7 @@
           <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0">
-            <PanZoomToolbar {panZoomState} fullScreenHref={urls.current.view} />
+            <PanZoomToolbar {panZoomState} {livePreviewHref} />
           </div>
           <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>

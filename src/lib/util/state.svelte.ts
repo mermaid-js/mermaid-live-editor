@@ -30,6 +30,10 @@ const urlParseFailedState = `flowchart TD
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
 const CODE_STORE_KEY = 'codeStore';
+const viewPath = resolve('/view', {}).replace(/\/$/, '');
+
+const shouldPersistInputState = (): boolean =>
+  window.location.pathname.replace(/\/$/, '') !== viewPath;
 
 // The single mutable input state; only update() below may write to it.
 // The fallback is cloned so mutations never write through to defaultState.
@@ -55,6 +59,7 @@ let validatedCurrent = $state.raw<ValidatedState>(
 );
 
 let lastDiagramType = '';
+let processingVersion = 0;
 
 const processState = async (state: State) => {
   const processed = validatedStateOf(state, '');
@@ -63,11 +68,6 @@ const processState = async (state: State) => {
     processed.serialized = serializeState(state);
     const { diagramType } = await parse(state.code);
     processed.diagramType = diagramType;
-    if (lastDiagramType === 'zenuml' && diagramType !== lastDiagramType) {
-      // Temp Hack to refresh page after displaying ZenUML.
-      setTimeout(() => window.location.reload(), 500);
-    }
-    lastDiagramType = diagramType;
     JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
@@ -121,8 +121,21 @@ let updateHash: ((serialized: string) => void) | undefined;
 // dependency tracking.
 const persistAndProcess = (): void => {
   const snapshot = $state.snapshot(input) as State;
-  writeJSON(CODE_STORE_KEY, snapshot);
+  const version = ++processingVersion;
+  if (shouldPersistInputState()) {
+    writeJSON(CODE_STORE_KEY, snapshot);
+  }
   void processState(snapshot).then((processed) => {
+    if (version !== processingVersion) {
+      return;
+    }
+    if (processed.diagramType) {
+      if (lastDiagramType === 'zenuml' && processed.diagramType !== lastDiagramType) {
+        // Temp Hack to refresh page after displaying ZenUML.
+        setTimeout(() => window.location.reload(), 500);
+      }
+      lastDiagramType = processed.diagramType;
+    }
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
   });
@@ -225,13 +238,15 @@ export const sanitizeConfig = (config: string | MermaidConfig) => {
   return formatJSON(mermaidConfig);
 };
 
-export const loadState = (data: string): void => {
+export const loadState = (data: string, { sanitize = true }: { sanitize?: boolean } = {}): void => {
   console.log(`Loading '${data}'`);
   update((state) => {
     let next: State;
     try {
       next = deserializeState(data);
-      next.mermaid = sanitizeConfig(next.mermaid || defaultState.mermaid);
+      next.mermaid = sanitize
+        ? sanitizeConfig(next.mermaid || defaultState.mermaid)
+        : next.mermaid || defaultState.mermaid;
     } catch (error) {
       next = $state.snapshot(state) as State;
       if (data) {
