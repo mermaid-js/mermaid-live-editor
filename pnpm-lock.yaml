@@ -39,11 +39,11 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@mermaid-js/layout-tidy-tree':
-        specifier: ^1.0.0
-        version: 1.0.0(mermaid@12.0.0)
+        specifier: ^1.0.1
+        version: 1.0.1(mermaid@12.0.0)
       '@mermaid-js/mermaid-zenuml':
-        specifier: ^1.0.0
-        version: 1.0.0(mermaid@12.0.0)(yaml@2.9.0)
+        specifier: ^1.0.1
+        version: 1.0.1(mermaid@12.0.0)(yaml@2.9.0)
       codemirror:
         specifier: ^6.0.2
         version: 6.0.2
@@ -653,17 +653,17 @@ packages:
     resolution: {integrity: sha512-5qXKOb+UiAfYz6SnXSrfEwjLRom0fB4ACN55npjNhuXcM/MEKWJYTmDDd7hKfsRt+pLlPrdhB8m5NEglzDoRVw==}
     engines: {node: '>=22.12.0'}
 
-  '@mermaid-js/layout-tidy-tree@1.0.0':
-    resolution: {integrity: sha512-oRAURF7kyxh1x9DaRtJLm+F6TkC8EMcNapjt1G61/DcVgNMmBRsoLevXCq1Ir6KuEro/czmHTUfGNPAcPJVV3w==}
+  '@mermaid-js/layout-tidy-tree@1.0.1':
+    resolution: {integrity: sha512-suZgFgQQHYuAxiEiNVgPJwOoXi/keXV6DghCL3rT4K9DmX7xYQ2XZI2suiBVs/fj1gn/OoXIWB2DFSmeY7trvw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
-      mermaid: ^11.0.2
+      mermaid: ^11.0.2 || ^12.0.0
 
-  '@mermaid-js/mermaid-zenuml@1.0.0':
-    resolution: {integrity: sha512-CFqkdqyomMx+bLyVRWbwJWBw65VSxCMozLIhnRIYE2EE5YZjwFmKqVMdQylUkAn2y6ojgOXGWN/AZ+tTOuZmhg==}
+  '@mermaid-js/mermaid-zenuml@1.0.1':
+    resolution: {integrity: sha512-O5DiRODoFVNgugOVloxcDXmd+bXe/sbGlDh3onnzuE4EWtgTWwaAlWuPPOXbU9QESsztnD4Gtnu7dr+tYLFE0A==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
-      mermaid: ^10 || ^11
+      mermaid: ^10 || ^11 || ^12
 
   '@mermaid-js/parser@2.0.0':
     resolution: {integrity: sha512-K8BeapFUfrfxbRAUQAG5oBOCwo1+bNWzaVnPxTCutkfrTBn6T/j91FIhqxWJ32SUeQ9T3iy1zcmPZ5ROZEvDrg==}
@@ -1881,9 +1881,6 @@ packages:
 
   dompurify@3.4.15:
     resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
-
-  dompurify@3.4.8:
-    resolution: {integrity: sha512-yb1cEmaOum7wFvOCSQxyfgVlv5D47Rc30iZWoMpbDIWTnJ6grDDQyu2KFJzB2k7u0pMuJcQ1zphH//fFnw2tjQ==}
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
@@ -4334,12 +4331,12 @@ snapshots:
 
   '@mermaid-js/examples@2.0.0': {}
 
-  '@mermaid-js/layout-tidy-tree@1.0.0(mermaid@12.0.0)':
+  '@mermaid-js/layout-tidy-tree@1.0.1(mermaid@12.0.0)':
     dependencies:
       d3: 7.9.0
       mermaid: 12.0.0
 
-  '@mermaid-js/mermaid-zenuml@1.0.0(mermaid@12.0.0)(yaml@2.9.0)':
+  '@mermaid-js/mermaid-zenuml@1.0.1(mermaid@12.0.0)(yaml@2.9.0)':
     dependencies:
       '@zenuml/core': 3.49.2(yaml@2.9.0)
       mermaid: 12.0.0
@@ -4994,7 +4991,7 @@ snapshots:
       class-variance-authority: 0.7.1
       clsx: 2.1.1
       color-string: 2.1.4
-      dompurify: 3.4.8
+      dompurify: 3.4.15
       highlight.js: 11.11.1
       html-to-image: 1.11.13
       immer: 10.2.0
@@ -5618,10 +5615,6 @@ snapshots:
       '@types/trusted-types': 2.0.7
 
   dompurify@3.4.15:
-    optionalDependencies:
-      '@types/trusted-types': 2.0.7
-
-  dompurify@3.4.8:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
