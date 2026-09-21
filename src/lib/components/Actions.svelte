@@ -8,16 +8,11 @@
   import { Separator } from '$/components/ui/separator';
   import * as ToggleGroup from '$/components/ui/toggle-group';
   import { TID } from '$/constants';
+  import { pickDiagramFile } from '$/util/diagramFile';
   import { getDomain } from '$/util/util';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
-  import {
-    inputState,
-    updateCode,
-    updateCodeStore,
-    urls,
-    validatedState
-  } from '$lib/util/state.svelte';
+  import { inputState, updateCodeStore, urls, validatedState } from '$lib/util/state.svelte';
   import { logEvent } from '$lib/util/stats';
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
@@ -241,20 +236,6 @@ ${svgString}`);
     });
   };
 
-  let fileInput: HTMLInputElement | undefined = $state();
-
-  const onOpenFile = async (event: Event) => {
-    const input = event.currentTarget as HTMLInputElement;
-    const file = input.files?.[0];
-    // Reset so choosing the same file again still fires a change event.
-    input.value = '';
-    if (!file) {
-      return;
-    }
-    updateCode(await file.text(), { resetPanZoom: true, updateDiagram: true });
-    logEvent('loadFile');
-  };
-
   let gistURL = $state('');
   $effect(() => {
     const { loader } = validatedState.current;
@@ -334,17 +315,10 @@ ${svgString}`);
     </div>
     <div class="flex gap-2">
       {@render dualActionButton('MMD', onDownloadMMD)}
-      <Button class="flex-grow" onclick={() => fileInput?.click()} data-testid={TID.openFileButton}>
+      <Button class="flex-grow" onclick={pickDiagramFile} data-testid={TID.openFileButton}>
         <FileOpenIcon />
-        Open file
+        Open MMD file
       </Button>
-      <input
-        bind:this={fileInput}
-        type="file"
-        accept=".mmd,.mermaid,.txt"
-        class="hidden"
-        data-testid={TID.openFileInput}
-        onchange={onOpenFile} />
     </div>
     <Separator />
     {#if isClipboardAvailable()}

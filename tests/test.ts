@@ -68,13 +68,16 @@ export class EditorPage {
     return { content: readFileSync(path, 'utf8'), name: download.suggestedFilename() };
   }
 
-  /** Opens a local diagram file through the Actions panel's file picker. */
-  async openFile(name: string, content: string) {
-    await this.page.getByTestId(TID.openFileInput).setInputFiles({
-      buffer: Buffer.from(content, 'utf8'),
-      mimeType: 'text/plain',
-      name
-    });
+  /** Clicks `trigger`, which must open the diagram file picker, and chooses a file in it. */
+  async openFile(trigger: Locator, name: string, content: string) {
+    const chooserPromise = this.page.waitForEvent('filechooser');
+    await trigger.click();
+    const chooser = await chooserPromise;
+    await chooser.setFiles({ buffer: Buffer.from(content, 'utf8'), mimeType: 'text/plain', name });
+  }
+
+  async openMainMenu() {
+    await this.page.getByTestId(TID.mainMenuButton).click();
   }
 
   async loadSampleDiagram(diagramName: string) {

@@ -1,3 +1,4 @@
+import { TID } from '$/constants';
 import { expect, test } from './test';
 
 test.describe('Check actions', () => {
@@ -26,8 +27,12 @@ test.describe('Check actions', () => {
     expect(content).toContain('A[Christmas] -->|Get money| B(Go shopping)');
   });
 
-  test('should open a local mmd file into the editor', async ({ editPage }) => {
-    await editPage.openFile('opened.mmd', 'graph LR\n  Opened --> FromFile');
+  test('should open a local mmd file into the editor', async ({ editPage, page }) => {
+    await editPage.openFile(
+      page.getByTestId(TID.openFileButton),
+      'opened.mmd',
+      'graph LR\n  Opened --> FromFile'
+    );
     await editPage.checkInEditor('FromFile');
     await editPage.checkTextInView('FromFile');
   });

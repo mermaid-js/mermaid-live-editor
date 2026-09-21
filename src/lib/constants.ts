@@ -18,8 +18,9 @@ export const TID = {
   embedSnippet: 'embed-snippet',
   embedToolbar: 'embed-toolbar',
   errorContainer: 'error-container',
+  mainMenuButton: 'main-menu-button',
+  menuOpenFile: 'menu-open-file',
   openFileButton: 'open-file-button',
-  openFileInput: 'open-file-input',
   themeToggleButton: 'theme-toggle-button'
 } as const;
 
