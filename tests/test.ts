@@ -30,7 +30,17 @@ export class EditorPage {
     if (newline) {
       await this.page.keyboard.press('Enter');
     }
-    await this.page.keyboard.type(text, { delay: 10 });
+    // Line breaks are inserted as text rather than pressed as Enter: Monaco's
+    // word-based quick suggestions resolve asynchronously, and an Enter that
+    // lands while the list is open accepts the suggestion instead of breaking
+    // the line, which at synthetic typing speed happens often enough to flake.
+    const lines = text.split('\n');
+    for (const [index, line] of lines.entries()) {
+      if (index > 0) {
+        await this.page.keyboard.insertText('\n');
+      }
+      await this.page.keyboard.type(line, { delay: 10 });
+    }
   }
 
   async clearEditor() {
