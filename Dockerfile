@@ -33,8 +33,6 @@ ENTRYPOINT ["pnpm", "dev"]
 
 FROM nginx:1.28-alpine3.21 AS mermaid
 
-# nginx.conf listens on 8080. The official nginx image still advertises 80,
-# so keep that inherited metadata and also advertise the real listen port.
 EXPOSE 8080
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
