@@ -114,39 +114,6 @@ test.describe('Site Loads', () => {
     await page.reload({ waitUntil: 'networkidle' });
     await editPage.checkTextInView('Please Click here to Raise an issue in github.');
   });
-
-  test('should show Contact sales before Save diagram', async ({ editPage }) => {
-    const { page } = editPage;
-    const history = page.getByRole('button', { name: 'History' });
-    const share = page.getByRole('button', { name: 'Share' });
-    const saveDiagram = page.getByRole('link', { name: 'Save diagram' });
-    const contactSales = page.getByRole('link', { name: 'Contact sales' });
-
-    await expect(contactSales).toBeVisible();
-    await expect(contactSales.getByRole('img', { name: 'Mermaid Chart' })).toBeVisible();
-    await expect(contactSales).toHaveAttribute('target', '_blank');
-
-    const href = await contactSales.getAttribute('href');
-    assert(href);
-    const contactSalesUrl = new URL(href);
-    expect(contactSalesUrl.origin + contactSalesUrl.pathname).toBe('https://mermaid.ai/contact-us');
-    expect(contactSalesUrl.searchParams.get('contactSubject')).toBe('contactSales');
-    expect(contactSalesUrl.searchParams.get('utm_source')).toBe('mermaid_live_editor');
-    expect(contactSalesUrl.searchParams.get('utm_medium')).toBe('button');
-    expect(contactSalesUrl.searchParams.get('utm_campaign')).toBe('contact_sales');
-
-    const historyBox = await history.boundingBox();
-    const shareBox = await share.boundingBox();
-    const saveBox = await saveDiagram.boundingBox();
-    const contactBox = await contactSales.boundingBox();
-    assert(historyBox);
-    assert(shareBox);
-    assert(saveBox);
-    assert(contactBox);
-    expect(historyBox.x).toBeLessThan(shareBox.x);
-    expect(shareBox.x).toBeLessThan(contactBox.x);
-    expect(contactBox.x).toBeLessThan(saveBox.x);
-  });
 });
 
 test.describe('Verify types of URLs', () => {

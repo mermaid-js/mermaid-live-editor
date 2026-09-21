@@ -99,14 +99,16 @@
     <Share />
     {#if env.isEnabledMermaidChartLinks}
       <Separator orientation="vertical" />
-      <Button
-        size="sm"
-        href={getContactSalesUrl()}
-        target="_blank"
-        onclick={() => logMermaidChartClick('contactSales')}>
-        <MermaidChartIcon />
-        Contact sales
-      </Button>
+      <McWrapper>
+        <Button
+          size="sm"
+          href={getContactSalesUrl()}
+          target="_blank"
+          onclick={() => logMermaidChartClick('contactSales')}>
+          <MermaidChartIcon />
+          Contact sales
+        </Button>
+      </McWrapper>
       <McWrapper>
         <Button
           variant="accent"
