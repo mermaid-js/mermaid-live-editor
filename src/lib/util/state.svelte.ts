@@ -131,7 +131,9 @@ let inputVersion = 0;
 const validate = (): void => {
   const snapshot = $state.snapshot(input) as State;
   const version = inputVersion;
+  const start = Date.now();
   void processState(snapshot).then((processed) => {
+    lastParseMs = Date.now() - start;
     if (version !== inputVersion) {
       return;
     }
@@ -141,16 +143,30 @@ const validate = (): void => {
   });
 };
 
-// Validation drives the parse, the render and the error markers, so while the
-// user types it waits for a short pause instead of running on every keystroke.
+// Validation drives the parse, the render and the error markers. Small
+// diagrams finish a whole cycle well within a frame, so keystrokes validate
+// at once and the preview keeps up with typing. Once a cycle takes longer
+// than SLOW_CYCLE_MS, keystrokes wait for a pause instead of paying for a
+// parse and a render each; the next fast cycle switches back.
+const SLOW_CYCLE_MS = 100;
 const VALIDATION_DEBOUNCE_MS = 300;
+let lastParseMs = 0;
+let lastRenderMs = 0;
+const isSlowCycle = (): boolean => lastParseMs + lastRenderMs > SLOW_CYCLE_MS;
+
+// Reported by the view after each render so the cycle covers parse + render.
+export const reportRenderTime = (ms: number): void => {
+  lastRenderMs = ms;
+};
+
 const validateDebounced = debounce(validate, VALIDATION_DEBOUNCE_MS);
 
 export interface UpdateOptions {
   /**
-   * Apply and persist the change at once, but wait for a pause before
-   * re-validating and re-rendering. Meant for keystroke-driven updates from
-   * the editors; everything else validates immediately.
+   * Apply and persist the change at once, and let validation wait for a
+   * pause in typing while the last validate-and-render cycle was slow.
+   * Meant for keystroke-driven updates from the editors; everything else
+   * validates immediately.
    */
   debounce?: boolean;
 }
@@ -166,7 +182,7 @@ const update = (mutate: (state: State) => void, options: UpdateOptions = {}): vo
     mutate(input);
     inputVersion++;
     persist();
-    if (options.debounce) {
+    if (options.debounce && isSlowCycle()) {
       validateDebounced();
     } else {
       validateDebounced.cancel();
