@@ -99,7 +99,7 @@
     <Share />
     {#if env.isEnabledMermaidChartLinks}
       <Separator orientation="vertical" />
-      <McWrapper>
+      <McWrapper labelPrefix="Opens ">
         <Button
           size="sm"
           href={getContactSalesUrl()}
