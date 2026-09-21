@@ -1,5 +1,6 @@
 import { C, TID } from '$/constants';
 import { test as base, expect, type Locator, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { verifyFileSizeGreaterThan, type EditorOptions } from './utils';
 
 export class EditorPage {
@@ -56,6 +57,24 @@ export class EditorPage {
     const downloadSVGPromise = verifyFileSizeGreaterThan(this.page, 'diagram', 'svg', expectedSize);
     await this.page.getByTestId(TID.downloadSVG).click();
     return await downloadSVGPromise;
+  }
+
+  /** Downloads the diagram code as a .mmd file and returns its name and contents. */
+  async downloadMMD() {
+    const downloadPromise = this.page.waitForEvent('download');
+    await this.page.getByTestId(TID.downloadMMD).click();
+    const download = await downloadPromise;
+    const path = await download.path();
+    return { content: readFileSync(path, 'utf8'), name: download.suggestedFilename() };
+  }
+
+  /** Opens a local diagram file through the Actions panel's file picker. */
+  async openFile(name: string, content: string) {
+    await this.page.getByTestId(TID.openFileInput).setInputFiles({
+      buffer: Buffer.from(content, 'utf8'),
+      mimeType: 'text/plain',
+      name
+    });
   }
 
   async loadSampleDiagram(diagramName: string) {

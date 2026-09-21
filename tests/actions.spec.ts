@@ -19,6 +19,19 @@ test.describe('Check actions', () => {
     await expect(page.getByText('Go shopping!!')).toBeVisible();
   });
 
+  test('should download the diagram code as an mmd file', async ({ editPage }) => {
+    const { content, name } = await editPage.downloadMMD();
+    expect(name).toMatch(/^mermaid-diagram-.*\.mmd$/);
+    expect(content).toContain('flowchart TD');
+    expect(content).toContain('A[Christmas] -->|Get money| B(Go shopping)');
+  });
+
+  test('should open a local mmd file into the editor', async ({ editPage }) => {
+    await editPage.openFile('opened.mmd', 'graph LR\n  Opened --> FromFile');
+    await editPage.checkInEditor('FromFile');
+    await editPage.checkTextInView('FromFile');
+  });
+
   test('should download png and svg', async ({ editPage }) => {
     const firstPngSize = await editPage.checkAndDownloadPNG(20_000);
     const firstSvgSize = await editPage.downloadSVG(10_000);
