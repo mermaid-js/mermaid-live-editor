@@ -115,28 +115,63 @@ const processState = async (state: State) => {
 // Replaces the old URL-hash store subscription; assigned by initURLSubscription.
 let updateHash: ((serialized: string) => void) | undefined;
 
-// Persist the current input state and asynchronously re-validate it,
-// publishing the result to `validatedState` (and the URL hash, once
-// initURLSubscription has run). Only called from update(), which suppresses
-// dependency tracking.
-const persistAndProcess = (): void => {
+const persist = (): void => {
+  writeJSON(CODE_STORE_KEY, $state.snapshot(input));
+};
+
+// Bumped by every mutation so an in-flight validation can tell whether its
+// snapshot is still current.
+let inputVersion = 0;
+
+// Snapshot the input state and asynchronously re-validate it, publishing the
+// result to `validatedState` (and the URL hash, once initURLSubscription has
+// run). If the input changed while the parse was running the result is stale
+// and dropped: publishing it would make the editors overwrite newer keystrokes,
+// and the update that changed the input has already queued its own validation.
+const validate = (): void => {
   const snapshot = $state.snapshot(input) as State;
-  writeJSON(CODE_STORE_KEY, snapshot);
+  const version = inputVersion;
   void processState(snapshot).then((processed) => {
+    if (version !== inputVersion) {
+      return;
+    }
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
     syncManagedTheme(processed.diagramType);
   });
 };
 
+// Validation drives the parse, the render and the error markers, so while the
+// user types it waits for a short pause instead of running on every keystroke.
+const VALIDATION_DEBOUNCE_MS = 300;
+const validateDebounced = debounce(validate, VALIDATION_DEBOUNCE_MS);
+
+export interface UpdateOptions {
+  /**
+   * Apply and persist the change at once, but wait for a pause before
+   * re-validating and re-rendering. Meant for keystroke-driven updates from
+   * the editors; everything else validates immediately.
+   */
+  debounce?: boolean;
+}
+
 // The single mutation gateway: every update function funnels its writes
 // through here. The mutator runs untracked so effects that call an update
 // function never subscribe to the input state it reads, and the trailing
-// persist + re-validate cannot be forgotten by a new update function.
-const update = (mutate: (state: State) => void): void => {
+// persist + re-validate cannot be forgotten by a new update function. An
+// immediate update snapshots the whole input state, which makes any pending
+// debounced validation redundant, so it is cancelled.
+const update = (mutate: (state: State) => void, options: UpdateOptions = {}): void => {
   untrack(() => {
     mutate(input);
-    persistAndProcess();
+    inputVersion++;
+    persist();
+    if (options.debounce) {
+      validateDebounced();
+    } else {
+      validateDebounced.cancel();
+      validate();
+    }
   });
 };
 
@@ -259,8 +294,9 @@ export const updateCode = (
   code: string,
   {
     updateDiagram = false,
-    resetPanZoom = false
-  }: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
+    resetPanZoom = false,
+    ...options
+  }: { updateDiagram?: boolean; resetPanZoom?: boolean } & UpdateOptions = {}
 ): void => {
   errorDebug();
 
@@ -271,11 +307,11 @@ export const updateCode = (
     }
     state.code = code;
     state.updateDiagram = updateDiagram;
-  });
+  }, options);
 };
 
-export const updateConfig = (config: string): void => {
-  updateCodeStore({ mermaid: config });
+export const updateConfig = (config: string, options?: UpdateOptions): void => {
+  update((state) => applyPartial(state, { mermaid: config }), options);
 };
 
 let siteDark = false;
