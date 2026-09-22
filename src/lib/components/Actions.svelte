@@ -8,6 +8,7 @@
   import { Separator } from '$/components/ui/separator';
   import * as ToggleGroup from '$/components/ui/toggle-group';
   import { TID } from '$/constants';
+  import { pickDiagramFile } from '$/util/diagramFile';
   import { getDomain } from '$/util/util';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
@@ -17,6 +18,7 @@
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
   import DownloadIcon from '~icons/material-symbols/download';
+  import FileOpenIcon from '~icons/material-symbols/file-open-outline-rounded';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
 
@@ -221,6 +223,19 @@ ${svgString}`);
     });
   };
 
+  // The diagram source as a .mmd file, the extension mermaid's CLI and most
+  // editor plugins recognise. Reads the input state so it never lags behind
+  // what the editor shows.
+  const onDownloadMMD = () => {
+    simulateDownload(
+      getFileName('mmd'),
+      `data:text/plain;charset=utf-8,${encodeURIComponent(inputState.code)}`
+    );
+    logEvent('download', {
+      type: 'mmd'
+    });
+  };
+
   let gistURL = $state('');
   $effect(() => {
     const { loader } = validatedState.current;
@@ -297,6 +312,13 @@ ${svgString}`);
           </Button>
         </a>
       </ExternalLinkWrapper>
+    </div>
+    <div class="flex gap-2">
+      {@render dualActionButton('MMD', onDownloadMMD)}
+      <Button class="flex-grow" onclick={pickDiagramFile} data-testid={TID.openFileButton}>
+        <FileOpenIcon />
+        Open MMD file
+      </Button>
     </div>
     <Separator />
     {#if isClipboardAvailable()}

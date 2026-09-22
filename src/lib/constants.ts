@@ -5,6 +5,7 @@ export const TID = {
   aiRepairButton: 'ai-repair-button',
   copyMarkdown: 'copy-markdown',
   diagramDocumentationButton: 'diagram-documentation-button',
+  downloadMMD: 'download-MMD',
   downloadPNG: 'download-PNG',
   downloadSVG: 'download-SVG',
   embedEditLink: 'embed-edit-link',
@@ -17,6 +18,9 @@ export const TID = {
   embedSnippet: 'embed-snippet',
   embedToolbar: 'embed-toolbar',
   errorContainer: 'error-container',
+  mainMenuButton: 'main-menu-button',
+  menuOpenFile: 'menu-open-file',
+  openFileButton: 'open-file-button',
   themeToggleButton: 'theme-toggle-button'
 } as const;
 
