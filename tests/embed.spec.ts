@@ -98,6 +98,16 @@ base.describe('Embed page', () => {
 });
 
 editorTest.describe('Share dialog embed section', () => {
+  editorTest('should only offer the live editor link and the embed', async ({ editPage, page }) => {
+    void editPage;
+    await page.getByRole('button', { name: 'Share' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: 'Mermaid Live Editor' })).toBeVisible();
+    await expect(dialog.getByRole('heading', { name: 'Embed' })).toBeVisible();
+    // The Mermaid Chart Playground is retired and must not be offered any more.
+    await expect(dialog).not.toContainText('Playground');
+  });
+
   editorTest('should offer iframe and web component snippets', async ({ editPage, page }) => {
     void editPage;
     await page.getByRole('button', { name: 'Share' }).click();
