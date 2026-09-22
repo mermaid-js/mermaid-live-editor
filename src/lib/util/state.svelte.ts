@@ -164,7 +164,6 @@ const urlsCurrent = $derived.by(() => {
         | 'ai_repair'
         | 'main_menu'
         | 'save_diagram'
-        | 'share'
         | 'vibe_diagramming'
         | 'visual_edit'
         | 'voice_edit';
