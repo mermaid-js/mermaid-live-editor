@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { State, ValidatedState } from '$/types';
   import { recordRenderTime, shouldRefreshView } from '$/util/autoSync';
-  import { PanZoomState } from '$/util/panZoom';
+  import { PanZoomState, type NormalizedViewport } from '$/util/panZoom';
   import { renderAndPlaceDiagram } from '$/util/renderView';
   import { updateCodeStore, validatedState } from '$/util/state.svelte';
   import { saveStatistics } from '$/util/stats';
@@ -12,9 +12,18 @@
   import { onMount } from 'svelte';
 
   let {
+    isLivePreview = false,
+    normalizedViewport,
     panZoomState = new PanZoomState(),
-    shouldShowGrid = true
-  }: { panZoomState?: PanZoomState; shouldShowGrid?: boolean } = $props();
+    shouldShowGrid = true,
+    updatePanZoomState = true
+  }: {
+    isLivePreview?: boolean;
+    normalizedViewport?: NormalizedViewport;
+    panZoomState?: PanZoomState;
+    shouldShowGrid?: boolean;
+    updatePanZoomState?: boolean;
+  } = $props();
   let code = '';
   let config = '';
   let container: HTMLDivElement | undefined = $state();
@@ -27,20 +36,34 @@
 
   // Set up panZoom state observer to update the store when pan/zoom changes
   const setupPanZoomObserver = () => {
-    panZoomState.onPanZoomChange = (pan, zoom) => {
-      updateCodeStore({ pan, zoom });
-    };
+    panZoomState.onPanZoomChange = updatePanZoomState
+      ? (pan, zoom) => {
+          updateCodeStore({ pan, zoom });
+        }
+      : undefined;
   };
 
-  const handlePanZoom = (state: State, graphDiv: SVGSVGElement) => {
+  const handlePanZoom = (
+    state: State,
+    graphDiv: SVGSVGElement,
+    liveViewport: NormalizedViewport | undefined,
+    livePreview: boolean
+  ) => {
     try {
-      panZoomState.updateElement(graphDiv, state);
+      panZoomState.updateElement(graphDiv, livePreview ? {} : state);
+      if (livePreview && liveViewport) {
+        panZoomState.restoreNormalizedViewport(liveViewport);
+      }
     } catch (error) {
       console.error('PanZoom error:', error);
     }
   };
 
-  const handleStateChange = async (state: ValidatedState) => {
+  const handleStateChange = async (
+    state: ValidatedState,
+    liveViewport: NormalizedViewport | undefined,
+    livePreview: boolean
+  ) => {
     const startTime = Date.now();
     if (state.error !== undefined) {
       error = true;
@@ -58,6 +81,9 @@
           rough === state.rough &&
           panZoom === state.panZoom
         ) {
+          if (livePreview && liveViewport) {
+            panZoomState.restoreNormalizedViewport(liveViewport);
+          }
           return;
         }
 
@@ -84,7 +110,7 @@
         });
         diagramType = detectedDiagramType;
         if (graphDiv && state.panZoom) {
-          handlePanZoom(state, graphDiv);
+          handlePanZoom(state, graphDiv, liveViewport, livePreview);
         }
         if (view?.parentElement && scroll) {
           view.parentElement.scrollTop = scroll;
@@ -106,14 +132,20 @@
 
   onMount(() => {
     setupPanZoomObserver();
+    return () => {
+      panZoomState.onPanZoomChange = undefined;
+    };
   });
 
   // Queue state changes to avoid race condition
   let pendingStateChange = Promise.resolve();
   $effect(() => {
     const state = validatedState.current;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    pendingStateChange = pendingStateChange.then(() => handleStateChange(state).catch(() => {}));
+    const liveViewport = normalizedViewport;
+    const livePreview = isLivePreview;
+    pendingStateChange = pendingStateChange.then(() =>
+      handleStateChange(state, liveViewport, livePreview).catch(() => undefined)
+    );
   });
 </script>
 
