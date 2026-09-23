@@ -1,218 +1,29 @@
 // Modified from https://github.com/Yash-Singh1/monaco-mermaid/blob/main/index.ts
 
 import type * as Monaco from 'monaco-editor';
+import { diagramLanguageData } from '@mermaid-js/syntax-metadata';
+import {
+  getCompletions,
+  type CompletionSuggestion,
+  type SuggestionKind
+} from './mermaidCompletions';
 
 const commentRegex = /(?<!["'])%%(?![^"']*["']\)).*$/;
 
 export const initEditor = (monacoEditor: typeof Monaco): void => {
   monacoEditor.languages.register({ id: 'mermaid' });
-  const requirementDiagrams = [
-    'requirement',
-    'functionalRequirement',
-    'interfaceRequirement',
-    'performanceRequirement',
-    'physicalRequirement',
-    'designConstraint'
-  ];
-  const keywords: Record<
-    string,
-    {
-      typeKeywords: string[];
-      blockKeywords: string[];
-      keywords: string[];
-    }
-  > = {
-    c4Diagram: {
-      blockKeywords: [
-        'Boundary',
-        'Enterprise_Boundary',
-        'System_Boundary',
-        'Container_Boundary',
-        'Node',
-        'Node_L',
-        'Node_R'
+
+  // Monarch keyword attributes (e.g. `flowchartKeywords`) consumed by the tokenizer below.
+  const monarchKeywords: Record<string, string[]> = Object.fromEntries(
+    diagramLanguageData.flatMap((data) => [
+      [`${data.id}BlockKeywords`, []],
+      [
+        `${data.id}Keywords`,
+        data.tokens.filter((token) => token.kind !== 'operator').map((token) => token.text)
       ],
-      keywords: [
-        'title',
-        'accDescription',
-        'direction',
-        'TB',
-        'BT',
-        'RL',
-        'LR',
-        'Person_Ext',
-        'Person',
-        'SystemQueue_Ext',
-        'SystemDb_Ext',
-        'System_Ext',
-        'SystemQueue',
-        'SystemDb',
-        'System',
-        'ContainerQueue_Ext',
-        'ContainerDb_Ext',
-        'Container_Ext',
-        'ContainerQueue',
-        'ContainerDb',
-        'Container',
-        'ComponentQueue_Ext',
-        'ComponentDb_Ext',
-        'Component_Ext',
-        'ComponentQueue',
-        'ComponentDb',
-        'Component',
-        'Deployment_Node',
-        'Rel',
-        'BiRel',
-        'Rel_Up',
-        'Rel_U',
-        'Rel_Down',
-        'Rel_D',
-        'Rel_Left',
-        'Rel_L',
-        'Rel_Right',
-        'Rel_R',
-        'Rel_Back',
-        'RelIndex'
-      ],
-      typeKeywords: ['C4Context', 'C4Container', 'C4Component', 'C4Dynamic', 'C4Deployment']
-    },
-    classDiagram: {
-      blockKeywords: ['class'],
-      keywords: [
-        'link',
-        'click',
-        'callback',
-        'call',
-        'href',
-        'cssClass',
-        'direction',
-        'TB',
-        'BT',
-        'RL',
-        'LR',
-        'title',
-        'accDescription',
-        'order'
-      ],
-      typeKeywords: ['classDiagram', 'classDiagram-v2']
-    },
-    erDiagram: {
-      blockKeywords: [],
-      keywords: ['title', 'accDescription'],
-      typeKeywords: ['erDiagram']
-    },
-    flowchart: {
-      blockKeywords: ['subgraph', 'end'],
-      keywords: [
-        'TB',
-        'TD',
-        'BT',
-        'RL',
-        'LR',
-        'click',
-        'call',
-        'href',
-        '_self',
-        '_blank',
-        '_parent',
-        '_top',
-        'linkStyle',
-        'style',
-        'classDef',
-        'class',
-        'direction',
-        'interpolate'
-      ],
-      typeKeywords: ['flowchart', 'flowchart-v2', 'graph']
-    },
-    gantt: {
-      blockKeywords: [],
-      keywords: [
-        'title',
-        'dateFormat',
-        'axisFormat',
-        'todayMarker',
-        'section',
-        'excludes',
-        'inclusiveEndDates'
-      ],
-      typeKeywords: ['gantt']
-    },
-    gitGraph: {
-      blockKeywords: [],
-      keywords: [
-        'accTitle',
-        'accDescr',
-        'commit',
-        'cherry-pick',
-        'branch',
-        'merge',
-        'reset',
-        'checkout',
-        'LR',
-        'BT',
-        'id',
-        'msg',
-        'type',
-        'tag',
-        'NORMAL',
-        'REVERSE',
-        'HIGHLIGHT'
-      ],
-      typeKeywords: ['gitGraph']
-    },
-    info: {
-      blockKeywords: [],
-      keywords: ['showInfo'],
-      typeKeywords: ['info']
-    },
-    journey: {
-      blockKeywords: ['section'],
-      keywords: ['title'],
-      typeKeywords: ['journey']
-    },
-    pie: {
-      blockKeywords: [],
-      keywords: ['showData', 'title', 'accDescr', 'accTitle'],
-      typeKeywords: ['pie']
-    },
-    requirementDiagram: {
-      blockKeywords: [...requirementDiagrams, 'element'],
-      keywords: [],
-      typeKeywords: ['requirement', 'requirementDiagram']
-    },
-    sankey: {
-      blockKeywords: [],
-      keywords: [],
-      typeKeywords: ['sankey-beta']
-    },
-    sequenceDiagram: {
-      blockKeywords: ['alt', 'par', 'and', 'loop', 'else', 'end', 'rect', 'opt', 'alt', 'rect'],
-      keywords: [
-        'participant',
-        'as',
-        'Note',
-        'note',
-        'right of',
-        'left of',
-        'over',
-        'activate',
-        'deactivate',
-        'autonumber',
-        'title',
-        'actor',
-        'accDescription',
-        'link',
-        'links'
-      ],
-      typeKeywords: ['sequenceDiagram']
-    },
-    stateDiagram: {
-      blockKeywords: ['state', 'note', 'end'],
-      keywords: ['state', 'as', 'hide empty description', 'direction', 'TB', 'BT', 'RL', 'LR'],
-      typeKeywords: ['stateDiagram', 'stateDiagram-v2']
-    }
-  };
+      [`${data.id}TypeKeywords`, []]
+    ])
+  );
 
   const configDirectiveHandler = [
     /^\s*%%(?={)/,
@@ -225,22 +36,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
 
   // Register a tokens provider for the mermaid language
   monacoEditor.languages.setMonarchTokensProvider('mermaid', {
-    ...Object.entries(keywords)
-      .map((entry) =>
-        Object.fromEntries(
-          Object.entries(entry[1]).map((deepEntry) => [
-            entry[0] + deepEntry[0][0].toUpperCase() + deepEntry[0].slice(1),
-            deepEntry[1]
-          ])
-        )
-      )
-      .reduce(
-        (overallKeywords, nextKeyword) => ({
-          ...overallKeywords,
-          ...nextKeyword
-        }),
-        {}
-      ),
+    ...monarchKeywords,
     tokenizer: {
       c4Diagram: [
         configDirectiveHandler,
@@ -587,12 +383,54 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
     ]
   });
 
-  monacoEditor.languages.registerCompletionItemProvider('mermaid', {
-    provideCompletionItems: () => {
-      return {
-        suggestions: []
-      };
+  const completionItemKind: Record<SuggestionKind, Monaco.languages.CompletionItemKind> = {
+    diagram: monacoEditor.languages.CompletionItemKind.Class,
+    identifier: monacoEditor.languages.CompletionItemKind.Variable,
+    keyword: monacoEditor.languages.CompletionItemKind.Keyword,
+    operator: monacoEditor.languages.CompletionItemKind.Operator,
+    snippet: monacoEditor.languages.CompletionItemKind.Snippet
+  };
+
+  const toCompletionItem = (
+    suggestion: CompletionSuggestion,
+    range: Monaco.IRange
+  ): Monaco.languages.CompletionItem => {
+    const item: Monaco.languages.CompletionItem = {
+      detail: suggestion.detail,
+      insertText: suggestion.insertText,
+      kind: completionItemKind[suggestion.kind],
+      label: suggestion.label,
+      range,
+      sortText: suggestion.sortText
+    };
+    if (suggestion.documentation) {
+      item.documentation = { value: suggestion.documentation };
     }
+    if (suggestion.snippet) {
+      item.insertTextRules = monacoEditor.languages.CompletionItemInsertTextRule.InsertAsSnippet;
+    }
+    return item;
+  };
+
+  monacoEditor.languages.registerCompletionItemProvider('mermaid', {
+    provideCompletionItems: (model, position) => {
+      const { from, suggestions, to } = getCompletions(
+        model.getValue(),
+        model.getOffsetAt(position)
+      );
+      const start = model.getPositionAt(from);
+      const end = model.getPositionAt(to);
+      const range = new monacoEditor.Range(
+        start.lineNumber,
+        start.column,
+        end.lineNumber,
+        end.column
+      );
+      return {
+        suggestions: suggestions.map((suggestion) => toCompletionItem(suggestion, range))
+      };
+    },
+    triggerCharacters: [' ', '.', '<', '>']
   });
 
   monacoEditor.languages.setLanguageConfiguration('mermaid', {
