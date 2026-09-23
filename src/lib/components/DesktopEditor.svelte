@@ -19,12 +19,15 @@
   let aiPromptPopupElement: HTMLDivElement | undefined = $state();
   let editor: monaco.editor.IStandaloneCodeEditor | undefined;
   let editorOptions = {
+    acceptSuggestionOnEnter: 'off',
+    glyphMargin: true,
+    lineNumbersMinChars: 4,
     minimap: {
       enabled: false
     },
     overviewRulerLanes: 0,
-    glyphMargin: true,
-    lineNumbersMinChars: 4
+    tabCompletion: 'on',
+    wordBasedSuggestions: 'off'
   } satisfies monaco.editor.IStandaloneEditorConstructionOptions;
   let currentText = '';
   let isUpdatingFromState = false;

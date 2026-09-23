@@ -1,5 +1,10 @@
 <script lang="ts">
   import type { EditorProps } from '$/types';
+  import {
+    getCompletions,
+    snippetToPlainText,
+    type SuggestionKind
+  } from '$/util/mermaidCompletions';
   import { validatedState } from '$/util/state.svelte';
   import { json, jsonLanguage } from '@codemirror/lang-json';
   import { markdown } from '@codemirror/lang-markdown';
@@ -21,6 +26,41 @@
   let currentText = '';
   const themeCompartment = new Compartment();
   const languageCompartment = new Compartment();
+
+  const completionTypes: Record<SuggestionKind, string> = {
+    diagram: 'class',
+    identifier: 'variable',
+    keyword: 'keyword',
+    operator: 'keyword',
+    snippet: 'text'
+  };
+
+  // CodeMirror matches completion sources by identity between updates, so the
+  // source must not be recreated by the language data provider on every call.
+  const mermaidCompletionSource = (context: { pos: number; state: EditorState }) => {
+    const { from, suggestions, to } = getCompletions(context.state.doc.toString(), context.pos);
+    if (suggestions.length === 0) {
+      return null;
+    }
+    return {
+      from,
+      options: suggestions.map((suggestion) => ({
+        apply: suggestion.snippet
+          ? snippetToPlainText(suggestion.insertText)
+          : suggestion.insertText,
+        detail: suggestion.detail,
+        info: suggestion.documentation,
+        label: suggestion.label,
+        sortText: suggestion.sortText,
+        type: completionTypes[suggestion.kind]
+      })),
+      to
+    };
+  };
+
+  const mermaidCompletions = EditorState.languageData.of(() => [
+    { autocomplete: mermaidCompletionSource }
+  ]);
 
   const { onUpdate }: EditorProps = $props();
 
@@ -91,7 +131,7 @@
     }
     editorView.dispatch({
       effects: languageCompartment.reconfigure(
-        isCodeJson ? json() : yamlFrontmatter({ content: markdown() })
+        isCodeJson ? json() : [yamlFrontmatter({ content: markdown() }), mermaidCompletions]
       )
     });
   });
