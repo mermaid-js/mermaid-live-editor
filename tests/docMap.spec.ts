@@ -6,7 +6,7 @@ test.describe('Editor docs tests', () => {
   });
 
   test('Test default loading', async ({ editPage }) => {
-    await editPage.checkDocURL(/mermaid\.js\.org\//);
+    await editPage.checkDocURL(/^https:\/\/mermaid\.js\.org\//);
   });
 
   test('Test to see if the correct URL loads when changing from one diagram to other', async ({
