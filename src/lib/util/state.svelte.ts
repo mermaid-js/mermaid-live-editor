@@ -11,6 +11,7 @@ import {
   replaceLineNumberInErrorMessage
 } from './errorHandling';
 import { darkVariantOf, getDefaultTheme, isManagedTheme, parse } from './mermaid';
+import { notify } from './notify';
 import { readJSON, writeJSON } from './persist.svelte';
 import { findUnsafeConfigPaths, stripConfigPaths } from './sanitize';
 import { deserializeState, pakoSerde, serializeState } from './serde';
@@ -356,10 +357,38 @@ export const replaceInputState = (next: State): void => {
   });
 };
 
+// Firefox rejects URLs longer than 1 MiB (network.standard-url.max-length),
+// the lowest hard limit among major browsers (Chromium allows 2 MiB).
+export const MAX_URL_LENGTH = 1024 * 1024;
+
+let urlLimitReached = false;
+
+// Mirrors the serialized state into the URL hash. When the URL would breach
+// the length limit, the hash is dropped instead of left stale (so a reload
+// restores the latest state from localStorage) and the user is notified once.
+export const writeStateToURL = (serialized: string): void => {
+  const base = `${location.pathname}${location.search}`;
+  const url = `${base}#${serialized}`;
+  if (location.origin.length + url.length <= MAX_URL_LENGTH) {
+    try {
+      history.replaceState(undefined, '', url);
+      urlLimitReached = false;
+      return;
+    } catch (error) {
+      console.error('Failed to update URL', error);
+    }
+  }
+  history.replaceState(undefined, '', base);
+  if (!urlLimitReached) {
+    urlLimitReached = true;
+    notify(
+      'The diagram is too large to be stored in the URL, so the URL will not be updated. Copy the code to save or share it.'
+    );
+  }
+};
+
 export const initURLSubscription = (): void => {
-  updateHash = debounce((serialized: string) => {
-    history.replaceState(undefined, '', `#${serialized}`);
-  }, 250);
+  updateHash = debounce(writeStateToURL, 250);
   updateHash(validatedCurrent.serialized);
 };
 

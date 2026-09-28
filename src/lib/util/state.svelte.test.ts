@@ -1,19 +1,24 @@
 import type { State } from '$lib/types';
 import { flushSync } from 'svelte';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { notify } from './notify';
 import {
   clearDefaultThemeConfig,
   defaultState,
   inputState,
   loadState,
+  MAX_URL_LENGTH,
   replaceInputState,
   toggleDarkTheme,
   updateCode,
   updateCodeStore,
   updateConfig,
   validatedState,
-  verifyState
+  verifyState,
+  writeStateToURL
 } from './state.svelte';
+
+vi.mock('./notify', () => ({ notify: vi.fn() }));
 
 // Runs `body` inside an effect and reports how often the effect (re-)runs.
 const countEffectRuns = (body: () => void): { runs: () => number; stop: () => void } => {
@@ -219,5 +224,37 @@ describe('clearDefaultThemeConfig migration', () => {
     updateConfig('{ "theme": ');
     expect(() => clearDefaultThemeConfig()).not.toThrow();
     expect(inputState.mermaid).toBe('{ "theme": ');
+  });
+});
+
+describe('writeStateToURL', () => {
+  const tooLong = 'a'.repeat(MAX_URL_LENGTH);
+
+  beforeEach(() => {
+    window.history.replaceState(undefined, '', '/edit');
+    writeStateToURL('pako:reset');
+    vi.mocked(notify).mockClear();
+  });
+
+  it('mirrors the serialized state into the URL hash', () => {
+    writeStateToURL('pako:abc');
+    expect(window.location.hash).toBe('#pako:abc');
+    expect(notify).not.toHaveBeenCalled();
+  });
+
+  it('drops the hash and notifies once when the URL limit is reached', () => {
+    writeStateToURL(tooLong);
+    expect(window.location.hash).toBe('');
+    expect(window.location.pathname).toBe('/edit');
+    writeStateToURL(`${tooLong}b`);
+    expect(notify).toHaveBeenCalledTimes(1);
+  });
+
+  it('resumes updating the URL once the state fits again', () => {
+    writeStateToURL(tooLong);
+    writeStateToURL('pako:small');
+    expect(window.location.hash).toBe('#pako:small');
+    writeStateToURL(tooLong);
+    expect(notify).toHaveBeenCalledTimes(2);
   });
 });
