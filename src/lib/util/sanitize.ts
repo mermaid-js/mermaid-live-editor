@@ -70,6 +70,84 @@ export const stripConfigPaths = (config: MermaidConfig, paths: string[][]): void
   }
 };
 
+export type Confirm = (message: string) => boolean;
+
+const parseConfig = (config: string | MermaidConfig): MermaidConfig =>
+  typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
+
+const formatConfig = (config: MermaidConfig): string => JSON.stringify(config, undefined, 2);
+
+const describePaths = (config: MermaidConfig, paths: string[][]): string =>
+  paths
+    .map((path) => `${JSON.stringify(path.join('.'))}: ${JSON.stringify(lodashGet(config, path))}`)
+    .join(',\n');
+
+/**
+ * Asks the user for confirmation if the config contains settings that might
+ * pose security risks, such as a relaxed `securityLevel`, and strips them
+ * unless the user trusts the source.
+ *
+ * @param config - The Mermaid configuration to sanitize.
+ * @param confirm - Asks the user; returns true to strip the unsafe settings.
+ * @returns The sanitized Mermaid configuration as a JSON string.
+ * @throws If `config` is a string that is not valid JSON.
+ */
+export const sanitizeConfig = (config: string | MermaidConfig, confirm: Confirm): string => {
+  const mermaidConfig = parseConfig(config);
+  const unsafePaths = findUnsafeConfigPaths(mermaidConfig);
+  if (
+    unsafePaths.length > 0 &&
+    confirm(
+      `Removing ${describePaths(mermaidConfig, unsafePaths)} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+    )
+  ) {
+    stripConfigPaths(mermaidConfig, unsafePaths);
+  }
+  return formatConfig(mermaidConfig);
+};
+
+/**
+ * {@link sanitizeConfig} for many configs at once, behind a single
+ * confirmation. Configs that are not valid JSON are returned unchanged, since
+ * mermaid cannot apply them either.
+ *
+ * @param configs - Mermaid configurations as JSON strings.
+ * @param confirm - Asks the user; returns true to strip the unsafe settings.
+ * @returns The configs, sanitized when the user agreed.
+ */
+export const sanitizeConfigs = (configs: string[], confirm: Confirm): string[] => {
+  const found = configs.map((config) => {
+    try {
+      const parsed = parseConfig(config);
+      return { parsed, unsafePaths: findUnsafeConfigPaths(parsed) };
+    } catch {
+      return undefined;
+    }
+  });
+  const unsafe = found.filter((entry) => entry && entry.unsafePaths.length > 0);
+  if (unsafe.length === 0) {
+    return configs;
+  }
+  const keys = [
+    ...new Set(unsafe.flatMap((entry) => entry?.unsafePaths.map((path) => path.join('.')) ?? []))
+  ];
+  if (
+    !confirm(
+      `Removing ${keys.map((key) => JSON.stringify(key)).join(', ')} from ${unsafe.length} of ${configs.length} configs for safety.\nClick Cancel if you trust the source of these Diagrams.`
+    )
+  ) {
+    return configs;
+  }
+  return configs.map((config, index) => {
+    const entry = found[index];
+    if (!entry || entry.unsafePaths.length === 0) {
+      return config;
+    }
+    stripConfigPaths(entry.parsed, entry.unsafePaths);
+    return formatConfig(entry.parsed);
+  });
+};
+
 /**
  * Non-interactive variant of `sanitizeConfig`: always strips unsafe settings
  * without asking the user. Used where a blocking confirm dialog is not an
