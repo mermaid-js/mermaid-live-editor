@@ -113,6 +113,9 @@ export const logEvent = (
   name: AnalyticsEvent,
   data?: Record<string, string | number | boolean>
 ): void => {
+  if (browser && window.location.hostname === 'localhost') {
+    console.log('[plausible]', name, data);
+  }
   if (!plausible) {
     return;
   }

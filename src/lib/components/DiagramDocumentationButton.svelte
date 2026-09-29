@@ -4,7 +4,7 @@
   import type { DocumentationConfig } from '$/types';
   import { env } from '$/util/env';
   import { standardizeDiagramType } from '$/util/mermaid';
-  import { stateStore } from '$/util/state';
+  import { validatedState } from '$/util/state.svelte';
   import BookIcon from '~icons/material-symbols/book-2-outline-rounded';
 
   const docURLBase = env.docsUrl;
@@ -92,12 +92,14 @@
   } as const satisfies DocumentationConfig;
 
   const doc = $derived.by(() => {
-    const { editorMode, diagramType } = $stateStore;
+    const { editorMode, diagramType } = validatedState.current;
     if (!diagramType) {
       return { key: '', url: docURLBase };
     }
     const key = standardizeDiagramType(diagramType);
-    const docConfig = docMap[key] ?? { code: '' };
+    const docConfig: { code: string; config?: string } = docMap[key as keyof typeof docMap] ?? {
+      code: ''
+    };
     const url = docURLBase + (docConfig[editorMode] ?? docConfig.code ?? '');
     return { key, url };
   });

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import ExternalLinkWrapper from '$/components/ExternalLinkWrapper.svelte';
   import * as Dialog from '$/components/ui/dialog';
   import { env } from '$/util/env';

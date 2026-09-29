@@ -60,6 +60,13 @@
   onDestroy(() => {
     clearInterval(interval);
   });
+
+  const taglineHref = $derived(
+    `${MCBaseURL}${currentTagline.url.path}?${new URLSearchParams({
+      ...commonParams,
+      ...currentTagline.url.params
+    }).toString()}`
+  );
 </script>
 
 <div
@@ -70,11 +77,9 @@
   <div class="grid grow">
     {#key currentTagline}
       <a
-        href="{MCBaseURL}{currentTagline.url.path}?{new URLSearchParams({
-          ...commonParams,
-          ...currentTagline.url.params
-        }).toString()}"
+        href={taglineHref}
         target="_blank"
+        rel="noopener noreferrer"
         class="col-start-1 row-start-1 flex items-center justify-center gap-4 no-underline"
         in:fade={{ delay: 800 }}
         out:fade={{ duration: 1000 }}>

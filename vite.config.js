@@ -33,6 +33,8 @@ export default defineConfig({
   envPrefix: 'MERMAID_',
   server: { port: 3000, host: true },
   preview: { port: 3000, host: true },
+  // Vitest otherwise resolves Svelte's server build, where $effect is a no-op.
+  resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined,
   test: {
     environment: 'jsdom',
     // in-source testing

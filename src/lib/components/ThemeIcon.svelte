@@ -24,12 +24,12 @@
 </script>
 
 <div class="inline-grid">
-  {#key $mode}
+  {#key mode.current}
     <div
       in:spin={{ clockWise: true }}
       out:spin={{ clockWise: false }}
       class="col-start-1 row-start-1">
-      {#if $mode === 'dark'}
+      {#if mode.current === 'dark'}
         <MoonIcon />
       {:else}
         <SunIcon />
