@@ -1,5 +1,5 @@
 import { defaultState } from '$/constants';
-import type { State } from '$lib/types';
+import type { HistoryEntry, Optional, State } from '$lib/types';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
@@ -25,13 +25,6 @@ interface GistResponse {
   files: Record<string, GithubFile>;
   html_url: string;
   history: { url: string; committed_at: string; version: string; user: { login: string } }[];
-}
-
-export interface GistRevision {
-  name: string;
-  state: State;
-  time: number;
-  url: string;
 }
 
 // Accepts gist page URLs (gist.github.com/<user>/<id>[/<revision>]) as well as
@@ -103,7 +96,7 @@ const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => 
 export const loadGist = async (
   gistURL: string,
   fetchText: FetchText
-): Promise<{ state: State; revisions: GistRevision[] }> => {
+): Promise<{ state: State; revisions: Optional<HistoryEntry, 'id'>[] }> => {
   const { history } = await fetchGist(gistURL, fetchText);
   const gistHistory: GistData[] = [];
   for (const entry of history) {
@@ -122,6 +115,7 @@ export const loadGist = async (
       name: `${gist.author} v${gist.version}`,
       state: getStateFromGist(gist),
       time: gist.time,
+      type: 'loader' as const,
       url: gist.url
     })),
     state: getStateFromGist(latest, gistURL)

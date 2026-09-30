@@ -6,21 +6,20 @@
  */
 import { defaultState } from '$/constants';
 import type { HistoryEntry, State } from '$/types';
-import { sanitizeConfig, sanitizeConfigs, silentlySanitizeConfig, type Confirm } from '../sanitize';
+import type { MermaidConfig } from 'mermaid';
+import {
+  findUnsafeConfigPaths,
+  sanitizeConfig,
+  silentlySanitizeConfig,
+  type Confirm
+} from '../sanitize';
 import { deserializeState } from '../serde';
-import { loadGist, type GistRevision } from './gist';
+import { loadGist } from './gist';
 
 export interface IngestAdapters {
   /** Asks the user whether to strip unsafe config; true strips it. */
   confirm: Confirm;
   fetchText: (url: string) => Promise<string>;
-}
-
-export interface Ingested {
-  /** The state to apply, or undefined to keep the stored one. */
-  state?: Partial<State>;
-  /** Earlier revisions of the loaded source (e.g. a gist), newest first. */
-  revisions: GistRevision[];
 }
 
 const urlParseFailedState = `flowchart TD
@@ -40,11 +39,13 @@ const urlParseFailedState = `flowchart TD
  * @returns The sanitized state, the troubleshooting diagram if the hash
  * cannot be decoded, or undefined for an empty hash.
  */
-export const ingestHash = (hash: string, { confirm }: Pick<IngestAdapters, 'confirm'>) => {
+export const ingestHash = (
+  hash: string,
+  { confirm }: Pick<IngestAdapters, 'confirm'>
+): Partial<State> | undefined => {
   if (!hash) {
     return undefined;
   }
-  console.log(`Loading '${hash}'`);
   try {
     const state = deserializeState(hash);
     state.mermaid = sanitizeConfig(state.mermaid || defaultState.mermaid, confirm);
@@ -64,12 +65,23 @@ const ingestFiles = async (
   if (!code) {
     return undefined;
   }
-  const config = configURL ? await fetchText(configURL) : defaultState.mermaid;
+  const config = (configURL && (await fetchText(configURL))) || defaultState.mermaid;
   return {
     code,
     loader: { config: { codeURL, configURL }, type: 'files' },
-    mermaid: sanitizeConfig(config || defaultState.mermaid, confirm)
+    mermaid: sanitizeConfig(config, confirm)
   };
+};
+
+const stripUnsafe = (config: string): string =>
+  JSON.stringify(silentlySanitizeConfig(config), undefined, 2);
+
+const isUnsafe = (config: string): boolean => {
+  try {
+    return findUnsafeConfigPaths(JSON.parse(config) as MermaidConfig).length > 0;
+  } catch {
+    return false;
+  }
 };
 
 const ingestGist = async (gistURL: string, { confirm, fetchText }: IngestAdapters) => {
@@ -78,11 +90,7 @@ const ingestGist = async (gistURL: string, { confirm, fetchText }: IngestAdapter
   // Revisions are only applied when picked from History later, so a prompt
   // per revision would be noise: strip their unsafe settings silently.
   for (const revision of revisions) {
-    revision.state.mermaid = JSON.stringify(
-      silentlySanitizeConfig(revision.state.mermaid),
-      undefined,
-      2
-    );
+    revision.state.mermaid = stripUnsafe(revision.state.mermaid);
   }
   return { revisions, state };
 };
@@ -92,11 +100,14 @@ const ingestGist = async (gistURL: string, { confirm, fetchText }: IngestAdapter
  * `?code=` (with optional `?config=`) wins over `?gist=`, which wins over the
  * hash; a query source that fails to load falls back to the hash. Only the
  * winning source is sanitized, so the user is asked at most once.
+ *
+ * @returns The state to apply (undefined keeps the stored one) and earlier
+ * revisions of the loaded source (e.g. a gist), newest first.
  */
 export const ingestLocation = async (
   { hash, search }: { hash: string; search: string },
   adapters: IngestAdapters
-): Promise<Ingested> => {
+) => {
   const params = new URLSearchParams(search);
   const codeURL = params.get('code');
   const gistURL = params.get('gist');
@@ -130,11 +141,18 @@ export const ingestHistoryFile = (
     throw new TypeError('History file must contain a list of entries');
   }
   const entries = data as HistoryEntry[];
-  const configs = sanitizeConfigs(
-    entries.map((entry) => entry?.state?.mermaid ?? defaultState.mermaid),
-    confirm
-  );
-  return entries.map((entry, index) =>
-    entry?.state ? { ...entry, state: { ...entry.state, mermaid: configs[index] } } : entry
+  const unsafe = new Set(entries.filter((entry) => entry?.state && isUnsafe(entry.state.mermaid)));
+  if (
+    unsafe.size === 0 ||
+    !confirm(
+      `Removing unsafe settings from ${unsafe.size} of ${entries.length} history entries for safety.\nClick Cancel if you trust the source of these Diagrams.`
+    )
+  ) {
+    return entries;
+  }
+  return entries.map((entry) =>
+    unsafe.has(entry)
+      ? { ...entry, state: { ...entry.state, mermaid: stripUnsafe(entry.state.mermaid) } }
+      : entry
   );
 };

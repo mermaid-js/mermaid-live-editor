@@ -17,6 +17,7 @@ export const getDomain = (url?: string): string => {
 
 export const browserIngestAdapters: IngestAdapters = {
   confirm: (message) => window.confirm(message),
+  // Wrapped: fetchText is declared further down this module.
   fetchText: (url) => fetchText(url)
 };
 
@@ -38,9 +39,7 @@ export const initHandler = async (): Promise<void> => {
     'Loading Gist...',
     ingestLocation(window.location, browserIngestAdapters)
   );
-  if (revisions.length > 0) {
-    setLoaderEntries(revisions.map((revision) => ({ ...revision, type: 'loader' as const })));
-  }
+  setLoaderEntries(revisions);
   applyIncoming(state);
   initURLSubscription();
   await initAnalytics();
