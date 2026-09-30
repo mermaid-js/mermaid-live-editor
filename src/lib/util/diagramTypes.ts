@@ -31,6 +31,9 @@ const aliases: Record<string, string> = {
 };
 
 const catalog: Record<string, DiagramTraits> = {
+  agentflow: {
+    docs: { code: '/syntax/agentflow.html', config: '/syntax/agentflow.html#configuration' }
+  },
   architecture: {
     docs: { code: '/syntax/architecture.html' }
   },
@@ -44,12 +47,18 @@ const catalog: Record<string, DiagramTraits> = {
     docs: { code: '/syntax/classDiagram.html', config: '/syntax/classDiagram.html#configuration' },
     visualEdit: true
   },
+  cynefin: {
+    docs: { code: '/syntax/cynefin.html', config: '/syntax/cynefin.html#configuration' }
+  },
   er: {
     docs: {
       code: '/syntax/entityRelationshipDiagram.html',
       config: '/syntax/entityRelationshipDiagram.html#styling'
     },
     visualEdit: true
+  },
+  eventmodeling: {
+    docs: { code: '/syntax/eventmodeling.html' }
   },
   flowchart: {
     docs: { code: '/syntax/flowchart.html', config: '/syntax/flowchart.html#configuration' },
@@ -63,6 +72,9 @@ const catalog: Record<string, DiagramTraits> = {
       code: '/syntax/gitgraph.html',
       config: '/syntax/gitgraph.html#gitgraph-specific-configuration-options'
     }
+  },
+  ishikawa: {
+    docs: { code: '/syntax/ishikawa.html' }
   },
   journey: {
     docs: { code: '/syntax/userJourney.html' }
@@ -89,6 +101,21 @@ const catalog: Record<string, DiagramTraits> = {
       config: '/syntax/quadrantChart.html#chart-configurations'
     }
   },
+  radar: {
+    docs: { code: '/syntax/radar.html', config: '/syntax/radar.html#configuration' }
+  },
+  railroad: {
+    docs: { code: '/syntax/railroad.html#ir-primitives-railroad-beta' }
+  },
+  railroadAbnf: {
+    docs: { code: '/syntax/railroad.html#abnf-railroad-abnf-beta' }
+  },
+  railroadEbnf: {
+    docs: { code: '/syntax/railroad.html#ebnf-railroad-ebnf-beta' }
+  },
+  railroadPeg: {
+    docs: { code: '/syntax/railroad.html#peg-railroad-peg-beta' }
+  },
   requirement: {
     docs: { code: '/syntax/requirementDiagram.html' },
     visualEdit: true
@@ -107,11 +134,26 @@ const catalog: Record<string, DiagramTraits> = {
     docs: { code: '/syntax/stateDiagram.html' },
     visualEdit: true
   },
+  swimlane: {
+    docs: { code: '/syntax/swimlanes.html' }
+  },
   timeline: {
     docs: { code: '/syntax/timeline.html', config: '/syntax/timeline.html#themes' }
   },
+  treeView: {
+    docs: { code: '/syntax/treeView.html', config: '/syntax/treeView.html#config-variables' }
+  },
   treemap: {
     docs: { code: '/syntax/treemap.html', config: '/syntax/treemap.html#configuration-options' }
+  },
+  usecase: {
+    docs: { code: '/syntax/usecase.html', config: '/syntax/usecase.html#configuration' }
+  },
+  venn: {
+    docs: { code: '/syntax/venn.html' }
+  },
+  wardley: {
+    docs: { code: '/syntax/wardley.html', config: '/syntax/wardley.html#configuration' }
   },
   xychart: {
     docs: { code: '/syntax/xyChart.html', config: '/syntax/xyChart.html#chart-configurations' }

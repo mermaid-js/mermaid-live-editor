@@ -31,6 +31,12 @@ test.describe('Editor docs tests', () => {
     await editPage.setEditorMode('Config');
     await editPage.checkDocURL(/syntax\/classDiagram\.html#configuration/);
     await editPage.setEditorMode('Code');
+
+    await editPage.loadSampleDiagram('Radar');
+    await editPage.checkDocURL(/syntax\/radar\.html/);
+    await editPage.setEditorMode('Config');
+    await editPage.checkDocURL(/syntax\/radar\.html#configuration/);
+    await editPage.setEditorMode('Code');
   });
 
   test("Test to check URLs for a case where config URL doesn't exist", async ({ editPage }) => {
