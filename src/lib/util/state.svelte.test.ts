@@ -1,3 +1,4 @@
+import { MAX_URL_LENGTH } from '$/constants';
 import type { State } from '$lib/types';
 import { flushSync } from 'svelte';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -7,7 +8,6 @@ import {
   defaultState,
   inputState,
   loadState,
-  MAX_URL_LENGTH,
   replaceInputState,
   toggleDarkTheme,
   updateCode,

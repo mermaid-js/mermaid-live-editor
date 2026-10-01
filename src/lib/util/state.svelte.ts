@@ -1,4 +1,4 @@
-import { defaultState } from '$/constants';
+import { defaultState, MAX_URL_LENGTH } from '$/constants';
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
@@ -356,10 +356,6 @@ export const replaceInputState = (next: State): void => {
     Object.assign(state, next);
   });
 };
-
-// Firefox rejects URLs longer than 1 MiB (network.standard-url.max-length),
-// the lowest hard limit among major browsers (Chromium allows 2 MiB).
-export const MAX_URL_LENGTH = 1024 * 1024;
 
 let urlLimitReached = false;
 
