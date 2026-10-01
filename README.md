@@ -30,32 +30,30 @@ docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid
 
 The published docker image is built using our default environment variables. You cannot override them when running the image. If you need to customize them, you will need to build the image yourself.
 
-### To configure renderer URL
+### Health check
 
-When building set the MERMAID_RENDERER_URL build argument to the rendering
-service.
-Example:
-Default is`https://mermaid.ink`.
-Set to empty string to disable PNG and SVG links under Actions
+The image serves static files with nginx on port `8080`. There is no separate health check endpoint: point your health check at `/` on port `8080`, which returns `200` once nginx is up.
 
-### To configure Kroki Instance URL
+### Environment variables
 
-When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki
-instance.
-Default is `https://kroki.io`
-Set to empty string to disable Kroki link under Actions
+All variables are optional and are read at build time only, so pass them as `--build-arg` when building the image (see [Building and running images locally](#building-and-running-images-locally)). Unset variables fall back to the values in [`.env`](./.env).
 
-### To configure Analytics
+| Variable                                 | Default               | Description                                                                                                    |
+| ---------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `MERMAID_RENDERER_URL`                   | `https://mermaid.ink` | Rendering service for the PNG and SVG links. Empty disables them.                                              |
+| `MERMAID_KROKI_RENDERER_URL`             | `https://kroki.io`    | Kroki instance for the Kroki link. Empty disables it.                                                          |
+| `MERMAID_ANALYTICS_URL`                  | empty                 | Plausible instance. Empty disables analytics.                                                                  |
+| `MERMAID_DOMAIN`                         | empty                 | Domain reported to Plausible.                                                                                  |
+| `MERMAID_IS_ENABLED_MERMAID_CHART_LINKS` | `true`                | Set to anything other than `true` to hide the Save to Mermaid Chart button and the promotional banner.         |
+| `MERMAID_PRIVACY_POLICY_URL`             | empty                 | Link to your privacy policy, opened from the privacy button.                                                   |
+| `MERMAID_HIDE_PRIVACY_POLICY`            | empty                 | Set to `true` to hide the privacy button.                                                                      |
+| `MERMAID_BASE_PATH`                      | empty                 | Base path when the editor is served from a sub-path (e.g. `/mermaid`). Must start with `/`, no trailing slash. |
 
-When building set the MERMAID_ANALYTICS_URL build argument to your plausible instance, and MERMAID_DOMAIN to your domain.
+For example, to disable the PNG, SVG and Kroki links:
 
-Default is empty, disabling analytics.
-
-### To enable Mermaid Chart links and promotion
-
-When building set the MERMAID_IS_ENABLED_MERMAID_CHART_LINKS build argument to `true`
-
-Default is empty, disabling button to save to Mermaid Chart and promotional banner.
+```bash
+docker build --build-arg MERMAID_RENDERER_URL='' --build-arg MERMAID_KROKI_RENDERER_URL='' -t mermaid-js/mermaid-live-editor .
+```
 
 ### To update the Security modal
 
