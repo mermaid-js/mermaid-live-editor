@@ -101,6 +101,7 @@
     "@mermaid-js/examples": "^2.0.0",
     "@mermaid-js/layout-tidy-tree": "^1.0.1",
     "@mermaid-js/mermaid-zenuml": "^1.0.1",
+    "@mermaid-js/syntax-metadata": "https://pkg.pr.new/mermaid-js/mermaid/@mermaid-js/syntax-metadata@8294",
     "codemirror": "^6.0.2",
     "dayjs": "^1.11.23",
     "hammerjs": "^2.0.8",
