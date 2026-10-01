@@ -15,6 +15,7 @@
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
+  import { Separator } from '$/components/ui/separator';
   import * as Resizable from '$/components/ui/resizable';
   import { Switch } from '$/components/ui/switch';
   import { Toggle } from '$/components/ui/toggle';
@@ -28,9 +29,10 @@
   } from '$/util/livePreview';
   import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
   import { PanZoomState } from '$/util/panZoom';
+  import { env } from '$/util/env';
   import { validatedState, updateCodeStore, urls } from '$/util/state.svelte';
   import { logEvent, logMermaidChartClick } from '$/util/stats';
-  import { initHandler } from '$/util/util';
+  import { getContactSalesUrl, initHandler } from '$/util/util';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
@@ -119,17 +121,30 @@
       <HistoryIcon />
     </Toggle>
     <Share />
-    <McWrapper>
-      <Button
-        variant="accent"
-        size="sm"
-        href={urls.current.mermaidChart({ medium: 'save_diagram' }).save}
-        target="_blank"
-        onclick={() => logMermaidChartClick('saveDiagram')}>
-        <MermaidChartIcon />
-        Save diagram
-      </Button>
-    </McWrapper>
+    {#if env.isEnabledMermaidChartLinks}
+      <Separator orientation="vertical" />
+      <McWrapper labelPrefix="Opens ">
+        <Button
+          size="sm"
+          href={getContactSalesUrl()}
+          target="_blank"
+          onclick={() => logMermaidChartClick('contactSales')}>
+          <MermaidChartIcon />
+          Contact sales
+        </Button>
+      </McWrapper>
+      <McWrapper>
+        <Button
+          variant="accent"
+          size="sm"
+          href={urls.current.mermaidChart({ medium: 'save_diagram' }).save}
+          target="_blank"
+          onclick={() => logMermaidChartClick('saveDiagram')}>
+          <MermaidChartIcon />
+          Save diagram
+        </Button>
+      </McWrapper>
+    {/if}
   </Navbar>
 
   <div class="flex flex-1 flex-col overflow-hidden" bind:clientWidth={width}>
