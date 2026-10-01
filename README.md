@@ -44,43 +44,16 @@ All variables are optional and are read at build time only, so pass them as `--b
 | `MERMAID_KROKI_RENDERER_URL`             | `https://kroki.io`    | Kroki instance for the Kroki link. Empty disables it.                                                          |
 | `MERMAID_ANALYTICS_URL`                  | empty                 | Plausible instance. Empty disables analytics.                                                                  |
 | `MERMAID_DOMAIN`                         | empty                 | Domain reported to Plausible.                                                                                  |
-| `MERMAID_IS_ENABLED_MERMAID_CHART_LINKS` | `true`                | Set to anything other than `true` to hide the Mermaid Chart links and promotion.                               |
+| `MERMAID_IS_ENABLED_MERMAID_CHART_LINKS` | `true`                | Set to anything other than `true` to hide the Save to Mermaid Chart button and the promotional banner.         |
 | `MERMAID_PRIVACY_POLICY_URL`             | empty                 | Link to your privacy policy, opened from the privacy button.                                                   |
 | `MERMAID_HIDE_PRIVACY_POLICY`            | empty                 | Set to `true` to hide the privacy button.                                                                      |
 | `MERMAID_BASE_PATH`                      | empty                 | Base path when the editor is served from a sub-path (e.g. `/mermaid`). Must start with `/`, no trailing slash. |
 
-Example:
+For example, to disable the PNG, SVG and Kroki links:
 
 ```bash
 docker build --build-arg MERMAID_RENDERER_URL='' --build-arg MERMAID_KROKI_RENDERER_URL='' -t mermaid-js/mermaid-live-editor .
 ```
-
-### To configure renderer URL
-
-When building set the MERMAID_RENDERER_URL build argument to the rendering
-service.
-Example:
-Default is`https://mermaid.ink`.
-Set to empty string to disable PNG and SVG links under Actions
-
-### To configure Kroki Instance URL
-
-When building set the MERMAID_KROKI_RENDERER_URL build argument to your Kroki
-instance.
-Default is `https://kroki.io`
-Set to empty string to disable Kroki link under Actions
-
-### To configure Analytics
-
-When building set the MERMAID_ANALYTICS_URL build argument to your plausible instance, and MERMAID_DOMAIN to your domain.
-
-Default is empty, disabling analytics.
-
-### To enable Mermaid Chart links and promotion
-
-When building set the MERMAID_IS_ENABLED_MERMAID_CHART_LINKS build argument to `true`
-
-Default is `true`. Set it to any other value to disable the button to save to Mermaid Chart and the promotional banner.
 
 ### To update the Security modal
 
