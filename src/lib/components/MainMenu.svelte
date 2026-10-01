@@ -2,6 +2,8 @@
   import McWrapper from '$/components/McWrapper.svelte';
   import * as Popover from '$/components/ui/popover';
   import { Switch } from '$/components/ui/switch';
+  import { TID } from '$/constants';
+  import { pickDiagramFile } from '$/util/diagramFile';
   import { env } from '$/util/env';
   import { urls } from '$/util/state.svelte';
   import { logMermaidChartClick } from '$/util/stats';
@@ -14,6 +16,7 @@
   import DuplicateIcon from '~icons/material-symbols/content-copy-outline-rounded';
   import ContrastIcon from '~icons/material-symbols/contrast';
   import PluginIcon from '~icons/material-symbols/electrical-services-rounded';
+  import FileOpenIcon from '~icons/material-symbols/file-open-outline-rounded';
   import MenuIcon from '~icons/material-symbols/menu-rounded';
   import CommunityIcon from '~icons/material-symbols/person-play-outline-rounded';
   import PlaygroundIcon from '~icons/material-symbols/shape-line-outline';
@@ -22,18 +25,29 @@
   interface MenuItem {
     label: string;
     icon: Component;
-    href: string;
+    /** Link target; action items have none and run `onclick` instead. */
+    href?: string;
     class?: string;
     onclick?: () => void;
     sharesData?: boolean;
     checkDiagramType?: boolean;
     isSectionEnd?: boolean;
+    testId?: string;
     renderer: Snippet<[Omit<MenuItem, 'renderer'>]>;
   }
+
+  let open = $state(false);
 
   const menuItems: MenuItem[] = $derived([
     { label: 'New', icon: AddIcon, href: urls.current.new, renderer: menuItem },
     { label: 'Duplicate', icon: DuplicateIcon, href: window.location.href, renderer: menuItem },
+    {
+      icon: FileOpenIcon,
+      label: 'Open MMD file',
+      onclick: pickDiagramFile,
+      renderer: actionMenuItem,
+      testId: TID.menuOpenFile
+    },
     {
       href: urls.current.mermaidChart({ medium: 'main_menu' }).playground,
       icon: PlaygroundIcon,
@@ -104,6 +118,24 @@
   </a>
 {/snippet}
 
+{#snippet actionMenuItem(options: Omit<MenuItem, 'renderer'>)}
+  <button
+    type="button"
+    data-testid={options.testId}
+    onclick={() => {
+      open = false;
+      options.onclick?.();
+    }}
+    class={cn(
+      'flex items-center justify-start gap-2 border-b-2 p-2 px-3 hover:bg-muted',
+      options.isSectionEnd && 'border-border-dark',
+      options.class
+    )}>
+    <options.icon class="size-5" />
+    {options.label}
+  </button>
+{/snippet}
+
 {#snippet mcMenuItem(item: Omit<MenuItem, 'renderer'>)}
   <McWrapper
     side="right"
@@ -131,8 +163,8 @@
   </div>
 {/snippet}
 
-<Popover.Root>
-  <Popover.Trigger class="shrink-0">
+<Popover.Root bind:open>
+  <Popover.Trigger class="shrink-0" data-testid={TID.mainMenuButton}>
     <MenuIcon class="size-6" />
   </Popover.Trigger>
   <Popover.Content align="start" class="flex flex-col overflow-hidden border-2 p-0" sideOffset={16}>
