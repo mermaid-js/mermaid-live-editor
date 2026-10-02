@@ -17,12 +17,15 @@ export const TID = {
   embedSnippet: 'embed-snippet',
   embedToolbar: 'embed-toolbar',
   errorContainer: 'error-container',
+  livePreviewButton: 'live-preview-button',
   themeToggleButton: 'theme-toggle-button'
 } as const;
 
 export const C = {
   aiLiveEditor: 'ai_live_editor',
   editorChooserDismissedKey: 'mermaid-editor-chooser-dismissed',
+  livePreviewParam: 'live',
+  livePreviewSessionKey: 'mermaid-live-preview-session',
   utmSource: 'mermaid_live_editor'
 } as const;
 

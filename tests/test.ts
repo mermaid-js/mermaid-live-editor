@@ -62,6 +62,12 @@ export class EditorPage {
     await this.page.getByText(diagramName, { exact: true }).click();
   }
 
+  async openLivePreview(): Promise<Page> {
+    const popup = this.page.waitForEvent('popup');
+    await this.page.getByTestId(TID.livePreviewButton).click();
+    return await popup;
+  }
+
   async checkTextInView(text: string) {
     await expect(this.view).toContainText(text);
   }
