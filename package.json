@@ -31,8 +31,8 @@
     "@eslint/js": "^10.0.1",
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@iconify-json/hugeicons": "^1.2.35",
-    "@iconify-json/logos": "^1.2.14",
-    "@iconify-json/material-symbols": "^1.2.92",
+    "@iconify-json/logos": "^1.2.15",
+    "@iconify-json/material-symbols": "^1.2.93",
     "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "^1.60.0",
     "@sveltejs/adapter-static": "^3.0.10",
@@ -47,7 +47,7 @@
     "@vitest/coverage-v8": "^4.1.11",
     "@vitest/ui": "^4.1.11",
     "autoprefixer": "^10.6.1",
-    "bits-ui": "^2.19.2",
+    "bits-ui": "^2.19.4",
     "c8": "11.0.0",
     "chai": "^6.2.2",
     "clsx": "^2.1.1",
@@ -68,7 +68,7 @@
     "lucide-svelte": "^1.0.1",
     "node-html-parser": "^7.1.0",
     "paneforge": "1.0.2",
-    "prettier": "^3.9.8",
+    "prettier": "^3.9.9",
     "prettier-plugin-svelte": "^4.1.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "svelte": "^5.57.1",
@@ -93,8 +93,8 @@
     "@codemirror/lang-markdown": "^6.5.2",
     "@codemirror/lang-yaml": "^6.1.3",
     "@codemirror/language": "^6.12.4",
-    "@codemirror/state": "^6.7.5",
-    "@codemirror/view": "^6.43.12",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.13",
     "@fontsource-variable/recursive": "^5.2.8",
     "@fsegurai/codemirror-theme-vscode-dark": "^6.2.8",
     "@fsegurai/codemirror-theme-vscode-light": "^6.2.8",
@@ -125,7 +125,7 @@
   "engines": {
     "node": ">=24.16.0"
   },
-  "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e",
+  "packageManager": "pnpm@10.34.6+sha512.7e1ae66a83a9143c118cc1944f37cc4f2b8acddeda4b001cfa78908f6e46e45e15292739ca6c9d026426cc757e9318cc98c5551d6a16c165097b0028ba87b4e6",
   "pnpm": {
     "onlyBuiltDependencies": [
       "deasync",
