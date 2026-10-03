@@ -1,0 +1,32 @@
+{{- if .Values.route.enabled -}}
+# OpenShift Route — preferred over Kubernetes Ingress on OCP clusters.
+# Supports edge, reencrypt, and passthrough TLS termination natively.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "mermaid.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mermaid.labels" . | nindent 4 }}
+  {{- with .Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.route.host }}
+  host: {{ .Values.route.host }}
+  {{- end }}
+  path: {{ .Values.route.path }}
+  to:
+    kind: Service
+    name: {{ include "mermaid.fullname" . }}
+    weight: 100
+  port:
+    targetPort: http
+  {{- if .Values.route.tls.enabled }}
+  tls:
+    termination: {{ .Values.route.tls.termination }}
+    insecureEdgeTerminationPolicy: {{ .Values.route.tls.insecureEdgeTerminationPolicy }}
+  {{- end }}
+  wildcardPolicy: None
+{{- end }}
