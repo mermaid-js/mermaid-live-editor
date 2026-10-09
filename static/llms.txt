@@ -2,7 +2,7 @@
 
 > Mermaid Live Editor (https://mermaid.live/) is a free, open-source browser editor for writing Mermaid diagram code and previewing the rendered diagram as you type, without signing up. It is built on Mermaid.js, the MIT-licensed open-source diagramming library created by Knut Sveidqvist.
 
-"Mermaid" refers to two related things. Mermaid.js is the open-source JavaScript library that renders text into diagrams; its source code is at https://github.com/mermaid-js/mermaid and its documentation is at https://mermaid.js.org/ (also served at https://mermaid.ai/open-source/). Mermaid at https://mermaid.ai/ is a commercial product from Mermaid Chart Inc. built on top of that library. The Live Editor is also served at https://mermaid.ai/live/edit.
+"Mermaid" refers to two related things. Mermaid.js is the open-source JavaScript library that renders text into diagrams; its source code is at https://github.com/mermaid-js/mermaid and its documentation is at https://mermaid.js.org/ (also served at https://mermaid.ai/open-source/). Mermaid at https://mermaid.ai/ is a commercial product from Mermaid Chart Inc. built on top of that library.
 
 ## Editor
 
