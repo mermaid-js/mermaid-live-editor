@@ -149,6 +149,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         'merge',
         'reset',
         'checkout',
+        'switch',
         'LR',
         'BT',
         'id',
@@ -355,7 +356,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         ],
         [/".*?"/, 'string'],
         [
-          /(^\s*)(branch|reset|merge|checkout)(\s*\S+)/m,
+          /(^\s*)(branch|reset|merge|checkout|switch)(\s*\S+)/m,
           ['delimiter.bracket', 'keyword', 'variable']
         ],
         [
