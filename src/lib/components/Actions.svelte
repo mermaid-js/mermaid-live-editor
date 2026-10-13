@@ -13,6 +13,7 @@
   import { waitForRender } from '$lib/util/autoSync';
   import { inputState, updateCodeStore, urls, validatedState } from '$lib/util/state.svelte';
   import { logEvent } from '$lib/util/stats';
+  import { serializeSvg } from '$lib/util/svgExport';
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
   import dayjs from 'dayjs';
   import { toBase64 } from 'js-base64';
@@ -88,9 +89,7 @@
       .getComputedStyle(document.body)
       .getPropertyValue('--background');
 
-    const svgString = svg.outerHTML
-      .replaceAll('<br>', '<br/>')
-      .replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
+    const svgString = serializeSvg(svg);
 
     return toBase64(`<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="${FONT_AWESOME_URL}" type="text/css"?>
