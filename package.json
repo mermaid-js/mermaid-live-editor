@@ -32,7 +32,7 @@
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@iconify-json/hugeicons": "^1.2.35",
     "@iconify-json/logos": "^1.2.15",
-    "@iconify-json/material-symbols": "^1.2.94",
+    "@iconify-json/material-symbols": "^1.2.95",
     "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "^1.60.0",
     "@sveltejs/adapter-static": "^3.0.10",
@@ -68,10 +68,10 @@
     "lucide-svelte": "^1.0.1",
     "node-html-parser": "^7.1.0",
     "paneforge": "1.0.2",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "prettier-plugin-svelte": "^4.1.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "svelte": "^5.57.1",
+    "svelte": "^5.57.2",
     "svelte-check": "^4.6.0",
     "svelte-preprocess": "^6.0.5",
     "svelte-sonner": "^1.1.1",
@@ -94,7 +94,7 @@
     "@codemirror/lang-yaml": "^6.1.3",
     "@codemirror/language": "^6.12.4",
     "@codemirror/state": "^6.7.6",
-    "@codemirror/view": "^6.43.13",
+    "@codemirror/view": "^6.43.14",
     "@fontsource-variable/recursive": "^5.2.8",
     "@fsegurai/codemirror-theme-vscode-dark": "^6.2.8",
     "@fsegurai/codemirror-theme-vscode-light": "^6.2.8",
@@ -106,7 +106,7 @@
     "hammerjs": "^2.0.8",
     "js-base64": "3.7.8",
     "lodash-es": "^4.18.1",
-    "mermaid": "^12.1.0",
+    "mermaid": "^12.2.0",
     "mode-watcher": "^1.1.0",
     "monaco-editor": "0.55.1",
     "pako": "2.1.0",
@@ -114,7 +114,7 @@
     "random-word-slugs": "0.1.7",
     "svg-pan-zoom": "3.6.2",
     "svg2roughjs": "^3.2.3",
-    "uuid": "14.0.2"
+    "uuid": "14.0.3"
   },
   "lint-staged": {
     "*.{ts,svelte,js,css,md,json}": [
