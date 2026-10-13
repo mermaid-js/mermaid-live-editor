@@ -1,28 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { setLoaderEntries } from '$lib/components/History/historyState.svelte';
-import type { State } from '$lib/types';
-import { defaultState } from '$lib/util/state.svelte';
-import { fetchJSON, fetchText } from '$lib/util/util';
+import { defaultState } from '$/constants';
+import type { HistoryEntry, Optional, State } from '$lib/types';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
+
+type FetchText = (url: string) => Promise<string>;
 
 interface GithubFile {
   truncated: boolean;
   raw_url: string;
   content: string;
 }
-
-const isValidGist = (files: any): boolean => {
-  return codeFileName in files;
-};
-
-const getFileContent = async (file: GithubFile): Promise<string> => {
-  if (file.truncated) {
-    return await fetchText(file.raw_url);
-  }
-  return file.content;
-};
 
 interface GistData {
   code: string;
@@ -39,36 +27,47 @@ interface GistResponse {
   history: { url: string; committed_at: string; version: string; user: { login: string } }[];
 }
 
-const getGistData = async (gistURL: string): Promise<GistData> => {
+// Accepts gist page URLs (gist.github.com/<user>/<id>[/<revision>]) as well as
+// the API URLs listed in a gist's history (api.github.com/gists/<id>/<revision>).
+const fetchGist = async (gistURL: string, fetchText: FetchText): Promise<GistResponse> => {
   const path = gistURL.split('github.com').pop();
   if (!path) {
     throw new Error('Invalid GitHub URL' + gistURL);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, gistID, revisionID] = path.split('/');
+  return JSON.parse(
+    await fetchText(`https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`)
+  ) as GistResponse;
+};
 
-  const { html_url, files, history }: GistResponse = await fetchJSON(
-    `https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`
-  );
-  if (isValidGist(files)) {
-    const code = await getFileContent(files[codeFileName]);
-    let config = '{}';
-    if (configFileName in files) {
-      config = await getFileContent(files[configFileName]);
-    }
-    const currentItem = history[0];
-    return {
-      author: currentItem.user.login,
-      code,
-      config,
-      time: new Date(currentItem.committed_at).getTime(),
+const getFileContent = async (file: GithubFile, fetchText: FetchText): Promise<string> => {
+  if (file.truncated) {
+    return await fetchText(file.raw_url);
+  }
+  return file.content;
+};
 
-      url: `${html_url}/${currentItem.version}`,
-      version: currentItem.version.slice(-7)
-    };
-  } else {
+const getGistData = async (gistURL: string, fetchText: FetchText): Promise<GistData> => {
+  const { html_url, files, history } = await fetchGist(gistURL, fetchText);
+  if (!(codeFileName in files)) {
     throw new Error('Invalid gist provided');
   }
+  const code = await getFileContent(files[codeFileName], fetchText);
+  let config = '{}';
+  if (configFileName in files) {
+    config = await getFileContent(files[configFileName], fetchText);
+  }
+  const currentItem = history[0];
+  return {
+    author: currentItem.user.login,
+    code,
+    config,
+    time: new Date(currentItem.committed_at).getTime(),
+
+    url: `${html_url}/${currentItem.version}`,
+    version: currentItem.version.slice(-7)
+  };
 };
 
 const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => {
@@ -88,45 +87,37 @@ const getStateFromGist = (gist: GistData, gistURL: string = gist.url): State => 
   return state;
 };
 
-export const loadGistData = async (gistURL: string): Promise<State> => {
-  const path = gistURL.split('github.com').pop();
-  if (!path) {
-    throw new Error('Invalid GitHub URL' + gistURL);
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, __, gistID, revisionID] = path.split('/');
-
-  const { history }: GistResponse = await fetchJSON(
-    `https://api.github.com/gists/${gistID}${revisionID ? '/' + revisionID : ''}`
-  );
+/**
+ * Loads a gist (or one of its revisions) along with every earlier revision.
+ * Configs are returned as found; callers sanitize them.
+ *
+ * @returns The state of the requested revision, and all revisions newest first.
+ */
+export const loadGist = async (
+  gistURL: string,
+  fetchText: FetchText
+): Promise<{ state: State; revisions: Optional<HistoryEntry, 'id'>[] }> => {
+  const { history } = await fetchGist(gistURL, fetchText);
   const gistHistory: GistData[] = [];
   for (const entry of history) {
     try {
-      const data: GistData = await getGistData(entry.url);
-      gistHistory.push(data);
+      gistHistory.push(await getGistData(entry.url, fetchText));
     } catch (error) {
       console.error(error);
     }
   }
-  if (gistHistory.length === 0) {
+  const latest = gistHistory[0];
+  if (!latest) {
     throw new Error('Invalid gist provided');
   }
-  gistHistory.reverse();
-  const entry = gistHistory.at(-1);
-  if (!entry) {
-    throw new Error('Invalid gist provided');
-  }
-  const state = getStateFromGist(entry, gistURL);
-  setLoaderEntries(
-    gistHistory
-      .map((gist) => ({
-        name: `${gist.author} v${gist.version}`,
-        state: getStateFromGist(gist),
-        time: gist.time,
-        type: 'loader' as const,
-        url: gist.url
-      }))
-      .reverse()
-  );
-  return state;
+  return {
+    revisions: gistHistory.map((gist) => ({
+      name: `${gist.author} v${gist.version}`,
+      state: getStateFromGist(gist),
+      time: gist.time,
+      type: 'loader' as const,
+      url: gist.url
+    })),
+    state: getStateFromGist(latest, gistURL)
+  };
 };

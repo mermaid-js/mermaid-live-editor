@@ -1,10 +1,12 @@
+import { setLoaderEntries } from '$/components/History/historyState.svelte';
 import { C } from '$/constants';
+import type { State } from '$/types';
 import { MCBaseURL } from './env';
-import { loadDataFromUrl } from './fileLoaders/loader';
+import { ingestHash, ingestLocation, type IngestAdapters } from './fileLoaders/ingest';
 import { initLoading } from './loading.svelte';
 import { isOnMermaidAI } from './migration/domainMigration';
 import { applyMigrations } from './migrations.svelte';
-import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state.svelte';
+import { initURLSubscription, updateCodeStore, verifyState } from './state.svelte';
 import { getAnalyticsSafeUrl, initAnalytics, plausible } from './stats';
 
 export const getDomain = (url?: string): string => {
@@ -13,21 +15,32 @@ export const getDomain = (url?: string): string => {
   return domain;
 };
 
-export const loadStateFromURL = (): void => {
-  loadState(window.location.hash.slice(1));
+export const browserIngestAdapters: IngestAdapters = {
+  confirm: (message) => window.confirm(message),
+  // Wrapped: fetchText is declared further down this module.
+  fetchText: (url) => fetchText(url)
 };
 
-export const syncDiagram = (): void => {
-  updateCodeStore({
-    updateDiagram: true
-  });
+const applyIncoming = (state: Partial<State> | undefined): void => {
+  updateCodeStore({ ...state, updateDiagram: true });
+};
+
+/** Loads the diagram in the URL hash, e.g. after the user edits or pastes a new link. */
+export const loadHashChange = (): void => {
+  const state = ingestHash(window.location.hash.slice(1), browserIngestAdapters);
+  if (state) {
+    applyIncoming(state);
+  }
 };
 
 export const initHandler = async (): Promise<void> => {
   applyMigrations();
-  loadStateFromURL();
-  await initLoading('Loading Gist...', loadDataFromUrl().catch(console.error));
-  syncDiagram();
+  const { state, revisions } = await initLoading(
+    'Loading Gist...',
+    ingestLocation(window.location, browserIngestAdapters)
+  );
+  setLoaderEntries(revisions);
+  applyIncoming(state);
   initURLSubscription();
   await initAnalytics();
   plausible?.trackPageview({
