@@ -41,6 +41,10 @@ export const MERMAID_THEMES = [
 
 export const MERMAID_LOOKS = ['classic', 'handDrawn', 'neo'] as const;
 
+// Firefox rejects URLs longer than 1 MiB (network.standard-url.max-length),
+// the lowest hard limit among major browsers (Chromium allows 2 MiB).
+export const MAX_URL_LENGTH = 1024 * 1024;
+
 export const defaultState: State = {
   code: `flowchart TD
     A[Christmas] -->|Get money| B(Go shopping)
