@@ -4,7 +4,9 @@ import duration from 'dayjs/plugin/duration';
 import type { Component, Snippet } from 'svelte';
 import { persisted } from '../persist.svelte';
 import April2025 from './April2025.svelte';
+import { getBannerVariant, type BannerAbVariant } from './bannerAb';
 import JS2026 from './JS2026.svelte';
+import VisualTestB from './VisualTestB.svelte';
 
 dayjs.extend(duration);
 
@@ -14,6 +16,8 @@ interface Promotion {
   component: Component<{ closeBanner: Snippet }>;
   hideDurationMs: number;
 }
+
+export type ActivePromotion = Promotion & { id: string; variant?: BannerAbVariant };
 
 const promotions: Record<string, Promotion> = {
   'promo-js-2026': {
@@ -42,7 +46,7 @@ export const dismissPromotion = (id?: string): void => {
 
 const hiddenPromotions = persisted<Record<string, number>>('hiddenPromotions', {});
 
-export const getActivePromotion = (): (Promotion & { id: string }) | undefined => {
+export const getActivePromotion = (): ActivePromotion | undefined => {
   if (!env.isEnabledMermaidChartLinks) {
     return;
   }
@@ -64,5 +68,15 @@ export const getActivePromotion = (): (Promotion & { id: string }) | undefined =
   }
 
   const [id, promotion] = promotionWithID;
-  return { ...promotion, id };
+  if (id !== 'promo-js-2026') {
+    return { ...promotion, id };
+  }
+
+  const variant = getBannerVariant();
+  return {
+    ...promotion,
+    component: variant === 'testB' ? VisualTestB : promotion.component,
+    id,
+    variant
+  };
 };
