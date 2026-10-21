@@ -1,3 +1,4 @@
+import { TID } from '$/constants';
 import { expect, test } from './test';
 
 test.describe('Check actions', () => {
@@ -17,6 +18,23 @@ test.describe('Check actions', () => {
       .fill('https://gist.github.com/sidharthv96/6268a23e673a533dcb198f241fd7012a');
     await page.getByText('Load Gist').click();
     await expect(page.getByText('Go shopping!!')).toBeVisible();
+  });
+
+  test('should download the diagram code as an mmd file', async ({ editPage }) => {
+    const { content, name } = await editPage.downloadMMD();
+    expect(name).toMatch(/^mermaid-diagram-.*\.mmd$/);
+    expect(content).toContain('flowchart TD');
+    expect(content).toContain('A[Christmas] -->|Get money| B(Go shopping)');
+  });
+
+  test('should open a local mmd file into the editor', async ({ editPage, page }) => {
+    await editPage.openFile(
+      page.getByTestId(TID.openFileButton),
+      'opened.mmd',
+      'graph LR\n  Opened --> FromFile'
+    );
+    await editPage.checkInEditor('FromFile');
+    await editPage.checkTextInView('FromFile');
   });
 
   test('should download png and svg', async ({ editPage }) => {
