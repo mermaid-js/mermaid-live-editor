@@ -60,6 +60,10 @@ export const getCheckoutUrl = (utm: { utmCampaign: string; utmMedium: string }):
   return `${MCBaseURL}/app/user/billing/checkout?${params.toString()}`;
 };
 
+export const getSignupUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  return `${MCBaseURL}/app/sign-up?${buildUtmParams(utm).toString()}`;
+};
+
 export const getMermaidAiLiveUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
   return `${MCBaseURL}/live?${buildUtmParams(utm).toString()}`;
 };

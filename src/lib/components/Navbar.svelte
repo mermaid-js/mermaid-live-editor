@@ -12,6 +12,7 @@
   import MainMenu from '$/components/MainMenu.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
+  import { TID } from '$/constants';
   import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo.svelte';
   import { untrack, type ComponentProps, type Snippet } from 'svelte';
   import MermaidIcon from '~icons/custom/mermaid';
@@ -48,14 +49,15 @@
       return;
     }
     logEvent('bannerClick', {
-      promotion: activePromotion.id
+      promotion: activePromotion.id,
+      ...(activePromotion.variant ? { variant: activePromotion.variant } : {})
     });
     logMermaidChartClick('banner');
   };
 </script>
 
 {#if activePromotion}
-  <div class="top-bar z-10 flex h-fit w-full bg-primary">
+  <div class="top-bar z-10 flex h-fit w-full bg-primary" data-testid={TID.promoBanner}>
     <div
       class="flex grow"
       role="button"
