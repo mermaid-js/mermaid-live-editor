@@ -4,12 +4,45 @@ import type { Point } from 'mermaid/dist/types.js';
 import panzoom from 'svg-pan-zoom';
 type PanZoom = typeof panzoom;
 
+interface ViewportSize {
+  height: number;
+  realZoom: number;
+  width: number;
+}
+
+export interface NormalizedViewport {
+  center: Point;
+  /** Zoom relative to the diagram's fit-to-container zoom. */
+  zoom: number;
+}
+
+export const normalizeViewport = (
+  pan: Point,
+  zoom: number,
+  { height, realZoom, width }: ViewportSize
+): NormalizedViewport => ({
+  center: {
+    x: (width / 2 - pan.x) / realZoom,
+    y: (height / 2 - pan.y) / realZoom
+  },
+  zoom
+});
+
+export const denormalizeViewportPan = (
+  viewport: NormalizedViewport,
+  { height, realZoom, width }: ViewportSize
+): Point => ({
+  x: width / 2 - viewport.center.x * realZoom,
+  y: height / 2 - viewport.center.y * realZoom
+});
+
 export class PanZoomState {
   private pan?: Point;
   private zoom?: number;
   private pzoom: PanZoom | undefined;
   private isDirty = false;
   private resizeObserver: ResizeObserver;
+  private syncedViewport?: NormalizedViewport;
 
   public isPanEnabled: boolean;
   public onPanZoomChange?: (pan: Point, zoom: number) => void;
@@ -18,14 +51,12 @@ export class PanZoomState {
     this.isPanEnabled = true;
     this.resizeObserver = new ResizeObserver(() => {
       this.resize();
-      if (!this.isDirty) {
-        this.reset();
-      }
     });
   }
 
   public updateElement(diagramView: SVGElement, { pan, zoom }: Pick<State, 'pan' | 'zoom'>) {
     this.pzoom?.destroy();
+    this.syncedViewport = undefined;
     let hammer: HammerManager | undefined;
     this.pzoom = panzoom(diagramView, {
       center: true,
@@ -129,26 +160,66 @@ export class PanZoomState {
       console.error('PanZoomState.restorePanZoom: pzoom is not initialized');
       return;
     }
+    this.syncedViewport = undefined;
     this.pzoom.zoom(zoom);
     this.pzoom.pan(pan);
   }
 
+  public getNormalizedViewport(): NormalizedViewport | undefined {
+    if (!this.pzoom) {
+      return;
+    }
+    const pan = this.pzoom.getPan();
+    const zoom = this.pzoom.getZoom();
+    const sizes = this.pzoom.getSizes();
+    if (
+      !Number.isFinite(pan.x) ||
+      !Number.isFinite(pan.y) ||
+      !Number.isFinite(zoom) ||
+      !Number.isFinite(sizes.width) ||
+      !Number.isFinite(sizes.height) ||
+      !Number.isFinite(sizes.realZoom) ||
+      sizes.realZoom === 0
+    ) {
+      return;
+    }
+    return normalizeViewport(pan, zoom, sizes);
+  }
+
+  public restoreNormalizedViewport(viewport: NormalizedViewport) {
+    if (!this.pzoom) {
+      return;
+    }
+    this.syncedViewport = {
+      center: { ...viewport.center },
+      zoom: viewport.zoom
+    };
+    this.pzoom.zoom(viewport.zoom);
+    this.pzoom.pan(denormalizeViewportPan(viewport, this.pzoom.getSizes()));
+    this.isDirty = true;
+  }
+
   public resize() {
     this.pzoom?.resize();
-    if (!this.isDirty) {
+    if (this.syncedViewport) {
+      this.restoreNormalizedViewport(this.syncedViewport);
+    } else if (!this.isDirty) {
       this.reset();
     }
   }
 
   public zoomIn() {
+    this.syncedViewport = undefined;
     this.pzoom?.zoomIn();
   }
 
   public zoomOut() {
+    this.syncedViewport = undefined;
     this.pzoom?.zoomOut();
   }
 
   public reset() {
+    this.syncedViewport = undefined;
     this.pzoom?.reset();
     // Zoom out a bit to avoid overlap with the toolbar
     this.pzoom?.zoom(0.875);
