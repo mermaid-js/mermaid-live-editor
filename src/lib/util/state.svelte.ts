@@ -1,7 +1,7 @@
 import { defaultState } from '$/constants';
 import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
 import { resolve } from '$app/paths';
-import { debounce, get as lodashGet } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { untrack } from 'svelte';
 import { env } from './env';
@@ -12,22 +12,10 @@ import {
 } from './errorHandling';
 import { darkVariantOf, getDefaultTheme, isManagedTheme, parse } from './mermaid';
 import { readJSON, writeJSON } from './persist.svelte';
-import { findUnsafeConfigPaths, stripConfigPaths } from './sanitize';
-import { deserializeState, pakoSerde, serializeState } from './serde';
+import { pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
 
 export { defaultState };
-
-const urlParseFailedState = `flowchart TD
-    A[Loading URL failed. We can try to figure out why.] -->|Decode JSON| B(Please check the console to see the JSON and error details.)
-    B --> C{Is the JSON correct?}
-    C -->|Yes| D(Please Click here to Raise an issue in github.<br/>Including the broken link in the issue <br/> will speed up the fix.)
-    C -->|No| E{Did someone <br/>send you this link?}
-    E -->|Yes| F[Ask them to send <br/>you the complete link]
-    E -->|No| G{Did you copy <br/> the complete URL?}
-    G --> |Yes| D
-    G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
-    click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
 const CODE_STORE_KEY = 'codeStore';
 
@@ -193,55 +181,6 @@ export const urls = {
   get current() {
     return urlsCurrent;
   }
-};
-
-/**
- * Asks the user for confirmation if the config contains settings that might
- * pose security risks, such as a relaxed `securityLevel`.
- *
- * @param config - The Mermaid configuration to sanitize.
- * @returns The sanitized Mermaid configuration as a JSON string.
- */
-export const sanitizeConfig = (config: string | MermaidConfig) => {
-  const mermaidConfig: MermaidConfig =
-    typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
-
-  const unsafePaths = findUnsafeConfigPaths(mermaidConfig);
-
-  if (
-    unsafePaths.length > 0 &&
-    confirm(
-      `Removing ${unsafePaths
-        .map((unsafePath) => {
-          return `${JSON.stringify(unsafePath.join('.'))}: ${JSON.stringify(lodashGet(mermaidConfig, unsafePath))}`;
-        })
-        .join(
-          ',\n'
-        )} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
-    )
-  ) {
-    stripConfigPaths(mermaidConfig, unsafePaths);
-  }
-  return formatJSON(mermaidConfig);
-};
-
-export const loadState = (data: string): void => {
-  console.log(`Loading '${data}'`);
-  update((state) => {
-    let next: State;
-    try {
-      next = deserializeState(data);
-      next.mermaid = sanitizeConfig(next.mermaid || defaultState.mermaid);
-    } catch (error) {
-      next = $state.snapshot(state) as State;
-      if (data) {
-        console.error('Init error', error);
-        next.code = urlParseFailedState;
-        next.mermaid = defaultState.mermaid;
-      }
-    }
-    applyPartial(state, next);
-  });
 };
 
 let renderCount = 0;

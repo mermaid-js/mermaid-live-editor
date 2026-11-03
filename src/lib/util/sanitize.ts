@@ -70,6 +70,39 @@ export const stripConfigPaths = (config: MermaidConfig, paths: string[][]): void
   }
 };
 
+export type Confirm = (message: string) => boolean;
+
+const formatConfig = (config: MermaidConfig): string => JSON.stringify(config, undefined, 2);
+
+const describePaths = (config: MermaidConfig, paths: string[][]): string =>
+  paths
+    .map((path) => `${JSON.stringify(path.join('.'))}: ${JSON.stringify(lodashGet(config, path))}`)
+    .join(',\n');
+
+/**
+ * Asks the user for confirmation if the config contains settings that might
+ * pose security risks, such as a relaxed `securityLevel`, and strips them
+ * unless the user trusts the source.
+ *
+ * @param config - The Mermaid configuration to sanitize.
+ * @param confirm - Asks the user; returns true to strip the unsafe settings.
+ * @returns The sanitized Mermaid configuration as a JSON string.
+ * @throws If `config` is not valid JSON.
+ */
+export const sanitizeConfig = (config: string, confirm: Confirm): string => {
+  const mermaidConfig = JSON.parse(config) as MermaidConfig;
+  const unsafePaths = findUnsafeConfigPaths(mermaidConfig);
+  if (
+    unsafePaths.length > 0 &&
+    confirm(
+      `Removing ${describePaths(mermaidConfig, unsafePaths)} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
+    )
+  ) {
+    stripConfigPaths(mermaidConfig, unsafePaths);
+  }
+  return formatConfig(mermaidConfig);
+};
+
 /**
  * Non-interactive variant of `sanitizeConfig`: always strips unsafe settings
  * without asking the user. Used where a blocking confirm dialog is not an
