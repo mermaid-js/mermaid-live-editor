@@ -95,6 +95,7 @@ const delaysPerEvent = {
   copyMarkdown: defaultDelay,
   download: defaultDelay,
   history: defaultDelay,
+  loadFile: defaultDelay,
   loadGist: defaultDelay,
   loadSampleDiagram: defaultDelay,
   mermaidChartClick: noDelay,

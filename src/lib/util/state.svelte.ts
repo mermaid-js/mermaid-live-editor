@@ -115,28 +115,79 @@ const processState = async (state: State) => {
 // Replaces the old URL-hash store subscription; assigned by initURLSubscription.
 let updateHash: ((serialized: string) => void) | undefined;
 
-// Persist the current input state and asynchronously re-validate it,
-// publishing the result to `validatedState` (and the URL hash, once
-// initURLSubscription has run). Only called from update(), which suppresses
-// dependency tracking.
-const persistAndProcess = (): void => {
+const persist = (): void => {
+  writeJSON(CODE_STORE_KEY, $state.snapshot(input));
+};
+
+// Bumped by every mutation so an in-flight validation can tell whether its
+// snapshot is still current.
+let inputVersion = 0;
+
+// Snapshot the input state and asynchronously re-validate it, publishing the
+// result to `validatedState` (and the URL hash, once initURLSubscription has
+// run). If the input changed while the parse was running the result is stale
+// and dropped: publishing it would make the editors overwrite newer keystrokes,
+// and the update that changed the input has already queued its own validation.
+const validate = (): void => {
   const snapshot = $state.snapshot(input) as State;
-  writeJSON(CODE_STORE_KEY, snapshot);
+  const version = inputVersion;
+  const start = Date.now();
   void processState(snapshot).then((processed) => {
+    lastParseMs = Date.now() - start;
+    if (version !== inputVersion) {
+      return;
+    }
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
     syncManagedTheme(processed.diagramType);
   });
 };
 
+// Validation drives the parse, the render and the error markers. Small
+// diagrams finish a whole cycle well within a frame, so keystrokes validate
+// at once and the preview keeps up with typing. Once a cycle takes longer
+// than SLOW_CYCLE_MS, keystrokes wait for a pause instead of paying for a
+// parse and a render each; the next fast cycle switches back.
+const SLOW_CYCLE_MS = 100;
+const VALIDATION_DEBOUNCE_MS = 300;
+let lastParseMs = 0;
+let lastRenderMs = 0;
+const isSlowCycle = (): boolean => lastParseMs + lastRenderMs > SLOW_CYCLE_MS;
+
+// Reported by the view after each render so the cycle covers parse + render.
+export const reportRenderTime = (ms: number): void => {
+  lastRenderMs = ms;
+};
+
+const validateDebounced = debounce(validate, VALIDATION_DEBOUNCE_MS);
+
+export interface UpdateOptions {
+  /**
+   * Apply and persist the change at once, and let validation wait for a
+   * pause in typing while the last validate-and-render cycle was slow.
+   * Meant for keystroke-driven updates from the editors; everything else
+   * validates immediately.
+   */
+  debounce?: boolean;
+}
+
 // The single mutation gateway: every update function funnels its writes
 // through here. The mutator runs untracked so effects that call an update
 // function never subscribe to the input state it reads, and the trailing
-// persist + re-validate cannot be forgotten by a new update function.
-const update = (mutate: (state: State) => void): void => {
+// persist + re-validate cannot be forgotten by a new update function. An
+// immediate update snapshots the whole input state, which makes any pending
+// debounced validation redundant, so it is cancelled.
+const update = (mutate: (state: State) => void, options: UpdateOptions = {}): void => {
   untrack(() => {
     mutate(input);
-    persistAndProcess();
+    inputVersion++;
+    persist();
+    if (options.debounce && isSlowCycle()) {
+      validateDebounced();
+    } else {
+      validateDebounced.cancel();
+      validate();
+    }
   });
 };
 
@@ -258,8 +309,9 @@ export const updateCode = (
   code: string,
   {
     updateDiagram = false,
-    resetPanZoom = false
-  }: { updateDiagram?: boolean; resetPanZoom?: boolean } = {}
+    resetPanZoom = false,
+    ...options
+  }: { updateDiagram?: boolean; resetPanZoom?: boolean } & UpdateOptions = {}
 ): void => {
   errorDebug();
 
@@ -270,11 +322,11 @@ export const updateCode = (
     }
     state.code = code;
     state.updateDiagram = updateDiagram;
-  });
+  }, options);
 };
 
-export const updateConfig = (config: string): void => {
-  updateCodeStore({ mermaid: config });
+export const updateConfig = (config: string, options?: UpdateOptions): void => {
+  update((state) => applyPartial(state, { mermaid: config }), options);
 };
 
 let siteDark = false;

@@ -1,5 +1,6 @@
 import { C, TID } from '$/constants';
 import { test as base, expect, type Locator, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { verifyFileSizeGreaterThan, type EditorOptions } from './utils';
 
 export class EditorPage {
@@ -29,7 +30,17 @@ export class EditorPage {
     if (newline) {
       await this.page.keyboard.press('Enter');
     }
-    await this.page.keyboard.type(text, { delay: 10 });
+    // Line breaks are inserted as text rather than pressed as Enter: Monaco's
+    // word-based quick suggestions resolve asynchronously, and an Enter that
+    // lands while the list is open accepts the suggestion instead of breaking
+    // the line, which at synthetic typing speed happens often enough to flake.
+    const lines = text.split('\n');
+    for (const [index, line] of lines.entries()) {
+      if (index > 0) {
+        await this.page.keyboard.insertText('\n');
+      }
+      await this.page.keyboard.type(line, { delay: 10 });
+    }
   }
 
   async clearEditor() {
@@ -56,6 +67,27 @@ export class EditorPage {
     const downloadSVGPromise = verifyFileSizeGreaterThan(this.page, 'diagram', 'svg', expectedSize);
     await this.page.getByTestId(TID.downloadSVG).click();
     return await downloadSVGPromise;
+  }
+
+  /** Downloads the diagram code as a .mmd file and returns its name and contents. */
+  async downloadMMD() {
+    const downloadPromise = this.page.waitForEvent('download');
+    await this.page.getByTestId(TID.downloadMMD).click();
+    const download = await downloadPromise;
+    const path = await download.path();
+    return { content: readFileSync(path, 'utf8'), name: download.suggestedFilename() };
+  }
+
+  /** Clicks `trigger`, which must open the diagram file picker, and chooses a file in it. */
+  async openFile(trigger: Locator, name: string, content: string) {
+    const chooserPromise = this.page.waitForEvent('filechooser');
+    await trigger.click();
+    const chooser = await chooserPromise;
+    await chooser.setFiles({ buffer: Buffer.from(content, 'utf8'), mimeType: 'text/plain', name });
+  }
+
+  async openMainMenu() {
+    await this.page.getByTestId(TID.mainMenuButton).click();
   }
 
   async loadSampleDiagram(diagramName: string) {
