@@ -40,10 +40,10 @@ importers:
         version: 2.0.0
       '@mermaid-js/layout-tidy-tree':
         specifier: ^1.0.1
-        version: 1.0.1(mermaid@12.2.0)
+        version: 1.0.1(mermaid@12.3.0)
       '@mermaid-js/mermaid-zenuml':
         specifier: ^1.0.1
-        version: 1.0.1(mermaid@12.2.0)(yaml@2.9.0)
+        version: 1.0.1(mermaid@12.3.0)(yaml@2.9.0)
       codemirror:
         specifier: ^6.0.2
         version: 6.0.2
@@ -60,8 +60,8 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       mermaid:
-        specifier: ^12.2.0
-        version: 12.2.0
+        specifier: ^12.3.0
+        version: 12.3.0
       mode-watcher:
         specifier: ^1.1.0
         version: 1.1.0(svelte@5.57.3(@typescript-eslint/types@8.60.1))
@@ -1873,6 +1873,9 @@ packages:
   dompurify@3.4.15:
     resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
 
+  dompurify@3.4.17:
+    resolution: {integrity: sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==}
+
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
@@ -1883,8 +1886,8 @@ packages:
   electron-to-chromium@1.5.427:
     resolution: {integrity: sha512-n14zb3FdsChZ2BNobqNHAJMcP3ifFv4paox2LvCrfVAQcqGiSURgbJl+PfMpHVCNFkStnNc+RRVtPBTVW5PDgw==}
 
-  elkjs@0.9.3:
-    resolution: {integrity: sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==}
+  elkjs@0.12.1:
+    resolution: {integrity: sha512-IhMYKHE4S2vtx0QrhBP3lYOIKDeIiJXBrdq9MGYkuB8ZHqhrBnHNfSUndjXFewrX1CPK8chwq+2NA0K0hliYuw==}
 
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
@@ -2636,8 +2639,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  mermaid@12.2.0:
-    resolution: {integrity: sha512-w7nr/SFrLO7BaVTs3dQTvYSV6nYSBj0Yy9DjBhsIJtAcHqRzXSq4Pg32ujHZ/AdWsAMNEvvhbm5dt9E2tOiHzw==}
+  mermaid@12.3.0:
+    resolution: {integrity: sha512-4113TdXeLAsMruJ79OpFL5O8+LTFXhQqZ260rF3tgUmiNAtRm4Uume04I+65PRN6yZ69J4f8rVYWW8zRk65UYw==}
     engines: {node: '>=22.12.0'}
 
   micromatch@4.0.8:
@@ -4391,15 +4394,15 @@ snapshots:
 
   '@mermaid-js/examples@2.0.0': {}
 
-  '@mermaid-js/layout-tidy-tree@1.0.1(mermaid@12.2.0)':
+  '@mermaid-js/layout-tidy-tree@1.0.1(mermaid@12.3.0)':
     dependencies:
       d3: 7.9.0
-      mermaid: 12.2.0
+      mermaid: 12.3.0
 
-  '@mermaid-js/mermaid-zenuml@1.0.1(mermaid@12.2.0)(yaml@2.9.0)':
+  '@mermaid-js/mermaid-zenuml@1.0.1(mermaid@12.3.0)(yaml@2.9.0)':
     dependencies:
       '@zenuml/core': 3.49.2(yaml@2.9.0)
-      mermaid: 12.2.0
+      mermaid: 12.3.0
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -5663,6 +5666,10 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
+  dompurify@3.4.17:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
+
   domutils@3.2.2:
     dependencies:
       dom-serializer: 2.0.0
@@ -5673,7 +5680,7 @@ snapshots:
 
   electron-to-chromium@1.5.427: {}
 
-  elkjs@0.9.3: {}
+  elkjs@0.12.1: {}
 
   emoji-regex@10.6.0: {}
 
@@ -6319,7 +6326,7 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  mermaid@12.2.0:
+  mermaid@12.3.0:
     dependencies:
       '@braintree/sanitize-url': 7.1.2
       '@iconify/utils': 3.1.3
@@ -6334,8 +6341,8 @@ snapshots:
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.14
       dayjs: 1.11.23
-      dompurify: 3.4.15
-      elkjs: 0.9.3
+      dompurify: 3.4.17
+      elkjs: 0.12.1
       es-toolkit: 1.47.0
       katex: 0.18.10
       khroma: 2.1.0
@@ -6343,7 +6350,6 @@ snapshots:
       roughjs: 4.6.6
       stylis: 4.4.0
       ts-dedent: 2.2.0
-      uuid: 14.0.3
 
   micromatch@4.0.8:
     dependencies:
