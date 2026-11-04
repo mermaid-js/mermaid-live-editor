@@ -3,8 +3,8 @@
   import { onMount } from 'svelte';
   import { backOut } from 'svelte/easing';
   import { fly } from 'svelte/transition';
-  import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import CloseIcon from '~icons/material-symbols/close-rounded';
+  import V13Tail from './V13Tail.svelte';
 
   // Appear after the editor settles, not on top of first paint.
   let ready = $state(false);
@@ -20,9 +20,7 @@
     role="note"
     transition:fly={{ duration: 650, easing: backOut, y: 48 }}>
     <span class="relative grid size-8 shrink-0 place-items-center rounded-full bg-[#E0095F]/10">
-      <span class="swim size-6"><MermaidTailIcon class="size-full text-[#E0095F]" /></span>
-      <span class="bubble left-1" aria-hidden="true"></span>
-      <span class="bubble bubble-late right-1" aria-hidden="true"></span>
+      <V13Tail class="size-6" />
     </span>
     <span class="min-w-0 truncate">
       Mermaid's on a diet 🥗 <b class="ml-0.5 font-semibold">v13: smaller, faster</b>
@@ -46,58 +44,6 @@
 {/if}
 
 <style>
-  .swim {
-    display: block;
-    transform-origin: 50% 80%;
-    animation: swim 5s 1.6s ease-in-out infinite;
-  }
-  @keyframes swim {
-    0%,
-    78%,
-    100% {
-      transform: translate(0, 0) rotate(0);
-    }
-    82% {
-      transform: translate(-1px, -2px) rotate(-12deg);
-    }
-    88% {
-      transform: translate(1px, -1px) rotate(10deg);
-    }
-    94% {
-      transform: translate(0, 0) rotate(-4deg);
-    }
-  }
-
-  /* A couple of bubbles rise from the mermaid as the pill arrives. */
-  .bubble {
-    position: absolute;
-    top: 2px;
-    width: 5px;
-    height: 5px;
-    border: 1.5px solid #9370db;
-    border-radius: 9999px;
-    opacity: 0;
-    animation: rise 1.6s 0.5s ease-out 2;
-  }
-  .bubble-late {
-    width: 4px;
-    height: 4px;
-    animation-delay: 0.9s;
-  }
-  @keyframes rise {
-    0% {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    25% {
-      opacity: 0.9;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-16px);
-    }
-  }
-
   .arrow {
     display: inline-block;
     transition: transform 0.2s ease;
@@ -108,11 +54,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bubble,
-    .swim {
-      display: block;
-      animation: none;
-    }
     .arrow {
       transition: none;
     }

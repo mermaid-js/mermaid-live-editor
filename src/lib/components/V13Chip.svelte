@@ -2,8 +2,8 @@
   import { v13 } from '$/util/v13.svelte';
   import { version } from 'mermaid/package.json';
   import { onMount } from 'svelte';
-  import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import CloseIcon from '~icons/material-symbols/close-rounded';
+  import V13Tail from './V13Tail.svelte';
 
   // Show the version first; expand into the message after the editor settles.
   let ready = $state(false);
@@ -19,11 +19,7 @@
   <!-- Stands in for the version number in the bottom-right toolbar until dismissed. -->
   <span
     class="expand flex h-7 items-center gap-1 rounded-full bg-[#E0095F]/10 pr-0.5 pl-2.5 text-sm font-semibold whitespace-nowrap">
-    <span class="relative inline-block size-4 shrink-0" aria-hidden="true">
-      <span class="wag block size-full"><MermaidTailIcon class="size-full text-[#E0095F]" /></span>
-      <span class="bubble left-0"></span>
-      <span class="bubble bubble-late right-0"></span>
-    </span>
+    <V13Tail class="size-4" />
     v13 is on a diet ·
     <a
       href={v13.url}
@@ -57,60 +53,8 @@
     }
   }
 
-  /* Every 5s the tail wags and lets out a couple of bubbles. */
-  .wag {
-    transform-origin: 50% 80%;
-    animation: wag 5s 1s ease-in-out infinite;
-  }
-  @keyframes wag {
-    0%,
-    78%,
-    100% {
-      rotate: 0deg;
-    }
-    82% {
-      rotate: -14deg;
-    }
-    88% {
-      rotate: 10deg;
-    }
-    94% {
-      rotate: -4deg;
-    }
-  }
-  .bubble {
-    position: absolute;
-    top: 0;
-    width: 6px;
-    height: 6px;
-    border: 1.5px solid #9370db;
-    border-radius: 9999px;
-    opacity: 0;
-    animation: rise 5s 1s ease-out infinite;
-  }
-  .bubble-late {
-    width: 4px;
-    height: 4px;
-    animation-delay: 1.3s;
-  }
-  @keyframes rise {
-    0%,
-    82% {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    86% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-18px);
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
-    .expand,
-    .wag,
-    .bubble {
+    .expand {
       animation: none;
     }
   }

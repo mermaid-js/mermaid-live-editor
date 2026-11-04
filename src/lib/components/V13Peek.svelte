@@ -4,8 +4,8 @@
   import { onMount } from 'svelte';
   import { backOut } from 'svelte/easing';
   import { fly, scale } from 'svelte/transition';
-  import MermaidTailIcon from '~icons/custom/mermaid-tail';
   import CloseIcon from '~icons/material-symbols/close-rounded';
+  import V13Tail from './V13Tail.svelte';
 
   // The bubble pops once on the first visit; after that only on hover, focus or tap.
   const seen = persisted('v13PeekSeen', false);
@@ -68,73 +68,13 @@
       </div>
     {/if}
 
-    <span class="bubble right-3" aria-hidden="true"></span>
-    <span class="bubble bubble-late right-6" aria-hidden="true"></span>
-
     <button
-      class="tail block size-10 cursor-pointer"
+      class="block size-10 cursor-pointer"
       aria-label="Show the Mermaid v13 announcement"
       aria-expanded={open}
       onclick={() => (open = !open)}
       in:fly={{ duration: 700, easing: backOut, y: 48 }}>
-      <MermaidTailIcon class="size-full text-[#E0095F]" />
+      <V13Tail class="size-full" />
     </button>
   </div>
 {/if}
-
-<style>
-  .tail {
-    transform-origin: 50% 100%;
-    animation: flap 3.2s 1s ease-in-out infinite;
-  }
-  @keyframes flap {
-    0%,
-    70%,
-    100% {
-      rotate: 0deg;
-    }
-    76% {
-      rotate: -12deg;
-    }
-    84% {
-      rotate: 10deg;
-    }
-    92% {
-      rotate: -5deg;
-    }
-  }
-  .bubble {
-    position: absolute;
-    bottom: 2rem;
-    width: 7px;
-    height: 7px;
-    border: 1.5px solid #9370db;
-    border-radius: 9999px;
-    opacity: 0;
-    animation: float 3.2s 1.4s ease-in infinite;
-  }
-  .bubble-late {
-    width: 5px;
-    height: 5px;
-    animation-delay: 2.3s;
-  }
-  @keyframes float {
-    0% {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    20% {
-      opacity: 0.8;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-3rem);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tail,
-    .bubble {
-      animation: none;
-    }
-  }
-</style>
