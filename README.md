@@ -20,6 +20,12 @@ You can try out a [live version](https://mermaid.live/).
 
 If you want to speed up the progress for mermaid-live-editor, join the Discord channel and contact knsv.
 
+## Deploy on Wasmer
+
+[![Deploy to Wasmer](https://img.shields.io/badge/Deploy%20to-Wasmer-171717?logo=wasmer&logoColor=white)](https://wasmer.io/apps/create?github=mermaid-js%2Fmermaid-live-editor)
+
+[Wasmer Edge](https://docs.wasmer.io/edge/) is a cloud hosting platform powered by WebAssembly. The included `Anybuild` configuration runs `pnpm run build` and serves `docs/`, including direct links to the editor. Renderer, Kroki and analytics settings remain the build-time options described below. The button opens import settings for this public repository; review them before deploying. To customize it and redeploy changes, fork this repository and import your own fork.
+
 ## Docker
 
 ### Run published image
