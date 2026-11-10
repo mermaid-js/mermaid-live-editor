@@ -14,6 +14,8 @@
   import Preset from '$/components/Preset.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
+  import V13Callout from '$/components/V13Callout.svelte';
+  import V13Peek from '$/components/V13Peek.svelte';
   import { Button } from '$/components/ui/button';
   import { Separator } from '$/components/ui/separator';
   import * as Resizable from '$/components/ui/resizable';
@@ -26,6 +28,7 @@
   import { PanZoomState } from '$/util/panZoom';
   import { env } from '$/util/env';
   import { validatedState, updateCodeStore, urls } from '$/util/state.svelte';
+  import { v13 } from '$/util/v13.svelte';
   import { logEvent, logMermaidChartClick } from '$/util/stats';
   import { getContactSalesUrl, initHandler } from '$/util/util';
   import { onMount } from 'svelte';
@@ -160,8 +163,24 @@
           <div class="absolute top-0 right-0">
             <PanZoomToolbar {panZoomState} fullScreenHref={urls.current.view} />
           </div>
-          <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
+          <div class="absolute right-0 bottom-0">
+            {#if v13.variant === 'peek'}
+              <!-- Perches on top of the toolbar, stem just touching its edge. -->
+              <div class="pointer-events-none absolute right-3 bottom-[calc(100%-13px)]">
+                <V13Peek />
+              </div>
+            {/if}
+            <div class="relative"><VersionSecurityToolbar showV13={v13.variant === 'chip'} /></div>
+          </div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
+          {#if v13.variant === 'pill'}
+            <!-- Only where the pill fits between the bottom toolbars. -->
+            <div class="@container pointer-events-none absolute inset-x-0 bottom-0 h-12">
+              <div class="hidden h-full items-center justify-center @[56rem]:flex">
+                <V13Callout />
+              </div>
+            </div>
+          {/if}
         </Resizable.Pane>
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />
