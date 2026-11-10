@@ -120,6 +120,8 @@ export const test = base.extend<{ editPage: EditorPage }>({
     // Dismiss the editor chooser modal so it doesn't block interactions
     await page.addInitScript((key) => {
       window.localStorage.setItem(key, 'true');
+      // The v13 callout variant is random; keep it out of the tests.
+      window.localStorage.setItem('v13CalloutDismissed', 'true');
     }, C.editorChooserDismissedKey);
     const editorPage = new EditorPage(page);
     await editorPage.start();
