@@ -30,7 +30,7 @@
     type LivePreviewPublisher
   } from '#lib/util/livePreview.js';
   import { shouldShowEditorChooser } from '#lib/util/migration/domainMigration.js';
-  import { PanZoomState } from '#lib/util/panZoom.js';
+  import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
   import { env } from '#lib/util/env.js';
   import { validatedState, updateCodeStore, urls } from '#lib/util/state.svelte.js';
   import { v13 } from '#lib/util/v13.svelte.js';
@@ -49,6 +49,12 @@
       : urls.current.view
   );
 
+  // pzoom isn't reactive, so mirror the viewport into state for the publish effect.
+  let viewport = $state.raw<NormalizedViewport>();
+  panZoomState.onViewportChange = () => {
+    viewport = panZoomState.getNormalizedViewport();
+  };
+
   onMount(() => {
     const publisher = createLivePreviewPublisher();
     livePreviewPublisher = publisher;
@@ -56,10 +62,7 @@
   });
 
   $effect(() => {
-    livePreviewPublisher?.publish(
-      validatedState.current.serialized,
-      panZoomState.getNormalizedViewport()
-    );
+    livePreviewPublisher?.publish(validatedState.current.serialized, viewport);
   });
 
   const tabSelectHandler = (tab: Tab) => {

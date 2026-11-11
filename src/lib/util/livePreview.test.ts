@@ -24,29 +24,12 @@ class MockBroadcastChannel extends EventTarget {
   }
 }
 
-let animationFrames: Map<number, FrameRequestCallback>;
-let nextAnimationFrame: number;
-
-const flushAnimationFrames = () => {
-  const frames = [...animationFrames.values()];
-  animationFrames.clear();
-  for (const frame of frames) {
-    frame(performance.now());
-  }
-};
+const flushMicrotasks = () => new Promise<void>((resolve) => queueMicrotask(resolve));
 
 beforeEach(() => {
   MockBroadcastChannel.instances = [];
   window.sessionStorage.clear();
-  animationFrames = new Map();
-  nextAnimationFrame = 1;
   vi.stubGlobal('BroadcastChannel', MockBroadcastChannel);
-  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
-    const id = nextAnimationFrame++;
-    animationFrames.set(id, callback);
-    return id;
-  });
-  vi.stubGlobal('cancelAnimationFrame', (id: number) => animationFrames.delete(id));
 });
 
 afterEach(() => vi.unstubAllGlobals());
@@ -72,7 +55,7 @@ describe('live preview URL', () => {
 });
 
 describe('live preview channel', () => {
-  it('coalesces changes to an animation frame and replies with the latest state', () => {
+  it('coalesces synchronous changes and replies with the latest state', async () => {
     const publisher = createLivePreviewPublisher();
     const channel = MockBroadcastChannel.instances[0];
 
@@ -81,7 +64,7 @@ describe('live preview channel', () => {
     publisher?.publish('updated');
     expect(channel.postMessage).not.toHaveBeenCalled();
 
-    flushAnimationFrames();
+    await flushMicrotasks();
     expect(channel.postMessage).toHaveBeenCalledOnce();
     expect(channel.postMessage).toHaveBeenLastCalledWith({
       serialized: 'updated',
@@ -90,7 +73,8 @@ describe('live preview channel', () => {
     });
 
     publisher?.publish('updated');
-    expect(animationFrames.size).toBe(0);
+    await flushMicrotasks();
+    expect(channel.postMessage).toHaveBeenCalledOnce();
 
     channel.dispatch({ type: 'request-state' });
     expect(channel.postMessage).toHaveBeenCalledTimes(2);
@@ -104,14 +88,14 @@ describe('live preview channel', () => {
     expect(channel.close).toHaveBeenCalledOnce();
   });
 
-  it('publishes a changed normalized viewport with otherwise unchanged state', () => {
+  it('publishes a changed normalized viewport with otherwise unchanged state', async () => {
     const publisher = createLivePreviewPublisher();
     const channel = MockBroadcastChannel.instances[0];
     publisher?.publish('same', { center: { x: 10, y: 20 }, zoom: 2 });
-    flushAnimationFrames();
+    await flushMicrotasks();
 
     publisher?.publish('same', { center: { x: 15, y: 20 }, zoom: 2 });
-    flushAnimationFrames();
+    await flushMicrotasks();
 
     expect(channel.postMessage).toHaveBeenCalledTimes(2);
     expect(channel.postMessage).toHaveBeenLastCalledWith({
@@ -119,6 +103,16 @@ describe('live preview channel', () => {
       type: 'state',
       viewport: { center: { x: 15, y: 20 }, zoom: 2 }
     });
+  });
+
+  it('drops a queued send when closed first', async () => {
+    const publisher = createLivePreviewPublisher();
+    const channel = MockBroadcastChannel.instances[0];
+    publisher?.publish('pending');
+    publisher?.close();
+    await flushMicrotasks();
+
+    expect(channel.postMessage).not.toHaveBeenCalled();
   });
 
   it('keeps the session across publisher recreation in the same tab', () => {

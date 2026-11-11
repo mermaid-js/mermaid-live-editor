@@ -103,32 +103,26 @@ export const createLivePreviewPublisher = (): LivePreviewPublisher | undefined =
   const sessionId = getOrCreateSessionId();
   const channel = new BroadcastChannel(channelName(sessionId));
   let latest: Extract<LivePreviewMessage, { type: typeof state }> | undefined;
-  let animationFrame: number | undefined;
+  let scheduled = false;
+  let closed = false;
 
+  // Posting on a closed channel throws, and a send can be queued just before close().
   const sendState = () => {
-    animationFrame = undefined;
-    if (latest) {
+    scheduled = false;
+    if (latest && !closed) {
       channel.postMessage(latest);
     }
   };
-  const flushState = () => {
-    if (animationFrame !== undefined) {
-      cancelAnimationFrame(animationFrame);
-    }
-    sendState();
-  };
   const onMessage = (event: MessageEvent<unknown>) => {
     if (isMessage(event.data) && event.data.type === requestState) {
-      flushState();
+      sendState();
     }
   };
   channel.addEventListener('message', onMessage);
 
   return {
     close: () => {
-      if (animationFrame !== undefined) {
-        cancelAnimationFrame(animationFrame);
-      }
+      closed = true;
       channel.removeEventListener('message', onMessage);
       channel.close();
     },
@@ -137,7 +131,11 @@ export const createLivePreviewPublisher = (): LivePreviewPublisher | undefined =
         return;
       }
       latest = { serialized, type: state, viewport };
-      animationFrame ??= requestAnimationFrame(sendState);
+      // A microtask, not requestAnimationFrame: rAF is paused in hidden or minimised tabs.
+      if (!scheduled) {
+        scheduled = true;
+        queueMicrotask(sendState);
+      }
     },
     sessionId
   };

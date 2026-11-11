@@ -20,6 +20,9 @@
 
     const subscriber = createLivePreviewSubscriber(sessionId, (serialized, viewport) => {
       normalizedViewport = viewport;
+      // Skipping sanitizeConfig is safe: BroadcastChannel only delivers same-origin messages,
+      // and the editor already sanitized this state when it loaded it. Re-sanitizing would
+      // re-prompt on every keystroke if the user chose to keep an unsafe config.
       loadState(serialized, { sanitize: false });
     });
     return () => subscriber?.close();

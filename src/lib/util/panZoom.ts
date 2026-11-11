@@ -46,6 +46,8 @@ export class PanZoomState {
 
   public isPanEnabled: boolean;
   public onPanZoomChange?: (pan: Point, zoom: number) => void;
+  /** Fires on every pan/zoom, including programmatic ones (fit, reset, restore). */
+  public onViewportChange?: () => void;
 
   constructor() {
     this.isPanEnabled = true;
@@ -116,6 +118,7 @@ export class PanZoomState {
         if (this.zoom) {
           this.onPanZoomChange?.(this.pan, this.zoom);
         }
+        this.onViewportChange?.();
       },
       onZoom: (zoom) => {
         this.zoom = zoom;
@@ -124,6 +127,7 @@ export class PanZoomState {
         if (this.pan) {
           this.onPanZoomChange?.(this.pan, this.zoom);
         }
+        this.onViewportChange?.();
       },
       panEnabled: true,
       zoomEnabled: true

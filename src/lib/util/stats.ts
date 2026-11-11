@@ -31,13 +31,12 @@ export const initAnalytics = async (): Promise<void> => {
  */
 export const getAnalyticsSafeUrl = (): string => {
   const { origin, pathname, search } = window.location;
-  if (!new URLSearchParams(search).has(C.livePreviewParam)) {
-    return origin + pathname + search;
-  }
-  const url = new URL(window.location.href);
-  url.hash = '';
-  url.searchParams.delete(C.livePreviewParam);
-  return url.origin + url.pathname + url.search;
+  // Filter raw segments (not URLSearchParams) to keep the other params' encoding intact.
+  const params = search
+    .slice(1)
+    .split('&')
+    .filter((param) => param && param.split('=')[0] !== C.livePreviewParam);
+  return origin + pathname + (params.length > 0 ? `?${params.join('&')}` : '');
 };
 
 export const countLines = (code: string): number => {
