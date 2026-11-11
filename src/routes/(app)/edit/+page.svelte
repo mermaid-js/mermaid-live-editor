@@ -24,8 +24,13 @@
   import VersionSecurityToolbar from '#lib/components/VersionSecurityToolbar.svelte';
   import View from '#lib/components/View.svelte';
   import type { EditorMode, Tab } from '#lib/types.js';
+  import {
+    addLivePreviewSession,
+    createLivePreviewPublisher,
+    type LivePreviewPublisher
+  } from '#lib/util/livePreview.js';
   import { shouldShowEditorChooser } from '#lib/util/migration/domainMigration.js';
-  import { PanZoomState } from '#lib/util/panZoom.js';
+  import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
   import { env } from '#lib/util/env.js';
   import { validatedState, updateCodeStore, urls } from '#lib/util/state.svelte.js';
   import { v13 } from '#lib/util/v13.svelte.js';
@@ -37,6 +42,28 @@
   import GearIcon from '~icons/material-symbols/settings-outline-rounded';
 
   const panZoomState = new PanZoomState();
+  let livePreviewPublisher = $state.raw<LivePreviewPublisher>();
+  const livePreviewHref = $derived(
+    livePreviewPublisher
+      ? addLivePreviewSession(urls.current.view, livePreviewPublisher.sessionId)
+      : urls.current.view
+  );
+
+  // pzoom isn't reactive, so mirror the viewport into state for the publish effect.
+  let viewport = $state.raw<NormalizedViewport>();
+  panZoomState.onViewportChange = () => {
+    viewport = panZoomState.getNormalizedViewport();
+  };
+
+  onMount(() => {
+    const publisher = createLivePreviewPublisher();
+    livePreviewPublisher = publisher;
+    return () => publisher?.close();
+  });
+
+  $effect(() => {
+    livePreviewPublisher?.publish(validatedState.current.serialized, viewport);
+  });
 
   const tabSelectHandler = (tab: Tab) => {
     const editorMode: EditorMode = tab.id === 'code' ? 'code' : 'config';
@@ -161,7 +188,7 @@
           <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0">
-            <PanZoomToolbar {panZoomState} fullScreenHref={urls.current.view} />
+            <PanZoomToolbar {panZoomState} {livePreviewHref} />
           </div>
           <div class="absolute right-0 bottom-0">
             {#if v13.variant === 'peek'}

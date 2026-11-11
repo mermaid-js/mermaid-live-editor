@@ -1,4 +1,5 @@
 import { browser } from '$app/env';
+import { C } from '#lib/constants.js';
 import type PlausibleInstance from 'plausible-tracker';
 import { env } from './env';
 
@@ -29,7 +30,13 @@ export const initAnalytics = async (): Promise<void> => {
  * but never the hash (which contains diagram data).
  */
 export const getAnalyticsSafeUrl = (): string => {
-  return window.location.origin + window.location.pathname + window.location.search;
+  const { origin, pathname, search } = window.location;
+  // Filter raw segments (not URLSearchParams) to keep the other params' encoding intact.
+  const params = search
+    .slice(1)
+    .split('&')
+    .filter((param) => param && param.split('=')[0] !== C.livePreviewParam);
+  return origin + pathname + (params.length > 0 ? `?${params.join('&')}` : '');
 };
 
 export const countLines = (code: string): number => {
