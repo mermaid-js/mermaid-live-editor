@@ -135,5 +135,8 @@
     "ignoredBuiltDependencies": [
       "vue-demi"
     ]
+  },
+  "imports": {
+    "#lib/*": "./src/lib/*"
   }
 }

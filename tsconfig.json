@@ -15,5 +15,6 @@
     "skipLibCheck": true,
     "types": ["$app/types", "vitest/importMeta", "@playwright/test"]
   },
-  "extends": "$app/tsconfig"
+  "extends": "$app/tsconfig",
+  "exclude": ["static/embed.js"]
 }

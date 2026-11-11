@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { env } from '$/util/env';
-  import { isOnMermaidAI } from '$/util/migration/domainMigration';
+  import { env } from '#lib/util/env.js';
+  import { isOnMermaidAI } from '#lib/util/migration/domainMigration.js';
   import type { ComponentProps } from 'svelte';
   import ExternalLinkWrapper from './ExternalLinkWrapper.svelte';
 

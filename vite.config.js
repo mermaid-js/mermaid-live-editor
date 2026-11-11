@@ -28,11 +28,6 @@ export default defineConfig({
         fallback: '404.html',
         pages: 'docs'
       }),
-      // ponytail: kit 3 dropped $lib for #lib; alias keeps imports working (deprecated, migrate to package.json imports later)
-      alias: {
-        $lib: './src/lib',
-        '$/*': './src/lib/*'
-      },
       paths: {
         base: process.env.MERMAID_BASE_PATH ?? ''
       },

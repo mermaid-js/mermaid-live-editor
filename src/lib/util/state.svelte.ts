@@ -1,5 +1,5 @@
-import { defaultState } from '$/constants';
-import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { ErrorHash, MarkerData, State, ValidatedState } from '#lib/types.js';
 import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';

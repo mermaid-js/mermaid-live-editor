@@ -1,4 +1,4 @@
-import { env } from '$lib/util/env';
+import { env } from '#lib/util/env.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import type { Component, Snippet } from 'svelte';

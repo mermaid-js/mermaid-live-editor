@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { v13 } from '$/util/v13.svelte';
+  import { v13 } from '#lib/util/v13.svelte.js';
   import { version } from 'mermaid/package.json';
   import { onMount } from 'svelte';
   import CloseIcon from '~icons/material-symbols/close-rounded';

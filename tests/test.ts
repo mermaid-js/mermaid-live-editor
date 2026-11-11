@@ -1,4 +1,4 @@
-import { C, TID } from '$/constants';
+import { C, TID } from '#lib/constants.ts';
 import { test as base, expect, type Locator, type Page } from '@playwright/test';
 import { verifyFileSizeGreaterThan, type EditorOptions } from './utils';
 
