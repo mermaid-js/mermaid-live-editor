@@ -66,7 +66,7 @@
           <p>{resolved.error}</p>
           <p class="mt-2 text-muted-foreground">
             Check that the link is complete, or
-            <a class="underline" href={resolve('/edit', {})}>create a new diagram</a>.
+            <a class="underline" href={resolve('edit')}>create a new diagram</a>.
           </p>
         </div>
       </div>
@@ -113,14 +113,14 @@
         target="_blank"
         rel="noreferrer noopener"
         class="flex items-center gap-1.5 text-muted-foreground hover:text-foreground">
-        <img src={asset('/favicon.svg')} alt="" class="h-4 w-4" />
+        <img src={asset('favicon.svg')} alt="" class="h-4 w-4" />
         Powered by Mermaid
       </a>
 
       <div class="flex items-center gap-3">
         <a
           data-testid={TID.embedEditLink}
-          href={buildEditUrl(serialized, window.location.origin + resolve('/edit', {}))}
+          href={buildEditUrl(serialized, window.location.origin + resolve('edit'))}
           target="_blank"
           rel="noreferrer noopener"
           class="text-muted-foreground hover:text-foreground">

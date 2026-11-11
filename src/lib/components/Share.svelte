@@ -11,7 +11,7 @@
   import { silentlySanitizeConfig } from '$/util/sanitize';
   import { validatedState } from '$/util/state.svelte';
   import { copyToClipboard } from '$/util/util';
-  import { asset, base } from '$app/paths';
+  import { asset, resolve } from '$app/paths';
   import CodeIcon from '~icons/material-symbols/code';
   import ShareIcon from '~icons/material-symbols/share';
   import CopyButton from './CopyButton.svelte';
@@ -41,7 +41,7 @@
       config: sanitizedConfig,
       controls,
       grid,
-      host: window.location.origin + base,
+      host: window.location.origin + resolve('/(app)'),
       look,
       mode,
       theme
@@ -64,7 +64,7 @@
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <h2 class="flex items-center gap-2">
-          <img class="size-5" src={asset('/favicon.svg')} alt="Mermaid Live Editor" />
+          <img class="size-5" src={asset('favicon.svg')} alt="Mermaid Live Editor" />
           Mermaid Live Editor
         </h2>
         <CopyInput value={window.location.href} />

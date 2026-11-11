@@ -182,10 +182,10 @@ const urlsCurrent = $derived.by(() => {
         home: `${MCBaseURL}/?${params}`
       };
     },
-    new: `${resolve('/edit', {})}#${serializeState(defaultState)}`,
+    new: `${resolve('edit')}#${serializeState(defaultState)}`,
     png,
     svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
-    view: `${resolve('/view', {})}#${serialized}`
+    view: `${resolve('view')}#${serialized}`
   };
 });
 

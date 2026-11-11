@@ -9,7 +9,7 @@
   import * as ToggleGroup from '$/components/ui/toggle-group';
   import { TID } from '$/constants';
   import { getDomain } from '$/util/util';
-  import { browser } from '$app/environment';
+  import { browser } from '$app/env';
   import { waitForRender } from '$lib/util/autoSync';
   import { inputState, updateCodeStore, urls, validatedState } from '$lib/util/state.svelte';
   import { logEvent } from '$lib/util/stats';

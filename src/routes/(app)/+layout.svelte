@@ -3,7 +3,7 @@
   import { loadingState } from '$/util/loading.svelte';
   import { toggleDarkTheme } from '$/util/state.svelte';
   import { initHandler } from '$/util/util';
-  import { base } from '$app/paths';
+  import { asset, resolve } from '$app/paths';
   import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
 
@@ -22,7 +22,7 @@
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register(`${base}/service-worker.js`, { scope: `${base}/` })
+        .register(asset('service-worker.js'), { scope: resolve('/(app)') })
         .then(function (registration) {
           console.log('Registration successful, scope is:', registration.scope);
         })

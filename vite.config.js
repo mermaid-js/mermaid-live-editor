@@ -1,7 +1,10 @@
+import adapter from '@sveltejs/adapter-static';
 import tailwindcss from '@tailwindcss/vite';
+import 'dotenv/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
+import { sveltePreprocess } from 'svelte-preprocess';
 import { defineConfig } from 'vite';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
@@ -20,7 +23,21 @@ const alwaysFullReload = {
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    sveltekit(),
+    sveltekit({
+      adapter: adapter({
+        fallback: '404.html',
+        pages: 'docs'
+      }),
+      // ponytail: kit 3 dropped $lib for #lib; alias keeps imports working (deprecated, migrate to package.json imports later)
+      alias: {
+        $lib: './src/lib',
+        '$/*': './src/lib/*'
+      },
+      paths: {
+        base: process.env.MERMAID_BASE_PATH ?? ''
+      },
+      preprocess: [sveltePreprocess({})]
+    }),
     Icons({
       compiler: 'svelte',
       customCollections: {

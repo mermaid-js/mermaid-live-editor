@@ -84,7 +84,7 @@
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <a href={resolve('/', {})} class="whitespace-nowrap text-accent">
+    <a href={resolve('/(app)')} class="whitespace-nowrap text-accent">
       {#if !mobileToggle}
         Mermaid
       {/if}
