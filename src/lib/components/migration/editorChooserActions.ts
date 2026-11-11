@@ -1,5 +1,5 @@
-import { logEvent, logMermaidChartClick } from '$/util/stats';
-import { getCheckoutUrl, getMermaidAiLiveUrl } from '$/util/util';
+import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
+import { getCheckoutUrl, getMermaidAiLiveUrl } from '#lib/util/util.js';
 
 const utmMedium = 'editorSelection';
 const utmCampaign = 'live_2026';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Tab } from '$/types';
+  import type { Tab } from '#lib/types.js';
   import type { Component, Snippet } from 'svelte';
   import { quintOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';

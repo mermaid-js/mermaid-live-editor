@@ -1,6 +1,6 @@
-import { defaultState, TID } from '$/constants';
-import type { State } from '$/types';
-import { serializeState } from '$/util/serde';
+import { defaultState, TID } from '#lib/constants.ts';
+import type { State } from '#lib/types.js';
+import { serializeState } from '#lib/util/serde.ts';
 import { expect, test as base, type Page } from '@playwright/test';
 import { test as editorTest } from './test';
 

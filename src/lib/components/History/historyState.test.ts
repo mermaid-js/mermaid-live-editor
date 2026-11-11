@@ -1,5 +1,5 @@
-import type { HistoryEntry } from '$lib/types';
-import { defaultState, replaceInputState } from '$lib/util/state.svelte';
+import type { HistoryEntry } from '#lib/types.js';
+import { defaultState, replaceInputState } from '#lib/util/state.svelte.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   addAutoEntry,

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { describeDiagram } from '$/util/diagramTypes';
-  import { validatedState } from '$/util/state.svelte';
-  import * as Tooltip from '$lib/components/ui/tooltip';
+  import { describeDiagram } from '#lib/util/diagramTypes.js';
+  import { validatedState } from '#lib/util/state.svelte.js';
+  import * as Tooltip from '#lib/components/ui/tooltip/index.js';
   import type { ComponentProps, Snippet } from 'svelte';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
 

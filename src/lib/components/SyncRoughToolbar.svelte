@@ -1,7 +1,7 @@
 <script lang="ts">
-  import FloatingToolbar from '$/components/FloatingToolbar.svelte';
-  import { Toggle } from '$/components/ui/toggle';
-  import { defaultState, inputState, updateCodeStore } from '$/util/state.svelte';
+  import FloatingToolbar from '#lib/components/FloatingToolbar.svelte';
+  import { Toggle } from '#lib/components/ui/toggle/index.js';
+  import { defaultState, inputState, updateCodeStore } from '#lib/util/state.svelte.js';
   import RoughIcon from '~icons/material-symbols/draw-outline-rounded';
   import BackgroundIcon from '~icons/material-symbols/grid-4x4-rounded';
 

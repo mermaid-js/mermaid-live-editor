@@ -1,4 +1,4 @@
-import { C } from '$/constants';
+import { C } from '#lib/constants.js';
 import { MCBaseURL } from './env';
 import { loadDataFromUrl } from './fileLoaders/loader';
 import { initLoading } from './loading.svelte';
