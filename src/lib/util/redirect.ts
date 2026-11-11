@@ -13,5 +13,5 @@ export const buildRedirectUrl = (location: Location): string => {
     path = parts[1];
     fragment = `#${parts[2]}`;
   }
-  return `${resolve(`/${path}`, {})}${location.search}${fragment}`;
+  return `${resolve('/(app)')}${path}${location.search}${fragment}`;
 };

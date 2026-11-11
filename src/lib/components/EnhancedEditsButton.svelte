@@ -1,10 +1,10 @@
 <script lang="ts">
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
-  import { Button } from '$/components/ui/button';
-  import { describeDiagram } from '$/util/diagramTypes';
-  import { validatedState, urls } from '$/util/state.svelte';
-  import { logMermaidChartClick } from '$/util/stats';
+  import McWrapper from '#lib/components/McWrapper.svelte';
+  import MermaidChartIcon from '#lib/components/MermaidChartIcon.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { describeDiagram } from '#lib/util/diagramTypes.js';
+  import { validatedState, urls } from '#lib/util/state.svelte.js';
+  import { logMermaidChartClick } from '#lib/util/stats.js';
   import { quintInOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
 

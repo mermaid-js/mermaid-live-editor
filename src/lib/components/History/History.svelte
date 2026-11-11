@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Card from '$lib/components/Card/Card.svelte';
-  import type { HistoryEntry, HistoryType, State, Tab } from '$lib/types';
-  import { notify, prompt } from '$lib/util/notify';
-  import { serializeState } from '$lib/util/serde';
-  import { inputState, replaceInputState } from '$lib/util/state.svelte';
-  import { logEvent } from '$lib/util/stats';
+  import Card from '#lib/components/Card/Card.svelte';
+  import type { HistoryEntry, HistoryType, State, Tab } from '#lib/types.js';
+  import { notify, prompt } from '#lib/util/notify.js';
+  import { serializeState } from '#lib/util/serde.js';
+  import { inputState, replaceInputState } from '#lib/util/state.svelte.js';
+  import { logEvent } from '#lib/util/stats.js';
   import dayjs from 'dayjs';
   import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
   import BookmarkIcon from '~icons/material-symbols/bookmark-outline-rounded';

@@ -1,4 +1,4 @@
-import type { EditorMode } from '$/types';
+import type { EditorMode } from '#lib/types.js';
 import { describeDiagram } from './diagramTypes';
 import { env } from './env';
 

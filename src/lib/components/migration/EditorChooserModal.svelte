@@ -1,10 +1,10 @@
 <script lang="ts">
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
-  import PrivacyPolicyLink from '$/components/migration/PrivacyPolicyLink.svelte';
-  import { Button } from '$/components/ui/button';
-  import * as Dialog from '$/components/ui/dialog';
-  import { dismissEditorChooser } from '$/util/migration/domainMigration';
+  import McWrapper from '#lib/components/McWrapper.svelte';
+  import MermaidChartIcon from '#lib/components/MermaidChartIcon.svelte';
+  import PrivacyPolicyLink from '#lib/components/migration/PrivacyPolicyLink.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import * as Dialog from '#lib/components/ui/dialog/index.js';
+  import { dismissEditorChooser } from '#lib/util/migration/domainMigration.js';
   import type { Component } from 'svelte';
   import AtlassianIcon from '~icons/logos/atlassian';
   import AmazonIcon from '~icons/logos/aws';

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { serializeState, deserializeState, type SerdeType } from './serde';
 import { defaultState } from './state.svelte';
-import type { State } from '$lib/types';
+import type { State } from '#lib/types.js';
 
 const verifySerde = (state: State, serde?: SerdeType): string => {
   const serialized = serializeState(state, serde);

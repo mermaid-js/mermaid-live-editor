@@ -1,5 +1,5 @@
-import { defaultState } from '$/constants';
-import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { ErrorHash, MarkerData, State, ValidatedState } from '#lib/types.js';
 import { resolve } from '$app/paths';
 import { debounce, get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
@@ -30,7 +30,7 @@ const urlParseFailedState = `flowchart TD
     click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
 
 const CODE_STORE_KEY = 'codeStore';
-const viewPath = resolve('/view', {}).replace(/\/$/, '');
+const viewPath = resolve('view').replace(/\/$/, '');
 
 const shouldPersistInputState = (): boolean =>
   window.location.pathname.replace(/\/$/, '') !== viewPath;
@@ -195,10 +195,10 @@ const urlsCurrent = $derived.by(() => {
         home: `${MCBaseURL}/?${params}`
       };
     },
-    new: `${resolve('/edit', {})}#${serializeState(defaultState)}`,
+    new: `${resolve('edit')}#${serializeState(defaultState)}`,
     png,
     svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
-    view: `${resolve('/view', {})}#${serialized}`
+    view: `${resolve('view')}#${serialized}`
   };
 });
 

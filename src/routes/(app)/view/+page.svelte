@@ -1,9 +1,9 @@
 <script lang="ts">
-  import View from '$/components/View.svelte';
-  import { createLivePreviewSubscriber, getLivePreviewSession } from '$/util/livePreview';
-  import { PanZoomState, type NormalizedViewport } from '$/util/panZoom';
-  import { loadState } from '$/util/state.svelte';
-  import { initHandler } from '$/util/util';
+  import View from '#lib/components/View.svelte';
+  import { createLivePreviewSubscriber, getLivePreviewSession } from '#lib/util/livePreview.js';
+  import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
+  import { loadState } from '#lib/util/state.svelte.js';
+  import { initHandler } from '#lib/util/util.js';
   import { onMount } from 'svelte';
 
   const panZoomState = new PanZoomState();

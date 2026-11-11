@@ -2,7 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const parseMock = vi.hoisted(() => vi.fn());
 
-vi.mock('./mermaid', () => ({ parse: parseMock }));
+vi.mock('./mermaid', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./mermaid')>()),
+  parse: parseMock
+}));
 
 import { updateCode, validatedState } from './state.svelte';
 

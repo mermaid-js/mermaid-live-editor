@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { setLoaderEntries } from '$lib/components/History/historyState.svelte';
-import type { State } from '$lib/types';
-import { defaultState } from '$lib/util/state.svelte';
-import { fetchJSON, fetchText } from '$lib/util/util';
+import { setLoaderEntries } from '#lib/components/History/historyState.svelte.js';
+import type { State } from '#lib/types.js';
+import { defaultState } from '#lib/util/state.svelte.js';
+import { fetchJSON, fetchText } from '#lib/util/util.js';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';

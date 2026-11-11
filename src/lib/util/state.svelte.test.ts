@@ -1,4 +1,4 @@
-import type { State } from '$lib/types';
+import type { State } from '#lib/types.js';
 import { flushSync } from 'svelte';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {

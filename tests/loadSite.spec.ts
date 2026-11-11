@@ -1,4 +1,4 @@
-import type { State } from '$/types';
+import type { State } from '#lib/types.js';
 import assert from 'node:assert';
 import { expect, test } from './test';
 

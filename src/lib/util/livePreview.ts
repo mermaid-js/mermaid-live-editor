@@ -1,4 +1,4 @@
-import { C } from '$/constants';
+import { C } from '#lib/constants.js';
 import type { NormalizedViewport } from './panZoom';
 import { validate as uuidValidate, v4 as uuidV4 } from 'uuid';
 

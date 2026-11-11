@@ -1,38 +1,41 @@
 <script lang="ts">
-  import Actions from '$/components/Actions.svelte';
-  import Card from '$/components/Card/Card.svelte';
-  import DiagramDocButton from '$/components/DiagramDocumentationButton.svelte';
-  import Editor from '$/components/Editor.svelte';
-  import EnhancedEditsButton from '$/components/EnhancedEditsButton.svelte';
-  import History from '$/components/History/History.svelte';
-  import { startAutoSave } from '$/components/History/historyState.svelte';
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
-  import EditorChooserModal from '$/components/migration/EditorChooserModal.svelte';
-  import Navbar from '$/components/Navbar.svelte';
-  import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
-  import Preset from '$/components/Preset.svelte';
-  import Share from '$/components/Share.svelte';
-  import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
-  import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
-  import * as Resizable from '$/components/ui/resizable';
-  import { Switch } from '$/components/ui/switch';
-  import { Toggle } from '$/components/ui/toggle';
-  import VersionSecurityToolbar from '$/components/VersionSecurityToolbar.svelte';
-  import View from '$/components/View.svelte';
-  import type { EditorMode, Tab } from '$/types';
+  import Actions from '#lib/components/Actions.svelte';
+  import Card from '#lib/components/Card/Card.svelte';
+  import DiagramDocButton from '#lib/components/DiagramDocumentationButton.svelte';
+  import Editor from '#lib/components/Editor.svelte';
+  import EnhancedEditsButton from '#lib/components/EnhancedEditsButton.svelte';
+  import History from '#lib/components/History/History.svelte';
+  import { startAutoSave } from '#lib/components/History/historyState.svelte.js';
+  import McWrapper from '#lib/components/McWrapper.svelte';
+  import MermaidChartIcon from '#lib/components/MermaidChartIcon.svelte';
+  import EditorChooserModal from '#lib/components/migration/EditorChooserModal.svelte';
+  import Navbar from '#lib/components/Navbar.svelte';
+  import PanZoomToolbar from '#lib/components/PanZoomToolbar.svelte';
+  import Preset from '#lib/components/Preset.svelte';
+  import Share from '#lib/components/Share.svelte';
+  import SyncRoughToolbar from '#lib/components/SyncRoughToolbar.svelte';
+  import V13Callout from '#lib/components/V13Callout.svelte';
+  import V13Peek from '#lib/components/V13Peek.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import * as Resizable from '#lib/components/ui/resizable/index.js';
+  import { Switch } from '#lib/components/ui/switch/index.js';
+  import { Toggle } from '#lib/components/ui/toggle/index.js';
+  import VersionSecurityToolbar from '#lib/components/VersionSecurityToolbar.svelte';
+  import View from '#lib/components/View.svelte';
+  import type { EditorMode, Tab } from '#lib/types.js';
   import {
     addLivePreviewSession,
     createLivePreviewPublisher,
     type LivePreviewPublisher
-  } from '$/util/livePreview';
-  import { shouldShowEditorChooser } from '$/util/migration/domainMigration';
-  import { PanZoomState } from '$/util/panZoom';
-  import { env } from '$/util/env';
-  import { validatedState, updateCodeStore, urls } from '$/util/state.svelte';
-  import { logEvent, logMermaidChartClick } from '$/util/stats';
-  import { getContactSalesUrl, initHandler } from '$/util/util';
+  } from '#lib/util/livePreview.js';
+  import { shouldShowEditorChooser } from '#lib/util/migration/domainMigration.js';
+  import { PanZoomState } from '#lib/util/panZoom.js';
+  import { env } from '#lib/util/env.js';
+  import { validatedState, updateCodeStore, urls } from '#lib/util/state.svelte.js';
+  import { v13 } from '#lib/util/v13.svelte.js';
+  import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
+  import { getContactSalesUrl, initHandler } from '#lib/util/util.js';
   import { onMount } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import HistoryIcon from '~icons/material-symbols/history';
@@ -184,8 +187,24 @@
           <div class="absolute top-0 right-0">
             <PanZoomToolbar {panZoomState} {livePreviewHref} />
           </div>
-          <div class="absolute right-0 bottom-0"><VersionSecurityToolbar /></div>
+          <div class="absolute right-0 bottom-0">
+            {#if v13.variant === 'peek'}
+              <!-- Perches on top of the toolbar, stem just touching its edge. -->
+              <div class="pointer-events-none absolute right-3 bottom-[calc(100%-13px)]">
+                <V13Peek />
+              </div>
+            {/if}
+            <div class="relative"><VersionSecurityToolbar showV13={v13.variant === 'chip'} /></div>
+          </div>
           <div class="absolute bottom-0 left-0 sm:left-5"><SyncRoughToolbar /></div>
+          {#if v13.variant === 'pill'}
+            <!-- Only where the pill fits between the bottom toolbars. -->
+            <div class="@container pointer-events-none absolute inset-x-0 bottom-0 h-12">
+              <div class="hidden h-full items-center justify-center @[56rem]:flex">
+                <V13Callout />
+              </div>
+            </div>
+          {/if}
         </Resizable.Pane>
         {#if isHistoryOpen}
           <Resizable.Handle class="ml-1 hidden opacity-0 sm:block" />

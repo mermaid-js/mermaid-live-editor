@@ -1,5 +1,5 @@
-import { browser } from '$app/environment';
-import { C } from '$/constants';
+import { browser } from '$app/env';
+import { C } from '#lib/constants.js';
 import type PlausibleInstance from 'plausible-tracker';
 import { env } from './env';
 
