@@ -1,8 +1,8 @@
 <script lang="ts">
-  import ExternalLinkWrapper from '$/components/ExternalLinkWrapper.svelte';
-  import * as Dialog from '$/components/ui/dialog';
-  import { env } from '$/util/env';
-  import { isOnMermaidLive } from '$/util/migration/domainMigration';
+  import ExternalLinkWrapper from '#lib/components/ExternalLinkWrapper.svelte';
+  import * as Dialog from '#lib/components/ui/dialog/index.js';
+  import { env } from '#lib/util/env.js';
+  import { isOnMermaidLive } from '#lib/util/migration/domainMigration.js';
   import ShieldIcon from '~icons/material-symbols/shield-lock-outline-rounded';
 </script>
 

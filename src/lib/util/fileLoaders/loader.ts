@@ -1,6 +1,6 @@
-import type { Loader, State } from '$lib/types';
-import { defaultState, sanitizeConfig, updateCodeStore } from '$lib/util/state.svelte';
-import { fetchText } from '$lib/util/util';
+import type { Loader, State } from '#lib/types.js';
+import { defaultState, sanitizeConfig, updateCodeStore } from '#lib/util/state.svelte.js';
+import { fetchText } from '#lib/util/util.js';
 import { loadGistData } from './gist';
 
 const loaders: Record<string, Loader> = {

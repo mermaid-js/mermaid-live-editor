@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { logEvent, logMermaidChartClick } from '$lib/util/stats';
+  import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
   import { version } from 'mermaid/package.json';
 
   void logEvent('version', {
@@ -9,10 +9,10 @@
 
 <script lang="ts">
   import { resolve } from '$app/paths';
-  import MainMenu from '$/components/MainMenu.svelte';
-  import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
-  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo.svelte';
+  import MainMenu from '#lib/components/MainMenu.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import { dismissPromotion, getActivePromotion } from '#lib/util/promos/promo.svelte.js';
   import { untrack, type ComponentProps, type Snippet } from 'svelte';
   import MermaidIcon from '~icons/custom/mermaid';
   import CloseIcon from '~icons/material-symbols/close-rounded';
@@ -84,7 +84,7 @@
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <a href={resolve('/', {})} class="whitespace-nowrap text-accent">
+    <a href={resolve('/(app)')} class="whitespace-nowrap text-accent">
       {#if !mobileToggle}
         Mermaid
       {/if}

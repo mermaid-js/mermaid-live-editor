@@ -6,7 +6,7 @@
 
   ```svelte
   <script lang="ts">
-    import FontAwesome from '$lib/client/components/FontAwesome';
+    import FontAwesome from '#lib/components/FontAwesome.svelte';
     let waitForFontAwesomeToLoad: FontAwesome["waitForFontAwesomeToLoad"];
   </script>
   <FontAwesome bind:waitForFontAwesomeToLoad />

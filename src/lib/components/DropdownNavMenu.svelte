@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '$/components/ui/button';
-  import * as Popover from '$/components/ui/popover';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import * as Popover from '#lib/components/ui/popover/index.js';
   import type { Component } from 'svelte';
 
   interface Props {

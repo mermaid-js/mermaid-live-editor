@@ -1,4 +1,4 @@
-import type { HistoryEntry, State } from '$lib/types';
+import type { HistoryEntry, State } from '#lib/types.js';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('migrations', () => {

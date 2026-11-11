@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { v13 } from '$/util/v13.svelte';
+  import { v13 } from '#lib/util/v13.svelte.js';
   import { onMount } from 'svelte';
   import { backOut } from 'svelte/easing';
   import { fly } from 'svelte/transition';

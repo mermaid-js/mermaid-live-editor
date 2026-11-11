@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { EditorProps } from '$/types';
-  import { validatedState } from '$/util/state.svelte';
+  import type { EditorProps } from '#lib/types.js';
+  import { validatedState } from '#lib/util/state.svelte.js';
   import { json, jsonLanguage } from '@codemirror/lang-json';
   import { markdown } from '@codemirror/lang-markdown';
   import { yamlFrontmatter } from '@codemirror/lang-yaml';

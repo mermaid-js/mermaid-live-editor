@@ -1,8 +1,8 @@
 <script lang="ts">
-  import FloatingToolbar from '$/components/FloatingToolbar.svelte';
-  import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
-  import type { PanZoomState } from '$/util/panZoom';
+  import FloatingToolbar from '#lib/components/FloatingToolbar.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import type { PanZoomState } from '#lib/util/panZoom.js';
   import ExpandIcon from '~icons/material-symbols/open-in-full-rounded';
   import ArrowsToCircleIcon from '~icons/material-symbols/screenshot-frame-2';
   import MagnifyingGlassPlusIcon from '~icons/material-symbols/zoom-in';

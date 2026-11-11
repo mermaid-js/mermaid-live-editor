@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { buttonVariants } from '$/components/ui/button';
-  import * as Dialog from '$/components/ui/dialog';
-  import { Input } from '$/components/ui/input';
-  import { Separator } from '$/components/ui/separator';
-  import { Switch } from '$/components/ui/switch';
-  import * as ToggleGroup from '$/components/ui/toggle-group';
-  import { MERMAID_LOOKS, MERMAID_THEMES, TID } from '$/constants';
-  import { isDarkTheme, type EmbedMode } from '$/util/embed';
-  import { EMBED_IFRAME_SANDBOX, buildEmbedSnippets, buildEmbedUrls } from '$/util/embedCode';
-  import { silentlySanitizeConfig } from '$/util/sanitize';
-  import { validatedState } from '$/util/state.svelte';
-  import { copyToClipboard } from '$/util/util';
-  import { asset, base } from '$app/paths';
+  import { buttonVariants } from '#lib/components/ui/button/index.js';
+  import * as Dialog from '#lib/components/ui/dialog/index.js';
+  import { Input } from '#lib/components/ui/input/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import { Switch } from '#lib/components/ui/switch/index.js';
+  import * as ToggleGroup from '#lib/components/ui/toggle-group/index.js';
+  import { MERMAID_LOOKS, MERMAID_THEMES, TID } from '#lib/constants.js';
+  import { isDarkTheme, type EmbedMode } from '#lib/util/embed.js';
+  import { EMBED_IFRAME_SANDBOX, buildEmbedSnippets, buildEmbedUrls } from '#lib/util/embedCode.js';
+  import { silentlySanitizeConfig } from '#lib/util/sanitize.js';
+  import { validatedState } from '#lib/util/state.svelte.js';
+  import { copyToClipboard } from '#lib/util/util.js';
+  import { asset, resolve } from '$app/paths';
   import CodeIcon from '~icons/material-symbols/code';
   import ShareIcon from '~icons/material-symbols/share';
   import CopyButton from './CopyButton.svelte';
@@ -41,7 +41,7 @@
       config: sanitizedConfig,
       controls,
       grid,
-      host: window.location.origin + base,
+      host: window.location.origin + resolve('/(app)'),
       look,
       mode,
       theme
@@ -64,7 +64,7 @@
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <h2 class="flex items-center gap-2">
-          <img class="size-5" src={asset('/favicon.svg')} alt="Mermaid Live Editor" />
+          <img class="size-5" src={asset('favicon.svg')} alt="Mermaid Live Editor" />
           Mermaid Live Editor
         </h2>
         <CopyInput value={window.location.href} />

@@ -1,4 +1,4 @@
-import type { State } from '$/types';
+import type { State } from '#lib/types.js';
 import Hammer from 'hammerjs';
 import type { Point } from 'mermaid/dist/types.js';
 import panzoom from 'svg-pan-zoom';

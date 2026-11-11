@@ -1,11 +1,11 @@
 <script lang="ts">
-  import FloatingToolbar from '$/components/FloatingToolbar.svelte';
-  import Privacy from '$/components/Privacy.svelte';
-  import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
-  import { TID } from '$/constants';
-  import { env } from '$/util/env';
-  import { v13 } from '$/util/v13.svelte';
+  import FloatingToolbar from '#lib/components/FloatingToolbar.svelte';
+  import Privacy from '#lib/components/Privacy.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import { TID } from '#lib/constants.js';
+  import { env } from '#lib/util/env.js';
+  import { v13 } from '#lib/util/v13.svelte.js';
   import { version } from 'mermaid/package.json';
   import { mode, setMode } from 'mode-watcher';
   import ThemeIcon from './ThemeIcon.svelte';
