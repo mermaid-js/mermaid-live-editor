@@ -99,6 +99,7 @@ const delaysPerEvent = {
   bannerClick: noDelay,
   bannerClose: noDelay,
   chooseEditor: noDelay,
+  contextMenu: defaultDelay,
   copyClipboard: defaultDelay,
   copyMarkdown: defaultDelay,
   download: defaultDelay,
