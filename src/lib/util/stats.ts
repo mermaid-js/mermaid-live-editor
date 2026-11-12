@@ -97,6 +97,7 @@ const noDelay = 0;
 const defaultDelay = minutesToMilliSeconds(1);
 const delaysPerEvent = {
   bannerClick: noDelay,
+  bannerClose: noDelay,
   chooseEditor: noDelay,
   copyClipboard: defaultDelay,
   copyMarkdown: defaultDelay,

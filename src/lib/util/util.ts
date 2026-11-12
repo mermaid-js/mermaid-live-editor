@@ -64,6 +64,10 @@ export const getMermaidAiLiveUrl = (utm: { utmCampaign: string; utmMedium: strin
   return `${MCBaseURL}/live?${buildUtmParams(utm).toString()}`;
 };
 
+export const getFlowProductUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  return `${MCBaseURL}/products/flow?${buildUtmParams(utm).toString()}`;
+};
+
 export const getContactSalesUrl = (): string => {
   const params = new URLSearchParams({
     contactSubject: 'contactSales',

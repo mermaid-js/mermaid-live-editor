@@ -52,6 +52,32 @@
     });
     logMermaidChartClick('banner');
   };
+
+  const closeActivePromotion = () => {
+    if (!activePromotion) {
+      return;
+    }
+    logEvent('bannerClose', {
+      promotion: activePromotion.id
+    });
+    dismissPromotion(activePromotion.id);
+    activePromotion = undefined;
+  };
+
+  // The editor is often left open for days, so swap out a promotion whose time
+  // is up (e.g. pre-launch for launch) without waiting for a reload.
+  const promotionCheckIntervalMs = 30_000;
+  $effect(() => {
+    if (hidePromotion) {
+      return;
+    }
+    const interval = setInterval(() => {
+      if (activePromotion && activePromotion.endDate.getTime() <= Date.now()) {
+        activePromotion = getActivePromotion();
+      }
+    }, promotionCheckIntervalMs);
+    return () => clearInterval(interval);
+  });
 </script>
 
 {#if activePromotion}
@@ -70,10 +96,7 @@
         variant="ghost"
         class="hover:bg-transparent hover:text-[#261A56]"
         size="sm"
-        onclick={() => {
-          dismissPromotion(activePromotion?.id);
-          activePromotion = undefined;
-        }}>
+        onclick={closeActivePromotion}>
         <CloseIcon />
       </Button>
     {/snippet}
