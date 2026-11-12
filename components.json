@@ -1,5 +1,5 @@
 {
-  "$schema": "https://next.shadcn-svelte.com/schema.json",
+  "$schema": "https://shadcn-svelte.com/schema.json",
   "tailwind": {
     "css": "src/app.css",
     "baseColor": "slate"
@@ -12,5 +12,5 @@
     "lib": "#lib"
   },
   "typescript": true,
-  "registry": "https://tw3.shadcn-svelte.com/registry/new-york"
+  "registry": "https://shadcn-svelte.com/registry"
 }
