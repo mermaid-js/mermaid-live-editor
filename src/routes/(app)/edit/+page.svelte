@@ -1,6 +1,7 @@
 <script lang="ts">
   import Actions from '#lib/components/Actions.svelte';
   import Card from '#lib/components/Card/Card.svelte';
+  import DiagramContextMenu from '#lib/components/DiagramContextMenu.svelte';
   import DiagramDocButton from '#lib/components/DiagramDocumentationButton.svelte';
   import Editor from '#lib/components/Editor.svelte';
   import EnhancedEditsButton from '#lib/components/EnhancedEditsButton.svelte';
@@ -185,7 +186,9 @@
         </Resizable.Pane>
         <Resizable.Handle class="mr-1 hidden opacity-0 sm:block" />
         <Resizable.Pane minSize={15} class="relative flex h-full flex-1 flex-col overflow-hidden">
-          <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
+          <DiagramContextMenu {panZoomState}>
+            <View {panZoomState} shouldShowGrid={validatedState.current.grid} />
+          </DiagramContextMenu>
           <div class="absolute top-0 left-5 hidden md:block"><EnhancedEditsButton /></div>
           <div class="absolute top-0 right-0">
             <PanZoomToolbar {panZoomState} {livePreviewHref} />
