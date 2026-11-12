@@ -36,4 +36,16 @@ test.describe('Diagram context menu', () => {
     await page.getByTestId(TID.contextMenuDownloadSVG).click();
     await download;
   });
+
+  test('tracks analytics events', async ({ page }) => {
+    const events: string[] = [];
+    page.on('console', (message) => {
+      if (message.text().startsWith('[plausible] contextMenu')) events.push(message.text());
+    });
+    await page.keyboard.press('Escape');
+    await page.getByTestId(TID.diagramContextMenuTrigger).click({ button: 'right' });
+    await page.getByTestId(TID.contextMenuCopyCode).click();
+    await expect.poll(() => events.join('\n')).toContain('open');
+    await expect.poll(() => events.join('\n')).toContain('copyCode');
+  });
 });
