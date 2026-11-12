@@ -6,7 +6,7 @@
   import { urls, validatedState } from '#lib/util/state.svelte.js';
   import { logEvent } from '#lib/util/stats.js';
   import { copyToClipboard } from '#lib/util/util.js';
-  import { ContextMenu } from 'bits-ui';
+  import * as ContextMenu from '#lib/components/ui/context-menu/index.js';
   import type { Component, Snippet } from 'svelte';
   import CodeIcon from '~icons/custom/code';
   import CopyIcon from '~icons/material-symbols/content-copy-outline-rounded';
@@ -111,24 +111,20 @@
   <ContextMenu.Trigger class="h-full w-full" data-testid={TID.diagramContextMenuTrigger}>
     {@render children()}
   </ContextMenu.Trigger>
-  <ContextMenu.Portal>
-    <ContextMenu.Content
-      class="z-50 min-w-56 rounded-md border bg-popover p-1 text-popover-foreground shadow-md outline-none">
-      {#each items as group, index (index)}
-        {#if index > 0}
-          <ContextMenu.Separator class="-mx-1 my-1 h-px bg-border" />
-        {/if}
-        {#each group.filter((item) => !item.hidden) as item (item.label)}
-          <ContextMenu.Item
-            data-testid={item.testId}
-            disabled={item.disabled}
-            onSelect={run(item.action, item.success)}
-            class="flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-accent data-highlighted:text-accent-foreground">
-            <item.icon class="size-4" />
-            {item.label}
-          </ContextMenu.Item>
-        {/each}
+  <ContextMenu.Content class="min-w-56">
+    {#each items as group, index (index)}
+      {#if index > 0}
+        <ContextMenu.Separator />
+      {/if}
+      {#each group.filter((item) => !item.hidden) as item (item.label)}
+        <ContextMenu.Item
+          data-testid={item.testId}
+          disabled={item.disabled}
+          onSelect={run(item.action, item.success)}>
+          <item.icon />
+          {item.label}
+        </ContextMenu.Item>
       {/each}
-    </ContextMenu.Content>
-  </ContextMenu.Portal>
+    {/each}
+  </ContextMenu.Content>
 </ContextMenu.Root>
