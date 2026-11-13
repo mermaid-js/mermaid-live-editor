@@ -4,7 +4,7 @@ import type { HistoryEntry, Optional, State } from '#lib/types.js';
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';
 
-type FetchText = (url: string) => Promise<string>;
+export type FetchText = (url: string) => Promise<string>;
 
 interface GithubFile {
   truncated: boolean;

@@ -3,6 +3,7 @@ import { C } from '#lib/constants.js';
 import type { State } from '#lib/types.js';
 import { MCBaseURL } from './env';
 import { ingestHash, ingestLocation, type IngestAdapters } from './fileLoaders/ingest';
+import { deserializeState } from './serde';
 import { initLoading } from './loading.svelte';
 import { isOnMermaidAI } from './migration/domainMigration';
 import { applyMigrations } from './migrations.svelte';
@@ -15,10 +16,17 @@ export const getDomain = (url?: string): string => {
   return domain;
 };
 
+export const fetchText = async (url: string): Promise<string> => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Fetching ${url} failed: ${res.status} ${res.statusText}`);
+  }
+  return res.text();
+};
+
 export const browserIngestAdapters: IngestAdapters = {
   confirm: (message) => window.confirm(message),
-  // Wrapped: fetchText is declared further down this module.
-  fetchText: (url) => fetchText(url)
+  fetchText
 };
 
 const applyIncoming = (state: Partial<State> | undefined): void => {
@@ -27,7 +35,7 @@ const applyIncoming = (state: Partial<State> | undefined): void => {
 
 /** Loads the diagram in the URL hash, e.g. after the user edits or pastes a new link. */
 export const loadHashChange = (): void => {
-  const state = ingestHash(window.location.hash.slice(1), browserIngestAdapters);
+  const state = ingestHash(window.location.hash, browserIngestAdapters);
   if (state) {
     applyIncoming(state);
   }
@@ -38,9 +46,10 @@ export const loadHashChange = (): void => {
  * channel) without the unsafe-config prompt: the editor already sanitized it.
  */
 export const loadTrustedState = (serialized: string): void => {
-  const state = ingestHash(serialized, { confirm: () => false });
-  if (state) {
-    applyIncoming(state);
+  try {
+    applyIncoming(deserializeState(serialized));
+  } catch (error) {
+    console.error('Live preview state could not be decoded', error);
   }
 };
 
@@ -113,13 +122,6 @@ export const errorDebug = (limit = 1000) => {
 };
 
 export const formatJSON = (data: unknown): string => JSON.stringify(data, undefined, 2);
-export const fetchText = async (url: string): Promise<string> => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Fetching ${url} failed: ${res.status} ${res.statusText}`);
-  }
-  return res.text();
-};
 
 export const copyToClipboard = async (text: string) => {
   try {

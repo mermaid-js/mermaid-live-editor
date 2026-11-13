@@ -1,3 +1,4 @@
+import { defaultState } from '#lib/constants.js';
 import { get as lodashGet } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { defaultMermaidConfig } from './mermaid';
@@ -84,13 +85,13 @@ const describePaths = (config: MermaidConfig, paths: string[][]): string =>
  * pose security risks, such as a relaxed `securityLevel`, and strips them
  * unless the user trusts the source.
  *
- * @param config - The Mermaid configuration to sanitize.
+ * @param config - The Mermaid configuration to sanitize; empty means the default.
  * @param confirm - Asks the user; returns true to strip the unsafe settings.
  * @returns The sanitized Mermaid configuration as a JSON string.
  * @throws If `config` is not valid JSON.
  */
-export const sanitizeConfig = (config: string, confirm: Confirm): string => {
-  const mermaidConfig = JSON.parse(config) as MermaidConfig;
+export const sanitizeConfig = (config: string | undefined, confirm: Confirm): string => {
+  const mermaidConfig = JSON.parse(config || defaultState.mermaid) as MermaidConfig;
   const unsafePaths = findUnsafeConfigPaths(mermaidConfig);
   if (
     unsafePaths.length > 0 &&
@@ -127,3 +128,16 @@ export const silentlySanitizeConfig = (
   stripConfigPaths(parsed, findUnsafeConfigPaths(parsed));
   return parsed;
 };
+
+/** Whether a JSON config string holds unsafe settings; invalid JSON counts as safe. */
+export const hasUnsafeConfig = (config: string): boolean => {
+  try {
+    return findUnsafeConfigPaths(JSON.parse(config) as MermaidConfig).length > 0;
+  } catch {
+    return false;
+  }
+};
+
+/** String-in, string-out {@link silentlySanitizeConfig}. */
+export const stripUnsafeConfig = (config: string): string =>
+  formatConfig(silentlySanitizeConfig(config));
