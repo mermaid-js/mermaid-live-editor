@@ -1,10 +1,12 @@
 <script lang="ts">
   import Card from '#lib/components/Card/Card.svelte';
   import type { HistoryEntry, HistoryType, State, Tab } from '#lib/types.js';
+  import { ingestHistoryFile } from '#lib/util/fileLoaders/ingest.js';
   import { notify, prompt } from '#lib/util/notify.js';
   import { serializeState } from '#lib/util/serde.js';
   import { inputState, replaceInputState } from '#lib/util/state.svelte.js';
   import { logEvent } from '#lib/util/stats.js';
+  import { browserIngestAdapters } from '#lib/util/util.js';
   import dayjs from 'dayjs';
   import dayjsRelativeTime from 'dayjs/plugin/relativeTime';
   import BookmarkIcon from '~icons/material-symbols/bookmark-outline-rounded';
@@ -92,7 +94,14 @@
       if (!file) {
         return;
       }
-      const data: HistoryEntry[] = JSON.parse(await file.text());
+      let data: HistoryEntry[];
+      try {
+        data = ingestHistoryFile(await file.text(), browserIngestAdapters);
+      } catch (error) {
+        console.error(error);
+        notify('Could not read the history file.');
+        return;
+      }
       const { restored, invalid, duplicates } = restoreEntries(data);
       notify(`${restored} restored, ${duplicates} duplicate, ${invalid} invalid.`);
     });

@@ -5,7 +5,6 @@ import {
   clearDefaultThemeConfig,
   defaultState,
   inputState,
-  loadState,
   replaceInputState,
   toggleDarkTheme,
   updateCode,
@@ -41,8 +40,7 @@ describe('update functions called from effects', () => {
     ['updateConfig', () => updateConfig('{"theme":"default"}')],
     ['toggleDarkTheme', () => toggleDarkTheme(false)],
     ['replaceInputState', () => replaceInputState({ ...defaultState })],
-    ['verifyState', () => verifyState()],
-    ['loadState', () => loadState('')]
+    ['verifyState', () => verifyState()]
   ];
 
   it.each(cases)('%s does not make the calling effect track input state', (_name, call) => {

@@ -2,8 +2,7 @@
   import View from '#lib/components/View.svelte';
   import { createLivePreviewSubscriber, getLivePreviewSession } from '#lib/util/livePreview.js';
   import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
-  import { loadState } from '#lib/util/state.svelte.js';
-  import { initHandler } from '#lib/util/util.js';
+  import { initHandler, loadTrustedState } from '#lib/util/util.js';
   import { onMount } from 'svelte';
 
   const panZoomState = new PanZoomState();
@@ -20,10 +19,10 @@
 
     const subscriber = createLivePreviewSubscriber(sessionId, (serialized, viewport) => {
       normalizedViewport = viewport;
-      // Skipping sanitizeConfig is safe: BroadcastChannel only delivers same-origin messages,
-      // and the editor already sanitized this state when it loaded it. Re-sanitizing would
-      // re-prompt on every keystroke if the user chose to keep an unsafe config.
-      loadState(serialized, { sanitize: false });
+      // Skipping the unsafe-config prompt is safe: BroadcastChannel only delivers same-origin
+      // messages, and the editor already sanitized this state when it loaded it. Re-sanitizing
+      // would re-prompt on every keystroke if the user chose to keep an unsafe config.
+      loadTrustedState(serialized);
     });
     return () => subscriber?.close();
   });
