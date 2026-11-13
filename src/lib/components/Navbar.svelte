@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { logEvent, logMermaidChartClick } from '$lib/util/stats';
+  import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
   import { version } from 'mermaid/package.json';
 
   void logEvent('version', {
@@ -9,10 +9,10 @@
 
 <script lang="ts">
   import { resolve } from '$app/paths';
-  import MainMenu from '$/components/MainMenu.svelte';
-  import { Button } from '$/components/ui/button';
-  import { Separator } from '$/components/ui/separator';
-  import { dismissPromotion, getActivePromotion } from '$lib/util/promos/promo.svelte';
+  import MainMenu from '#lib/components/MainMenu.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import { dismissPromotion, getActivePromotion } from '#lib/util/promos/promo.svelte.js';
   import { untrack, type ComponentProps, type Snippet } from 'svelte';
   import MermaidIcon from '~icons/custom/mermaid';
   import CloseIcon from '~icons/material-symbols/close-rounded';
@@ -52,6 +52,32 @@
     });
     logMermaidChartClick('banner');
   };
+
+  const closeActivePromotion = () => {
+    if (!activePromotion) {
+      return;
+    }
+    logEvent('bannerClose', {
+      promotion: activePromotion.id
+    });
+    dismissPromotion(activePromotion.id);
+    activePromotion = undefined;
+  };
+
+  // The editor is often left open for days, so swap out a promotion whose time
+  // is up (e.g. pre-launch for launch) without waiting for a reload.
+  const promotionCheckIntervalMs = 30_000;
+  $effect(() => {
+    if (hidePromotion) {
+      return;
+    }
+    const interval = setInterval(() => {
+      if (activePromotion && activePromotion.endDate.getTime() <= Date.now()) {
+        activePromotion = getActivePromotion();
+      }
+    }, promotionCheckIntervalMs);
+    return () => clearInterval(interval);
+  });
 </script>
 
 {#if activePromotion}
@@ -70,10 +96,7 @@
         variant="ghost"
         class="hover:bg-transparent hover:text-[#261A56]"
         size="sm"
-        onclick={() => {
-          dismissPromotion(activePromotion?.id);
-          activePromotion = undefined;
-        }}>
+        onclick={closeActivePromotion}>
         <CloseIcon />
       </Button>
     {/snippet}
@@ -84,7 +107,7 @@
   <div class="flex flex-1 items-center gap-2">
     <MainMenu />
     <MermaidIcon class="size-6" />
-    <a href={resolve('/', {})} class="whitespace-nowrap text-accent">
+    <a href={resolve('/(app)')} class="whitespace-nowrap text-accent">
       {#if !mobileToggle}
         Mermaid
       {/if}

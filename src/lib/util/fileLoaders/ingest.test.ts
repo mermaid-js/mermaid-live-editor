@@ -1,5 +1,5 @@
-import { defaultState } from '$/constants';
-import type { State } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { State } from '#lib/types.js';
 import { describe, expect, it, vi } from 'vitest';
 import { serializeState } from '../serde';
 import { ingestHash, ingestHistoryFile, ingestLocation, type IngestAdapters } from './ingest';
@@ -123,6 +123,17 @@ describe('ingestLocation', () => {
       adapters()
     );
     expect(result.state?.code).toBe(flowchart);
+  });
+
+  it('tries the gist when the code file cannot be fetched', async () => {
+    const result = await ingestLocation(
+      {
+        hash: `#${hashOf({ code: flowchart })}`,
+        search: '?code=https://x.test/missing.mmd&gist=https://gist.github.com/someone/abc'
+      },
+      adapters(gistResponse([{ code: 'graph TD\n gist', version: 'bbbbbbbbbbbb' }]))
+    );
+    expect(result.state?.code).toBe('graph TD\n gist');
   });
 
   it('does not mutate the shared default state', async () => {

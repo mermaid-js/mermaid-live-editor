@@ -1,5 +1,5 @@
-import { defaultState } from '$/constants';
-import type { HistoryEntry, Optional, State } from '$lib/types';
+import { defaultState } from '#lib/constants.js';
+import type { HistoryEntry, Optional, State } from '#lib/types.js';
 
 const codeFileName = 'code.mmd';
 const configFileName = 'config.json';

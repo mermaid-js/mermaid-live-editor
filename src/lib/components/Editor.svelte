@@ -1,13 +1,13 @@
 <script lang="ts">
-  import DesktopEditor from '$/components/DesktopEditor.svelte';
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
-  import MobileEditor from '$/components/MobileEditor.svelte';
-  import { Button } from '$/components/ui/button';
-  import { TID } from '$/constants';
-  import { env } from '$/util/env';
-  import { updateCode, updateConfig, urls, validatedState } from '$lib/util/state.svelte';
-  import { logMermaidChartClick } from '$lib/util/stats';
+  import DesktopEditor from '#lib/components/DesktopEditor.svelte';
+  import McWrapper from '#lib/components/McWrapper.svelte';
+  import MermaidChartIcon from '#lib/components/MermaidChartIcon.svelte';
+  import MobileEditor from '#lib/components/MobileEditor.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { TID } from '#lib/constants.js';
+  import { env } from '#lib/util/env.js';
+  import { updateCode, updateConfig, urls, validatedState } from '#lib/util/state.svelte.js';
+  import { logMermaidChartClick } from '#lib/util/stats.js';
   import { debounce } from 'lodash-es';
   import ExclamationCircleIcon from '~icons/material-symbols/error-outline-rounded';
 

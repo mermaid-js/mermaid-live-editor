@@ -1,4 +1,4 @@
-import type { State } from '$lib/types';
+import type { State } from '#lib/types.js';
 import { fromBase64, fromUint8Array, toBase64, toUint8Array } from 'js-base64';
 import { deflate, inflate } from 'pako';
 

@@ -13,7 +13,8 @@
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "types": ["vitest/importMeta", "@playwright/test"]
+    "types": ["$app/types", "vitest/importMeta", "@playwright/test"]
   },
-  "extends": "./.svelte-kit/tsconfig.json"
+  "extends": "$app/tsconfig",
+  "exclude": ["static/embed.js"]
 }

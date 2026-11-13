@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { validatedState } from '$/util/state.svelte';
-  import * as Tooltip from '$lib/components/ui/tooltip';
+  import { describeDiagram } from '#lib/util/diagramTypes.js';
+  import { validatedState } from '#lib/util/state.svelte.js';
+  import * as Tooltip from '#lib/components/ui/tooltip/index.js';
   import type { ComponentProps, Snippet } from 'svelte';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
 
@@ -25,7 +26,8 @@
   } = $props();
 
   let shouldDisableComponent = $derived(
-    shouldCheckDiagramType && validatedState.current.diagramType === 'zenuml'
+    shouldCheckDiagramType &&
+      describeDiagram(validatedState.current.diagramType)?.externalServices === false
   );
 </script>
 

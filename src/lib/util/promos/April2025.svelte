@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '$/components/ui/button';
-  import { C } from '$/constants';
-  import { MCBaseURL } from '$/util/util';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { C } from '#lib/constants.js';
+  import { MCBaseURL } from '#lib/util/util.js';
   import { onDestroy, type Snippet } from 'svelte';
   import { fade } from 'svelte/transition';
 

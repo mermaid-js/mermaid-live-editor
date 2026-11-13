@@ -17,6 +17,8 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    # A healthy build takes a few minutes; fail fast instead of hanging for 6 hours.
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: write

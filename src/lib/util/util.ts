@@ -1,6 +1,6 @@
-import { setLoaderEntries } from '$/components/History/historyState.svelte';
-import { C } from '$/constants';
-import type { State } from '$/types';
+import { setLoaderEntries } from '#lib/components/History/historyState.svelte.js';
+import { C } from '#lib/constants.js';
+import type { State } from '#lib/types.js';
 import { MCBaseURL } from './env';
 import { ingestHash, ingestLocation, type IngestAdapters } from './fileLoaders/ingest';
 import { initLoading } from './loading.svelte';
@@ -33,10 +33,21 @@ export const loadHashChange = (): void => {
   }
 };
 
+/**
+ * Loads a serialized state from a trusted same-origin source (the live preview
+ * channel) without the unsafe-config prompt: the editor already sanitized it.
+ */
+export const loadTrustedState = (serialized: string): void => {
+  const state = ingestHash(serialized, { confirm: () => false });
+  if (state) {
+    applyIncoming(state);
+  }
+};
+
 export const initHandler = async (): Promise<void> => {
   applyMigrations();
   const { state, revisions } = await initLoading(
-    'Loading Gist...',
+    'Loading diagram...',
     ingestLocation(window.location, browserIngestAdapters)
   );
   setLoaderEntries(revisions);
@@ -77,6 +88,10 @@ export const getMermaidAiLiveUrl = (utm: { utmCampaign: string; utmMedium: strin
   return `${MCBaseURL}/live?${buildUtmParams(utm).toString()}`;
 };
 
+export const getFlowProductUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  return `${MCBaseURL}/products/flow?${buildUtmParams(utm).toString()}`;
+};
+
 export const getContactSalesUrl = (): string => {
   const params = new URLSearchParams({
     contactSubject: 'contactSales',
@@ -98,12 +113,11 @@ export const errorDebug = (limit = 1000) => {
 };
 
 export const formatJSON = (data: unknown): string => JSON.stringify(data, undefined, 2);
-export const fetchJSON = async <T>(url: string): Promise<T> => {
-  const res = await fetch(url);
-  return res.json() as T;
-};
 export const fetchText = async (url: string): Promise<string> => {
   const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Fetching ${url} failed: ${res.status} ${res.statusText}`);
+  }
   return res.text();
 };
 

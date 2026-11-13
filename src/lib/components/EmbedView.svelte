@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { TID } from '$/constants';
-  import type { PanZoomState } from '$/util/panZoom';
-  import { renderAndPlaceDiagram } from '$/util/renderView';
-  import FontAwesome, { mayContainFontAwesome } from '$lib/components/FontAwesome.svelte';
+  import { TID } from '#lib/constants.js';
+  import type { PanZoomState } from '#lib/util/panZoom.js';
+  import { renderAndPlaceDiagram } from '#lib/util/renderView.js';
+  import FontAwesome, { mayContainFontAwesome } from '#lib/components/FontAwesome.svelte';
   import uniqueID from 'lodash-es/uniqueId';
   import type { MermaidConfig } from 'mermaid';
 

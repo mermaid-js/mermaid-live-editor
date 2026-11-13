@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '$/components/ui/button';
-  import { notify } from '$/util/notify';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { notify } from '#lib/util/notify.js';
   import { scale } from 'svelte/transition';
   import CheckIcon from '~icons/material-symbols/check-rounded';
   import CopyIcon from '~icons/material-symbols/content-copy-outline-rounded';

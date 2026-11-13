@@ -4,8 +4,8 @@
  * are safe to apply. Every source goes through the same sanitize policy here;
  * callers only apply the result.
  */
-import { defaultState } from '$/constants';
-import type { HistoryEntry, State } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { HistoryEntry, State } from '#lib/types.js';
 import type { MermaidConfig } from 'mermaid';
 import {
   findUnsafeConfigPaths,
@@ -111,17 +111,22 @@ export const ingestLocation = async (
   const params = new URLSearchParams(search);
   const codeURL = params.get('code');
   const gistURL = params.get('gist');
-  try {
-    if (codeURL) {
+  if (codeURL) {
+    try {
       const state = await ingestFiles(codeURL, params.get('config') ?? undefined, adapters);
       if (state) {
         return { revisions: [], state };
       }
-    } else if (gistURL) {
-      return await ingestGist(gistURL, adapters);
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
+  }
+  if (gistURL) {
+    try {
+      return await ingestGist(gistURL, adapters);
+    } catch (error) {
+      console.error(error);
+    }
   }
   return { revisions: [], state: ingestHash(hash.replace(/^#/, ''), adapters) };
 };

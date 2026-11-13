@@ -1,5 +1,5 @@
-import { defaultState } from '$/constants';
-import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { ErrorHash, MarkerData, State, ValidatedState } from '#lib/types.js';
 import { resolve } from '$app/paths';
 import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
@@ -18,6 +18,10 @@ import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
 export { defaultState };
 
 const CODE_STORE_KEY = 'codeStore';
+const viewPath = resolve('view').replace(/\/$/, '');
+
+const shouldPersistInputState = (): boolean =>
+  window.location.pathname.replace(/\/$/, '') !== viewPath;
 
 // The single mutable input state; only update() below may write to it.
 // The fallback is cloned so mutations never write through to defaultState.
@@ -43,6 +47,7 @@ let validatedCurrent = $state.raw<ValidatedState>(
 );
 
 let lastDiagramType = '';
+let processingVersion = 0;
 
 const processState = async (state: State) => {
   const processed = validatedStateOf(state, '');
@@ -51,11 +56,6 @@ const processState = async (state: State) => {
     processed.serialized = serializeState(state);
     const { diagramType } = await parse(state.code);
     processed.diagramType = diagramType;
-    if (lastDiagramType === 'zenuml' && diagramType !== lastDiagramType) {
-      // Temp Hack to refresh page after displaying ZenUML.
-      setTimeout(() => window.location.reload(), 500);
-    }
-    lastDiagramType = diagramType;
     JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
@@ -109,8 +109,21 @@ let updateHash: ((serialized: string) => void) | undefined;
 // dependency tracking.
 const persistAndProcess = (): void => {
   const snapshot = $state.snapshot(input) as State;
-  writeJSON(CODE_STORE_KEY, snapshot);
+  const version = ++processingVersion;
+  if (shouldPersistInputState()) {
+    writeJSON(CODE_STORE_KEY, snapshot);
+  }
   void processState(snapshot).then((processed) => {
+    if (version !== processingVersion) {
+      return;
+    }
+    if (processed.diagramType) {
+      if (lastDiagramType === 'zenuml' && processed.diagramType !== lastDiagramType) {
+        // Temp Hack to refresh page after displaying ZenUML.
+        setTimeout(() => window.location.reload(), 500);
+      }
+      lastDiagramType = processed.diagramType;
+    }
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
     syncManagedTheme(processed.diagramType);
@@ -170,10 +183,10 @@ const urlsCurrent = $derived.by(() => {
         home: `${MCBaseURL}/?${params}`
       };
     },
-    new: `${resolve('/edit', {})}#${serializeState(defaultState)}`,
+    new: `${resolve('edit')}#${serializeState(defaultState)}`,
     png,
     svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
-    view: `${resolve('/view', {})}#${serialized}`
+    view: `${resolve('view')}#${serialized}`
   };
 });
 

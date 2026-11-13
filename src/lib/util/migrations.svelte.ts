@@ -1,5 +1,5 @@
-import { injectHistoryIDs } from '$lib/components/History/historyState.svelte';
-import { persisted } from '$lib/util/persist.svelte';
+import { injectHistoryIDs } from '#lib/components/History/historyState.svelte.js';
+import { persisted } from '#lib/util/persist.svelte.js';
 import { clearDefaultThemeConfig } from './state.svelte';
 import { logEvent } from './stats';
 
