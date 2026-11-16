@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import Icons from 'unplugin-icons/vite';
-import { sveltePreprocess } from 'svelte-preprocess';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
@@ -31,7 +31,7 @@ export default defineConfig({
       paths: {
         base: process.env.MERMAID_BASE_PATH ?? ''
       },
-      preprocess: [sveltePreprocess({})]
+      preprocess: vitePreprocess()
     }),
     Icons({
       compiler: 'svelte',
