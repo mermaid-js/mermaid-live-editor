@@ -1,4 +1,5 @@
 import { TID } from '#lib/constants.ts';
+import { readFileSync } from 'node:fs';
 import { expect, test } from './test';
 import { verifyFileSizeGreaterThan } from './utils';
 
@@ -35,6 +36,14 @@ test.describe('Diagram context menu', () => {
     const download = verifyFileSizeGreaterThan(page, 'diagram', 'svg', 10_000);
     await page.getByTestId(TID.contextMenuDownloadSVG).click();
     await download;
+  });
+
+  test('downloads mmd', async ({ page }) => {
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByTestId(TID.contextMenuDownloadMMD).click();
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(/\.mmd$/);
+    expect(readFileSync(await download.path(), 'utf8')).toContain('flowchart');
   });
 
   test('tracks analytics events', async ({ page }) => {

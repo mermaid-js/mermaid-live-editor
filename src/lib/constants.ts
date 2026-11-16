@@ -7,12 +7,14 @@ export const TID = {
   contextMenuCopyImage: 'context-menu-copy-image',
   contextMenuCopyLink: 'context-menu-copy-link',
   contextMenuCopyMarkdown: 'context-menu-copy-markdown',
+  contextMenuDownloadMMD: 'context-menu-download-mmd',
   contextMenuDownloadPNG: 'context-menu-download-png',
   contextMenuDownloadSVG: 'context-menu-download-svg',
   contextMenuResetView: 'context-menu-reset-view',
   copyMarkdown: 'copy-markdown',
   diagramContextMenuTrigger: 'diagram-context-menu-trigger',
   diagramDocumentationButton: 'diagram-documentation-button',
+  downloadMMD: 'download-MMD',
   downloadPNG: 'download-PNG',
   downloadSVG: 'download-SVG',
   embedEditLink: 'embed-edit-link',
@@ -26,6 +28,9 @@ export const TID = {
   embedToolbar: 'embed-toolbar',
   errorContainer: 'error-container',
   livePreviewButton: 'live-preview-button',
+  mainMenuButton: 'main-menu-button',
+  menuOpenFile: 'menu-open-file',
+  openFileButton: 'open-file-button',
   themeToggleButton: 'theme-toggle-button'
 } as const;
 

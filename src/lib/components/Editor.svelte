@@ -14,9 +14,9 @@
   const { isMobile } = $props<{ isMobile: boolean }>();
   const onUpdate = (text: string) => {
     if (validatedState.current.editorMode === 'code') {
-      updateCode(text);
+      updateCode(text, { debounce: true });
     } else {
-      updateConfig(text);
+      updateConfig(text, { debounce: true });
     }
   };
 

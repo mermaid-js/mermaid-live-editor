@@ -8,10 +8,12 @@
   import { Separator } from '#lib/components/ui/separator/index.js';
   import * as ToggleGroup from '#lib/components/ui/toggle-group/index.js';
   import { TID } from '#lib/constants.js';
+  import { pickDiagramFile } from '#lib/util/diagramFile.js';
   import { getDomain } from '#lib/util/util.js';
   import { browser } from '$app/env';
   import {
     copyPNG,
+    downloadMMD,
     downloadPNG,
     downloadSVG,
     isClipboardAvailable,
@@ -20,6 +22,7 @@
   import { urls, validatedState } from '#lib/util/state.svelte.js';
   import { logEvent } from '#lib/util/stats.js';
   import DownloadIcon from '~icons/material-symbols/download';
+  import FileOpenIcon from '~icons/material-symbols/file-open-outline-rounded';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
 
@@ -41,6 +44,13 @@
     downloadSVG();
     logEvent('download', {
       type: 'svg'
+    });
+  };
+
+  const onDownloadMMD = () => {
+    downloadMMD();
+    logEvent('download', {
+      type: 'mmd'
     });
   };
 
@@ -120,6 +130,13 @@
           </Button>
         </a>
       </ExternalLinkWrapper>
+    </div>
+    <div class="flex gap-2">
+      {@render dualActionButton('MMD', onDownloadMMD)}
+      <Button class="flex-grow" onclick={pickDiagramFile} data-testid={TID.openFileButton}>
+        <FileOpenIcon />
+        Open MMD file
+      </Button>
     </div>
     <Separator />
     {#if isClipboardAvailable()}
