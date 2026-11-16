@@ -109,6 +109,39 @@ test.describe('Site Loads', () => {
     expect(parsedConfig.secure).toBeUndefined();
   });
 
+  test('should load a pasted link in place and prompt once for its unsafe config', async ({
+    editPage,
+    page
+  }) => {
+    await editPage.start('/edit');
+    const dialogs: string[] = [];
+    page.on('dialog', async (dialog) => {
+      dialogs.push(dialog.message());
+      await dialog.accept();
+    });
+    const state = {
+      code: 'flowchart TD\n  Pasted-->Link',
+      mermaid: JSON.stringify({ securityLevel: 'loose', someOtherSetting: 'Test value' })
+    };
+    await page.evaluate(
+      (hash) => {
+        window.location.hash = hash;
+      },
+      `base64:${Buffer.from(JSON.stringify(state)).toString('base64')}`
+    );
+    await editPage.checkTextInView('Pasted');
+    expect(dialogs).toHaveLength(1);
+    expect(dialogs[0]).toContain('"securityLevel"');
+    const codeStore = await page.evaluate(() => localStorage.getItem('codeStore'));
+    assert(codeStore);
+    const parsedConfig = JSON.parse((JSON.parse(codeStore) as State).mermaid) as Record<
+      string,
+      unknown
+    >;
+    expect(parsedConfig.securityLevel).toBeUndefined();
+    expect(parsedConfig.someOtherSetting).toBe('Test value');
+  });
+
   test('should show troubleshooting steps if loading fails', async ({ editPage, page }) => {
     await editPage.start('/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAg');
     await page.reload({ waitUntil: 'networkidle' });

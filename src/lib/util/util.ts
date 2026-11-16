@@ -1,10 +1,13 @@
+import { setLoaderEntries } from '#lib/components/History/historyState.svelte.js';
 import { C } from '#lib/constants.js';
+import type { State } from '#lib/types.js';
 import { MCBaseURL } from './env';
-import { loadDataFromUrl } from './fileLoaders/loader';
+import { ingestHash, ingestLocation, type IngestAdapters } from './fileLoaders/ingest';
+import { deserializeState } from './serde';
 import { initLoading } from './loading.svelte';
 import { isOnMermaidAI } from './migration/domainMigration';
 import { applyMigrations } from './migrations.svelte';
-import { initURLSubscription, loadState, updateCodeStore, verifyState } from './state.svelte';
+import { initURLSubscription, updateCodeStore, verifyState } from './state.svelte';
 import { getAnalyticsSafeUrl, initAnalytics, plausible } from './stats';
 
 export const getDomain = (url?: string): string => {
@@ -13,21 +16,51 @@ export const getDomain = (url?: string): string => {
   return domain;
 };
 
-export const loadStateFromURL = (): void => {
-  loadState(window.location.hash.slice(1));
+export const fetchText = async (url: string): Promise<string> => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Fetching ${url} failed: ${res.status} ${res.statusText}`);
+  }
+  return res.text();
 };
 
-export const syncDiagram = (): void => {
-  updateCodeStore({
-    updateDiagram: true
-  });
+export const browserIngestAdapters: IngestAdapters = {
+  confirm: (message) => window.confirm(message),
+  fetchText
+};
+
+const applyIncoming = (state: Partial<State> | undefined): void => {
+  updateCodeStore({ ...state, updateDiagram: true });
+};
+
+/** Loads the diagram in the URL hash, e.g. after the user edits or pastes a new link. */
+export const loadHashChange = (): void => {
+  const state = ingestHash(window.location.hash, browserIngestAdapters);
+  if (state) {
+    applyIncoming(state);
+  }
+};
+
+/**
+ * Loads a serialized state from a trusted same-origin source (the live preview
+ * channel) without the unsafe-config prompt: the editor already sanitized it.
+ */
+export const loadTrustedState = (serialized: string): void => {
+  try {
+    applyIncoming(deserializeState(serialized));
+  } catch (error) {
+    console.error('Live preview state could not be decoded', error);
+  }
 };
 
 export const initHandler = async (): Promise<void> => {
   applyMigrations();
-  loadStateFromURL();
-  await initLoading('Loading Gist...', loadDataFromUrl().catch(console.error));
-  syncDiagram();
+  const { state, revisions } = await initLoading(
+    'Loading diagram...',
+    ingestLocation(window.location, browserIngestAdapters)
+  );
+  setLoaderEntries(revisions);
+  applyIncoming(state);
   initURLSubscription();
   await initAnalytics();
   plausible?.trackPageview({
@@ -89,14 +122,6 @@ export const errorDebug = (limit = 1000) => {
 };
 
 export const formatJSON = (data: unknown): string => JSON.stringify(data, undefined, 2);
-export const fetchJSON = async <T>(url: string): Promise<T> => {
-  const res = await fetch(url);
-  return res.json() as T;
-};
-export const fetchText = async (url: string): Promise<string> => {
-  const res = await fetch(url);
-  return res.text();
-};
 
 export const copyToClipboard = async (text: string) => {
   try {

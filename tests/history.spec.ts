@@ -67,6 +67,40 @@ test.describe('History', () => {
     await expect(page.locator('#view')).toContainText('NewYear');
   });
 
+  test('uploads a history file, stripping unsafe config after one confirmation', async ({
+    page
+  }) => {
+    const unsafe = JSON.stringify({ securityLevel: 'loose', theme: 'forest' });
+    const uploaded = manualHistory.map((item) => ({
+      ...item,
+      id: `u-${item.id}`,
+      state: { ...item.state, mermaid: unsafe }
+    }));
+    const dialogs: string[] = [];
+    page.on('dialog', async (dialog) => {
+      dialogs.push(dialog.message());
+      await dialog.accept();
+    });
+    await openHistory(page);
+    const fileChooser = page.waitForEvent('filechooser');
+    await page.locator('#uploadHistory').click();
+    await (
+      await fileChooser
+    ).setFiles({
+      buffer: Buffer.from(JSON.stringify(uploaded)),
+      mimeType: 'application/json',
+      name: 'history.json'
+    });
+    await expect(page.getByText('2 restored, 0 duplicate, 0 invalid.')).toBeVisible();
+    expect(dialogs).toHaveLength(1);
+    const stored = await page.evaluate(() => localStorage.getItem('manualHistoryStore'));
+    const entries = JSON.parse(stored ?? '[]') as { state: { mermaid: string } }[];
+    expect(entries).toHaveLength(2);
+    for (const { state } of entries) {
+      expect(JSON.parse(state.mermaid)).toEqual({ theme: 'forest' });
+    }
+  });
+
   test('each entry has a copyable link that opens it in a new tab', async ({ page }) => {
     await page.evaluate(
       (manual) => localStorage.setItem('manualHistoryStore', manual),
