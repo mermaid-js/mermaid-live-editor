@@ -24,6 +24,17 @@ export const parse = async (code: string) => {
   return await mermaid.parse(code);
 };
 
+/** Whether `text` starts like a known mermaid diagram (no full parse). */
+export const isMermaidCode = async (text: string): Promise<boolean> => {
+  await init;
+  try {
+    mermaid.detectType(text);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 /**
  * @see https://mermaid.js.org/config/schema-docs/config.html
  */
