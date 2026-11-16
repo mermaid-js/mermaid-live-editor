@@ -57,7 +57,9 @@ export default defineConfig(
       }
     },
     rules: {
-      'svelte/no-unused-props': 'off'
+      'svelte/no-unused-props': 'off',
+      // Every dynamic href in the app is an external URL; internal routes are built with resolve().
+      'svelte/no-navigation-without-resolve': ['error', { ignoreLinks: true }]
     }
   },
   {

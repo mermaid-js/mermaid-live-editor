@@ -8,8 +8,8 @@
   import { errorDebug } from '#lib/util/util.js';
   import { mode } from 'mode-watcher';
   import * as monaco from 'monaco-editor';
-  import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-  import monacoJsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+  import monacoEditorWorker from 'monaco-editor/editor/editor.worker?worker';
+  import monacoJsonWorker from 'monaco-editor/language/json/json.worker?worker';
   import { onMount } from 'svelte';
   import AIPromptPopup from './AIPromptPopup.svelte';
 
