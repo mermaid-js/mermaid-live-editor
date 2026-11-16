@@ -1,5 +1,5 @@
-import { defaultState } from '$/constants';
-import type { State } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { State } from '#lib/types.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildEditUrl, resolveEmbedSettings, serializeEmbedState, toggleMode } from './embed';
 import { deserializeState, serializeState } from './serde';

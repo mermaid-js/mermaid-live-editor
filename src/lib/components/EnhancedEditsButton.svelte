@@ -1,31 +1,16 @@
 <script lang="ts">
-  import McWrapper from '$/components/McWrapper.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
-  import { Button } from '$/components/ui/button';
-  import { standardizeDiagramType } from '$/util/mermaid';
-  import { validatedState, urls } from '$/util/state.svelte';
-  import { logMermaidChartClick } from '$/util/stats';
+  import McWrapper from '#lib/components/McWrapper.svelte';
+  import MermaidChartIcon from '#lib/components/MermaidChartIcon.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { describeDiagram } from '#lib/util/diagramTypes.js';
+  import { validatedState, urls } from '#lib/util/state.svelte.js';
+  import { logMermaidChartClick } from '#lib/util/stats.js';
   import { quintInOut } from 'svelte/easing';
   import { slide } from 'svelte/transition';
 
-  const visualEditDiagramTypes = new Set([
-    'flowchart',
-    'stateDiagram',
-    'classDiagram',
-    'sequenceDiagram',
-    'er',
-    'requirement',
-    'mindmap'
-  ]);
-
-  const diagramType = $derived.by(() => {
-    const dt = validatedState.current.diagramType;
-    return dt ? standardizeDiagramType(dt) : undefined;
-  });
-
-  const showVisualEdit = $derived.by(() => {
-    return diagramType ? visualEditDiagramTypes.has(diagramType) : false;
-  });
+  const showVisualEdit = $derived(
+    describeDiagram(validatedState.current.diagramType)?.visualEdit ?? false
+  );
 
   interface EnhancedEditAction {
     campaign: string;

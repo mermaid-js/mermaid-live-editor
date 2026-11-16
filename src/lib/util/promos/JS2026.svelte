@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '$/components/ui/button';
-  import { getCheckoutUrl } from '$/util/util';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { getCheckoutUrl } from '#lib/util/util.js';
   import type { Snippet } from 'svelte';
 
   interface Props {

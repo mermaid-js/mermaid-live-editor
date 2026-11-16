@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Card from '$/components/Card/Card.svelte';
-  import { Button, buttonVariants } from '$/components/ui/button';
-  import * as Popover from '$/components/ui/popover';
-  import { getSampleDiagrams, type SampleExample } from '$/util/mermaid';
-  import { updateCode } from '$lib/util/state.svelte';
-  import { logEvent } from '$lib/util/stats';
-  import { cn } from '$lib/utils';
+  import Card from '#lib/components/Card/Card.svelte';
+  import { Button, buttonVariants } from '#lib/components/ui/button/index.js';
+  import * as Popover from '#lib/components/ui/popover/index.js';
+  import { getSampleDiagrams, type SampleExample } from '#lib/util/mermaid.js';
+  import { updateCode } from '#lib/util/state.svelte.js';
+  import { logEvent } from '#lib/util/stats.js';
+  import { cn } from '#lib/utils.js';
   import ShapesIcon from '~icons/material-symbols/account-tree-outline-rounded';
   import ChevronDownIcon from '~icons/material-symbols/keyboard-arrow-down-rounded';
 

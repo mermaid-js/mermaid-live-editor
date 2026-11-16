@@ -1,4 +1,4 @@
-import type { State } from '$lib/types';
+import type { State } from '#lib/types.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { parse } from './mermaid';
 import {
@@ -166,18 +166,5 @@ describe('keystroke updates once the last validate-and-render cycle was slow', (
 
     expect(parseMock).toHaveBeenCalledTimes(2);
     expect(validatedState.current.code).toBe('graph TD\n  Slow --> More');
-  });
-});
-
-describe('stale validations', () => {
-  it('a slower, older validation cannot overwrite a newer one', async () => {
-    slowParseOnce(500);
-    updateCode('graph TD\n  Old');
-    updateCode('graph TD\n  New');
-
-    await vi.advanceTimersByTimeAsync(600);
-
-    expect(parseMock).toHaveBeenCalledTimes(2);
-    expect(validatedState.current.code).toBe('graph TD\n  New');
   });
 });

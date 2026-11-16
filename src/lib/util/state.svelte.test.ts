@@ -1,11 +1,10 @@
-import type { State } from '$lib/types';
+import type { State } from '#lib/types.js';
 import { flushSync } from 'svelte';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   clearDefaultThemeConfig,
   defaultState,
   inputState,
-  loadState,
   replaceInputState,
   toggleDarkTheme,
   updateCode,
@@ -41,8 +40,7 @@ describe('update functions called from effects', () => {
     ['updateConfig', () => updateConfig('{"theme":"default"}')],
     ['toggleDarkTheme', () => toggleDarkTheme(false)],
     ['replaceInputState', () => replaceInputState({ ...defaultState })],
-    ['verifyState', () => verifyState()],
-    ['loadState', () => loadState('')]
+    ['verifyState', () => verifyState()]
   ];
 
   it.each(cases)('%s does not make the calling effect track input state', (_name, call) => {
@@ -86,6 +84,18 @@ describe('update functions persist input state', () => {
     verifyState();
     expect(inputState.panZoom).toBe(true);
     expect(readStoredState().panZoom).toBe(true);
+  });
+
+  it('does not persist state changes from the view route', () => {
+    const stored = JSON.stringify({ ...defaultState, code: 'graph TD\n stored-editor-state' });
+    window.localStorage.setItem('codeStore', stored);
+    window.history.replaceState(null, '', '/view#snapshot');
+    try {
+      updateCode('graph TD\n preview-only-state');
+      expect(window.localStorage.getItem('codeStore')).toBe(stored);
+    } finally {
+      window.history.replaceState(null, '', '/');
+    }
   });
 });
 

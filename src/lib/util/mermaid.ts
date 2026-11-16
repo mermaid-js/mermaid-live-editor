@@ -87,24 +87,6 @@ for (const theme of [
 export const isManagedTheme = (theme: unknown): boolean =>
   theme === undefined || (typeof theme === 'string' && managedThemes.has(theme));
 
-export const standardizeDiagramType = (diagramType: string) => {
-  switch (diagramType) {
-    case 'class':
-    case 'classDiagram': {
-      return 'classDiagram';
-    }
-    case 'graph':
-    case 'flowchart':
-    case 'flowchart-elk':
-    case 'flowchart-v2': {
-      return 'flowchart';
-    }
-    default: {
-      return diagramType;
-    }
-  }
-};
-
 type DiagramDefinition = (typeof diagramData)[number];
 
 export type SampleExample = DiagramDefinition['examples'][number];

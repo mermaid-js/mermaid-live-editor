@@ -1,4 +1,4 @@
-import { TID } from '$/constants';
+import { TID } from '#lib/constants.ts';
 import { expect, test } from './test';
 
 test.describe('Check actions', () => {

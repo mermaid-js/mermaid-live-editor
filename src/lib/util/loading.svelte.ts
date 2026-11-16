@@ -1,4 +1,4 @@
-import type { LoadingState } from '$lib/types';
+import type { LoadingState } from '#lib/types.js';
 
 export const loadingState = $state<LoadingState>({ loading: false });
 

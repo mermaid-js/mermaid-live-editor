@@ -1,4 +1,4 @@
-import { defaultState } from '$/constants';
+import { defaultState } from '#lib/constants.js';
 import type { MermaidConfig } from 'mermaid';
 import { encodeEmbedParams, type EmbedMode } from './embed';
 import { serializeState } from './serde';

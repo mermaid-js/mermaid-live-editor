@@ -54,7 +54,7 @@ States loaded from URLs pass through `sanitizeConfig` (state.svelte.ts), which d
 - shadcn-svelte components live in `src/lib/components/ui/` (bits-ui based, registry config in `components.json`) — treat as vendored; several lint rules are disabled there.
 - Tailwind CSS 4 (via `@tailwindcss/vite`).
 - Icons via unplugin-icons: `import X from '~icons/material-symbols/...'`; custom icons load from `static/icons` under `~icons/custom/*`.
-- Path alias: `$/*` → `src/lib/*` (in addition to SvelteKit's `$lib`).
+- Imports from `src/lib` use the `#lib` subpath import (`package.json` `imports`); SvelteKit 3 removed `$lib` and the `alias` config.
 
 ### Environment / build quirks
 

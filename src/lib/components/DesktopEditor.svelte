@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { EditorProps } from '$/types';
-  import { env } from '$/util/env';
-  import { urls, validatedState } from '$/util/state.svelte';
-  import { logMermaidChartClick } from '$/util/stats';
-  import { AIPromptViewZoneManager } from '$lib/util/AIPromptViewZoneManager';
-  import { initEditor } from '$lib/util/monacoExtra';
-  import { errorDebug } from '$lib/util/util';
+  import type { EditorProps } from '#lib/types.js';
+  import { env } from '#lib/util/env.js';
+  import { urls, validatedState } from '#lib/util/state.svelte.js';
+  import { logMermaidChartClick } from '#lib/util/stats.js';
+  import { AIPromptViewZoneManager } from '#lib/util/AIPromptViewZoneManager.js';
+  import { initEditor } from '#lib/util/monacoExtra.js';
+  import { errorDebug } from '#lib/util/util.js';
   import { mode } from 'mode-watcher';
   import * as monaco from 'monaco-editor';
   import monacoEditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';

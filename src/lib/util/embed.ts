@@ -1,5 +1,5 @@
-import { C, defaultState } from '$/constants';
-import type { State } from '$/types';
+import { C, defaultState } from '#lib/constants.js';
+import type { State } from '#lib/types.js';
 import type { MermaidConfig } from 'mermaid';
 import { MCBaseURL } from './env';
 import { isOnMermaidAI } from './migration/domainMigration';

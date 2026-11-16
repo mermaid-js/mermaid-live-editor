@@ -1,7 +1,7 @@
-import type { HistoryEntry, HistoryType, Optional, State } from '$lib/types';
-import { persisted, readJSON, type Persisted } from '$lib/util/persist.svelte';
-import { inputState } from '$lib/util/state.svelte';
-import { logEvent } from '$lib/util/stats';
+import type { HistoryEntry, HistoryType, Optional, State } from '#lib/types.js';
+import { persisted, readJSON, type Persisted } from '#lib/util/persist.svelte.js';
+import { inputState } from '#lib/util/state.svelte.js';
+import { logEvent } from '#lib/util/stats.js';
 import { generateSlug } from 'random-word-slugs';
 import { v4 as uuidV4 } from 'uuid';
 

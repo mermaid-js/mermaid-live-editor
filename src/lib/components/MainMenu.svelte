@@ -1,13 +1,13 @@
 <script lang="ts">
-  import McWrapper from '$/components/McWrapper.svelte';
-  import * as Popover from '$/components/ui/popover';
-  import { Switch } from '$/components/ui/switch';
-  import { TID } from '$/constants';
-  import { pickDiagramFile } from '$/util/diagramFile';
-  import { env } from '$/util/env';
-  import { urls } from '$/util/state.svelte';
-  import { logMermaidChartClick } from '$/util/stats';
-  import { cn } from '$/utils';
+  import McWrapper from '#lib/components/McWrapper.svelte';
+  import * as Popover from '#lib/components/ui/popover/index.js';
+  import { Switch } from '#lib/components/ui/switch/index.js';
+  import { TID } from '#lib/constants.js';
+  import { pickDiagramFile } from '#lib/util/diagramFile.js';
+  import { env } from '#lib/util/env.js';
+  import { urls } from '#lib/util/state.svelte.js';
+  import { logMermaidChartClick } from '#lib/util/stats.js';
+  import { cn } from '#lib/utils.js';
   import { mode, setMode } from 'mode-watcher';
   import type { Component, Snippet } from 'svelte';
   import MermaidTailIcon from '~icons/custom/mermaid-tail';

@@ -3,7 +3,15 @@ import type { State } from './types';
 export const TID = {
   aiHelpText: 'ai-help-text',
   aiRepairButton: 'ai-repair-button',
+  contextMenuCopyCode: 'context-menu-copy-code',
+  contextMenuCopyImage: 'context-menu-copy-image',
+  contextMenuCopyLink: 'context-menu-copy-link',
+  contextMenuCopyMarkdown: 'context-menu-copy-markdown',
+  contextMenuDownloadPNG: 'context-menu-download-png',
+  contextMenuDownloadSVG: 'context-menu-download-svg',
+  contextMenuResetView: 'context-menu-reset-view',
   copyMarkdown: 'copy-markdown',
+  diagramContextMenuTrigger: 'diagram-context-menu-trigger',
   diagramDocumentationButton: 'diagram-documentation-button',
   downloadMMD: 'download-MMD',
   downloadPNG: 'download-PNG',
@@ -18,6 +26,7 @@ export const TID = {
   embedSnippet: 'embed-snippet',
   embedToolbar: 'embed-toolbar',
   errorContainer: 'error-container',
+  livePreviewButton: 'live-preview-button',
   mainMenuButton: 'main-menu-button',
   menuOpenFile: 'menu-open-file',
   openFileButton: 'open-file-button',
@@ -27,6 +36,8 @@ export const TID = {
 export const C = {
   aiLiveEditor: 'ai_live_editor',
   editorChooserDismissedKey: 'mermaid-editor-chooser-dismissed',
+  livePreviewParam: 'live',
+  livePreviewSessionKey: 'mermaid-live-preview-session',
   utmSource: 'mermaid_live_editor'
 } as const;
 

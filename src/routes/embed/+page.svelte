@@ -1,9 +1,9 @@
 <script lang="ts">
-  import EmbedView from '$/components/EmbedView.svelte';
-  import MermaidChartIcon from '$/components/MermaidChartIcon.svelte';
-  import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
-  import { Button } from '$/components/ui/button';
-  import { TID } from '$/constants';
+  import EmbedView from '#lib/components/EmbedView.svelte';
+  import MermaidChartIcon from '#lib/components/MermaidChartIcon.svelte';
+  import PanZoomToolbar from '#lib/components/PanZoomToolbar.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { TID } from '#lib/constants.js';
   import {
     buildEditUrl,
     buildSaveUrl,
@@ -12,9 +12,9 @@
     toggleMode,
     type EmbedMode,
     type ResolvedEmbed
-  } from '$/util/embed';
-  import { env } from '$/util/env';
-  import { PanZoomState } from '$/util/panZoom';
+  } from '#lib/util/embed.js';
+  import { env } from '#lib/util/env.js';
+  import { PanZoomState } from '#lib/util/panZoom.js';
   import { asset, resolve } from '$app/paths';
   import { onMount } from 'svelte';
   import DarkModeIcon from '~icons/material-symbols/dark-mode-outline';
@@ -66,7 +66,7 @@
           <p>{resolved.error}</p>
           <p class="mt-2 text-muted-foreground">
             Check that the link is complete, or
-            <a class="underline" href={resolve('/edit', {})}>create a new diagram</a>.
+            <a class="underline" href={resolve('edit')}>create a new diagram</a>.
           </p>
         </div>
       </div>
@@ -113,14 +113,14 @@
         target="_blank"
         rel="noreferrer noopener"
         class="flex items-center gap-1.5 text-muted-foreground hover:text-foreground">
-        <img src={asset('/favicon.svg')} alt="" class="h-4 w-4" />
+        <img src={asset('favicon.svg')} alt="" class="h-4 w-4" />
         Powered by Mermaid
       </a>
 
       <div class="flex items-center gap-3">
         <a
           data-testid={TID.embedEditLink}
-          href={buildEditUrl(serialized, window.location.origin + resolve('/edit', {}))}
+          href={buildEditUrl(serialized, window.location.origin + resolve('edit'))}
           target="_blank"
           rel="noreferrer noopener"
           class="text-muted-foreground hover:text-foreground">

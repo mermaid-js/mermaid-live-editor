@@ -1,8 +1,8 @@
 <script lang="ts">
-  import CopyButton from '$/components/CopyButton.svelte';
-  import { Input } from '$/components/ui/input';
-  import type { InputType } from '$/types';
-  import { copyToClipboard } from '$/util/util';
+  import CopyButton from '#lib/components/CopyButton.svelte';
+  import { Input } from '#lib/components/ui/input/index.js';
+  import type { InputType } from '#lib/types.js';
+  import { copyToClipboard } from '#lib/util/util.js';
 
   let {
     value,

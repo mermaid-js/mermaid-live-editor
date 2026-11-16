@@ -1,4 +1,4 @@
-import { C } from '$/constants';
+import { C } from '#lib/constants.ts';
 import { expect, test, type Page } from '@playwright/test';
 
 // What a pre-mermaid-12 install left in localStorage: the editor seeded every

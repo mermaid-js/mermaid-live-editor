@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '$/components/ui/button';
-  import { cn } from '$lib/utils.js';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { cn } from '#lib/utils.js';
   import CloseIcon from '~icons/material-symbols/close-rounded';
 
   interface Props {

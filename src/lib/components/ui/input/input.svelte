@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { InputType } from '$/types';
-  import { cn, type WithElementRef } from '$lib/utils.js';
+  import type { InputType } from '#lib/types.js';
+  import { cn, type WithElementRef } from '#lib/utils.js';
   import type { HTMLInputAttributes } from 'svelte/elements';
 
   type Props = WithElementRef<

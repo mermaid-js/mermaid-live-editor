@@ -1,6 +1,6 @@
-import { defaultState, TID } from '$/constants';
-import type { State } from '$/types';
-import { serializeState } from '$/util/serde';
+import { defaultState, TID } from '#lib/constants.ts';
+import type { State } from '#lib/types.js';
+import { serializeState } from '#lib/util/serde.ts';
 import { expect, test as base, type Page } from '@playwright/test';
 import { test as editorTest } from './test';
 
@@ -98,6 +98,16 @@ base.describe('Embed page', () => {
 });
 
 editorTest.describe('Share dialog embed section', () => {
+  editorTest('should only offer the live editor link and the embed', async ({ editPage, page }) => {
+    void editPage;
+    await page.getByRole('button', { name: 'Share' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: 'Mermaid Live Editor' })).toBeVisible();
+    await expect(dialog.getByRole('heading', { name: 'Embed' })).toBeVisible();
+    // The Mermaid Chart Playground is retired and must not be offered any more.
+    await expect(dialog).not.toContainText('Playground');
+  });
+
   editorTest('should offer iframe and web component snippets', async ({ editPage, page }) => {
     void editPage;
     await page.getByRole('button', { name: 'Share' }).click();

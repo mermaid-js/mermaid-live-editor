@@ -1,7 +1,7 @@
-import { defaultState } from '$/constants';
-import type { ErrorHash, MarkerData, State, ValidatedState } from '$/types';
+import { defaultState } from '#lib/constants.js';
+import type { ErrorHash, MarkerData, State, ValidatedState } from '#lib/types.js';
 import { resolve } from '$app/paths';
-import { debounce, get as lodashGet } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import type { MermaidConfig } from 'mermaid';
 import { untrack } from 'svelte';
 import { env } from './env';
@@ -12,24 +12,16 @@ import {
 } from './errorHandling';
 import { darkVariantOf, getDefaultTheme, isManagedTheme, parse } from './mermaid';
 import { readJSON, writeJSON } from './persist.svelte';
-import { findUnsafeConfigPaths, stripConfigPaths } from './sanitize';
-import { deserializeState, pakoSerde, serializeState } from './serde';
+import { pakoSerde, serializeState } from './serde';
 import { errorDebug, formatJSON, getUTMSource, MCBaseURL } from './util';
 
 export { defaultState };
 
-const urlParseFailedState = `flowchart TD
-    A[Loading URL failed. We can try to figure out why.] -->|Decode JSON| B(Please check the console to see the JSON and error details.)
-    B --> C{Is the JSON correct?}
-    C -->|Yes| D(Please Click here to Raise an issue in github.<br/>Including the broken link in the issue <br/> will speed up the fix.)
-    C -->|No| E{Did someone <br/>send you this link?}
-    E -->|Yes| F[Ask them to send <br/>you the complete link]
-    E -->|No| G{Did you copy <br/> the complete URL?}
-    G --> |Yes| D
-    G --> |"No :("| H(Try using the Timeline tab in History <br/>from same browser you used to create the diagram.)
-    click D href "https://github.com/mermaid-js/mermaid-live-editor/issues/new?assignees=&labels=bug&template=bug_report.md&title=Broken%20link" "Raise issue"`;
-
 const CODE_STORE_KEY = 'codeStore';
+const viewPath = resolve('view').replace(/\/$/, '');
+
+const shouldPersistInputState = (): boolean =>
+  window.location.pathname.replace(/\/$/, '') !== viewPath;
 
 // The single mutable input state; only update() below may write to it.
 // The fallback is cloned so mutations never write through to defaultState.
@@ -55,6 +47,7 @@ let validatedCurrent = $state.raw<ValidatedState>(
 );
 
 let lastDiagramType = '';
+let processingVersion = 0;
 
 const processState = async (state: State) => {
   const processed = validatedStateOf(state, '');
@@ -63,11 +56,6 @@ const processState = async (state: State) => {
     processed.serialized = serializeState(state);
     const { diagramType } = await parse(state.code);
     processed.diagramType = diagramType;
-    if (lastDiagramType === 'zenuml' && diagramType !== lastDiagramType) {
-      // Temp Hack to refresh page after displaying ZenUML.
-      setTimeout(() => window.location.reload(), 500);
-    }
-    lastDiagramType = diagramType;
     JSON.parse(state.mermaid);
   } catch (error) {
     processed.error = error as Error;
@@ -115,27 +103,27 @@ const processState = async (state: State) => {
 // Replaces the old URL-hash store subscription; assigned by initURLSubscription.
 let updateHash: ((serialized: string) => void) | undefined;
 
-const persist = (): void => {
-  writeJSON(CODE_STORE_KEY, $state.snapshot(input));
-};
-
-// Bumped by every mutation so an in-flight validation can tell whether its
-// snapshot is still current.
-let inputVersion = 0;
-
 // Snapshot the input state and asynchronously re-validate it, publishing the
 // result to `validatedState` (and the URL hash, once initURLSubscription has
-// run). If the input changed while the parse was running the result is stale
-// and dropped: publishing it would make the editors overwrite newer keystrokes,
-// and the update that changed the input has already queued its own validation.
+// run). update() bumps processingVersion on every mutation, so a result whose
+// input changed while the parse was running is dropped: publishing it would
+// make the editors overwrite newer keystrokes, and the update that changed the
+// input has already queued its own validation.
 const validate = (): void => {
   const snapshot = $state.snapshot(input) as State;
-  const version = inputVersion;
+  const version = processingVersion;
   const start = Date.now();
   void processState(snapshot).then((processed) => {
     lastParseMs = Date.now() - start;
-    if (version !== inputVersion) {
+    if (version !== processingVersion) {
       return;
+    }
+    if (processed.diagramType) {
+      if (lastDiagramType === 'zenuml' && processed.diagramType !== lastDiagramType) {
+        // Temp Hack to refresh page after displaying ZenUML.
+        setTimeout(() => window.location.reload(), 500);
+      }
+      lastDiagramType = processed.diagramType;
     }
     validatedCurrent = processed;
     updateHash?.(processed.serialized);
@@ -180,8 +168,10 @@ export interface UpdateOptions {
 const update = (mutate: (state: State) => void, options: UpdateOptions = {}): void => {
   untrack(() => {
     mutate(input);
-    inputVersion++;
-    persist();
+    processingVersion++;
+    if (shouldPersistInputState()) {
+      writeJSON(CODE_STORE_KEY, $state.snapshot(input));
+    }
     if (options.debounce && isSlowCycle()) {
       validateDebounced();
     } else {
@@ -215,7 +205,6 @@ const urlsCurrent = $derived.by(() => {
         | 'ai_repair'
         | 'main_menu'
         | 'save_diagram'
-        | 'share'
         | 'vibe_diagramming'
         | 'visual_edit'
         | 'voice_edit';
@@ -234,10 +223,10 @@ const urlsCurrent = $derived.by(() => {
         home: `${MCBaseURL}/?${params}`
       };
     },
-    new: `${resolve('/edit', {})}#${serializeState(defaultState)}`,
+    new: `${resolve('edit')}#${serializeState(defaultState)}`,
     png,
     svg: rendererUrl ? `${rendererUrl}/svg/${serialized}` : '',
-    view: `${resolve('/view', {})}#${serialized}`
+    view: `${resolve('view')}#${serialized}`
   };
 });
 
@@ -245,55 +234,6 @@ export const urls = {
   get current() {
     return urlsCurrent;
   }
-};
-
-/**
- * Asks the user for confirmation if the config contains settings that might
- * pose security risks, such as a relaxed `securityLevel`.
- *
- * @param config - The Mermaid configuration to sanitize.
- * @returns The sanitized Mermaid configuration as a JSON string.
- */
-export const sanitizeConfig = (config: string | MermaidConfig) => {
-  const mermaidConfig: MermaidConfig =
-    typeof config === 'string' ? (JSON.parse(config) as MermaidConfig) : config;
-
-  const unsafePaths = findUnsafeConfigPaths(mermaidConfig);
-
-  if (
-    unsafePaths.length > 0 &&
-    confirm(
-      `Removing ${unsafePaths
-        .map((unsafePath) => {
-          return `${JSON.stringify(unsafePath.join('.'))}: ${JSON.stringify(lodashGet(mermaidConfig, unsafePath))}`;
-        })
-        .join(
-          ',\n'
-        )} from the config for safety.\nClick Cancel if you trust the source of this Diagram.`
-    )
-  ) {
-    stripConfigPaths(mermaidConfig, unsafePaths);
-  }
-  return formatJSON(mermaidConfig);
-};
-
-export const loadState = (data: string): void => {
-  console.log(`Loading '${data}'`);
-  update((state) => {
-    let next: State;
-    try {
-      next = deserializeState(data);
-      next.mermaid = sanitizeConfig(next.mermaid || defaultState.mermaid);
-    } catch (error) {
-      next = $state.snapshot(state) as State;
-      if (data) {
-        console.error('Init error', error);
-        next.code = urlParseFailedState;
-        next.mermaid = defaultState.mermaid;
-      }
-    }
-    applyPartial(state, next);
-  });
 };
 
 let renderCount = 0;

@@ -18,7 +18,7 @@
  */
 
 /**
- * Keep in sync with `EMBED_IFRAME_SANDBOX` in `$/util/embedCode`.
+ * Keep in sync with `EMBED_IFRAME_SANDBOX` in `#lib/util/embedCode.js`.
  * `allow-same-origin` is required for the SvelteKit `/embed` app to boot; see embedCode.ts.
  */
 const IFRAME_SANDBOX =

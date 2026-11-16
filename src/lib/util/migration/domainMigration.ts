@@ -1,5 +1,5 @@
-import { C } from '$/constants';
-import { env } from '$/util/env';
+import { C } from '#lib/constants.js';
+import { env } from '#lib/util/env.js';
 
 const mermaidAiDomain = 'mermaid.ai';
 const mermaidLiveDomain = 'mermaid.live';

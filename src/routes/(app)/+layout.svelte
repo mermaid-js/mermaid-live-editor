@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Toaster } from '$/components/ui/sonner/index.js';
-  import { loadingState } from '$/util/loading.svelte';
-  import { toggleDarkTheme } from '$/util/state.svelte';
-  import { initHandler } from '$/util/util';
-  import { base } from '$app/paths';
+  import { Toaster } from '#lib/components/ui/sonner/index.js';
+  import { loadingState } from '#lib/util/loading.svelte.js';
+  import { toggleDarkTheme } from '#lib/util/state.svelte.js';
+  import { loadHashChange } from '#lib/util/util.js';
+  import { asset, resolve } from '$app/paths';
   import { mode, ModeWatcher } from 'mode-watcher';
   import { onMount, type Snippet } from 'svelte';
 
@@ -16,13 +16,11 @@
   // This can be removed once https://github.com/sveltejs/kit/issues/1612 is fixed.
   // Then move it into src and vite will bundle it automatically.
   onMount(() => {
-    window.addEventListener('hashchange', () => {
-      void initHandler();
-    });
+    window.addEventListener('hashchange', loadHashChange);
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register(`${base}/service-worker.js`, { scope: `${base}/` })
+        .register(asset('service-worker.js'), { scope: resolve('/(app)') })
         .then(function (registration) {
           console.log('Registration successful, scope is:', registration.scope);
         })
@@ -30,6 +28,8 @@
           console.log('Service worker registration failed, error:', error);
         });
     }
+
+    return () => window.removeEventListener('hashchange', loadHashChange);
   });
 
   $effect(() => {

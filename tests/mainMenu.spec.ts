@@ -1,4 +1,4 @@
-import { TID } from '$/constants';
+import { TID } from '#lib/constants.ts';
 import { test } from './test';
 
 test.describe('Main menu', () => {

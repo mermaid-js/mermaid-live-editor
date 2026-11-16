@@ -78,17 +78,8 @@ export type HistoryEntry = { id: string; state: State; time: number; url?: strin
     }
 );
 
-export type DocumentationConfig = Record<
-  string,
-  {
-    code: string;
-    config?: string;
-  }
->;
-
 export type EditorMode = 'code' | 'config';
 
-export type Loader = (url: string) => Promise<State>;
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export interface ErrorHash {
