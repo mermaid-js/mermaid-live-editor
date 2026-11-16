@@ -3,7 +3,7 @@
   import { recordRenderTime, shouldRefreshView } from '#lib/util/autoSync.js';
   import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
   import { renderAndPlaceDiagram } from '#lib/util/renderView.js';
-  import { updateCodeStore, validatedState } from '#lib/util/state.svelte.js';
+  import { reportRenderTime, updateCodeStore, validatedState } from '#lib/util/state.svelte.js';
   import { saveStatistics } from '#lib/util/stats.js';
   import FontAwesome, { mayContainFontAwesome } from '#lib/components/FontAwesome.svelte';
   import uniqueID from 'lodash-es/uniqueId';
@@ -124,6 +124,7 @@
       error = true;
     }
     const renderTime = Date.now() - startTime;
+    reportRenderTime(renderTime);
     saveStatistics({ code, diagramType, isRough: state.rough, renderTime });
     recordRenderTime(renderTime, () => {
       updateCodeStore({ updateDiagram: true });

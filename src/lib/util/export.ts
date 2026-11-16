@@ -191,6 +191,15 @@ export const copyPNG = (size: ImageSize = { mode: 'auto', size: 0 }) =>
 export const downloadPNG = (size: ImageSize = { mode: 'auto', size: 0 }) =>
   exportImage(downloadImage, size);
 
+// The diagram source, as the .mmd file mermaid's CLI and editor plugins use.
+// Reads the input state so it never lags behind what the editor shows.
+export const downloadMMD = () => {
+  simulateDownload(
+    getFileName('mmd'),
+    `data:text/plain;charset=utf-8,${encodeURIComponent(inputState.code)}`
+  );
+};
+
 export const downloadSVG = () => {
   simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
 };
