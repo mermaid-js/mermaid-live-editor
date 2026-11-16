@@ -7,6 +7,7 @@ export const TID = {
   contextMenuCopyImage: 'context-menu-copy-image',
   contextMenuCopyLink: 'context-menu-copy-link',
   contextMenuCopyMarkdown: 'context-menu-copy-markdown',
+  contextMenuDownloadMMD: 'context-menu-download-mmd',
   contextMenuDownloadPNG: 'context-menu-download-png',
   contextMenuDownloadSVG: 'context-menu-download-svg',
   contextMenuResetView: 'context-menu-reset-view',

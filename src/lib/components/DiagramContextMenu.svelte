@@ -1,6 +1,12 @@
 <script lang="ts">
   import { TID } from '#lib/constants.js';
-  import { copyPNG, downloadPNG, downloadSVG, isClipboardAvailable } from '#lib/util/export.js';
+  import {
+    copyPNG,
+    downloadMMD,
+    downloadPNG,
+    downloadSVG,
+    isClipboardAvailable
+  } from '#lib/util/export.js';
   import { notify } from '#lib/util/notify.js';
   import type { PanZoomState } from '#lib/util/panZoom.js';
   import { urls, validatedState } from '#lib/util/state.svelte.js';
@@ -95,6 +101,13 @@
         icon: DownloadIcon,
         label: 'Download SVG',
         testId: TID.contextMenuDownloadSVG
+      },
+      {
+        action: downloadMMD,
+        event: 'downloadMMD',
+        icon: DownloadIcon,
+        label: 'Download MMD',
+        testId: TID.contextMenuDownloadMMD
       }
     ],
     [
