@@ -1,11 +1,32 @@
+import { C } from '#lib/constants.js';
+import { readJSON, writeJSON } from '#lib/util/persist.svelte.js';
 import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
 import { getDiagramEditorUrl, getFlowSignUpUrl, getMermaidAiLiveUrl } from '#lib/util/util.js';
 
 const utmMedium = 'editorSelection';
 const utmCampaign = 'live_2026';
-// Variant C (combined pop-up) of the Mermaid Flow launch experiment.
-const flowUtmCampaign = 'flow_flowC';
-const visualEditorUtmCampaign = 'flow_visualC';
+
+// Mermaid Flow launch experiment (Mermaid-Chart/collab#6752), split evenly:
+// A shows the Visual Editor alone, B shows Mermaid Flow alone, C shows both.
+export const editorChooserVariants = ['A', 'B', 'C'] as const;
+export type EditorChooserVariant = (typeof editorChooserVariants)[number];
+
+const isVariant = (value: unknown): value is EditorChooserVariant =>
+  (editorChooserVariants as readonly unknown[]).includes(value);
+
+/**
+ * Each browser is randomly assigned one variant and keeps it, so clicks can be compared per
+ * variant. `?editorChooser=A|B|C` shows a variant for QA without changing the assignment.
+ */
+export const getEditorChooserVariant = (): EditorChooserVariant => {
+  const forced = new URLSearchParams(window.location.search).get('editorChooser');
+  if (isVariant(forced)) return forced;
+  const stored = readJSON<unknown>(C.editorChooserVariantKey, '');
+  if (isVariant(stored)) return stored;
+  const assigned = editorChooserVariants[Math.floor(Math.random() * editorChooserVariants.length)];
+  writeJSON(C.editorChooserVariantKey, assigned);
+  return assigned;
+};
 
 export interface EditorChooserActions {
   log: (buttonClick: string) => void;
@@ -15,9 +36,12 @@ export interface EditorChooserActions {
   openMermaidAiLive: (buttonClick: string) => void;
 }
 
-export const createEditorChooserActions = (close: () => void): EditorChooserActions => {
+export const createEditorChooserActions = (
+  close: () => void,
+  variant: EditorChooserVariant
+): EditorChooserActions => {
   const log = (buttonClick: string) => {
-    logEvent('chooseEditor', { buttonClick });
+    logEvent('chooseEditor', { buttonClick, variant });
   };
 
   const openVisualEditor = (buttonClick = 'openVisualEditor') => {
@@ -25,7 +49,7 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     logMermaidChartClick('editorPicker');
     close();
     window.open(
-      getDiagramEditorUrl({ utmCampaign: visualEditorUtmCampaign, utmMedium }),
+      getDiagramEditorUrl({ utmCampaign: `flow_visual${variant}`, utmMedium }),
       '_blank',
       'noopener'
     );
@@ -36,7 +60,7 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     logMermaidChartClick('editorPicker');
     close();
     window.open(
-      getFlowSignUpUrl({ utmCampaign: flowUtmCampaign, utmMedium }),
+      getFlowSignUpUrl({ utmCampaign: `flow_flow${variant}`, utmMedium }),
       '_blank',
       'noopener'
     );
