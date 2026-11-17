@@ -101,6 +101,21 @@ export const getFlowProductUrl = (utm: { utmCampaign: string; utmMedium: string 
   return `${MCBaseURL}/products/flow?${buildUtmParams(utm).toString()}`;
 };
 
+// Signs up, then lands in Mermaid Flow's cold start (mermaid.ai's own Flow sign-up link).
+export const getFlowSignUpUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  const params = buildUtmParams(utm);
+  params.set('redirect', '/flow/new');
+  return `${MCBaseURL}/app/sign-up?${params.toString()}`;
+};
+
+// Opens the diagram editor's cold start; mermaid.ai sends signed-out visitors through sign-in first.
+export const getDiagramEditorUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  const params = buildUtmParams(utm);
+  // mermaid.ai only shows the cold start for an onboarding entry point.
+  params.set('entryPoint', 'onboarding');
+  return `${MCBaseURL}/app/diagrams/new?${params.toString()}`;
+};
+
 export const getContactSalesUrl = (): string => {
   const params = new URLSearchParams({
     contactSubject: 'contactSales',
