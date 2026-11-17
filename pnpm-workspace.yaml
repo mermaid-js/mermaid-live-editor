@@ -1,0 +1,6 @@
+engineStrict: true
+autoInstallPeers: true
+allowBuilds:
+  deasync: true
+  esbuild: true
+  vue-demi: false

@@ -13,7 +13,7 @@ const verifySerde = (state: State, serde?: SerdeType): string => {
 describe('Serde tests', () => {
   it('should serialize and deserialize with default serde', () => {
     expect(verifySerde(defaultState)).toMatchInlineSnapshot(
-      `"pako:eNpVjLFuwkAQRH9ltVUi4R9wgQR2QoMEBVUcipW99p3gbk_rs1Bk-985A5GS6UbvzYxYS8OYY3uVW21II5zKbw8pm6owavvoqD9Dlq2nHUdw4vlngu3bTqA3EoL13fvT3y4SFON-0Riisf4yP1Hx2B88T1BWewpRwvkvOd1kgo_KHk26_0-Mclp9Vi3lLWU1KRSkDwVX2KltMI868Aodq6Ol4jgnFMh_ibhfqjJ0BtPFtU9tCA1FLi11Si9lvgMWKFYF"`
+      `"pako:eNpVy8FqwkAQxvFXGeZUIXmBHAqatF6EevBk9DAkk-yiu7NMNohk8-4StdAeP_6_b8JGWsYCu6vcGkMa4VCdPADAui6N2iE6Gs6Q559pyxGceL4n2HxsBQYjIVjfr15-syAop93CGKKx_jK_Uvn8_3hOUNU7ClHC-W853CTBV233Rjz_L0aZE3zXHRUd5Q0plKRPghn2alssoo6coWN1tEycZswwkD-KuN-qMvYGi46uA2c4hpYiV5Z6pTeZHxYoVgU"`
     );
   });
 
@@ -25,7 +25,7 @@ describe('Serde tests', () => {
 
   it('should serialize and deserialize with pako serde', () => {
     expect(verifySerde(defaultState, 'pako')).toMatchInlineSnapshot(
-      `"pako:eNpVjLFuwkAQRH9ltVUi4R9wgQR2QoMEBVUcipW99p3gbk_rs1Bk-985A5GS6UbvzYxYS8OYY3uVW21II5zKbw8pm6owavvoqD9Dlq2nHUdw4vlngu3bTqA3EoL13fvT3y4SFON-0Riisf4yP1Hx2B88T1BWewpRwvkvOd1kgo_KHk26_0-Mclp9Vi3lLWU1KRSkDwVX2KltMI868Aodq6Ol4jgnFMh_ibhfqjJ0BtPFtU9tCA1FLi11Si9lvgMWKFYF"`
+      `"pako:eNpVy8FqwkAQxvFXGeZUIXmBHAqatF6EevBk9DAkk-yiu7NMNohk8-4StdAeP_6_b8JGWsYCu6vcGkMa4VCdPADAui6N2iE6Gs6Q559pyxGceL4n2HxsBQYjIVjfr15-syAop93CGKKx_jK_Uvn8_3hOUNU7ClHC-W853CTBV233Rjz_L0aZE3zXHRUd5Q0plKRPghn2alssoo6coWN1tEycZswwkD-KuN-qMvYGi46uA2c4hpYiV5Z6pTeZHxYoVgU"`
     );
   });
 

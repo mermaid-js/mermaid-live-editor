@@ -2,7 +2,7 @@
 
 ## Commands
 
-Uses pnpm (install via `corepack enable pnpm`). Node >= 24 required.
+Uses pnpm (install via `npm install -g corepack && corepack enable pnpm`). Node >= 26 required.
 
 - `pnpm dev` — dev server on http://localhost:3000
 - `pnpm build` — production build (static site, output to `docs/`)
