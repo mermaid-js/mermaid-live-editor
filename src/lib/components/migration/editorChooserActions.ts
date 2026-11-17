@@ -1,12 +1,14 @@
 import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
-import { getCheckoutUrl, getMermaidAiLiveUrl } from '#lib/util/util.js';
+import { getCheckoutUrl, getFlowProductUrl, getMermaidAiLiveUrl } from '#lib/util/util.js';
 
 const utmMedium = 'editorSelection';
 const utmCampaign = 'live_2026';
+const flowUtmCampaign = 'november_flow';
 
 export interface EditorChooserActions {
   log: (buttonClick: string) => void;
   startTrial: (buttonClick?: string) => void;
+  tryFlow: (buttonClick?: string) => void;
   dismiss: (buttonClick: string) => void;
   openMermaidAiLive: (buttonClick: string) => void;
 }
@@ -23,6 +25,17 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     window.open(getCheckoutUrl({ utmCampaign, utmMedium }), '_blank', 'noopener');
   };
 
+  const tryFlow = (buttonClick = 'tryFlow') => {
+    log(buttonClick);
+    logMermaidChartClick('editorPicker');
+    close();
+    window.open(
+      getFlowProductUrl({ utmCampaign: flowUtmCampaign, utmMedium }),
+      '_blank',
+      'noopener'
+    );
+  };
+
   const dismiss = (buttonClick: string) => {
     log(buttonClick);
     close();
@@ -34,5 +47,5 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     window.open(getMermaidAiLiveUrl({ utmCampaign, utmMedium }), '_blank', 'noopener');
   };
 
-  return { log, startTrial, dismiss, openMermaidAiLive };
+  return { dismiss, log, openMermaidAiLive, startTrial, tryFlow };
 };
