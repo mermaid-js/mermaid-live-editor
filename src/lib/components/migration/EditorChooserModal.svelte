@@ -1,4 +1,6 @@
 <script lang="ts">
+  import PrivacyPolicyLink from '#lib/components/migration/PrivacyPolicyLink.svelte';
+  import { Button } from '#lib/components/ui/button/index.js';
   import * as Dialog from '#lib/components/ui/dialog/index.js';
   import { dismissEditorChooser } from '#lib/util/migration/domainMigration.js';
   import { asset } from '$app/paths';
@@ -69,7 +71,7 @@
       <Dialog.Close
         class="flex size-11 items-center justify-center rounded-md text-[#6b6880] hover:text-[#17151f] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:-my-1.5 sm:-mr-4 dark:text-[#9a98a8] dark:hover:text-white">
         <X class="size-6 sm:size-5" strokeWidth={2} aria-hidden="true" />
-        <span class="sr-only">Close and stay on mermaid.live</span>
+        <span class="sr-only">Close</span>
       </Dialog.Close>
     </div>
 
@@ -121,6 +123,13 @@
           </button>
         </section>
       {/each}
+    </div>
+
+    <div class="flex flex-col items-center gap-3 sm:mt-6">
+      <Button variant="outline" onclick={() => actions.dismiss('stayOnLive')}>
+        Stay on mermaid.live
+      </Button>
+      <PrivacyPolicyLink />
     </div>
   </Dialog.Content>
 </Dialog.Root>
