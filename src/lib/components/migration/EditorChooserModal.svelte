@@ -78,11 +78,25 @@
   const single = products.length === 1 ? products[0] : undefined;
 </script>
 
-{#snippet newBadge()}
-  <span
-    class="rounded bg-[#7c5cff] px-1.5 py-0.5 text-[10px] leading-3 font-bold tracking-[0.5px] text-white">
-    NEW
-  </span>
+{#snippet productName(product: Product)}
+  {#if product.isNew}
+    <span
+      class="rounded bg-[#7c5cff] px-1.5 py-0.5 text-[10px] leading-3 font-bold tracking-[0.5px] text-white">
+      NEW
+    </span>
+  {/if}
+  {product.name}
+{/snippet}
+
+{#snippet productImage(product: Product, className: string)}
+  <div class={['shrink-0 overflow-hidden border', className]}>
+    <img
+      class="size-full object-cover"
+      src={product.image}
+      alt=""
+      loading="lazy"
+      decoding="async" />
+  </div>
 {/snippet}
 
 {#snippet cta(product: Product, className: string)}
@@ -130,28 +144,17 @@
     </div>
 
     {#if single}
-      <div
-        class={[
-          'aspect-[446/253] shrink-0 overflow-hidden rounded-xl border sm:mt-4',
-          single.imageBorderClass
-        ]}>
-        <img
-          class="size-full object-cover"
-          src={single.image}
-          alt=""
-          loading="lazy"
-          decoding="async" />
-      </div>
+      {@render productImage(
+        single,
+        `aspect-[446/253] rounded-xl sm:mt-4 ${single.imageBorderClass}`
+      )}
       <div class="flex flex-col gap-2 sm:mt-5 sm:gap-1.5" data-testid="editor-chooser-{single.id}">
         <p
           class={[
             'flex items-center gap-2 text-[13px] leading-4 font-semibold',
             single.accentClass
           ]}>
-          {#if single.isNew}
-            {@render newBadge()}
-          {/if}
-          {single.name}
+          {@render productName(single)}
         </p>
         <Dialog.Title
           class="text-[22px] leading-7 font-bold tracking-normal text-balance text-[#17151f] dark:text-white">
@@ -193,20 +196,12 @@
             data-testid="editor-chooser-{product.id}">
             <h3
               class="flex items-center gap-2 text-[15px] leading-[18px] font-semibold text-[#17151f] dark:text-white">
-              {#if product.isNew}
-                {@render newBadge()}
-              {/if}
-              {product.name}
+              {@render productName(product)}
             </h3>
-            <div
-              class="aspect-[302/171] overflow-hidden rounded-lg border border-[rgba(23,21,31,0.08)] sm:mt-[15px] sm:aspect-[255/150] dark:border-white/[0.08]">
-              <img
-                class="size-full object-cover"
-                src={product.image}
-                alt=""
-                loading="lazy"
-                decoding="async" />
-            </div>
+            {@render productImage(
+              product,
+              'aspect-[302/171] rounded-lg border-[rgba(23,21,31,0.08)] sm:mt-[15px] sm:aspect-[255/150] dark:border-white/[0.08]'
+            )}
             <p
               class="text-[13px] leading-[18px] text-[#6b6880] sm:mt-3 sm:min-h-[34px] sm:text-[12.5px] sm:leading-[17px] dark:text-[#9a98a8]">
               {product.description}
