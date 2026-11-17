@@ -1,6 +1,5 @@
 <script lang="ts">
   import PrivacyPolicyLink from '#lib/components/migration/PrivacyPolicyLink.svelte';
-  import { Button } from '#lib/components/ui/button/index.js';
   import * as Dialog from '#lib/components/ui/dialog/index.js';
   import { dismissEditorChooser } from '#lib/util/migration/domainMigration.js';
   import { asset } from '$app/paths';
@@ -60,7 +59,7 @@
   <!-- The last direct child button is Dialog.Content's built-in close; the design has its own. -->
   <Dialog.Content
     data-testid="editor-chooser"
-    class="flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-[654px] flex-col gap-3 overflow-y-auto rounded-2xl border-0 bg-white p-4 shadow-[0_24px_32px_rgba(15,13,30,0.18)] sm:gap-0 sm:rounded-2xl sm:px-8 sm:pt-6 sm:pb-8 dark:bg-[#1c1a28] dark:shadow-[0_24px_32px_rgba(0,0,0,0.5)] [&>button:last-child]:hidden">
+    class="flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-[654px] flex-col gap-2.5 overflow-y-auto rounded-2xl border-0 bg-white p-4 shadow-[0_24px_32px_rgba(15,13,30,0.18)] sm:gap-0 sm:rounded-2xl sm:px-8 sm:pt-6 sm:pb-8 dark:bg-[#1c1a28] dark:shadow-[0_24px_32px_rgba(0,0,0,0.5)] [&>button:last-child]:hidden">
     <div class="flex items-center justify-between">
       <img
         class="h-8 w-[113px]"
@@ -80,7 +79,7 @@
       Do more with this diagram
     </Dialog.Title>
 
-    <div class="grid gap-3 sm:mt-7 sm:grid-cols-2 sm:gap-4">
+    <div class="grid gap-2.5 sm:mt-7 sm:grid-cols-2 sm:gap-4">
       {#each products as product (product.id)}
         <section
           class={[
@@ -125,10 +124,13 @@
       {/each}
     </div>
 
-    <div class="flex flex-col items-center gap-3 sm:mt-6">
-      <Button variant="outline" onclick={() => actions.dismiss('stayOnLive')}>
-        Stay on mermaid.live
-      </Button>
+    <button
+      type="button"
+      class="flex h-11 w-full shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#c9c4d6] text-sm leading-5 font-medium text-[#59546b] transition-colors hover:bg-[#f8f8fb] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:mt-3 dark:border-[#5c576e] dark:text-[#e0dbed] dark:hover:bg-[#221f33]"
+      onclick={() => actions.dismiss('stayOnLive')}>
+      Stay in mermaid.live
+    </button>
+    <div class="sm:mt-3">
       <PrivacyPolicyLink />
     </div>
   </Dialog.Content>
