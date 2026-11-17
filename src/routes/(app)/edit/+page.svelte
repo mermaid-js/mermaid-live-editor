@@ -33,7 +33,8 @@
   import { shouldShowEditorChooser } from '#lib/util/migration/domainMigration.js';
   import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
   import { env } from '#lib/util/env.js';
-  import { validatedState, updateCodeStore, urls } from '#lib/util/state.svelte.js';
+  import { isMermaidCode } from '#lib/util/mermaid.js';
+  import { validatedState, updateCode, updateCodeStore, urls } from '#lib/util/state.svelte.js';
   import { v13 } from '#lib/util/v13.svelte.js';
   import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
   import { getContactSalesUrl, initHandler } from '#lib/util/util.js';
@@ -102,6 +103,20 @@
 
   let isHistoryOpen = $state(false);
 
+  // Pasting mermaid code outside a text field (e.g. onto the diagram) replaces the diagram.
+  const pasteDiagram = async (event: ClipboardEvent) => {
+    if (
+      !(event.target instanceof Element) ||
+      event.target.closest('input, textarea, [contenteditable]')
+    ) {
+      return;
+    }
+    const text = event.clipboardData?.getData('text/plain') ?? '';
+    if (text.trim() && (await isMermaidCode(text))) {
+      updateCode(text, { resetPanZoom: true, updateDiagram: true });
+    }
+  };
+
   let editorPane: Resizable.Pane | undefined;
   $effect(() => {
     if (isMobile) {
@@ -109,6 +124,8 @@
     }
   });
 </script>
+
+<svelte:document onpaste={pasteDiagram} />
 
 <div class="flex h-full flex-col overflow-hidden">
   {#snippet mobileToggle()}

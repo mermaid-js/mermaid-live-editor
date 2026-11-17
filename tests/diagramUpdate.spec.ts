@@ -50,4 +50,23 @@ A & B & C & D & E --> F & G & H & I & J & K & LongTest`
     );
     await editPage.checkTextInView('Bike');
   });
+
+  test('pasting mermaid code onto the diagram replaces the code', async ({ editPage, page }) => {
+    await editPage.checkTextInView('Christmas');
+    await page.evaluate(() => navigator.clipboard.writeText('graph LR\n  A-->Pasted'));
+    await editPage.view.click();
+    await page.keyboard.press('ControlOrMeta+V');
+    await editPage.checkTextInView('Pasted');
+    await editPage.checkTextNotInView('Christmas');
+    await editPage.checkInEditor('A-->Pasted');
+  });
+
+  test('pasting non-mermaid text onto the diagram is ignored', async ({ editPage, page }) => {
+    await editPage.checkTextInView('Christmas');
+    await page.evaluate(() => navigator.clipboard.writeText('just some text'));
+    await editPage.view.click();
+    await page.keyboard.press('ControlOrMeta+V');
+    await page.waitForTimeout(500);
+    await editPage.checkTextInView('Christmas');
+  });
 });
