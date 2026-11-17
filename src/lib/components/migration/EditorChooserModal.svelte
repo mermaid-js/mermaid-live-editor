@@ -43,7 +43,7 @@
       image: asset('editor-chooser/visual-editor.png'),
       isNew: false,
       name: 'Mermaid Visual Editor',
-      onclick: () => actions.startTrial()
+      onclick: () => actions.openVisualEditor()
     }
   ];
 </script>

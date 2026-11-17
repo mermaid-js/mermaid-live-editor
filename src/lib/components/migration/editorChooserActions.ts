@@ -1,13 +1,15 @@
 import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
-import { getCheckoutUrl, getFlowProductUrl, getMermaidAiLiveUrl } from '#lib/util/util.js';
+import { getDiagramEditorUrl, getFlowSignUpUrl, getMermaidAiLiveUrl } from '#lib/util/util.js';
 
 const utmMedium = 'editorSelection';
 const utmCampaign = 'live_2026';
-const flowUtmCampaign = 'november_flow';
+// Variant C (combined pop-up) of the Mermaid Flow launch experiment.
+const flowUtmCampaign = 'flow_flowC';
+const visualEditorUtmCampaign = 'flow_visualC';
 
 export interface EditorChooserActions {
   log: (buttonClick: string) => void;
-  startTrial: (buttonClick?: string) => void;
+  openVisualEditor: (buttonClick?: string) => void;
   tryFlow: (buttonClick?: string) => void;
   dismiss: (buttonClick: string) => void;
   openMermaidAiLive: (buttonClick: string) => void;
@@ -18,11 +20,15 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     logEvent('chooseEditor', { buttonClick });
   };
 
-  const startTrial = (buttonClick = 'startTrial') => {
+  const openVisualEditor = (buttonClick = 'openVisualEditor') => {
     log(buttonClick);
     logMermaidChartClick('editorPicker');
     close();
-    window.open(getCheckoutUrl({ utmCampaign, utmMedium }), '_blank', 'noopener');
+    window.open(
+      getDiagramEditorUrl({ utmCampaign: visualEditorUtmCampaign, utmMedium }),
+      '_blank',
+      'noopener'
+    );
   };
 
   const tryFlow = (buttonClick = 'tryFlow') => {
@@ -30,7 +36,7 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     logMermaidChartClick('editorPicker');
     close();
     window.open(
-      getFlowProductUrl({ utmCampaign: flowUtmCampaign, utmMedium }),
+      getFlowSignUpUrl({ utmCampaign: flowUtmCampaign, utmMedium }),
       '_blank',
       'noopener'
     );
@@ -47,5 +53,5 @@ export const createEditorChooserActions = (close: () => void): EditorChooserActi
     window.open(getMermaidAiLiveUrl({ utmCampaign, utmMedium }), '_blank', 'noopener');
   };
 
-  return { dismiss, log, openMermaidAiLive, startTrial, tryFlow };
+  return { dismiss, log, openMermaidAiLive, openVisualEditor, tryFlow };
 };
