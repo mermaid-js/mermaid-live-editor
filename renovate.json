@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     ":rebaseStalePrs",
     "group:allNonMajor",
     "schedule:earlyMondays",
@@ -12,8 +12,7 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": ["mermaid"],
-      "matchPackagePatterns": ["^@mermaid-js/"],
+      "matchPackageNames": ["mermaid", "/^@mermaid-js//"],
       "groupName": "Mermaid packages",
       "schedule": ["at any time"],
       "automerge": true
@@ -23,10 +22,12 @@
       "automerge": true
     }
   ],
-  "dependencyDashboard": true,
+  "dependencyDashboard": {
+    "enabled": true,
+    "autoclose": true
+  },
   "major": {
     "dependencyDashboardApproval": true
   },
-  "dependencyDashboardAutoclose": true,
   "rangeStrategy": "bump"
 }

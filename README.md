@@ -102,7 +102,7 @@ https://docs.github.com/en/get-started/quickstart/fork-a-repo
 ## Requirements
 
 - [Node.js](https://nodejs.org/en/) current LTS version
-- [pnpm](https://pnpm.io/) package manager. Install with `corepack enable pnpm`
+- [pnpm](https://pnpm.io/) package manager. Install with `npm install -g corepack && corepack enable pnpm` (Node 25+ no longer bundles corepack)
 
 ## Development
 

@@ -1,17 +1,19 @@
 # The build output is a static site, so build it once on the runner's native
 # platform instead of under QEMU emulation; only the nginx stage below is
 # per-architecture.
-FROM --platform=$BUILDPLATFORM docker.io/library/node:24.22.3-alpine3.24 AS mermaid-live-editor-dependencies
+FROM --platform=$BUILDPLATFORM docker.io/library/node:26.13.1-alpine3.24 AS mermaid-live-editor-dependencies
 
 RUN apk --no-cache add build-base git python3 && \
     rm -rf /var/cache/apk/*
 
-RUN corepack enable pnpm
+# Node 25+ no longer bundles corepack.
+RUN npm install -g corepack && corepack enable pnpm
 
 WORKDIR /app
 
 COPY ./package.json .
 COPY ./pnpm-lock.yaml .
+COPY ./pnpm-workspace.yaml .
 
 RUN pnpm install
 
