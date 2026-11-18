@@ -24,6 +24,12 @@ export const parse = async (code: string) => {
   return await mermaid.parse(code);
 };
 
+/** Warm mermaid's lazy-loaded chunk for this code's diagram type; result ignored. */
+export const prefetchDiagram = async (code: string): Promise<void> => {
+  await init;
+  await mermaid.parse(code, { suppressErrors: true });
+};
+
 /**
  * @see https://mermaid.js.org/config/schema-docs/config.html
  */

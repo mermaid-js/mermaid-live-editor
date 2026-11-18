@@ -2,7 +2,7 @@
   import Card from '#lib/components/Card/Card.svelte';
   import { Button, buttonVariants } from '#lib/components/ui/button/index.js';
   import * as Popover from '#lib/components/ui/popover/index.js';
-  import { getSampleDiagrams, type SampleExample } from '#lib/util/mermaid.js';
+  import { getSampleDiagrams, prefetchDiagram, type SampleExample } from '#lib/util/mermaid.js';
   import { updateCode } from '#lib/util/state.svelte.js';
   import { logEvent } from '#lib/util/stats.js';
   import { cn } from '#lib/utils.js';
@@ -77,6 +77,8 @@
         <Button
           size="sm"
           class={cn('flex-grow normal-case', examples.length > 1 && 'rounded-r-none')}
+          onpointerenter={() => void prefetchDiagram(examples[0].code)}
+          onfocus={() => void prefetchDiagram(examples[0].code)}
           onclick={() => loadSampleDiagram(sample, examples[0])}>
           {sample}
         </Button>
