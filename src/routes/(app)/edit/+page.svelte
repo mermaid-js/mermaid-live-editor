@@ -33,6 +33,7 @@
   import { shouldShowEditorChooser } from '#lib/util/migration/domainMigration.js';
   import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
   import { env } from '#lib/util/env.js';
+  import { pickDiagramFile, saveDiagramFile, supportsFileAccess } from '#lib/util/diagramFile.js';
   import { validatedState, updateCodeStore, urls } from '#lib/util/state.svelte.js';
   import { v13 } from '#lib/util/v13.svelte.js';
   import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
@@ -102,6 +103,19 @@
 
   let isHistoryOpen = $state(false);
 
+  // Ctrl/Cmd+S saves to the opened file, Ctrl/Cmd+Shift+S saves as, Ctrl/Cmd+O opens a file.
+  const onKeydown = (event: KeyboardEvent) => {
+    if (!(event.ctrlKey || event.metaKey) || event.altKey || !supportsFileAccess()) return;
+    const key = event.key.toLowerCase();
+    if (key === 's') {
+      event.preventDefault();
+      void saveDiagramFile({ saveAs: event.shiftKey });
+    } else if (key === 'o' && !event.shiftKey) {
+      event.preventDefault();
+      void pickDiagramFile();
+    }
+  };
+
   let editorPane: Resizable.Pane | undefined;
   $effect(() => {
     if (isMobile) {
@@ -109,6 +123,8 @@
     }
   });
 </script>
+
+<svelte:window onkeydown={onKeydown} />
 
 <div class="flex h-full flex-col overflow-hidden">
   {#snippet mobileToggle()}
