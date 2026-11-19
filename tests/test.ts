@@ -80,6 +80,10 @@ export class EditorPage {
 
   /** Clicks `trigger`, which must open the diagram file picker, and chooses a file in it. */
   async openFile(trigger: Locator, name: string, content: string) {
+    // Playwright can't drive the File System Access picker, so use the <input type="file"> fallback.
+    await this.page.evaluate(() =>
+      Object.defineProperty(window, 'showOpenFilePicker', { configurable: true, value: undefined })
+    );
     const chooserPromise = this.page.waitForEvent('filechooser');
     await trigger.click();
     const chooser = await chooserPromise;
