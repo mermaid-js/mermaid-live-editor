@@ -28,21 +28,21 @@ describe('November Mermaid Flow promotion', () => {
   });
 
   it('shows the regular banner before 12:01 AM PT on November 19th', async () => {
-    expect(await activeIdAt('2026-11-19T00:00:59-08:00')).toBe('promo-js-2026');
+    expect(await activeIdAt('2026-11-19T00:00:59-08:00')).toBe('promo-april-2025');
   });
 
-  it('replaces the regular banner from 12:01 AM PT on November 19th', async () => {
+  it('replaces the regular banner from 12:01 AM PT on November 19th to December 31st', async () => {
     expect(await activeIdAt('2026-11-19T00:01:01-08:00')).toBe('promo-november-flow');
-    expect(await activeIdAt('2026-12-11T23:58:59-08:00')).toBe('promo-november-flow');
+    expect(await activeIdAt('2026-12-31T23:58:59-08:00')).toBe('promo-november-flow');
   });
 
-  it('goes back to the regular banner at 11:59 PM PT on December 11th', async () => {
-    expect(await activeIdAt('2026-12-11T23:59:01-08:00')).toBe('promo-js-2026');
+  it('goes back to the regular banner at 11:59 PM PT on December 31st', async () => {
+    expect(await activeIdAt('2026-12-31T23:59:01-08:00')).toBe('promo-april-2025');
   });
 
   it('shows the regular banner while the Flow one is dismissed', async () => {
     const promo = await loadAt('2026-11-23T12:00:00-08:00');
     promo.dismissPromotion('promo-november-flow');
-    expect(promo.getActivePromotion()?.id).toBe('promo-js-2026');
+    expect(promo.getActivePromotion()?.id).toBe('promo-april-2025');
   });
 });
