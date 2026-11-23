@@ -8,7 +8,7 @@
   import { Separator } from '#lib/components/ui/separator/index.js';
   import * as ToggleGroup from '#lib/components/ui/toggle-group/index.js';
   import { TID } from '#lib/constants.js';
-  import { pickDiagramFile } from '#lib/util/diagramFile.js';
+  import { pickDiagramFile, saveDiagramFile, supportsFileAccess } from '#lib/util/diagramFile.js';
   import { getDomain } from '#lib/util/util.js';
   import { browser } from '$app/env';
   import {
@@ -24,6 +24,7 @@
   import DownloadIcon from '~icons/material-symbols/download';
   import FileOpenIcon from '~icons/material-symbols/file-open-outline-rounded';
   import ExternalLinkIcon from '~icons/material-symbols/open-in-new-rounded';
+  import SaveIcon from '~icons/material-symbols/save-outline-rounded';
   import WidthIcon from '~icons/material-symbols/width-rounded';
 
   const imageSize = () => ({ mode: imageSizeMode, size: imageSizeValue });
@@ -138,6 +139,15 @@
         Open MMD file
       </Button>
     </div>
+    {#if browser && supportsFileAccess()}
+      <Button
+        onclick={() => saveDiagramFile()}
+        title="Ctrl+S, Ctrl+Shift+S to save as"
+        data-testid={TID.saveFileButton}>
+        <SaveIcon />
+        Save to file
+      </Button>
+    {/if}
     <Separator />
     {#if isClipboardAvailable()}
       <CopyButton onclick={onCopyClipboard} label="Copy Image" />

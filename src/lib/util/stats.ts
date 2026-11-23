@@ -113,6 +113,7 @@ const delaysPerEvent = {
   pwaInstalled: defaultDelay,
   render: minutesToMilliSeconds(5),
   renderDiagram: defaultDelay,
+  saveFile: defaultDelay,
   themeChange: defaultDelay,
   version: defaultDelay
 } as const;

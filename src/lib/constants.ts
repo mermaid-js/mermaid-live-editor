@@ -31,6 +31,7 @@ export const TID = {
   mainMenuButton: 'main-menu-button',
   menuOpenFile: 'menu-open-file',
   openFileButton: 'open-file-button',
+  saveFileButton: 'save-file-button',
   themeToggleButton: 'theme-toggle-button'
 } as const;
 
