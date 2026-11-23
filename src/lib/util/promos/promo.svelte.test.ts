@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { flowHuntBanners, FLOW_HUNT_LAUNCH_URL } from './flowHunt';
 
 vi.mock('#lib/util/env.js', async (importOriginal) => {
   const original = await importOriginal<typeof import('#lib/util/env.js')>();
@@ -18,7 +17,7 @@ const loadAt = async (now: string) => {
 
 const activeIdAt = async (now: string) => (await loadAt(now)).getActivePromotion()?.id;
 
-describe('Mermaid Flow Product Hunt promotions', () => {
+describe('November Mermaid Flow promotion', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     localStorage.clear();
@@ -28,61 +27,22 @@ describe('Mermaid Flow Product Hunt promotions', () => {
     vi.useRealTimers();
   });
 
-  it('replaces the regular banner with the pre-launch one before launch day', async () => {
-    expect(await activeIdAt('2026-11-12T12:00:00Z')).toBe('promo-flow-hunt-pre-launch');
+  it('shows the JS26 banner before 12:01 AM PT on November 19th', async () => {
+    expect(await activeIdAt('2026-11-19T00:00:59-08:00')).toBe('promo-js-2026');
   });
 
-  it('keeps the pre-launch banner until 12:01 AM PT on November 18th', async () => {
-    expect(await activeIdAt('2026-11-18T00:00:59-08:00')).toBe('promo-flow-hunt-pre-launch');
+  it('puts Flow ahead of JS26 from November 19th to December 31st', async () => {
+    expect(await activeIdAt('2026-11-19T00:01:01-08:00')).toBe('promo-november-flow');
+    expect(await activeIdAt('2026-12-31T23:58:59-08:00')).toBe('promo-november-flow');
   });
 
-  it('uses Pacific time, not UTC', async () => {
-    // Already November 18th in UTC, still November 17th in Pacific time.
-    expect(await activeIdAt('2026-11-18T03:00:00Z')).toBe('promo-flow-hunt-pre-launch');
+  it('falls back to the regular banner once both campaigns are over', async () => {
+    expect(await activeIdAt('2027-01-01T00:00:01-08:00')).toBe('promo-april-2025');
   });
 
-  it('switches to the launch banner once the launch starts', async () => {
-    expect(await activeIdAt('2026-11-18T00:01:01-08:00')).toBe('promo-flow-hunt-launch');
-    expect(await activeIdAt('2026-11-18T23:58:59-08:00')).toBe('promo-flow-hunt-launch');
-  });
-
-  it('goes back to the regular banner at 11:59 PM PT on November 18th', async () => {
-    expect(await activeIdAt('2026-11-18T23:59:01-08:00')).toBe('promo-js-2026');
-  });
-
-  it('still shows the launch banner after the pre-launch one was dismissed', async () => {
-    const preLaunch = await loadAt('2026-11-17T12:00:00-08:00');
-    preLaunch.dismissPromotion('promo-flow-hunt-pre-launch');
-    expect(preLaunch.getActivePromotion()?.id).not.toBe('promo-flow-hunt-pre-launch');
-
-    expect(await activeIdAt('2026-11-18T12:00:00-08:00')).toBe('promo-flow-hunt-launch');
-  });
-
-  it('keeps a dismissed launch banner closed for the rest of launch day', async () => {
-    const launch = await loadAt('2026-11-18T01:00:00-08:00');
-    launch.dismissPromotion('promo-flow-hunt-launch');
-
-    expect(await activeIdAt('2026-11-18T23:00:00-08:00')).not.toBe('promo-flow-hunt-launch');
-  });
-});
-
-describe('Mermaid Flow Product Hunt copy', () => {
-  it('has the pre-launch copy from the ticket', () => {
-    expect(flowHuntBanners['pre-launch']).toEqual({
-      headline: 'Mermaid Flow launches on Product Hunt November 18th.',
-      tagline: 'Build it once, run it the same way every time.',
-      cta: 'Learn more'
-    });
-  });
-
-  it('has the launch copy and Product Hunt link from the ticket', () => {
-    expect(flowHuntBanners.launch).toEqual({
-      headline: 'Mermaid Flow is live on Product Hunt.',
-      tagline: 'Build it once, run it the same way every time.',
-      cta: 'See the launch'
-    });
-    expect(FLOW_HUNT_LAUNCH_URL).toBe(
-      'https://www.producthunt.com/products/mermaid-chart?launch=mermaid-flow'
-    );
+  it('shows JS26 while the Flow banner is dismissed', async () => {
+    const promo = await loadAt('2026-11-23T12:00:00-08:00');
+    promo.dismissPromotion('promo-november-flow');
+    expect(promo.getActivePromotion()?.id).toBe('promo-js-2026');
   });
 });
