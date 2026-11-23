@@ -4,10 +4,8 @@ import duration from 'dayjs/plugin/duration';
 import type { Component, Snippet } from 'svelte';
 import { persisted } from '../persist.svelte';
 import April2025 from './April2025.svelte';
-import { FLOW_HUNT_LAUNCH_END, FLOW_HUNT_LAUNCH_START } from './flowHunt';
-import FlowHuntLaunch from './FlowHuntLaunch.svelte';
-import FlowHuntPreLaunch from './FlowHuntPreLaunch.svelte';
 import JS2026 from './JS2026.svelte';
+import NovemberFlow from './NovemberFlow.svelte';
 
 dayjs.extend(duration);
 
@@ -18,19 +16,13 @@ interface Promotion {
   hideDurationMs: number;
 }
 
-// The promotion that ends soonest wins, so the Product Hunt banners temporarily
-// replace the regular ones and hand over to each other at the launch.
+// The promotion that ends soonest wins, so a short campaign temporarily replaces the regular banner.
 const promotions: Record<string, Promotion> = {
-  'promo-flow-hunt-pre-launch': {
-    startDate: new Date('2026-11-01'),
-    endDate: FLOW_HUNT_LAUNCH_START,
-    component: FlowHuntPreLaunch,
-    hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
-  },
-  'promo-flow-hunt-launch': {
-    startDate: FLOW_HUNT_LAUNCH_START,
-    endDate: FLOW_HUNT_LAUNCH_END,
-    component: FlowHuntLaunch,
+  'promo-november-flow': {
+    // Pacific time: PST is UTC-8 for the whole campaign.
+    startDate: new Date('2026-11-19T00:01:00-08:00'),
+    endDate: new Date('2026-12-11T23:59:00-08:00'),
+    component: NovemberFlow,
     hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
   },
   'promo-js-2026': {
