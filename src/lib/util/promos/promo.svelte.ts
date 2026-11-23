@@ -4,6 +4,7 @@ import duration from 'dayjs/plugin/duration';
 import type { Component, Snippet } from 'svelte';
 import { persisted } from '../persist.svelte';
 import April2025 from './April2025.svelte';
+import JS2026 from './JS2026.svelte';
 import NovemberFlow from './NovemberFlow.svelte';
 
 dayjs.extend(duration);
@@ -22,6 +23,13 @@ const promotions: Record<string, Promotion> = {
     startDate: new Date('2026-11-19T00:01:00-08:00'),
     endDate: new Date('2026-12-31T23:59:00-08:00'),
     component: NovemberFlow,
+    hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
+  },
+  'promo-js-2026': {
+    startDate: new Date('2026-01-01'),
+    // Ends just after the Flow banner so Flow wins while both run.
+    endDate: new Date('2027-01-01T00:00:00-08:00'),
+    component: JS2026,
     hideDurationMs: dayjs.duration(1, 'week').asMilliseconds()
   },
   'promo-april-2025': {

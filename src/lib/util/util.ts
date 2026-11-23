@@ -86,6 +86,13 @@ const buildUtmParams = ({
     utm_source: getUTMSource()
   });
 
+export const getCheckoutUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
+  const params = buildUtmParams(utm);
+  params.set('coupon', 'arDfyFT8');
+  params.set('tier', 'plus');
+  return `${MCBaseURL}/app/user/billing/checkout?${params.toString()}`;
+};
+
 export const getMermaidAiLiveUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
   return `${MCBaseURL}/live?${buildUtmParams(utm).toString()}`;
 };
