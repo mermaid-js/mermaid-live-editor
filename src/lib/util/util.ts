@@ -97,10 +97,6 @@ export const getMermaidAiLiveUrl = (utm: { utmCampaign: string; utmMedium: strin
   return `${MCBaseURL}/live?${buildUtmParams(utm).toString()}`;
 };
 
-export const getFlowProductUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
-  return `${MCBaseURL}/products/flow?${buildUtmParams(utm).toString()}`;
-};
-
 // Signs up, then lands in Mermaid Flow's cold start (mermaid.ai's own Flow sign-up link).
 export const getFlowSignUpUrl = (utm: { utmCampaign: string; utmMedium: string }): string => {
   const params = buildUtmParams(utm);
