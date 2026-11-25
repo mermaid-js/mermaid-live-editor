@@ -1,0 +1,12 @@
+{{- if .Values.appConfig -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mermaid.fullname" . }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mermaid.labels" . | nindent 4 }}
+data:
+  app.config.json: |
+    {{ .Values.appConfig | toJson | nindent 4 }}
+{{- end }}
