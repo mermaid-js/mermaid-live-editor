@@ -4,6 +4,29 @@ import type * as Monaco from 'monaco-editor';
 
 const commentRegex = /(?<!["'])%%(?![^"']*["']\)).*$/;
 
+/**
+ * Non-ASCII letters accepted inside mermaid identifiers, as the XML `NameStartChar` ranges.
+ *
+ * Monarch compiles every rule without the `u` flag, so `\w` and `A-Za-z` are ASCII-only and an
+ * identifier such as `ergeűáú` matched only up to the first accented character — the remainder
+ * fell through the identifier rule and was left unstyled. Setting `unicode: true` on the language
+ * (which would allow `\p{L}`) is not an option: it makes the compiler reject other rules in this
+ * grammar as `Lone quantifier brackets`.
+ */
+const nonAsciiLetters =
+  '\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD';
+
+/** `[A-Za-z]`, plus the non-ASCII letters above. */
+const letter = `[A-Za-z${nonAsciiLetters}]`;
+/** `[\w$]`, plus the non-ASCII letters above. */
+const identifierChar = `[\\w$${nonAsciiLetters}]`;
+/** The identifier rule used by most diagrams: a letter followed by identifier characters. */
+const identifierRegex = new RegExp(`${letter}${identifierChar}*`);
+/** As {@link identifierRegex}, but also allowing a leading `_` or `-`. */
+const looseIdentifierRegex = new RegExp(`[-A-Z_a-z${nonAsciiLetters}]${identifierChar}*`);
+/** A run of letters, with no digits or separators. */
+const lettersRegex = new RegExp(`${letter}+`);
+
 export const initEditor = (monacoEditor: typeof Monaco): void => {
   monacoEditor.languages.register({ id: 'mermaid' });
   const requirementDiagrams = [
@@ -247,7 +270,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/(title|accDescription)(.*$)/, ['keyword', 'string']],
         [/\(/, { next: 'c4DiagramParenthesis', token: 'delimiter.bracket' }],
         [
-          /[A-Z_a-z-][\w$]*/,
+          looseIdentifierRegex,
           {
             cases: {
               '@c4DiagramBlockKeywords': 'typeKeyword',
@@ -267,14 +290,14 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         configDirectiveHandler,
         [/(^\s*(?:title|accDescription))(\s+.*$)/, ['keyword', 'string']],
         [
-          /(\*|<\|?|o|)(--|\.\.)(\*|\|?>|o|)([\t ]*[A-Za-z]+[\t ]*)(:)(.*?$)/,
+          new RegExp(`(\\*|<\\|?|o|)(--|\\.\\.)(\\*|\\|?>|o|)([\\t ]*${letter}+[\\t ]*)(:)(.*?$)`),
           ['transition', 'transition', 'transition', 'variable', 'delimiter.bracket', 'string']
         ],
-        [/(?!class\s)([A-Za-z]+)(\s+[A-Za-z]+)/, ['type', 'variable']],
+        [new RegExp(`(?!class\\s)(${letter}+)(\\s+${letter}+)`), ['type', 'variable']],
         [/(\*|<\|?|o)?(--|\.\.)(\*|\|?>|o)?/, 'transition'],
         [/^\s*class\s(?!.*{)/, 'keyword'],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@classDiagramBlockKeywords': 'typeKeyword',
@@ -297,15 +320,15 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/".*?"/, 'string'],
         [/(:)(.*?$)/, ['delimiter.bracket', 'string']],
         [/[:{}]/, 'delimiter.bracket'],
-        [/([A-Za-z]+)(\s+[A-Za-z]+)/, ['type', 'variable']],
+        [new RegExp(`(${letter}+)(\\s+${letter}+)`), ['type', 'variable']],
         [commentRegex, 'comment'],
-        [/[A-Z_a-z-][\w$]*/, 'variable']
+        [looseIdentifierRegex, 'variable']
       ],
       flowchart: [
         configDirectiveHandler,
         [/[ox]?(--+|==+)[ox]/, 'transition'],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@default': 'variable',
@@ -334,7 +357,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/(section)(.*)/, ['typeKeyword', 'string']],
         [/^\s*([^\n:]*?)(:)/, ['string', 'delimiter.bracket']],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@ganttBlockKeywords': 'typeKeyword',
@@ -359,7 +382,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
           ['delimiter.bracket', 'keyword', 'variable']
         ],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@gitGraphBlockKeywords': 'typeKeyword',
@@ -372,7 +395,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
       ],
       info: [
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@infoBlockKeywords': 'typeKeyword',
@@ -386,7 +409,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/(title)(.*)/, ['keyword', 'string']],
         [/(section)(.*)/, ['typeKeyword', 'string']],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@default': 'variable',
@@ -424,7 +447,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         configDirectiveHandler,
         [/(title|accDescription)(.*$)/, ['keyword', 'string']],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@pieBlockKeywords': 'typeKeyword',
@@ -442,7 +465,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/->|<-|-/, 'transition'],
         [/(\d+\.)*\d+/, 'number'],
         [
-          /[A-Z_a-z-][\w$]*/,
+          looseIdentifierRegex,
           {
             cases: {
               '@default': 'variable',
@@ -480,7 +503,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/(title)(.*)/, ['keyword', 'string']],
         [/(accTitle|accDescr)(\s*:)(\s*[^\n\r]+$)/, ['keyword', 'delimiter.bracket', 'string']],
         [/".*?"/, 'string'],
-        [/[A-Za-z]+/, 'string'],
+        [lettersRegex, 'string'],
         [/\s*\d+/, 'number'],
         [/,/, 'delimiter.bracket'],
         [commentRegex, 'comment']
@@ -508,7 +531,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
           ]
         ],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@default': 'variable',
@@ -533,7 +556,7 @@ export const initEditor = (monacoEditor: typeof Monaco): void => {
         [/(<<)(fork|join|choice)(>>)/, 'annotation'],
         [/(\[\[)(fork|join|choice)(]])/, ['delimiter.bracket', 'annotation', 'delimiter.bracket']],
         [
-          /[A-Za-z][\w$]*/,
+          identifierRegex,
           {
             cases: {
               '@default': 'variable',
