@@ -37,7 +37,6 @@ export const TID = {
 export const C = {
   aiLiveEditor: 'ai_live_editor',
   editorChooserDismissedKey: 'mermaid-editor-chooser-dismissed',
-  editorChooserVariantKey: 'mermaid-editor-chooser-variant',
   livePreviewParam: 'live',
   livePreviewSessionKey: 'mermaid-live-preview-session',
   utmSource: 'mermaid_live_editor'

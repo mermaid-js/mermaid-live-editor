@@ -63,14 +63,11 @@ const isReferredFromMermaid = (): boolean => {
  * Check if the editor chooser modal should be shown.
  * Shows for new users who haven't dismissed it and aren't viewing a shared link.
  * Can be forced open for QA via the `?editorChooser=1` query flag, which bypasses
- * the hostname and dismissed checks. `?editorChooser=A|B|C` also picks the experiment variant.
+ * the hostname and dismissed checks.
  */
 export const shouldShowEditorChooser = (): boolean => {
   if (!env.isEnabledMermaidChartLinks) return false;
-  const forced = ['1', 'A', 'B', 'C'].includes(
-    new URLSearchParams(window.location.search).get('editorChooser') ?? ''
-  );
-  if (forced) return true;
+  if (new URLSearchParams(window.location.search).get('editorChooser') === '1') return true;
   if (!isOnMermaidAI() && !isOnMermaidLive() && !isOnNetlifyPreview()) return false;
   if (window.localStorage.getItem(C.editorChooserDismissedKey) === 'true') return false;
   if (hasPakoData()) return false;
