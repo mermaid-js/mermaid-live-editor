@@ -104,7 +104,7 @@
     "hammerjs": "^2.0.8",
     "js-base64": "3.9.6",
     "lodash-es": "^4.18.1",
-    "mermaid": "^12.3.0",
+    "mermaid": "^12.4.0",
     "mode-watcher": "^1.1.0",
     "monaco-editor": "0.57.0",
     "pako": "3.0.3",
